@@ -1,0 +1,102 @@
+stages:  
+  - build  
+  - deploy
+
+build_dev:  
+  image: node:latest
+  stage: build  
+  only:
+    - develop
+  environment:
+    name: dev
+  variables:
+    APP_NAME: '"Telos Net"'
+    NETWORK_BLOCKCHAIN: '"eos"'
+    NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
+    NETWORK_HOST: '"testnet.telos.caleos.io"'
+    NETWORK_PORT: '443'
+    NETWORK_PROTOCOL: '"https"'
+  cache:
+    paths:
+      - node_modules/
+  script:    
+    # Install vuecli    
+    - yarn global add @vue/cli@latest    
+    # Install dependencies    
+    - yarn install    
+    # Build App    
+    - yarn build  
+  artifacts:    
+    paths:      
+      # Build folder      
+      - dist/    
+    expire_in: 1 hour
+
+build_prod:  
+  image: node:latest
+  stage: build  
+  only:
+    - master
+  environment:
+    name: master
+  variables:
+    NETWORK_BLOCKCHAIN: '"eos"'
+    NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
+    NETWORK_HOST: '"telos.caleos.io"'
+    NETWORK_PORT: '443'
+    NETWORK_PROTOCOL: '"https"'
+    TOKEN_NAME: '"CONNECT"'
+    TOKEN_PRECISION: '4'
+    TOKEN_SMARTCONTRACT: '"connectcoins"'
+  cache:
+    paths:
+      - node_modules/
+  script:    
+    # Install vuecli    
+    - yarn global add @vue/cli@latest    
+    # Install dependencies    
+    - yarn install    
+    # Build App    
+    - yarn build  
+  artifacts:    
+    paths:      
+      # Build folder      
+      - dist/    
+    expire_in: 1 hour
+
+  
+deploy_dev:  
+  image: python:latest  
+  stage: deploy  
+  only:    
+    - develop  
+  environment:
+    name: dev
+  script:    
+    - echo $CI_ENVIRONMENT_NAME
+    - pip install awscli    
+    - aws configure set aws_access_key_id $AWS_KEY
+    - aws configure set aws_secret_access_key $AWS_SECRET
+    - aws s3 rm s3://telos-toolkit-dev
+    - aws s3 sync ./dist/spa s3://telos_toolkit-dev
+    # - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
+    # - aws configure set aws_secret_access_key $INVALIDATOR_KEY
+    # - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_DEV --paths "/*"
+
+# deploy_prod:  
+#   image: python:latest  
+#   stage: deploy  
+#   only:    
+#     - master  
+#   environment:
+#     name: production
+#   script:    
+#     - echo $CI_ENVIRONMENT_NAME
+#     - pip install awscli    
+#     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_PROD
+#     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_PROD
+#     - aws s3 rm s3://connectsocial-vue-prod
+#     - aws s3 sync ./dist/spa s3://connectsocial-vue-prod
+#     - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
+#     - aws configure set aws_secret_access_key $INVALIDATOR_KEY
+#     - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_PROD --paths "/*"
