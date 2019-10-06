@@ -1,4 +1,6 @@
-// Configuration for your app
+require('dotenv').config()
+
+const path = require('path')
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
 module.exports = function (ctx) {
@@ -7,8 +9,12 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
+      'axios',
       'i18n',
-      'axios'
+      {
+        server: false,
+        path: 'ual'
+      }
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -45,6 +51,9 @@ module.exports = function (ctx) {
 
       components: [
         'QBtn',
+        'QCard',
+        'QCardSection',
+        'QDialog',
         'QDrawer',
         'QHeader',
         'QIcon',
@@ -53,13 +62,17 @@ module.exports = function (ctx) {
         'QItemSection',
         'QLayout',
         'QList',
+        'QMenu',
         'QPage',
         'QPageContainer',
+        'QSpinner',
         'QToolbar',
-        'QToolbarTitle'
+        'QToolbarTitle',
+        'QTooltip'
       ],
 
       directives: [
+        'ClosePopup',
         'Ripple'
       ],
 
@@ -72,6 +85,13 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      env: {
+        APP_NAME: process.env.APP_NAME, // Used by scatter
+        NETWORK_PROTOCOL: process.env.NETWORK_PROTOCOL,
+        NETWORK_HOST: process.env.NETWORK_HOST,
+        NETWORK_PORT: process.env.NETWORK_PORT,
+        NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID
+      },
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // showProgress: false,
@@ -91,6 +111,16 @@ module.exports = function (ctx) {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
         })
+
+        cfg.module.rules.push({
+          test: /\.pug$/,
+          loader: 'pug-plain-loader'
+        })
+
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          '~': path.resolve(__dirname, 'src')
+        }
       }
     },
 

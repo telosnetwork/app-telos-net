@@ -1,36 +1,47 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
+<template lang="pug">
+  q-layout(view="lHh Lpr lFf")
+    q-header(elevated)
+      q-toolbar
+        q-btn(
+          v-if="isAuthenticated"
           flat
           dense
           round
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="menu = !menu"
           icon="menu"
           aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Telos Net
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+        )
+        q-toolbar-title Telos Net
+        login(v-if="!isAuthenticated")
+        right-menu-authenticated(v-if="isAuthenticated")
+    q-page-container
+      router-view
 </template>
 
 <script>
-export default {
-  name: 'MainLayout',
+import { mapActions, mapGetters } from 'vuex'
+import Login from '~/components/layout/login'
+import RightMenuAuthenticated from '~/components/layout/right-menu-authenticated'
 
+export default {
+  name: 'main-layout',
+  components: {
+    RightMenuAuthenticated,
+    Login
+  },
   data () {
     return {
-      leftDrawerOpen: false
+      menu: false
     }
+  },
+  async mounted () {
+    await this.autoLogin()
+  },
+  computed: {
+    ...mapGetters('accounts', ['isAuthenticated'])
+  },
+  methods: {
+    ...mapActions('accounts', ['autoLogin'])
   }
 }
 </script>
