@@ -1,7 +1,6 @@
-<template>
-  <q-page class="flex flex-center">
-    Telos
-  </q-page>
+<template lang="pug">
+  q-page.flex.flex-center
+    | Telos
 </template>
 
 <script>
