@@ -1,0 +1,49 @@
+{
+  "name": "telos-net",
+  "version": "0.0.1",
+  "description": "TODO desc",
+  "productName": "Telos Net",
+  "cordovaId": "org.cordova.quasar.app",
+  "author": "gregory-latinier <gregory.latinier@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev -m pwa",
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --fix --ext .js,.vue src",
+    "test": "echo \"No test specified\" && exit 0",
+    "build": "quasar build -m pwa"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": "yarn lint"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "quasar": "^1.0.0",
+    "vue-i18n": "^8.0.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-vue": "^5.0.0",
+    "husky": "^3.0.8",
+    "lint-staged": "^9.4.1"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ]
+}
