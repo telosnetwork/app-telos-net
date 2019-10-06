@@ -7,8 +7,8 @@ export const login = async function ({ commit }, idx) {
     const users = await authenticator.login()
     if (users.length) {
       commit('setAccount', users[0].accountName)
-      localStorage.setItem('autoLogin', authenticator.constructor.name)
       this.$api = users[0]
+      localStorage.setItem('autoLogin', authenticator.constructor.name)
     }
   } catch (e) {
     error = (authenticator.getError() && authenticator.getError().message) || e.message
@@ -19,7 +19,11 @@ export const login = async function ({ commit }, idx) {
 }
 
 export const logout = async function ({ commit }) {
+  const wallet = localStorage.getItem('autoLogin')
+  const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
+  this.$ual.authenticators[idx].logout()
   commit('setAccount')
+  localStorage.removeItem('autoLogin')
   this.$api = null
 }
 

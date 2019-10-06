@@ -56,11 +56,20 @@ div
               avatar
               @click="onLogin(idx)"
             )
-              img(:src="wallet.getStyle().icon")
+              img(
+                :src="wallet.getStyle().icon"
+                width="30"
+              )
             q-item-section.cursor-pointer(@click="onLogin(idx)") {{ wallet.getStyle().text }}
             q-item-section(avatar)
               .flex
+                q-spinner(
+                  v-if="loading === wallet.getStyle().text"
+                  :color="wallet.getStyle().textColor"
+                  size="2em"
+                )
                 q-btn(
+                  v-else
                   :color="wallet.getStyle().textColor"
                   icon="get_app"
                   @click="openUrl(wallet.getOnboardingLink())"
@@ -70,11 +79,6 @@ div
                   size="12px"
                 )
                   q-tooltip {{ $t('components.layout.login.getApp') }}
-                q-spinner(
-                  v-show="loading === wallet.getStyle().text"
-                  :color="wallet.getStyle().textColor"
-                  size="2em"
-                )
           q-item(
             v-if="error"
             :active="!!error"
@@ -82,7 +86,3 @@ div
           )
             q-item-section {{ error }}
 </template>
-
-<style lang="scss">
-
-</style>
