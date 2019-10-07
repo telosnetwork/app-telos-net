@@ -23,7 +23,7 @@ build_dev:
     # Install vuecli    
     - npm install -g @vue/cli@latest
     - npm install
-    - npm build
+    - npm run build
     # - yarn global add @vue/cli@latest    
     # # Install dependencies    
     # - yarn install    
