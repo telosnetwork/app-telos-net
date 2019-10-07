@@ -13,7 +13,7 @@ build_dev:
     APP_NAME: '"Telos Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
-    NETWORK_HOST: '"testnet.telos.caleos.io"'
+    NETWORK_HOST: '"test.telos.kitchen"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
   cache:
@@ -21,11 +21,14 @@ build_dev:
       - node_modules/
   script:    
     # Install vuecli    
-    - yarn global add @vue/cli@latest    
-    # Install dependencies    
-    - yarn install    
-    # Build App    
-    - yarn build  
+    - npm install -g @vue/cli@latest
+    - npm install
+    - npm build
+    # - yarn global add @vue/cli@latest    
+    # # Install dependencies    
+    # - yarn install    
+    # # Build App    
+    # - yarn build  
   artifacts:    
     paths:      
       # Build folder      
@@ -42,12 +45,9 @@ build_prod:
   variables:
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
-    NETWORK_HOST: '"telos.caleos.io"'
+    NETWORK_HOST: '"api.telos.kitchen"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
-    TOKEN_NAME: '"CONNECT"'
-    TOKEN_PRECISION: '4'
-    TOKEN_SMARTCONTRACT: '"connectcoins"'
   cache:
     paths:
       - node_modules/
