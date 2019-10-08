@@ -75,25 +75,25 @@ deploy_dev:
     - aws configure set aws_access_key_id $AWS_KEY
     - aws configure set aws_secret_access_key $AWS_SECRET
     - aws s3 rm s3://telos-toolkit-dev
-    - aws s3 sync ./dist/pwa s3://telos-toolkit-dev
+    - aws s3 sync ./dist/spa s3://telos-toolkit-dev
     # - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
     # - aws configure set aws_secret_access_key $INVALIDATOR_KEY
     # - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_DEV --paths "/*"
 
-# deploy_prod:  
-#   image: python:latest  
-#   stage: deploy  
-#   only:    
-#     - master  
-#   environment:
-#     name: production
-#   script:    
-#     - echo $CI_ENVIRONMENT_NAME
-#     - pip install awscli    
-#     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_PROD
-#     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_PROD
-#     - aws s3 rm s3://connectsocial-vue-prod
-#     - aws s3 sync ./dist/spa s3://connectsocial-vue-prod
+deploy_prod:  
+  image: python:latest  
+  stage: deploy  
+  only:    
+    - master  
+  environment:
+    name: production
+  script:    
+    - echo $CI_ENVIRONMENT_NAME
+    - pip install awscli    
+    - aws configure set aws_access_key_id $AWS_KEY
+    - aws configure set aws_secret_access_key $AWS_SECRET
+    - aws s3 rm s3://telos-toolkit-prod
+    - aws s3 sync ./dist/spa s3://telos-toolkit-prod
 #     - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
 #     - aws configure set aws_secret_access_key $INVALIDATOR_KEY
 #     - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_PROD --paths "/*"
