@@ -1,11 +1,11 @@
 <template>
   <div class='row justify-center items-center'>
     <div class='col-xs-8'>
-      <amplify-s3-image
+      <!-- <amplify-s3-image
         class='S3Im'
         identity='us-east-1:b9adaf73-cdd3-4d42-8847-6d60508f4923'
         imagePath='jmgayosso155-1569433731908.jpeg'
-      ></amplify-s3-image>
+      ></amplify-s3-image> -->
       <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md'>
         <q-input
           filled
