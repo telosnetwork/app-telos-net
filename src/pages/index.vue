@@ -1,6 +1,6 @@
 <template lang="pug">
   q-page.flex.flex-center
-    | Telos
+    | Telos Home
 </template>
 
 <script>
