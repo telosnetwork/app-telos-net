@@ -1,0 +1,6 @@
+"vetur.format.defaultFormatterOptions":{
+    "prettier": {
+        // Prettier option here
+        "semi": false
+    }
+}

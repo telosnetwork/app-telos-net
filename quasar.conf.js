@@ -68,7 +68,16 @@ module.exports = function (ctx) {
         'QSpinner',
         'QToolbar',
         'QToolbarTitle',
-        'QTooltip'
+        'QTooltip',
+        'QAvatar',
+        'QChip',
+        'QInfiniteScroll',
+        'QChatMessage',
+        'QInput',
+        'QForm',
+        'QOptionGroup',
+        'QToggle',
+        'QSelect'
       ],
 
       directives: [

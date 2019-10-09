@@ -14,7 +14,7 @@ export default {
   components: { SignUpForm },
   computed: {
     title () {
-      return this.$store.state.general.title
+      return 'Hola'
     }
   }
 }
