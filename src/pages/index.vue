@@ -3,6 +3,7 @@
     | Telos Home
     <router-link to="/chat">Chat</router-link>
     <router-link to="/signUp">Sign Up</router-link>
+    <router-link to="/chatsList">ChatList</router-link>
 </template>
 
 <script>
