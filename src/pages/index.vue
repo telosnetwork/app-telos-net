@@ -5,6 +5,7 @@
     <router-link class="routers" to="/signUp">Sign Up</router-link>
     <router-link class="routers" to="/chatsList">ChatList</router-link>
     <router-link class="routers" to="/contactList">ContactList</router-link>
+    <router-link class="routers" to="/registerApp">Register App</router-link>
 </template>
 
 <script>
