@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: 'ContactsList',
+  name: 'ChatsList',
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
