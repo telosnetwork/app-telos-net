@@ -78,7 +78,10 @@ module.exports = function (ctx) {
         'QOptionGroup',
         'QToggle',
         'QSelect',
-        'QBadge'
+        'QBadge',
+        'QCard',
+        'QCardSection',
+        'QCardActions'
       ],
 
       directives: [
