@@ -4,12 +4,15 @@
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-    q-infinite-scroll(@load='onLoad', reverse, :offset='250', :scroll-target='$refs.scrollTargetRef')
+    q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef')
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       .caption.q-py-sm(v-for='(item, index) in items', :key='index')
-        ContactItem
+        .row.justify-center
+          .col-xs-10.col-sm-8.col-md-6
+            q-list(bordered)
+              ContactItem
 </template>
 
 <script>
