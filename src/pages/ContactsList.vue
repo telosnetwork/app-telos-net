@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ContactItem from '../components/Contact/contactItem.vue'
+import ContactItem from '../components/Contact/contact-item.vue'
 export default {
   name: 'ChatsList',
   data () {
