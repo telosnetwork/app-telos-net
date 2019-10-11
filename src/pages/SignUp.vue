@@ -1,9 +1,8 @@
 <template lang='pug'>
-  <main>
-    <h1> {{title}} </h1>
-    <SignUpForm></SignUpForm>
-    <p>Despues del formulario</p>
-  </main>
+  main
+    h1 {{title}}
+    SignUpForm
+    p Despues del formulario
 </template>
 
 <script>

@@ -1,7 +1,6 @@
 <template lang='pug'>
-  <main>
-    <RegisterAppForm></RegisterAppForm>
-  </main>
+  main
+    RegisterAppForm
 </template>
 
 <script>
