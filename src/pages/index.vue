@@ -1,11 +1,10 @@
 <template lang="pug">
   q-page.flex.flex-center
-    | Telos Home
-    <router-link class="routers" to="/chat">Chat</router-link>
-    <router-link class="routers" to="/signUp">Sign Up</router-link>
-    <router-link class="routers" to="/chatsList">ChatList</router-link>
-    <router-link class="routers" to="/contactList">ContactList</router-link>
-    <router-link class="routers" to="/registerApp">Register App</router-link>
+    <router-link class="routers" to="/chat">{{ $t('components.index.router.chat') }}</router-link>
+    <router-link class="routers" to="/signUp">{{ $t('components.index.router.signUp') }}</router-link>
+    <router-link class="routers" to="/chatsList">{{ $t('components.index.router.chatsList') }}</router-link>
+    <router-link class="routers" to="/contactList">{{ $t('components.index.router.contactList') }}</router-link>
+    <router-link class="routers" to="/registerApp">{{ $t('components.index.router.registerApp') }}</router-link>
 </template>
 
 <script>

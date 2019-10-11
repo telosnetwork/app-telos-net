@@ -1,65 +1,24 @@
-<template>
-  <main>
-    <q-chip class="headerContent">
-      <q-avatar class="avatarHeader">
-        <img src="https://cdn.quasar.dev/img/avatar5.jpg" />
-      </q-avatar>
-      <strong>Jane Judith</strong>
-    </q-chip>
-    <div ref="scrollTargetRef" class="q-pa-md infiniteScroll">
-      <q-infinite-scroll
-        @load="onLoad"
-        reverse
-        :offset="250"
-        :scroll-target="$refs.scrollTargetRef"
-      >
-        <template slot="loading">
-          <div class="row justify-center q-my-md">
-            <q-spinner color="primary" name="dots" size="40px" />
-          </div>
-        </template>
-
-        <div v-for="(item, index) in items" :key="index" class="caption q-py-sm">
-          <div class="q-pa-md row justify-center">
-            <div class="content-message">
-              <q-chat-message
-                name="me"
-                avatar="https://cdn.quasar.dev/img/avatar1.jpg"
-                :text="['hey, how are you?']"
-                stamp="7 minutes ago"
-                sent
-                bg-color="amber-7"
-              />
-              <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="['doing fine, how r you?']"
-                stamp="4 minutes ago"
-                text-color="white"
-                bg-color="primary"
-              />
-            </div>
-          </div>
-        </div>
-      </q-infinite-scroll>
-    </div>
-
-    <q-input
-      standout="bg-teal text-white"
-      bottom-slots
-      v-model="message"
-      label="Message"
-      counter
-      class="send-input"
-    >
-      <template v-slot:append>
-        <q-btn round dense flat icon="send" @click="sendMessage"></q-btn>
-      </template>
-    </q-input>
-  </main>
+<template lang='pug'>
+  main
+    q-chip.headerContent
+      q-avatar.avatarHeader
+        img(src='https://cdn.quasar.dev/img/avatar5.jpg')
+      strong Jane Judith
+    .q-pa-md.infiniteScroll(ref='scrollTargetRef')
+      q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef')
+        template(slot='loading')
+          .row.justify-center.q-my-md
+            q-spinner(color='primary', name='dots', size='40px')
+        .caption.q-py-sm(v-for='(item, index) in items', :key='index')
+          .q-pa-md.row.justify-center
+            MessageItem
+    q-input.send-input(standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
+      template(v-slot:append='')
+        q-btn(round='', dense='', flat='', icon='send', @click='sendMessage')
 </template>
 
 <script>
+import { MessageItem } from '../components/Chat'
 export default {
   name: 'Chat',
   data () {
@@ -112,6 +71,9 @@ export default {
       console.log(this.message)
       this.message = null
     }
+  },
+  components: {
+    MessageItem
   }
 }
 </script>
