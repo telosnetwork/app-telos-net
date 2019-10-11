@@ -14,7 +14,8 @@ module.exports = function (ctx) {
       {
         server: false,
         path: 'ual'
-      }
+      },
+      'ppp'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -107,7 +108,8 @@ module.exports = function (ctx) {
         NETWORK_PROTOCOL: process.env.NETWORK_PROTOCOL,
         NETWORK_HOST: process.env.NETWORK_HOST,
         NETWORK_PORT: process.env.NETWORK_PORT,
-        NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID
+        NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
+        PPP_ENV: process.env.PPP_ENV
       },
       scopeHoisting: true,
       // vueRouterMode: 'history',
