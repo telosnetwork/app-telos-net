@@ -11,15 +11,14 @@
             q-spinner(color='primary', name='dots', size='40px')
         .caption.q-py-sm(v-for='(item, index) in items', :key='index')
           .q-pa-md.row.justify-center
-            .content-message
-              q-chat-message(name='me', avatar='https://cdn.quasar.dev/img/avatar1.jpg', :text="['hey, how are you?']", stamp='7 minutes ago', sent, bg-color='amber-7')
-              q-chat-message(name='Jane', avatar='https://cdn.quasar.dev/img/avatar5.jpg', :text="['doing fine, how r you?']", stamp='4 minutes ago', text-color='white', bg-color='primary')
+            ChatItem
     q-input.send-input(standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
       template(v-slot:append='')
         q-btn(round='', dense='', flat='', icon='send', @click='sendMessage')
 </template>
 
 <script>
+import { ChatItem } from '../components/Chat'
 export default {
   name: 'Chat',
   data () {
@@ -72,6 +71,9 @@ export default {
       console.log(this.message)
       this.message = null
     }
+  },
+  components: {
+    ChatItem
   }
 }
 </script>
