@@ -136,7 +136,7 @@
 // import { amplify-s3-image } from 'aws-amplify-vue'
 
 export default {
-  name: 'SignUpForm',
+  name: 'sign-up-form',
   data () {
     return {
       firstName: null,
