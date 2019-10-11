@@ -66,18 +66,6 @@
           lazy-rules
           :rules="[validationEMAIL]"
         />
-        <div class='row justify-center'>
-          <q-option-group
-            v-model='paymentsOptions'
-            :options='optionsPayments'
-            color='green'
-            type='checkbox'
-            inline
-            :rules="[ val => val && val.length > 0 || 'Please type something']"
-          ></q-option-group>
-        </div>
-
-        <!-- <q-select filled v-model='model2' :options='options3' label='Filled'  :rules="[ val => val && val.length > 0 || 'Please type something']"/> -->
 
         <q-select
           filled
@@ -120,9 +108,6 @@
           input-debounce='0'
           new-value-mode='add-unique'
         />
-
-        <q-toggle v-model='accept' label='I accept the license and terms' />
-
         <div>
           <q-btn label='Submit' type='submit' color='primary' />
           <q-btn label='Reset' type='reset' color='primary' flat class='q-ml-sm' />
@@ -134,15 +119,16 @@
 
 <script>
 // import { amplify-s3-image } from 'aws-amplify-vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'sign-up-form',
   data () {
     return {
-      firstName: null,
-      lastName: null,
-      smsNumber: null,
-      email: null,
+      firstName: 'Jose',
+      lastName: 'Gaysso Ortega',
+      smsNumber: '5540713427',
+      email: 'josemgo.9.11@gmail.com',
       methodComm: 'email',
       optionsMethodComm: [
         { label: 'SMS', value: 'sms', color: 'cyan' },
@@ -166,7 +152,7 @@ export default {
           color: 'cyan'
         }
       ],
-      country: null,
+      country: 'Mexico',
       optionsCountries: [
         'Mexico',
         'Estados Unidos',
@@ -175,35 +161,29 @@ export default {
         'India'
       ],
       optionsCountriesFiltered: [],
-      hobbies: null,
-      presentation: null,
+      hobbies: ['Nadar'],
+      presentation: 'Salten Salten',
       accept: false,
       presentationStr: '/components/signUp/form/presentation'
     }
   },
   // components: { amplify-s3-image },
   methods: {
+    ...mapActions('profiles', ['signUp', 'searchProfiles']),
     onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must accept the license and terms first'
-        })
-      } else if (this.methodComm === null) {
+      if (this.methodComm === null) {
         this.$q.notify({
           color: 'red-5',
           textColor: 'white',
           icon: 'warning',
           message: 'You must choose one prefer method communication'
         })
-      } else if (this.paymentsOptions.length === 0) {
+      } else if (this.hobbies.length === 0) {
         this.$q.notify({
           color: 'red-5',
           textColor: 'white',
           icon: 'warning',
-          message: 'You must choose at least one payment options'
+          message: 'You must write at least one hobby'
         })
       } else {
         this.$q.notify({
@@ -212,9 +192,27 @@ export default {
           icon: 'cloud_done',
           message: 'Submitted'
         })
+        this.doSignup()
       }
     },
-
+    async doSignup () {
+      const mData = {
+        emailAddress: this.email,
+        smsNumber: this.smsNumber,
+        commPref: 'EMAIL',
+        publicData: {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          countryCode: this.country,
+          profileImage: null,
+          identity: null,
+          hobbies: this.hobbies,
+          bio: null
+        }
+      }
+      await this.signUp(mData)
+      await this.searchProfiles()
+    },
     onReset () {
       this.firstName = null
       this.lastName = null
@@ -254,7 +252,7 @@ export default {
     validationEMAIL () {
       if (this.methodComm === 'email') {
         return (
-          (this.email && this.smsNumber.email > 0) || 'Please type something'
+          (this.email && this.email.length > 0) || 'Please type something'
         )
       }
     }

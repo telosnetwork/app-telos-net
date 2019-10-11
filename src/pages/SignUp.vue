@@ -1,8 +1,6 @@
 <template lang='pug'>
   main
-    h1 {{title}}
     SignUpForm
-    p Despues del formulario
 </template>
 
 <script>
