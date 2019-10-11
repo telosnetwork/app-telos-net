@@ -6,11 +6,11 @@
         identity='us-east-1:b9adaf73-cdd3-4d42-8847-6d60508f4923'
         imagePath='jmgayosso155-1569433731908.jpeg'
       ></amplify-s3-image> -->
-      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md'>
+      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md q-pa-md'>
         <q-input
           filled
           v-model='presentation'
-          label='Presentation'
+          :label="$t('components.signUp.form.presentation')"
           hint='Presentation'
           lazy-rules
           :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -177,7 +177,8 @@ export default {
       optionsCountriesFiltered: [],
       hobbies: null,
       presentation: null,
-      accept: false
+      accept: false,
+      presentationStr: '/components/signUp/form/presentation'
     }
   },
   // components: { amplify-s3-image },

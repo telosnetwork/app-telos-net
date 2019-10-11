@@ -9,11 +9,11 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       .caption.q-py-sm(v-for='(item, index) in items', :key='index')
-        MessageItem
+        ChatItem
 </template>
 
 <script>
-import { MessageItem } from '../components/Chat'
+import { ChatItem } from '../components/Chat'
 export default {
   name: 'ChatsList',
   data () {
@@ -36,7 +36,7 @@ export default {
       this.search = null
     }
   },
-  components: { MessageItem }
+  components: { ChatItem }
 }
 </script>
 

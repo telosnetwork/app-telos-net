@@ -11,14 +11,14 @@
             q-spinner(color='primary', name='dots', size='40px')
         .caption.q-py-sm(v-for='(item, index) in items', :key='index')
           .q-pa-md.row.justify-center
-            ChatItem
+            MessageItem
     q-input.send-input(standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
       template(v-slot:append='')
         q-btn(round='', dense='', flat='', icon='send', @click='sendMessage')
 </template>
 
 <script>
-import { ChatItem } from '../components/Chat'
+import { MessageItem } from '../components/Chat'
 export default {
   name: 'Chat',
   data () {
@@ -73,7 +73,7 @@ export default {
     }
   },
   components: {
-    ChatItem
+    MessageItem
   }
 }
 </script>
