@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
-    "@smontero/ppp-client-api": "0.0.8",
+    "@smontero/ppp-client-api": "0.0.9",
     "@smontero/ppp-common": "0.0.6",
     "@smontero/ual-keycat": "^1.0.19",
     "axios": "^0.18.1",
