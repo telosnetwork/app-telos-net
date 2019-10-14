@@ -58,6 +58,7 @@ module.exports = function (ctx) {
         'QDrawer',
         'QHeader',
         'QIcon',
+        'QImg',
         'QItem',
         'QItemLabel',
         'QItemSection',

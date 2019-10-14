@@ -6,7 +6,12 @@
         identity='us-east-1:b9adaf73-cdd3-4d42-8847-6d60508f4923'
         imagePath='jmgayosso155-1569433731908.jpeg'
       ></amplify-s3-image> -->
+      <s3-image :img-key='imgKey' :identity='identity' style="height: 140px; max-width: 150px"/>
       <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md q-pa-md'>
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          v-on:change='onFileChange' />
         <q-input
           filled
           v-model='presentation'
@@ -119,12 +124,19 @@
 
 <script>
 // import { amplify-s3-image } from 'aws-amplify-vue'
+import PPP from '@smontero/ppp-client-api'
 import { mapActions } from 'vuex'
+import S3Image from '../s3-image'
 
 export default {
   name: 'sign-up-form',
+  components: {
+    S3Image
+  },
   data () {
     return {
+      imgKey: 'sebastianm21-1570986260187.jpeg',
+      identity: 'us-east-1:05ba21e0-18ed-4b21-b5f8-9794fd7ce41d',
       firstName: 'Jose',
       lastName: 'Gaysso Ortega',
       smsNumber: '5540713427',
@@ -170,6 +182,20 @@ export default {
   // components: { amplify-s3-image },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles']),
+    async onFileChange (e) {
+      const file = e.target.files[0]
+      console.log('File changed!')
+      const profileApi = PPP.profileApi()
+      const authApi = PPP.authApi()
+      const key = await profileApi.uploadAvatar(file)
+      console.log(key)
+      const userInfo = await authApi.userInfo()
+      console.log(userInfo)
+      const url = await profileApi.getAvatarUrl(key, userInfo.id)
+      console.log(url)
+      this.imgKey = key
+      this.identity = userInfo.id
+    },
     onSubmit () {
       if (this.methodComm === null) {
         this.$q.notify({
