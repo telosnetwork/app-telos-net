@@ -1,135 +1,26 @@
-<template>
-  <div class='row justify-center items-center'>
-    <div class='col-xs-8 q-gutter-md q-pa-md'>
-      <div class='row justify-center'>
-      <s3-image :img-key='imgKey' :identity='identity' class="S3Img"/>
-      </div>
-      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md'>
-        <div class='row justify-center'>
-              <q-btn
-                :loading="loadingFile"
-                color="orange"
-                text-color="grey-9"
-                @click="$refs.btnUp.click()"
-                icon="cloud_upload"
-                style="width: 100px"
-              />
-        <input
-          ref='btnUp'
-          label='btnUp'
-          type="file"
-          accept="image/png, image/jpeg"
-          v-on:change='onFileChange'
-          style="display: none;" />
-        </div>
-        <q-input
-          filled
-          v-model='presentation'
-          :label="$t('components.signUp.form.presentation')"
-          hint='Presentation'
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-          autogrow
-        />
-
-        <q-input
-          filled
-          v-model='firstName'
-          label='First Name'
-          hint='First Name'
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-
-        <q-input
-          filled
-          v-model='lastName'
-          label='Last Name'
-          hint='Last Name'
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-
-        <div class='row justify-center'>
-          <q-option-group
-            class='items-center'
-            :options='optionsMethodComm'
-            label='Prefer method of communication'
-            type='radio'
-            v-model='methodComm'
-            inline
-          />
-        </div>
-
-        <q-input
-          filled
-          v-model='smsNumber'
-          label='SMS Number'
-          hint='SMS Number'
-          mask='(###) ### - ####'
-          unmasked-value
-          lazy-rules
-          :rules="[validationSMS]"
-        />
-
-        <q-input
-          filled
-          v-model='email'
-          label='Email'
-          hint='Email'
-          type='email'
-          lazy-rules
-          :rules="[validationEMAIL]"
-        />
-
-        <q-select
-          filled
-          v-model='country'
-          use-input
-          input-debounce='0'
-          label='Country'
-          :options='optionsCountriesFiltered'
-          @filter='filterCountries'
-          behavior='dialog'
-          :rules="[ val => val && val.length > 0 || 'Please select your countrie']"
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class='text-grey'>No results</q-item-section>
-            </q-item>
-          </template>
-        </q-select>
-        <!-- [ val => val && val.length > 0 || 'Please type something']
-       <q-input
-        filled
-        type='number'
-        v-model='age'
-        label='Your age *'
-        lazy-rules
-        :rules="[
-          val => val !== null && val !== '' || 'Please type your age',
-          val => val > 0 && val < 100 || 'Please type a real age'
-        ]"
-        />-->
-
-        <q-select
-          label='Hobbies'
-          filled
-          v-model='hobbies'
-          use-input
-          use-chips
-          multiple
-          hide-dropdown-icon
-          input-debounce='0'
-          new-value-mode='add-unique'
-        />
-        <div>
-          <q-btn label='Submit' type='submit' color='primary' />
-          <q-btn label='Reset' type='reset' color='primary' flat class='q-ml-sm' />
-        </div>
-      </q-form>
-    </div>
-  </div>
+<template lang='pug'>
+.row.justify-center.items-center
+  .col-xs-8.q-gutter-md.q-pa-md
+    .row.justify-center
+      s3-image.S3Img(:img-key='imgKey', :identity='identity')
+    q-form.q-gutter-md(@submit='onSubmit', @reset='onReset')
+      .row.justify-center
+        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
+          input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
+      q-input(filled, v-model='presentation', :label="$t('components.signUp.form.presentation')", hint='Presentation', lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']", autogrow)
+      q-input(filled, v-model='firstName', label='First Name', hint='First Name', lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      q-input(filled, v-model='lastName', label='Last Name', hint='Last Name', lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      .row.justify-center
+        q-option-group.items-center(:options='optionsMethodComm', label='Prefer method of communication', type='radio', v-model='methodComm', inline)
+      q-input(filled, v-model='smsNumber', label='SMS Number', hint='SMS Number', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      q-input(filled, v-model='email', label='Email', hint='Email', type='email', lazy-rules, :rules='[validationEMAIL]')
+      q-select(filled, v-model='country', use-input, input-debounce='0', label='Country', :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
+        template(v-slot:no-option)
+          q-item
+            q-item-section.text-grey No results
+      q-select(label='Hobbies', filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      q-btn(label='Submit', type='submit', color='primary')
+      q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
 
 <script>
