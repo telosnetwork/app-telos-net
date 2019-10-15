@@ -1,17 +1,27 @@
 <template>
   <div class='row justify-center items-center'>
-    <div class='col-xs-8'>
-      <!-- <amplify-s3-image
-        class='S3Im'
-        identity='us-east-1:b9adaf73-cdd3-4d42-8847-6d60508f4923'
-        imagePath='jmgayosso155-1569433731908.jpeg'
-      ></amplify-s3-image> -->
-      <s3-image :img-key='imgKey' :identity='identity' style="height: 140px; max-width: 150px"/>
-      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md q-pa-md'>
+    <div class='col-xs-8 q-gutter-md q-pa-md'>
+      <div class='row justify-center'>
+      <s3-image :img-key='imgKey' :identity='identity' class="S3Img"/>
+      </div>
+      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md'>
+        <div class='row justify-center'>
+              <q-btn
+                :loading="loadingFile"
+                color="orange"
+                text-color="grey-9"
+                @click="$refs.btnUp.click()"
+                icon="cloud_upload"
+                style="width: 100px"
+              />
         <input
+          ref='btnUp'
+          label='btnUp'
           type="file"
           accept="image/png, image/jpeg"
-          v-on:change='onFileChange' />
+          v-on:change='onFileChange'
+          style="display: none;" />
+        </div>
         <q-input
           filled
           v-model='presentation'
@@ -176,13 +186,14 @@ export default {
       hobbies: ['Nadar'],
       presentation: 'Salten Salten',
       accept: false,
-      presentationStr: '/components/signUp/form/presentation'
+      presentationStr: '/components/signUp/form/presentation',
+      loadingFile: false
     }
   },
-  // components: { amplify-s3-image },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles']),
     async onFileChange (e) {
+      this.loadingFile = true
       const file = e.target.files[0]
       console.log('File changed!')
       const profileApi = PPP.profileApi()
@@ -195,6 +206,7 @@ export default {
       console.log(url)
       this.imgKey = key
       this.identity = userInfo.id
+      this.loadingFile = false
     },
     onSubmit () {
       if (this.methodComm === null) {
@@ -230,10 +242,10 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           countryCode: this.country,
-          profileImage: null,
-          identity: null,
+          profileImage: this.imgKey,
+          identity: this.identity,
           hobbies: this.hobbies,
-          bio: null
+          bio: this.identity
         }
       }
       await this.signUp(mData)
@@ -287,8 +299,9 @@ export default {
 </script>
 
 <style scoped>
-S3Im {
-  width: 100px;
-  height: 100px;
+.S3Img {
+  height: 150px;
+  max-width: 150px;
+  border-radius: 100px;
 }
 </style>

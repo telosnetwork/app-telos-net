@@ -1,11 +1,11 @@
 <template lang="pug">
   q-img(
     :src="url"
+    ratio="1"
   )
 </template>
 
 <script>
-// import { amplify-s3-image } from 'aws-amplify-vue'
 import PPP from '@smontero/ppp-client-api'
 export default {
   name: 's3-image',
