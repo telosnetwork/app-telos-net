@@ -29,7 +29,10 @@ export default {
   methods: {
     async updateUrl () {
       if (this.imgKey && this.identity) {
-        this.url = await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity)
+        await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity).then((rUrl) => {
+          console.log('Rs', rUrl)
+          this.url = rUrl
+        })
       }
     }
   }

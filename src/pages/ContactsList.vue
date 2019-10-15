@@ -1,6 +1,6 @@
 <template lang="pug">
  main
-  q-input.send-input(standout='bg-teal text-white', bottom-slots, v-model='search', label='Search', counter, debounce='1500')
+  q-input.send-input(@keypress="onSearch($event)", standout='bg-teal text-white', bottom-slots, v-model='search', label='Search', counter)
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
@@ -38,7 +38,7 @@ export default {
   },
   watch: {
     search: async function (v) {
-      await this.searchProfiles({ search: v, clean: true })
+
     }
   },
   methods: {
@@ -56,9 +56,13 @@ export default {
         }
       }, 2000)
     },
-    onSearch (v) {
-      console.log(this.search)
-      this.search = null
+    async onSearch (v) {
+      if (v.key === 'Enter') {
+        console.log(this.search)
+        await this.searchProfiles({ search: this.search, clean: true })
+        // this.search = null
+        v.preventDefault()
+      }
     }
   }
 }
