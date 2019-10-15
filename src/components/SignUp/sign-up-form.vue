@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// import { amplify-s3-image } from 'aws-amplify-vue'
 import PPP from '@smontero/ppp-client-api'
 import { mapActions } from 'vuex'
 import S3Image from '../s3-image'
@@ -86,15 +85,15 @@ export default {
     async onFileChange (e) {
       this.loadingFile = true
       const file = e.target.files[0]
-      console.log('File changed!')
+      // console.log('File changed!')
       const profileApi = PPP.profileApi()
       const authApi = PPP.authApi()
       const key = await profileApi.uploadAvatar(file)
-      console.log(key)
+      // console.log(key)
       const userInfo = await authApi.userInfo()
-      console.log(userInfo)
-      const url = await profileApi.getAvatarUrl(key, userInfo.id)
-      console.log(url)
+      // console.log(userInfo)
+      // const url = await profileApi.getAvatarUrl(key, userInfo.id)
+      // console.log(url)
       this.imgKey = key
       this.identity = userInfo.id
       this.loadingFile = false
@@ -115,13 +114,13 @@ export default {
           message: 'You must write at least one hobby'
         })
       } else {
+        this.doSignup()
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
           message: 'Submitted'
         })
-        this.doSignup()
       }
     },
     async doSignup () {
@@ -140,7 +139,6 @@ export default {
         }
       }
       await this.signUp(mData)
-      await this.searchProfiles()
     },
     onReset () {
       this.firstName = null

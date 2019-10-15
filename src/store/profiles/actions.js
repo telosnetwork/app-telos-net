@@ -8,12 +8,13 @@ export const signUp = async function ({ state }, mData) {
   })
 }
 
-export const searchProfiles = async function () {
+export const searchProfiles = async function ({ commit }) {
   PPP.setActiveUser(this.$api)
   const profileApi = PPP.profileApi()
   try {
-    await profileApi.searchProfiles().then((v) => {
+    await profileApi.searchProfiles().then(v => {
       console.log('searchProfiles', v)
+      commit('setProfiles', v)
     })
   } catch (error) {
     console.log('Error', error)

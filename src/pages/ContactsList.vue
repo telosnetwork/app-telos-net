@@ -8,24 +8,36 @@
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
-      .caption.q-py-sm(v-for='(item, index) in items', :key='index')
+      .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6
             q-list(bordered)
-              ContactItem
+              ContactItem(:contact="profile")
 </template>
 
 <script>
 import ContactItem from '../components/Contact/contact-item.vue'
+import { mapActions } from 'vuex'
 export default {
-  name: 'ChatsList',
+  name: 'ContactList',
+  components: { ContactItem },
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
       search: null
     }
   },
+  mounted: async function () {
+    const profiles = await this.searchProfiles()
+    console.log('respuesta', profiles)
+  },
+  computed: {
+    profileList () {
+      return this.$store.state.profiles.profilesList
+    }
+  },
   methods: {
+    ...mapActions('profiles', ['searchProfiles']),
     onLoad (index, done) {
       setTimeout(() => {
         if (this.items) {
@@ -38,8 +50,7 @@ export default {
       console.log(this.search)
       this.search = null
     }
-  },
-  components: { ContactItem }
+  }
 }
 </script>
 
