@@ -2,7 +2,8 @@
     q-item(clickable, v-ripple)
         q-item-section(avatar)
             q-avatar(size="80px")
-                S3Img(:img-key='contact.publicData.profileImage', :identity='contact.publicData.identity')
+                S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.identity')
+                img(src="https://cdn.quasar.dev/img/boy-avatar.png")
         q-item-section
             q-item-label {{contact.eosAccount}}
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}

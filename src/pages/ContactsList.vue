@@ -6,7 +6,7 @@
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
     q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef')
       template(slot='loading')
-        .row.justify-center.q-my-md
+        .row.justify-center.q-my-md( v-show='isMore')
           q-spinner(color='primary', name='dots', size='40px')
       .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
@@ -24,25 +24,35 @@ export default {
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
-      search: null
+      search: null,
+      isMore: false
     }
   },
   mounted: async function () {
-    const profiles = await this.searchProfiles()
-    console.log('respuesta', profiles)
+    await this.searchProfiles()
   },
   computed: {
     profileList () {
       return this.$store.state.profiles.profilesList
     }
   },
+  watch: {
+    search: async function (v) {
+      await this.searchProfiles({ search: v, clean: true })
+    }
+  },
   methods: {
-    ...mapActions('profiles', ['searchProfiles']),
+    ...mapActions('profiles', ['searchProfiles', 'cleanProfilesList']),
     onLoad (index, done) {
+      if (this.profileList.count < 10) {
+        this.isMore = false
+        stop()
+      }
       setTimeout(() => {
         if (this.items) {
-          this.items.splice(0, 0, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
-          done()
+          console.log('Listando mas')
+          // done()
+          stop()
         }
       }, 2000)
     },

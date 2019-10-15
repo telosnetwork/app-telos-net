@@ -1,3 +1,3 @@
 export default () => ({
-  profilesList: []
+  profilesList: { count: 0, items: [] }
 })
