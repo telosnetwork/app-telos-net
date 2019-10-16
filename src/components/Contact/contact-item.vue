@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import S3Img from '../../components/s3-image'
+import S3Img from '~/components/s3-image'
 export default {
   name: 'contact-item',
   props: {

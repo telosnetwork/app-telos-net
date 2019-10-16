@@ -40,7 +40,7 @@
 
 <script>
 // import { amplify-s3-image } from 'aws-amplify-vue'
-import { CustomRegex } from '../../const'
+import { CustomRegex } from '~/const'
 export default {
   name: 'register-app-form',
   data () {

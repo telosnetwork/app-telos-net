@@ -5,7 +5,7 @@
 
 <script>
 // import { SignUpForm } from '../components/SignUp'
-import SignUpForm from '../components/SignUp/sign-up-form'
+import SignUpForm from '~/components/SignUp/sign-up-form'
 export default {
   name: 'SignUp',
   components: { SignUpForm },

@@ -26,7 +26,7 @@
 <script>
 import PPP from '@smontero/ppp-client-api'
 import { mapActions } from 'vuex'
-import S3Image from '../s3-image'
+import S3Image from '~/components/s3-image'
 
 export default {
   name: 'sign-up-form',
