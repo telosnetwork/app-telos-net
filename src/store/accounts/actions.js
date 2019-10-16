@@ -9,6 +9,7 @@ export const login = async function ({ commit }, idx) {
       commit('setAccount', users[0].accountName)
       this.$api = users[0]
       localStorage.setItem('autoLogin', authenticator.constructor.name)
+      this.$router.push({ path: '/transfers/add' })
     }
   } catch (e) {
     error = (authenticator.getError() && authenticator.getError().message) || e.message
@@ -34,5 +35,49 @@ export const autoLogin = async function ({ dispatch, commit }) {
     commit('setAutoLogin', true)
     await dispatch('login', idx)
     commit('setAutoLogin', false)
+  }
+}
+
+export const isAccountFree = async function (context, accountName) {
+  try {
+    await this.$axios.get(`/check?telosAccount=${accountName}`)
+    return true
+  } catch (e) {
+    // Catch the error if the account doesn't exist
+    return false
+  }
+}
+
+export const sendOTP = async function ({ commit }, form) {
+  try {
+    const response = await this.$axios.post('/register', {
+      smsNumber: form.smsNumber,
+      telosAccount: form.account
+    })
+    if (response) {
+      commit('setSignUpForm', form)
+    }
+    return true
+  } catch (e) {
+    console.log(e)
+    return {
+      error: e.message
+    }
+  }
+}
+
+export const verifyOTP = async function ({ commit, state }, { password, publicKey }) {
+  try {
+    const response = await this.$axios.post('/create', {
+      smsOtp: password,
+      smsNumber: state.signUpForm.smsNumber,
+      telosAccount: state.signUpForm.account,
+      ownerKey: publicKey,
+      activeKey: publicKey
+    })
+    return !!response
+  } catch (e) {
+    console.log(e)
+    return false
   }
 }
