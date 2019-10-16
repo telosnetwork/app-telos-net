@@ -4,9 +4,9 @@
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-    q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef')
+    q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll')
       template(slot='loading')
-        .row.justify-center.q-my-md( v-show='isMore')
+        .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
@@ -28,41 +28,35 @@ export default {
       isMore: false
     }
   },
-  mounted: async function () {
-    await this.searchProfiles()
+  beforeDestroy: function () {
+    this.cleanProfilesList()
   },
   computed: {
     profileList () {
       return this.$store.state.profiles.profilesList
     }
   },
-  watch: {
-    search: async function (v) {
-
-    }
-  },
   methods: {
-    ...mapActions('profiles', ['searchProfiles', 'cleanProfilesList']),
-    onLoad (index, done) {
-      if (this.profileList.count < 10) {
-        this.isMore = false
-        stop()
-      }
-      setTimeout(() => {
-        if (this.items) {
-          console.log('Listando mas')
-          // done()
-          stop()
-        }
-      }, 2000)
+    ...mapActions('profiles', ['searchProfiles', 'cleanProfilesList', 'cleanProfilesList']),
+    async onLoad (index, done) {
+      if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === 1) || this.profileList.items.length === 0) {
+        await this.searchProfiles({ search: this.search, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+        done()
+      } else this.$refs.infiniteScroll.stop()
     },
     async onSearch (v) {
       if (v.type === 'click') {
-        await this.searchProfiles({ search: this.search, clean: true })
+        // await this.searchProfiles({ search: this.search, clean: true })
+        this.cleanProfilesList()
+        this.$refs.infiniteScroll.reset()
+        this.$refs.infiniteScroll.resume()
         v.preventDefault()
       } else {
         if (v.key === 'Enter') {
-          await this.searchProfiles({ search: this.search, clean: true })
+          // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+          this.cleanProfilesList()
+          this.$refs.infiniteScroll.reset()
+          this.$refs.infiniteScroll.resume()
           v.preventDefault()
         }
       }

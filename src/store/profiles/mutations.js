@@ -13,9 +13,11 @@ export const setAutoLogin = (state, status) => {
 export const setProfiles = (state, profiles) => {
   state.profilesList.items = state.profilesList.items.concat(profiles.items)
   state.profilesList.count = profiles.count
+  state.profilesList.lastEvaluatedKey = profiles.lastEvaluatedKey
 }
 
 export const cleanProfilesList = (state, items = []) => {
   state.profilesList.count = 0
   state.profilesList.items = items
+  state.profilesList.lastEvaluatedKey = undefined
 }

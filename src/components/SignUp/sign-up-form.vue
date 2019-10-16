@@ -114,13 +114,13 @@ export default {
           message: 'You must write at least one hobby'
         })
       } else {
-        this.doSignup()
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
           message: 'Submitted'
         })
+        this.doSignup()
       }
     },
     async doSignup () {
@@ -135,7 +135,7 @@ export default {
           profileImage: this.imgKey,
           identity: this.identity,
           hobbies: this.hobbies,
-          bio: this.identity
+          bio: this.presentation
         }
       }
       await this.signUp(mData)
