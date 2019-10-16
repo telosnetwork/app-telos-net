@@ -40,7 +40,7 @@ export const setChats = (state, chats) => {
   state.chatsList.lastEvaluatedKey = chats.lastEvaluatedKey
 }
 
-export const clearChatList = (state, items = []) => {
+export const clearChatsList = (state, items = []) => {
   state.chatsList.count = 0
   state.chatsList.items = items
   state.chatsList.lastEvaluatedKey = undefined

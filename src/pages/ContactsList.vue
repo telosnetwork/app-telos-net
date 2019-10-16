@@ -25,6 +25,7 @@ export default {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
       search: null,
+      limit: 1,
       isMore: false
     }
   },
@@ -39,8 +40,8 @@ export default {
   methods: {
     ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),
     async onLoad (index, done) {
-      if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === 1) || this.profileList.items.length === 0) {
-        await this.searchProfiles({ search: this.search, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+      if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === this.limit) || this.profileList.items.length === 0) {
+        await this.searchProfiles({ search: this.search, limit: this.limit, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
         done()
       } else this.$refs.infiniteScroll.stop()
     },

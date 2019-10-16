@@ -31,6 +31,9 @@ export default {
   created: async function () {
     this.getMessages({ eosAccount: 'jmgayosso155' })
   },
+  beforeDestroy: function () {
+    // this
+  },
   computed: {
     messagesList () {
       return this.$store.state.profiles.messagesList

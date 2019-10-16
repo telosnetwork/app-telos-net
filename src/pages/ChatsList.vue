@@ -1,15 +1,15 @@
 <template lang='pug'>
  main
-  q-input.send-input(standout='bg-teal text-white', bottom-slots='', v-model='search', label='Search', counter='', debounce='1500')
+  q-input.send-input(@keypress="onSearch($event)", standout='bg-teal text-white', bottom-slots, v-model='search', label='Search', counter)
     template(v-slot:append='')
       q-btn(round='', dense='', flat='', icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-    q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref="infiniteScroll")
+    q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef', ref="infiniteScroll")
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
-      .caption.q-py-sm(v-for='(item, index) in chatList.items', :key='index')
-        ChatItem
+      .caption.q-py-sm(v-for='(chat, index) in chatList.items', :key='index')
+        ChatItem(:Chat='chat')
 </template>
 
 <script>
@@ -21,8 +21,12 @@ export default {
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
-      search: null
+      search: null,
+      limit: 1
     }
+  },
+  beforeDestroy: function () {
+    this.clearChatsList()
   },
   computed: {
     chatList () {
@@ -32,15 +36,27 @@ export default {
   methods: {
     ...mapActions('profiles', ['getChats', 'clearChatsList']),
     async onLoad (index, done) {
-      await this.getChats()
-      this.$refs.infiniteScroll.stop()
-      done()
-      // if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === 1) || this.profileList.items.length === 0) {
-      // } else this.$refs.infiniteScroll.stop()
+      if ((this.chatList.lastEvaluatedKey !== undefined && this.chatList.count === this.limit) || this.chatList.items.length === 0) {
+        await this.getChats({ search: this.search, limit: this.limit, lastEvaluatedKey: this.chatList.lastEvaluatedKey })
+        done()
+      } else this.$refs.infiniteScroll.stop()
     },
     onSearch (v) {
-      console.log(this.search)
-      this.search = null
+      if (v.type === 'click') {
+        // await this.searchProfiles({ search: this.search, clean: true })
+        this.clearChatsList()
+        this.$refs.infiniteScroll.reset()
+        this.$refs.infiniteScroll.resume()
+        v.preventDefault()
+      } else {
+        if (v.key === 'Enter') {
+          // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+          this.clearChatsList()
+          this.$refs.infiniteScroll.reset()
+          this.$refs.infiniteScroll.resume()
+          v.preventDefault()
+        }
+      }
     }
   }
 }

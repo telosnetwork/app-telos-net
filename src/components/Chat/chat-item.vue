@@ -5,13 +5,16 @@
                 img(src='https://cdn.quasar.dev/img/avatar.png')
                 q-badge(floating, color='teal') new
         q-item-section
-            q-item-label Mary
-            q-item-label(caption) 3 new messages
+            q-item-label {{ Chat.counterPartyAccount }}
+            q-item-label(caption) {{ Chat.subject }}
         q-item-section(side) 4 min ago
 </template>
 
 <script>
 export default {
-  name: 'message-item'
+  name: 'message-item',
+  props: {
+    Chat: Object
+  }
 }
 </script>

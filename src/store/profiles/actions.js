@@ -10,9 +10,9 @@ export const signUp = async function ({ state }, mData) {
 
 export const searchProfiles = async function ({ commit }, options = {}) {
   const profileApi = PPP.profileApi()
-  const { search, clean, lastEvaluatedKey } = options
+  const { search, clean, lastEvaluatedKey, limit } = options
   try {
-    await profileApi.searchProfiles(search, 1, lastEvaluatedKey).then(response => {
+    await profileApi.searchProfiles(search, limit, lastEvaluatedKey).then(response => {
       if (clean === true) commit('clearProfilesList')
       commit('setProfiles', response)
     })
@@ -59,6 +59,9 @@ export const getChats = async function ({ commit }, params = {}) {
   }
 }
 
-export const clearProfilesList = async function ({ commit }, options = {}) {
+export const clearProfilesList = function ({ commit }, options = {}) {
   commit('clearProfilesList')
+}
+export const clearChatsList = function ({ commit }, options = {}) {
+  commit('clearChatsList')
 }
