@@ -29,11 +29,10 @@ export default {
     }
   },
   created: async function () {
-    this.getMessages({ eosAccount: 'jmgayosso551' })
+    this.getMessages({ eosAccount: 'jmgayosso155' })
   },
   computed: {
     messagesList () {
-      console.log('messagesList', this.$store.state.profiles.messagesList)
       return this.$store.state.profiles.messagesList
     }
   },
@@ -69,7 +68,7 @@ export default {
       }, 2000)
     },
     sendMessageToChat (v) {
-      this.sendMessage({ eosAccount: 'jmgayosso551', message: this.message })
+      this.sendMessage({ eosAccount: 'jmgayosso155', message: this.message })
       this.message = null
     }
   },
