@@ -59,7 +59,6 @@ export const sendOTP = async function ({ commit }, form) {
     }
     return true
   } catch (e) {
-    console.log(e)
     return {
       error: e.message
     }
@@ -77,7 +76,6 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
     })
     return !!response
   } catch (e) {
-    console.log(e)
     return false
   }
 }
