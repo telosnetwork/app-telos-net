@@ -1,4 +1,3 @@
-
 const routes = [
   { path: '/', component: () => import('pages/index.vue'), meta: { layout: 'empty' } },
   { path: '/login', component: () => import('pages/login/login.vue'), meta: { layout: 'guest', title: 'pages.login.title' } },
