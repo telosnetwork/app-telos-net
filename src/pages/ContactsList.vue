@@ -65,44 +65,37 @@ export default {
 }
 </script>
 
-<style scoped>
-.infiniteScroll {
-  width: 100%;
-  height: calc(100vh - 200px);
-  max-width: 100%;
-  /* background-color: burlywood; */
-  overflow: scroll;
-}
-.content-message {
-  width: 100%;
-}
+<style scoped lang='sass'>
+.infiniteScroll
+  width: 100%
+  height: calc(100vh - 200px)
+  max-width: 100%
 
-.avatarHeader {
-  width: 70px;
-  height: 70px;
-}
+  /* background-color: burlywood;
+  overflow: scroll
 
-.headerContent {
-  margin-top: 20px;
-  margin-left: 10px;
-  height: 40px;
-}
+.content-message
+  width: 100%
 
-.send-input {
-  margin: 10px;
-}
+.avatarHeader
+  width: 70px
+  height: 70px
 
-@media screen and (min-width: 700px) {
-  .content-message {
-    width: 80%;
-  }
-}
+.headerContent
+  margin-top: 20px
+  margin-left: 10px
+  height: 40px
 
-@media screen and (min-width: 1200px) {
-  .content-message {
-    width: 50%;
-    margin-left: 100px;
-    margin-right: 100px;
-  }
-}
+.send-input
+  margin: 10px
+
+@media screen and (min-width: 700px)
+  .content-message
+    width: 80%
+
+@media screen and (min-width: 1200px)
+  .content-message
+    width: 50%
+    margin-left: 100px
+    margin-right: 100px
 </style>
