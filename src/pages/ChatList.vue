@@ -16,7 +16,7 @@
 import { ChatItem } from '../components/Chat'
 import { mapActions } from 'vuex'
 export default {
-  name: 'ChatsList',
+  name: 'ChatList',
   components: { ChatItem },
   data () {
     return {
@@ -26,15 +26,15 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.clearChatsList()
+    this.clearChatList()
   },
   computed: {
     chatList () {
-      return this.$store.state.profiles.chatsList
+      return this.$store.state.profiles.chatList
     }
   },
   methods: {
-    ...mapActions('profiles', ['getChats', 'clearChatsList']),
+    ...mapActions('profiles', ['getChats', 'clearChatList']),
     async onLoad (index, done) {
       if ((this.chatList.lastEvaluatedKey !== undefined && this.chatList.count === this.limit) || this.chatList.items.length === 0) {
         await this.getChats({ search: this.search, limit: this.limit, lastEvaluatedKey: this.chatList.lastEvaluatedKey })
@@ -44,14 +44,14 @@ export default {
     onSearch (v) {
       if (v.type === 'click') {
         // await this.searchProfiles({ search: this.search, clean: true })
-        this.clearChatsList()
+        this.clearChatList()
         this.$refs.infiniteScroll.reset()
         this.$refs.infiniteScroll.resume()
         v.preventDefault()
       } else {
         if (v.key === 'Enter') {
           // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
-          this.clearChatsList()
+          this.clearChatList()
           this.$refs.infiniteScroll.reset()
           this.$refs.infiniteScroll.resume()
           v.preventDefault()

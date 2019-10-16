@@ -14,7 +14,7 @@ export default {
       router: {
         chat: 'Chat',
         signUp: 'Sign Up',
-        chatsList: 'Chat List',
+        chatList: 'Chat List',
         contactList: 'Contact List',
         registerApp: 'Register App'
       }

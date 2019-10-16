@@ -35,13 +35,13 @@ export const clearMessagesList = (state, items = []) => {
 }
 
 export const setChats = (state, chats) => {
-  state.chatsList.items = state.chatsList.items.concat(chats.items)
-  state.chatsList.count = chats.count
-  state.chatsList.lastEvaluatedKey = chats.lastEvaluatedKey
+  state.chatList.items = state.chatList.items.concat(chats.items)
+  state.chatList.count = chats.count
+  state.chatList.lastEvaluatedKey = chats.lastEvaluatedKey
 }
 
-export const clearChatsList = (state, items = []) => {
-  state.chatsList.count = 0
-  state.chatsList.items = items
-  state.chatsList.lastEvaluatedKey = undefined
+export const clearChatList = (state, items = []) => {
+  state.chatList.count = 0
+  state.chatList.items = items
+  state.chatList.lastEvaluatedKey = undefined
 }

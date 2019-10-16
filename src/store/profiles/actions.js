@@ -62,6 +62,6 @@ export const getChats = async function ({ commit }, params = {}) {
 export const clearProfilesList = function ({ commit }, options = {}) {
   commit('clearProfilesList')
 }
-export const clearChatsList = function ({ commit }, options = {}) {
-  commit('clearChatsList')
+export const clearChatList = function ({ commit }, options = {}) {
+  commit('clearChatList')
 }
