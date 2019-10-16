@@ -16,6 +16,9 @@ export default {
   watch: {
     imgKey: async function (val) {
       this.updateUrl()
+    },
+    identity: async function (val) {
+      this.updateUrl()
     }
   },
   async created () {
@@ -28,9 +31,9 @@ export default {
   },
   methods: {
     async updateUrl () {
+      this.url = ''
       if (this.imgKey && this.identity) {
         await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity).then((rUrl) => {
-          console.log('Rs', rUrl)
           this.url = rUrl
         })
       }

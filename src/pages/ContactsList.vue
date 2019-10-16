@@ -57,11 +57,14 @@ export default {
       }, 2000)
     },
     async onSearch (v) {
-      if (v.key === 'Enter') {
-        console.log(this.search)
+      if (v.type === 'click') {
         await this.searchProfiles({ search: this.search, clean: true })
-        // this.search = null
         v.preventDefault()
+      } else {
+        if (v.key === 'Enter') {
+          await this.searchProfiles({ search: this.search, clean: true })
+          v.preventDefault()
+        }
       }
     }
   }
