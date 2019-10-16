@@ -13,7 +13,7 @@ export const searchProfiles = async function ({ commit }, options = {}) {
   const { search, clean, lastEvaluatedKey } = options
   try {
     await profileApi.searchProfiles(search, 1, lastEvaluatedKey).then(response => {
-      if (clean === true) commit('cleanProfilesList')
+      if (clean === true) commit('clearProfilesList')
       commit('setProfiles', response)
     })
   } catch (error) {
@@ -38,7 +38,7 @@ export const getMessages = async function ({ commit }, params = {}) {
   const { eosAccount, limit, lastEvaluatedKey, clean } = params
   try {
     await profileApi.getMessages(eosAccount, limit, lastEvaluatedKey).then(response => {
-      if (clean === true) commit('cleanMessagesList')
+      if (clean === true) commit('clearMessagesList')
       commit('setMessages', response)
     })
   } catch (error) {
@@ -46,6 +46,19 @@ export const getMessages = async function ({ commit }, params = {}) {
   }
 }
 
-export const cleanProfilesList = async function ({ commit }, options = {}) {
-  commit('cleanProfilesList')
+export const getChats = async function ({ commit }, params = {}) {
+  const profileApi = PPP.profileApi()
+  const { limit, lastEvaluatedKey, clean } = params
+  try {
+    await profileApi.getChats(limit, lastEvaluatedKey).then(response => {
+      if (clean === true) commit('clearChatList')
+      commit('setChats', response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const clearProfilesList = async function ({ commit }, options = {}) {
+  commit('clearProfilesList')
 }

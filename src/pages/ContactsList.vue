@@ -29,7 +29,7 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.cleanProfilesList()
+    this.clearProfilesList()
   },
   computed: {
     profileList () {
@@ -37,7 +37,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('profiles', ['searchProfiles', 'cleanProfilesList', 'cleanProfilesList']),
+    ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),
     async onLoad (index, done) {
       if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === 1) || this.profileList.items.length === 0) {
         await this.searchProfiles({ search: this.search, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
@@ -47,14 +47,14 @@ export default {
     async onSearch (v) {
       if (v.type === 'click') {
         // await this.searchProfiles({ search: this.search, clean: true })
-        this.cleanProfilesList()
+        this.clearProfilesList()
         this.$refs.infiniteScroll.reset()
         this.$refs.infiniteScroll.resume()
         v.preventDefault()
       } else {
         if (v.key === 'Enter') {
           // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
-          this.cleanProfilesList()
+          this.clearProfilesList()
           this.$refs.infiniteScroll.reset()
           this.$refs.infiniteScroll.resume()
           v.preventDefault()

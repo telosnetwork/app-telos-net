@@ -4,39 +4,45 @@
     template(v-slot:append='')
       q-btn(round='', dense='', flat='', icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-    q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef')
+    q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref="infiniteScroll")
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
-      .caption.q-py-sm(v-for='(item, index) in items', :key='index')
+      .caption.q-py-sm(v-for='(item, index) in chatList.items', :key='index')
         ChatItem
 </template>
 
 <script>
 import { ChatItem } from '../components/Chat'
+import { mapActions } from 'vuex'
 export default {
   name: 'ChatsList',
+  components: { ChatItem },
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
       search: null
     }
   },
+  computed: {
+    chatList () {
+      return this.$store.state.profiles.chatsList
+    }
+  },
   methods: {
-    onLoad (index, done) {
-      setTimeout(() => {
-        if (this.items) {
-          this.items.splice(0, 0, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
-          done()
-        }
-      }, 2000)
+    ...mapActions('profiles', ['getChats', 'clearChatsList']),
+    async onLoad (index, done) {
+      await this.getChats()
+      this.$refs.infiniteScroll.stop()
+      done()
+      // if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === 1) || this.profileList.items.length === 0) {
+      // } else this.$refs.infiniteScroll.stop()
     },
     onSearch (v) {
       console.log(this.search)
       this.search = null
     }
-  },
-  components: { ChatItem }
+  }
 }
 </script>
 
