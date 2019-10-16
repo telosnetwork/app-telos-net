@@ -3,21 +3,43 @@ import PPP from '@smontero/ppp-client-api'
 export const signUp = async function ({ state }, mData) {
   PPP.setActiveUser(this.$api)
   const profileApi = PPP.profileApi()
-  await profileApi.register(mData).then(v => {
-    console.log('Register', v)
+  await profileApi.register(mData).then(response => {
+    console.log('Register', response)
   })
 }
 
 export const searchProfiles = async function ({ commit }, options = {}) {
-  PPP.setActiveUser(this.$api)
   const profileApi = PPP.profileApi()
   const { search, clean, lastEvaluatedKey } = options
   try {
-    console.log('LastEv', lastEvaluatedKey)
-    await profileApi.searchProfiles(search, 1, lastEvaluatedKey).then(v => {
+    await profileApi.searchProfiles(search, 1, lastEvaluatedKey).then(response => {
       if (clean === true) commit('cleanProfilesList')
-      commit('setProfiles', v)
-      console.log(v)
+      commit('setProfiles', response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const sendMessage = async function ({ commit }, params = {}) {
+  const profileApi = PPP.profileApi()
+  const { eosAccount, message } = params
+  try {
+    await profileApi.sendMessage(eosAccount, message).then(response => {
+      console.log(message, response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const getMessages = async function ({ commit }, params = {}) {
+  const profileApi = PPP.profileApi()
+  const { eosAccount, limit, lastEvaluatedKey, clean } = params
+  try {
+    await profileApi.getMessages(eosAccount, limit, lastEvaluatedKey).then(response => {
+      if (clean === true) commit('cleanMessagesList')
+      commit('setMessages', response)
     })
   } catch (error) {
     console.log('Error', error)

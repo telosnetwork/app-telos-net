@@ -9,16 +9,17 @@
         template(slot='loading')
           .row.justify-center.q-my-md
             q-spinner(color='primary', name='dots', size='40px')
-        .caption.q-py-sm(v-for='(item, index) in items', :key='index')
+        .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center
-            MessageItem
+            MessageItem(:message='message')
     q-input.send-input(standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
       template(v-slot:append='')
-        q-btn(round='', dense='', flat='', icon='send', @click='sendMessage')
+        q-btn(round='', dense='', flat='', icon='send', @click='sendMessageToChat')
 </template>
 
 <script>
 import { MessageItem } from '../components/Chat'
+import { mapActions } from 'vuex'
 export default {
   name: 'Chat',
   data () {
@@ -27,7 +28,17 @@ export default {
       message: null
     }
   },
+  created: async function () {
+    this.getMessages({ eosAccount: 'jmgayosso551' })
+  },
+  computed: {
+    messagesList () {
+      console.log('messagesList', this.$store.state.profiles.messagesList)
+      return this.$store.state.profiles.messagesList
+    }
+  },
   methods: {
+    ...mapActions('profiles', ['sendMessage', 'getMessages']),
     onLoad (index, done) {
       setTimeout(() => {
         if (this.items) {
@@ -51,24 +62,14 @@ export default {
             {},
             {},
             {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
             {}
           )
           done()
         }
       }, 2000)
     },
-    sendMessage (v) {
-      console.log(this.message)
+    sendMessageToChat (v) {
+      this.sendMessage({ eosAccount: 'jmgayosso551', message: this.message })
       this.message = null
     }
   },

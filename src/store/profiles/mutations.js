@@ -21,3 +21,15 @@ export const cleanProfilesList = (state, items = []) => {
   state.profilesList.items = items
   state.profilesList.lastEvaluatedKey = undefined
 }
+
+export const setMessages = (state, messages) => {
+  state.messagesList.items = state.messagesList.items.concat(messages.items)
+  state.messagesList.count = messages.count
+  state.messagesList.lastEvaluatedKey = messages.lastEvaluatedKey
+}
+
+export const cleanMessagesList = (state, items = []) => {
+  state.messagesList.count = 0
+  state.messagesList.items = items
+  state.messagesList.lastEvaluatedKey = undefined
+}
