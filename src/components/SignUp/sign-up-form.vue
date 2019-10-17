@@ -11,7 +11,7 @@
       q-input(filled, v-model='firstName', label='First Name', hint='First Name', lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
       q-input(filled, v-model='lastName', label='Last Name', hint='Last Name', lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
       .row.justify-center
-        q-option-group.items-center(:options='optionsMethodComm', label='Prefer method of communication', type='radio', v-model='methodComm', inline)
+        q-option-group.items-center(:options='commMeth', label='Prefer method of communication', type='radio', v-model='methodComm', inline)
       q-input(filled, v-model='smsNumber', label='SMS Number', hint='SMS Number', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', label='Email', hint='Email', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(filled, v-model='country', use-input, input-debounce='0', label='Country', :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
@@ -25,8 +25,10 @@
 
 <script>
 import PPP from '@smontero/ppp-client-api'
+import { PublicFields, RootFields, CommMethods } from '@smontero/ppp-common'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
+console.log('CommMethods', CommMethods)
 
 export default {
   name: 'sign-up-form',
@@ -38,32 +40,11 @@ export default {
       imgKey: 'sebastianm21-1570986260187.jpeg',
       identity: 'us-east-1:05ba21e0-18ed-4b21-b5f8-9794fd7ce41d',
       firstName: 'Jose',
-      lastName: 'Gaysso Ortega',
+      lastName: 'Gayosso Ortega',
       smsNumber: '5540713427',
       email: 'josemgo.9.11@gmail.com',
-      methodComm: 'email',
-      optionsMethodComm: [
-        { label: 'SMS', value: 'sms', color: 'cyan' },
-        { label: 'EMAIL', value: 'email', color: 'cyan' }
-      ],
+      methodComm: 'EMAIL',
       paymentsOptions: [],
-      optionsPayments: [
-        {
-          label: 'Cash',
-          value: 'cash',
-          color: 'cyan'
-        },
-        {
-          label: 'PayPal',
-          value: 'paypal',
-          color: 'cyan'
-        },
-        {
-          label: 'Bank',
-          value: 'bank',
-          color: 'cyan'
-        }
-      ],
       country: 'Mexico',
       optionsCountries: [
         'Mexico',
@@ -78,6 +59,16 @@ export default {
       accept: false,
       presentationStr: '/components/signUp/form/presentation',
       loadingFile: false
+    }
+  },
+  computed: {
+    commMeth () {
+      const commMeth = []
+      const color = 'cyan'
+      for (const comm in CommMethods) {
+        commMeth.push({ label: CommMethods[comm].display, value: CommMethods[comm].value, color: color })
+      }
+      return commMeth
     }
   },
   methods: {
@@ -125,17 +116,17 @@ export default {
     },
     async doSignup () {
       const mData = {
-        emailAddress: this.email,
-        smsNumber: this.smsNumber,
-        commPref: 'EMAIL',
+        [RootFields.EMAIL]: this.email,
+        [RootFields.SMS_NUMBER]: this.smsNumber,
+        [RootFields.COMM_PREF]: 'EMAIL',
         publicData: {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          countryCode: this.country,
-          profileImage: this.imgKey,
-          identity: this.identity,
-          hobbies: this.hobbies,
-          bio: this.presentation
+          [PublicFields.FIRST_NAME]: this.firstName,
+          [PublicFields.LAST_NAME]: this.lastName,
+          [PublicFields.COUNTRY_CODE]: this.country,
+          [PublicFields.PROFILE_IMAGE]: this.imgKey,
+          [PublicFields.S3_IDENTITY]: this.identity,
+          [PublicFields.HOBBIES]: this.hobbies,
+          [PublicFields.BIO]: this.presentation
         }
       }
       await this.signUp(mData)
