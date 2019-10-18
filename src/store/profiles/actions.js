@@ -65,3 +65,6 @@ export const clearProfilesList = function ({ commit }, options = {}) {
 export const clearChatList = function ({ commit }, options = {}) {
   commit('clearChatList')
 }
+export const clearMessagesList = function ({ commit }, options = {}) {
+  commit('clearMessagesList')
+}

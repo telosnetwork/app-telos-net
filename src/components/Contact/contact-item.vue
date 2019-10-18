@@ -1,5 +1,5 @@
 <template lang="pug">
-    q-item(clickable, v-ripple)
+    q-item(v-ripple)
         q-item-section(avatar)
             q-avatar(size="80px")
                 S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.identity')
@@ -9,8 +9,9 @@
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
             q-item-label(caption='', lines='1') {{contact.email}}
             q-item-label(caption, lines='2') {{contact.publicData.countryCode}}
-        q-item-section(side='')
-            q-icon(name='fiber_manual_record', color='green')
+        q-item-section(side)
+            //- q-icon(name='fiber_manual_record', color='green')
+            q-btn(icon='chat', round, color='green')
 </template>
 
 <script>

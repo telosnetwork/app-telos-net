@@ -5,7 +5,7 @@
         img(src='https://cdn.quasar.dev/img/avatar5.jpg')
       strong Jane Judith
     .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-      q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef')
+      q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll')
         template(slot='loading')
           .row.justify-center.q-my-md
             q-spinner(color='primary', name='dots', size='40px')
@@ -25,14 +25,15 @@ export default {
   data () {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
-      message: null
+      message: null,
+      limit: 2
     }
   },
   created: async function () {
-    this.getMessages({ eosAccount: 'jmgayosso155' })
+    // this.getMessages({ eosAccount: 'jmgayosso155' })
   },
   beforeDestroy: function () {
-    // this
+    this.clearMessagesList()
   },
   computed: {
     messagesList () {
@@ -40,35 +41,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions('profiles', ['sendMessage', 'getMessages']),
-    onLoad (index, done) {
-      setTimeout(() => {
-        if (this.items) {
-          this.items.splice(
-            0,
-            0,
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {}
-          )
-          done()
-        }
-      }, 2000)
+    ...mapActions('profiles', ['sendMessage', 'getMessages', 'clearMessagesList']),
+    async onLoad (index, done) {
+      if ((this.messagesList.items !== undefined && this.messagesList.count === this.limit) || this.messagesList.items.length === 0) {
+        await this.getMessages({ eosAccount: 'jmgayosso155', limit: this.limit, 'lastEvaluatedKey': this.messagesList.lastEvaluatedKey })
+        done()
+      } else this.$refs.infiniteScroll.stop()
     },
     sendMessageToChat (v) {
       this.sendMessage({ eosAccount: 'jmgayosso155', message: this.message })
