@@ -1,13 +1,13 @@
 <template lang='pug'>
   main
-    SignUpForm
+    sign-up-form
 </template>
 
 <script>
 // import { SignUpForm } from '../components/SignUp'
-import SignUpForm from '~/components/SignUp/sign-up-form'
+import SignUpForm from '~/components/sign-up/sign-up-form'
 export default {
-  name: 'SignUp',
+  name: 'sign-up',
   components: { SignUpForm },
   computed: {
     title () {

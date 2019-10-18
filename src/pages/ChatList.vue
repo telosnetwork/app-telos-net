@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { ChatItem } from '~/components/Chat'
+import ChatItem from '~/components/Chat/chat-item'
 import { mapActions } from 'vuex'
 export default {
   name: 'ChatList',

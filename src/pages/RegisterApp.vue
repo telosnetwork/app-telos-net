@@ -5,9 +5,9 @@
 
 <script>
 // import { SignUpForm } from '../components/SignUp'
-import RegisterAppForm from '~/components/RegisterApp/register-app-form'
+import RegisterAppForm from '~/components/register-app/register-app-form'
 export default {
-  name: 'RegisterApp',
+  name: 'register-app',
   components: { RegisterAppForm },
   computed: {
     title () {

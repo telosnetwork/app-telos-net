@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { MessageItem } from '~/components/Chat'
+import MessageItem from '~/components/Chat/message-item'
 import { mapActions } from 'vuex'
 export default {
   name: 'Chat',
