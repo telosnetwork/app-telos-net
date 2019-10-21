@@ -48,12 +48,11 @@ export const getMessages = async function ({ commit }, params = {}) {
 
 export const getChats = async function ({ commit }, params = {}) {
   const profileApi = PPP.profileApi()
-  const { limit, lastEvaluatedKey, clean } = params
+  const { search, limit, lastEvaluatedKey, clean } = params
   try {
-    await profileApi.getChats(limit, lastEvaluatedKey).then(response => {
-      if (clean === true) commit('clearChatList')
-      commit('setChats', response)
-    })
+    const response = await profileApi.getChats(search, limit, lastEvaluatedKey)
+    if (clean === true) commit('clearChatList')
+    commit('setChats', response)
   } catch (error) {
     console.log('Error', error)
   }
