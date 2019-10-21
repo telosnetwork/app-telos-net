@@ -1,5 +1,5 @@
 <template lang="pug">
-    q-item(v-ripple)
+    q-item(v-ripple, clickable,  @click='goToProfileDetail')
         q-item-section(avatar)
             q-avatar(size="80px")
                 S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.identity')
@@ -26,6 +26,10 @@ export default {
     goToChat () {
       this.$store.commit('profiles/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
       this.$router.push({ name: 'chat' })
+    },
+    goToProfileDetail () {
+      this.$store.commit('profiles/setSelectedProfile', this.contact)
+      this.$router.push({ name: 'profileDetail' })
     }
   }
 }

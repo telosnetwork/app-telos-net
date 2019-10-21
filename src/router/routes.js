@@ -9,7 +9,8 @@ const routes = [
       { path: '/chat', component: () => import('pages/Chat.vue'), name: 'chat' },
       { path: '/chatList', component: () => import('pages/ChatList.vue') },
       { path: '/contactList', component: () => import('pages/ContactList.vue') },
-      { path: '/registerApp', component: () => import('pages/RegisterApp.vue') }
+      { path: '/registerApp', component: () => import('pages/RegisterApp.vue') },
+      { path: '/profileDetail', component: () => import('pages/ProfileDetail.vue'), name: 'profileDetail' }
     ]
   }
 ]

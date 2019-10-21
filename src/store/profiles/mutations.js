@@ -23,7 +23,9 @@ export const clearProfilesList = (state, items = []) => {
 }
 
 export const setMessages = (state, messages) => {
-  state.messagesList.items = state.messagesList.items.concat(messages.items)
+  messages.items.forEach(message => {
+    state.messagesList.items.splice(0, 0, message)
+  })
   state.messagesList.count = messages.count
   state.messagesList.lastEvaluatedKey = messages.lastEvaluatedKey
 }
@@ -52,4 +54,8 @@ export const setActiveChat = (state, activeChat) => {
 
 export const addNewMessage = (state, message) => {
   state.messagesList.items.push(message)
+}
+
+export const setSelectedProfile = (state, selectedProfile) => {
+  state.selectedProfile = selectedProfile
 }

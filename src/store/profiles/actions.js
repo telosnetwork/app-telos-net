@@ -34,15 +34,12 @@ export const sendMessage = async function ({ commit }, params = {}) {
   }
 }
 
-export const getMessages = async function ({ commit }, params = {}) {
+export const getMessages = async function ({ commit, state }, params = {}) {
   const profileApi = PPP.profileApi()
   const { eosAccount, limit, lastEvaluatedKey, clean } = params
   try {
     await profileApi.getMessages(eosAccount, limit, lastEvaluatedKey).then(response => {
       if (clean === true) commit('clearMessagesList')
-      // response.items = response.items.reverse()
-      const mR = response
-      mR.items = mR.items.reverse()
       commit('setMessages', response)
     })
   } catch (error) {
