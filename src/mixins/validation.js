@@ -6,7 +6,8 @@ export const validation = {
       rules: {
         accountFormat: val => !/[^a-z1-5]/.test(val) || this.$t('forms.errors.accountFormat'),
         accountLength: val => val.length === 12 || this.$t('forms.errors.accountLength'),
-        accountExists: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountExists', { account }),
+        isAccountAvailable: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountNotAvailable', { account }),
+        accountExists: async account => !(await this.isAccountFree(account)) || this.$t('forms.errors.accountNotExists', { account }),
         required: val => !!val || this.$t('forms.errors.required')
       }
     }

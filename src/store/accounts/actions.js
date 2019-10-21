@@ -26,6 +26,7 @@ export const logout = async function ({ commit }) {
   commit('setAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null
+  this.$router.push({ path: '/' })
 }
 
 export const autoLogin = async function ({ dispatch, commit }) {

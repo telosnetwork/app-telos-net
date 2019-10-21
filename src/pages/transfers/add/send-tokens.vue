@@ -8,9 +8,11 @@ export default {
   data () {
     return {
       form: {
-        account: null,
-        amount: null
+        to: null,
+        quantity: null,
+        memo: null
       },
+      transactionId: null,
       submitting: false
     }
   },
@@ -20,7 +22,11 @@ export default {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      await this.sendTokens(this.form)
+      const result = await this.sendTokens(this.form)
+      if (result) {
+        this.transactionId = result.transactionId
+        console.log(result)
+      }
       this.submitting = false
     }
   }
@@ -32,23 +38,30 @@ q-page.flex.flex-center
   q-card
     q-card-section
       q-input.q-mb-lg(
-        ref="account"
-        v-model="form.account"
+        ref="to"
+        v-model="form.to"
         color="accent"
-        :label="$t('pages.accounts.add.forms.account')"
+        label="To"
         outlined
         maxlength="12"
         :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
         lazy-rules
       )
       q-input.q-mb-lg(
-        ref="amount"
-        v-model="form.amount"
+        ref="quantity"
+        v-model="form.quantity"
         color="accent"
         label="Amount"
         outlined
         :rules="[rules.required]"
         lazy-rules
+      )
+      q-input.q-mb-lg(
+        ref="memo"
+        v-model="form.memo"
+        color="accent"
+        label="Memo"
+        outlined
       )
       q-btn.full-width(
         color="primary"
@@ -58,4 +71,9 @@ q-page.flex.flex-center
         :loading="submitting"
         @click="onSendTokens"
       )
+    q-card-section(v-if="transactionId")
+      a(
+        :href="`https://telos-test.bloks.io/transaction/${transactionId}`"
+        target="_blank"
+      ) Trx explorer
 </template>
