@@ -23,10 +23,11 @@ export const searchProfiles = async function ({ commit }, options = {}) {
 
 export const sendMessage = async function ({ commit }, params = {}) {
   const profileApi = PPP.profileApi()
-  const { eosAccount, message } = params
+  const { eosAccount, message, senderAccount } = params
   try {
     await profileApi.sendMessage(eosAccount, message).then(response => {
       console.log(message, response)
+      commit('addNewMessage', { eosAccount: eosAccount, message: message, sentAt: new Date(), senderAccount: senderAccount })
     })
   } catch (error) {
     console.log('Error', error)
@@ -39,6 +40,9 @@ export const getMessages = async function ({ commit }, params = {}) {
   try {
     await profileApi.getMessages(eosAccount, limit, lastEvaluatedKey).then(response => {
       if (clean === true) commit('clearMessagesList')
+      // response.items = response.items.reverse()
+      const mR = response
+      mR.items = mR.items.reverse()
       commit('setMessages', response)
     })
   } catch (error) {

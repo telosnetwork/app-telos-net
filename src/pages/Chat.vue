@@ -40,6 +40,9 @@ export default {
     },
     activeChat () {
       return this.$store.state.profiles.activeChat
+    },
+    eosAccount () {
+      return this.$store.state.accounts.account
     }
   },
   methods: {
@@ -55,7 +58,7 @@ export default {
         this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message })
         this.message = null
       } else if (v.key === 'Enter') {
-        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message })
+        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount })
         this.message = null
       }
     }

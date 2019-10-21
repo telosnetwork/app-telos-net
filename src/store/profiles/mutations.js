@@ -49,3 +49,7 @@ export const clearChatList = (state, items = []) => {
 export const setActiveChat = (state, activeChat) => {
   state.activeChat = activeChat
 }
+
+export const addNewMessage = (state, message) => {
+  state.messagesList.items.push(message)
+}
