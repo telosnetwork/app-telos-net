@@ -1,5 +1,5 @@
 <template lang="pug">
-    q-item(clickable, v-ripple)
+    q-item(clickable, v-ripple, @click='goToChat')
         q-item-section(side)
             q-avatar(rounded, size='48px')
                 //- img(src='https://cdn.quasar.dev/img/avatar.png')
@@ -24,6 +24,12 @@ export default {
   computed: {
     timeSent () {
       return TimeUtil.formDateToChat(this.Chat.sentAt)
+    }
+  },
+  methods: {
+    goToChat () {
+      this.$store.commit('profiles/setActiveChat', { activeChat: this.Chat.counterPartyAccount, profileImage: this.Chat.counterParty.profileImage, s3Identity: this.Chat.counterParty.s3Identity })
+      this.$router.push({ name: 'chat' })
     }
   }
 }

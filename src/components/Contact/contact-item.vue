@@ -11,7 +11,7 @@
             q-item-label(caption, lines='2') {{contact.publicData.countryCode}}
         q-item-section(side)
             //- q-icon(name='fiber_manual_record', color='green')
-            q-btn(icon='chat', round, color='green')
+            q-btn(icon='chat', round, color='green' @click='goToChat')
 </template>
 
 <script>
@@ -21,7 +21,13 @@ export default {
   props: {
     contact: Object
   },
-  components: { S3Img }
+  components: { S3Img },
+  methods: {
+    goToChat () {
+      this.$store.commit('profiles/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
+      this.$router.push({ name: 'chat' })
+    }
+  }
 }
 </script>
 

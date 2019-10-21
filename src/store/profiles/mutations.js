@@ -45,3 +45,7 @@ export const clearChatList = (state, items = []) => {
   state.chatList.items = items
   state.chatList.lastEvaluatedKey = undefined
 }
+
+export const setActiveChat = (state, activeChat) => {
+  state.activeChat = activeChat
+}

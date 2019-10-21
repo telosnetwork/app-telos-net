@@ -43,14 +43,14 @@ export default {
     },
     async onSearch (v) {
       if (v.type === 'click') {
-        await this.getChats({ search: this.search, clean: true })
+        // await this.getChats({ search: this.search, clean: true })
         this.clearChatList()
         this.$refs.infiniteScroll.reset()
         this.$refs.infiniteScroll.resume()
         v.preventDefault()
       } else {
         if (v.key === 'Enter') {
-          await this.getChats({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+          // await this.getChats({ search: this.search, clean: true })
           this.clearChatList()
           this.$refs.infiniteScroll.reset()
           this.$refs.infiniteScroll.resume()
