@@ -48,7 +48,7 @@ export default {
             :label="$t('pages.accounts.add.forms.account')"
             outlined
             maxlength="12"
-            :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
+            :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.isAccountAvailable]"
             lazy-rules
           )
           q-input(

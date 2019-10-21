@@ -10,7 +10,8 @@ export default {
     errors: {
       accountFormat: 'The account must contain lowercase characters only and number from 1 to 5',
       accountLength: 'The account must contain 12 characters',
-      accountExists: 'The account "{account}" already exists',
+      accountNotAvailable: 'The account "{account}" already exists',
+      accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
       required: 'This field is required'
     }
