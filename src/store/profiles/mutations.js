@@ -59,3 +59,7 @@ export const addNewMessage = (state, message) => {
 export const setSelectedProfile = (state, selectedProfile) => {
   state.selectedProfile = selectedProfile
 }
+
+export const setProfile = (state, Profile) => {
+  state.myProfile = Profile
+}

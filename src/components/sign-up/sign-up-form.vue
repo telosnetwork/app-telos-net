@@ -37,15 +37,15 @@ export default {
   },
   data () {
     return {
-      imgKey: 'sebastianm21-1570986260187.jpeg',
-      identity: 'us-east-1:05ba21e0-18ed-4b21-b5f8-9794fd7ce41d',
-      firstName: 'Jose',
-      lastName: 'Gayosso Ortega',
-      smsNumber: '5540713427',
-      email: 'josemgo.9.11@gmail.com',
+      imgKey: '',
+      identity: '',
+      firstName: '',
+      lastName: '',
+      smsNumber: '',
+      email: '',
       methodComm: 'EMAIL',
       paymentsOptions: [],
-      country: 'Mexico',
+      country: '',
       optionsCountries: [
         'Mexico',
         'Estados Unidos',
@@ -54,11 +54,22 @@ export default {
         'India'
       ],
       optionsCountriesFiltered: [],
-      hobbies: ['Nadar'],
-      presentation: 'Salten Salten',
-      accept: false,
+      hobbies: [],
+      presentation: '',
       presentationStr: '/components/signUp/form/presentation',
       loadingFile: false
+    }
+  },
+  beforeMount: async function () {
+    await this.getProfile()
+    if (this.myProfile.eosAccount) {
+      this.firstName = this.myProfile.publicData.firstName
+      this.lastName = this.myProfile.publicData.lastName
+      this.presentation = this.myProfile.publicData.bio
+      this.country = this.myProfile.publicData.countryCode
+      this.hobbies = this.myProfile.publicData.hobbies
+      this.imgKey = this.myProfile.publicData.profileImage
+      this.identity = this.myProfile.publicData.s3Identity
     }
   },
   computed: {
@@ -69,10 +80,13 @@ export default {
         commMeth.push({ label: CommMethods[comm].display, value: CommMethods[comm].value, color: color })
       }
       return commMeth
+    },
+    myProfile () {
+      return this.$store.state.profiles.myProfile
     }
   },
   methods: {
-    ...mapActions('profiles', ['signUp', 'searchProfiles']),
+    ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
     async onFileChange (e) {
       this.loadingFile = true
       const file = e.target.files[0]
