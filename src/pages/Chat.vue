@@ -12,7 +12,7 @@
         .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center
             MessageItem(:message='message')
-    q-input.send-input(@keypress='sendMessageToChat($event)', standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
+    q-input.send-input(@keypress.enter='sendMessageToChat', standout='bg-teal text-white', bottom-slots='', v-model='message', label='Message', counter='')
       template(v-slot:append='')
         q-btn(round='', dense='', flat='', icon='send', @click='sendMessageToChat' )
 </template>
@@ -55,20 +55,13 @@ export default {
     },
     async sendMessageToChat (v) {
       var container = this.$refs.infiniteScroll.$el
-      if (v.type === 'click') {
-        await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message }).then((v) => {
-          this.message = null
-          container.parentNode.scrollTop = container.clientHeight
-        }).catch(error => alert(error))
-      } else if (v.key === 'Enter') {
-        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
-          console.log(v)
-          this.message = null
-          container.parentNode.scrollTop = container.clientHeight
-        }).catch(error => alert(error))
+
+      await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
         this.message = null
         container.parentNode.scrollTop = container.clientHeight
-      }
+      }).catch(error => console.log(error))
+      // this.message = null
+      // container.parentNode.scrollTop = container.clientHeight
     }
   }
 }

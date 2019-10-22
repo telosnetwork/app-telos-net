@@ -1,6 +1,6 @@
 <template lang="pug">
  main
-  q-input.send-input(@keypress="onSearch($event)", standout='bg-teal text-white', bottom-slots, v-model='search', label='Search', counter)
+  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', label='Search', counter)
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
@@ -46,21 +46,11 @@ export default {
       } else this.$refs.infiniteScroll.stop()
     },
     async onSearch (v) {
-      if (v.type === 'click') {
-        // await this.searchProfiles({ search: this.search, clean: true })
-        this.clearProfilesList()
-        this.$refs.infiniteScroll.reset()
-        this.$refs.infiniteScroll.resume()
-        v.preventDefault()
-      } else {
-        if (v.key === 'Enter') {
-          // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
-          this.clearProfilesList()
-          this.$refs.infiniteScroll.reset()
-          this.$refs.infiniteScroll.resume()
-          v.preventDefault()
-        }
-      }
+      // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+      this.clearProfilesList()
+      this.$refs.infiniteScroll.reset()
+      this.$refs.infiniteScroll.resume()
+      v.preventDefault()
     }
   }
 }
