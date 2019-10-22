@@ -5,7 +5,7 @@
         S3Img(:img-key='this.activeChat.profileImage', :identity='this.activeChat.s3Identity' )
       strong {{ this.activeChat.activeChat }}
     .q-pa-md.infiniteScroll(ref='scrollTargetRef')
-      q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll')
+      q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll', id='infiniteScroll')
         template(slot='loading')
           .row.justify-center.q-my-md
             q-spinner(color='primary', name='dots', size='40px')
@@ -53,13 +53,21 @@ export default {
         done()
       } else this.$refs.infiniteScroll.stop()
     },
-    sendMessageToChat (v) {
+    async sendMessageToChat (v) {
+      var container = this.$refs.infiniteScroll.$el
       if (v.type === 'click') {
-        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message })
-        this.message = null
+        await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message }).then((v) => {
+          this.message = null
+          container.parentNode.scrollTop = container.clientHeight
+        }).catch(error => alert(error))
       } else if (v.key === 'Enter') {
-        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount })
+        this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
+          console.log(v)
+          this.message = null
+          container.parentNode.scrollTop = container.clientHeight
+        }).catch(error => alert(error))
         this.message = null
+        container.parentNode.scrollTop = container.clientHeight
       }
     }
   }

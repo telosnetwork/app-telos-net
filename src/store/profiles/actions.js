@@ -25,7 +25,7 @@ export const sendMessage = async function ({ commit }, params = {}) {
   const profileApi = PPP.profileApi()
   const { eosAccount, message, senderAccount } = params
   try {
-    await profileApi.sendMessage(eosAccount, message).then(response => {
+    return await profileApi.sendMessage(eosAccount, message).then(response => {
       console.log(message, response)
       commit('addNewMessage', { eosAccount: eosAccount, message: message, sentAt: new Date(), senderAccount: senderAccount })
     })
