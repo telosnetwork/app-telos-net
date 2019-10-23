@@ -19,18 +19,20 @@ main.column.items-center.q-pa-md.back
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='account_circle')
             q-item-section
-              q-item-label Single
-              q-item-label(caption) Secondary
-        #detail
-            .row
-                strong {{`Bio: `}}
-                span {{ this.selectedProfile.publicData.bio }}
-            .row
-                strong {{`countryCode: `}}
-                span {{ this.selectedProfile.publicData.countryCode }}
-            .row
-                strong {{`hobbies: `}}
-                span {{ this.selectedProfile.publicData.hobbies.join() }}
+              q-item-label {{ $t('components.signUp.form.presentation') }}
+              q-item-label(caption) {{ this.selectedProfile.publicData.bio }}
+          q-item
+            q-item-section(top, thumbnail)
+              q-icon(color='primary', name='account_circle')
+            q-item-section
+              q-item-label {{ $t('components.signUp.form.country') }}
+              q-item-label(caption) {{ this.selectedProfile.publicData.countryCode }}
+          q-item
+            q-item-section(top, thumbnail)
+              q-icon(color='primary', name='account_circle')
+            q-item-section
+              q-item-label {{ $t('components.signUp.form.hobbies') }}
+              q-item-label(caption) {{ this.selectedProfile.publicData.hobbies.join() }}
 </template>
 
 <script>
