@@ -27,9 +27,15 @@ export default {
         preferMethodComm: 'Prefer method of communication',
         sms: 'SMS Number',
         email: 'Email',
+        currentSms: 'Current SMS Number',
+        currentEmail: 'Current Email',
         country: 'Country',
-        hobbies: 'Hobbies'
+        hobbies: 'Hobbies',
+        btnSave: 'Save'
       }
+    },
+    general: {
+      search: 'Search'
     }
   }
 }

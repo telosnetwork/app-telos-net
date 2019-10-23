@@ -27,7 +27,6 @@ export default {
   components: { S3Img, MessageItem },
   data () {
     return {
-      items: [{}, {}, {}, {}, {}, {}, {}],
       message: null,
       limit: 5,
       sendingMessage: false
