@@ -12,7 +12,7 @@
         .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center
             MessageItem(:message='message')
-    q-input.send-input(@keypress.enter='sendMessageToChat', standout='bg-teal text-white', bottom-slots, v-model='message', label='Message', counter)
+    q-input.send-input(@keypress.enter='sendMessageToChat', standout='bg-teal text-white', bottom-slots, v-model='message', label='Message', counter, ref='messageInput')
       template(v-slot:append)
         q-btn(v-show='!sendingMessage', round, dense, flat, icon='send', @click='sendMessageToChat' )
         q-spinner-comment(v-show='sendingMessage' , color='amber', size='1.5em')
@@ -31,6 +31,13 @@ export default {
       limit: 5,
       sendingMessage: false
     }
+  },
+  mounted () {
+    const messageInput = this.$refs.messageInput.$el
+    messageInput.focus()
+    messageInput.addEventListener('blur', function () {
+      messageInput.focus()
+    }, true)
   },
   beforeDestroy: function () {
     this.clearMessagesList()
