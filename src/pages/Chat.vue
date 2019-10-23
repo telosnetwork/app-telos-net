@@ -44,17 +44,17 @@ export default {
   },
   computed: {
     messagesList () {
-      return this.$store.state.profiles.messagesList
+      return this.$store.state.messages.messagesList
     },
     activeChat () {
-      return this.$store.state.profiles.activeChat
+      return this.$store.state.messages.activeChat
     },
     eosAccount () {
       return this.$store.state.accounts.account
     }
   },
   methods: {
-    ...mapActions('profiles', ['sendMessage', 'getMessages', 'clearMessagesList']),
+    ...mapActions('messages', ['sendMessage', 'getMessages', 'clearMessagesList']),
     async onLoad (index, done) {
       if ((this.messagesList.items !== undefined && this.messagesList.count === this.limit) || this.messagesList.items.length === 0) {
         await this.getMessages({ eosAccount: this.activeChat.activeChat, limit: this.limit, 'lastEvaluatedKey': this.messagesList.lastEvaluatedKey })

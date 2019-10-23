@@ -30,11 +30,11 @@ export default {
   },
   computed: {
     chatList () {
-      return this.$store.state.profiles.chatList
+      return this.$store.state.messages.chatList
     }
   },
   methods: {
-    ...mapActions('profiles', ['getChats', 'clearChatList']),
+    ...mapActions('messages', ['getChats', 'clearChatList']),
     async onLoad (index, done) {
       if ((this.chatList.lastEvaluatedKey !== undefined && this.chatList.count === this.limit) || this.chatList.items.length === 0) {
         await this.getChats({ search: this.search, limit: this.limit, lastEvaluatedKey: this.chatList.lastEvaluatedKey })

@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     goToChat () {
-      this.$store.commit('profiles/setActiveChat', { activeChat: this.Chat.counterPartyAccount, profileImage: this.Chat.counterParty.profileImage, s3Identity: this.Chat.counterParty.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Chat.counterPartyAccount, profileImage: this.Chat.counterParty.profileImage, s3Identity: this.Chat.counterParty.s3Identity })
       this.$router.push({ name: 'chat' })
     }
   }
