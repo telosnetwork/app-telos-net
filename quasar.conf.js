@@ -88,7 +88,8 @@ module.exports = function (ctx) {
         'QItem',
         'QItemSection',
         'QItemLabel',
-        'QSpinnerComment'
+        'QSpinnerComment',
+        'QSeparator'
       ],
 
       directives: [
