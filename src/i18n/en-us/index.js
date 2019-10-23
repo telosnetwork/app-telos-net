@@ -35,7 +35,8 @@ export default {
       }
     },
     general: {
-      search: 'Search'
+      search: 'Search',
+      name: 'Name'
     }
   }
 }

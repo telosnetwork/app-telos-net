@@ -24,7 +24,7 @@ export default {
   components: { S3Img },
   methods: {
     goToChat () {
-      this.$store.commit('profiles/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
       this.$router.push({ name: 'chat' })
     },
     goToProfileDetail () {
