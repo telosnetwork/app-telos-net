@@ -16,7 +16,8 @@ export default {
         signUp: 'Sign Up',
         chatList: 'Chat List',
         contactList: 'Contact List',
-        registerApp: 'Register App'
+        registerApp: 'Register App',
+        appList: 'App List'
       }
     },
     signUp: {
@@ -36,7 +37,9 @@ export default {
     },
     general: {
       search: 'Search',
-      name: 'Name'
+      name: 'Name',
+      eosAccount: 'eosAccount',
+      domain: 'Domain'
     },
     registerApp: {
       form: {

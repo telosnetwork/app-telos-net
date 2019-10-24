@@ -75,19 +75,23 @@ export default {
       return this.$store.state.profiles.myProfile
     },
     smsHint () {
-      if (this.myProfile.smsInfo.exists === true) {
-        return `${this.$t('components.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
-      } else return 'SMS'
+      if (this.myProfile !== undefined) {
+        if (this.myProfile.smsInfo.exists === true) {
+          return `${this.$t('components.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
+        } else return 'SMS'
+      } else return this.$t('components.signUp.form.currentSms')
     },
     emailHint () {
-      if (this.myProfile.emailInfo.exists === true) {
-        return `${this.$t('components.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
-      } else return 'SMS'
+      if (this.myProfile !== undefined) {
+        if (this.myProfile.emailInfo.exists === true) {
+          return `${this.$t('components.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
+        } else return this.$t('components.signUp.form.currentEmail')
+      } else return this.$t('components.signUp.form.currentEmail')
     }
   },
   beforeMount: async function () {
     await this.getProfile()
-    if (this.myProfile.eosAccount) {
+    if (this.myProfile !== undefined) {
       this.firstName = this.myProfile.publicData.firstName
       this.lastName = this.myProfile.publicData.lastName
       this.presentation = this.myProfile.publicData.bio

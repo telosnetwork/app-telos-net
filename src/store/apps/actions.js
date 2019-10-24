@@ -10,6 +10,18 @@ export const registerApp = async function ({ commit }, params = {}) {
   }
 }
 
-export const clearMessagesList = function ({ commit }, options = {}) {
-  commit('clearMessagesList')
+export const getMyApps = async function ({ commit }, params = {}) {
+  const profileApi = PPP.profileApi()
+  // const { search, limit, lastEvaluatedKey, clean } = params
+  try {
+    await profileApi.getMyApps().then(response => {
+      commit('setMyApps', response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const clearMyAppList = function ({ commit }) {
+  commit('clearMyAppList')
 }

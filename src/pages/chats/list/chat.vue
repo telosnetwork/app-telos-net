@@ -29,7 +29,8 @@ export default {
     return {
       message: null,
       limit: 5,
-      sendingMessage: false
+      sendingMessage: false,
+      isFirst: true
     }
   },
   computed: {
@@ -56,8 +57,9 @@ export default {
   methods: {
     ...mapActions('messages', ['sendMessage', 'getMessages', 'clearMessagesList']),
     async onLoad (index, done) {
-      if ((this.messagesList.items !== undefined && this.messagesList.count === this.limit) || this.messagesList.items.length === 0) {
+      if ((this.messagesList.items !== undefined && this.messagesList.count === this.limit) || this.isFirst) {
         await this.getMessages({ eosAccount: this.activeChat.activeChat, limit: this.limit, 'lastEvaluatedKey': this.messagesList.lastEvaluatedKey })
+        if (this.isFirst) this.isFirst = false
         done()
       } else this.$refs.infiniteScroll.stop()
     },

@@ -1,9 +1,9 @@
 <template lang="pug">
-    q-item(v-ripple, clickable,  @click='goToProfileDetail')
+  q-card
+    q-item.q-pa-md(v-ripple, clickable,  @click='goToProfileDetail')
         q-item-section(avatar)
             q-avatar(size="80px")
-                S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.identity')
-                img(src="https://cdn.quasar.dev/img/boy-avatar.png")
+                S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.s3Identity')
         q-item-section
             q-item-label {{contact.eosAccount}}
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
