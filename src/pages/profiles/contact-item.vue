@@ -35,9 +35,7 @@ export default {
 }
 </script>
 
-<style scoped>
-.container {
+<style scoped lang='sass'>
+.container
     width: 100%;
-}
-
 </style>

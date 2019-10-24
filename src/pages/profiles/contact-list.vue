@@ -29,13 +29,13 @@ export default {
       isMore: false
     }
   },
-  beforeDestroy: function () {
-    this.clearProfilesList()
-  },
   computed: {
     profileList () {
       return this.$store.state.profiles.profilesList
     }
+  },
+  beforeDestroy: function () {
+    this.clearProfilesList()
   },
   methods: {
     ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),

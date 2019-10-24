@@ -1,9 +1,9 @@
 <template lang='pug'>
 .row.justify-center.items-center
-  .col-xs-8.q-gutter-md.q-pa-md
+  .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       s3-image.S3Img(:img-key='imgKey', :identity='identity')
-    q-form.q-gutter-md(@submit='onSubmit', @reset='onReset')
+    q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       .row.justify-center
         q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
           input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
@@ -62,19 +62,6 @@ export default {
       loadingFile: false
     }
   },
-  beforeMount: async function () {
-    await this.getProfile()
-    if (this.myProfile.eosAccount) {
-      this.firstName = this.myProfile.publicData.firstName
-      this.lastName = this.myProfile.publicData.lastName
-      this.presentation = this.myProfile.publicData.bio
-      this.country = this.myProfile.publicData.countryCode
-      this.hobbies = this.myProfile.publicData.hobbies
-      this.imgKey = this.myProfile.publicData.profileImage
-      this.identity = this.myProfile.publicData.s3Identity
-      this.methodComm = this.myProfile.commPref
-    }
-  },
   computed: {
     commMeth () {
       const commMeth = []
@@ -96,6 +83,19 @@ export default {
       if (this.myProfile.emailInfo.exists === true) {
         return `${this.$t('components.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
       } else return 'SMS'
+    }
+  },
+  beforeMount: async function () {
+    await this.getProfile()
+    if (this.myProfile.eosAccount) {
+      this.firstName = this.myProfile.publicData.firstName
+      this.lastName = this.myProfile.publicData.lastName
+      this.presentation = this.myProfile.publicData.bio
+      this.country = this.myProfile.publicData.countryCode
+      this.hobbies = this.myProfile.publicData.hobbies
+      this.imgKey = this.myProfile.publicData.profileImage
+      this.identity = this.myProfile.publicData.s3Identity
+      this.methodComm = this.myProfile.commPref
     }
   },
   methods: {
@@ -205,10 +205,9 @@ export default {
 }
 </script>
 
-<style scoped>
-.S3Img {
+<style scoped lang='sass'>
+.S3Img
   height: 150px;
   max-width: 150px;
   border-radius: 100px;
-}
 </style>

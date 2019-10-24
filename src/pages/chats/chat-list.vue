@@ -25,13 +25,13 @@ export default {
       limit: 1
     }
   },
-  beforeDestroy: function () {
-    this.clearChatList()
-  },
   computed: {
     chatList () {
       return this.$store.state.messages.chatList
     }
+  },
+  beforeDestroy: function () {
+    this.clearChatList()
   },
   methods: {
     ...mapActions('messages', ['getChats', 'clearChatList']),
@@ -52,44 +52,36 @@ export default {
 }
 </script>
 
-<style scoped>
-.infiniteScroll {
+<style scoped lang='sass'>
+.infiniteScroll
   width: 100%;
   height: calc(100vh - 200px);
   max-width: 100%;
   /* background-color: burlywood; */
   overflow: scroll;
-}
-.content-message {
-  width: 100%;
-}
 
-.avatarHeader {
+.content-message
+  width: 100%;
+
+.avatarHeader
   width: 70px;
   height: 70px;
-}
 
-.headerContent {
+.headerContent
   margin-top: 20px;
   margin-left: 10px;
   height: 40px;
-}
 
-.send-input {
+.send-input
   margin: 10px;
-}
 
-@media screen and (min-width: 700px) {
-  .content-message {
+@media screen and (min-width: 700px)
+  .content-message
     width: 80%;
-  }
-}
 
-@media screen and (min-width: 1200px) {
-  .content-message {
+@media screen and (min-width: 1200px)
+  .content-message
     width: 50%;
     margin-left: 100px;
     margin-right: 100px;
-  }
-}
 </style>

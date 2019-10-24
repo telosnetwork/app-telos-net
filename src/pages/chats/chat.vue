@@ -32,16 +32,6 @@ export default {
       sendingMessage: false
     }
   },
-  mounted () {
-    const messageInput = this.$refs.messageInput.$el
-    messageInput.focus()
-    messageInput.addEventListener('blur', function () {
-      messageInput.focus()
-    }, true)
-  },
-  beforeDestroy: function () {
-    this.clearMessagesList()
-  },
   computed: {
     messagesList () {
       return this.$store.state.messages.messagesList
@@ -52,6 +42,16 @@ export default {
     eosAccount () {
       return this.$store.state.accounts.account
     }
+  },
+  mounted () {
+    const messageInput = this.$refs.messageInput.$el
+    messageInput.focus()
+    messageInput.addEventListener('blur', function () {
+      messageInput.focus()
+    }, true)
+  },
+  beforeDestroy: function () {
+    this.clearMessagesList()
   },
   methods: {
     ...mapActions('messages', ['sendMessage', 'getMessages', 'clearMessagesList']),
@@ -65,9 +65,9 @@ export default {
       this.sendingMessage = true
       var container = this.$refs.infiniteScroll.$el
 
+      this.message = null
       container.parentNode.scrollTop = container.clientHeight
       await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
-        this.message = null
         container.parentNode.scrollTop = container.clientHeight
         this.sendingMessage = false
       }).catch(error => console.log(error))

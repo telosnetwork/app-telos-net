@@ -22,7 +22,7 @@
 
         <q-input
           filled
-          v-model='shortname'
+          v-model='shortName'
           label='Short Name'
           hint='Short Name'
           lazy-rules
@@ -45,7 +45,7 @@ export default {
   name: 'register-app-form',
   data () {
     return {
-      shortname: null,
+      shortName: null,
       url: '',
       email: ''
     }
@@ -122,10 +122,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-S3Im {
-  width: 100px;
-  height: 100px;
-}
-</style>

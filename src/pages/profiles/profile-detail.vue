@@ -40,9 +40,6 @@ import S3Img from '~/components/s3-image'
 export default {
   name: 'profile-detail',
   components: { S3Img },
-  beforeDestroy: function () {
-    this.$store.commit('profiles/setSelectedProfile', [])
-  },
   computed: {
     selectedProfile () {
       return this.$store.state.profiles.selectedProfile
@@ -50,6 +47,9 @@ export default {
     fullName () {
       return `${this.selectedProfile.publicData.firstName} ${this.selectedProfile.publicData.lastName}`
     }
+  },
+  beforeDestroy: function () {
+    this.$store.commit('profiles/setSelectedProfile', [])
   }
 }
 </script>
