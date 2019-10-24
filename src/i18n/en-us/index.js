@@ -37,6 +37,15 @@ export default {
     general: {
       search: 'Search',
       name: 'Name'
+    },
+    registerApp: {
+      form: {
+        urlBase: 'URL',
+        name: 'Name',
+        appId: 'AppId',
+        shortName: 'Short Name',
+        ownerAccount: 'Owner Account'
+      }
     }
   }
 }

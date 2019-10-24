@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import accounts from './accounts'
 import profiles from './profiles'
 import messages from './messages'
+import apps from './apps'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       accounts,
       profiles,
-      messages
+      messages,
+      apps
     },
 
     // enable strict mode (adds overhead!)

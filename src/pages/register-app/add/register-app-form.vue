@@ -1,98 +1,54 @@
-<template>
-  <div class='row justify-center items-center q-pa-md'>
-    <div class='col-xs-8'>
-      <q-form @submit='onSubmit' @reset='onReset' class='q-gutter-md'>
-        <q-input
-          filled
-          v-model='url'
-          label='URL'
-          hint='URL'
-          lazy-rules
-          :rules="[ validationURL ]"
-        />
-
-        <q-input
-          filled
-          v-model='email'
-          label='EMAIL'
-          hint='EMAIL'
-          lazy-rules
-          :rules="[ validationEMAIL ]"
-        />
-
-        <q-input
-          filled
-          v-model='shortName'
-          label='Short Name'
-          hint='Short Name'
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-
-        <div>
-          <q-btn label='Submit' type='submit' color='primary' />
-          <q-btn label='Reset' type='reset' color='primary' flat class='q-ml-sm' />
-        </div>
-      </q-form>
-    </div>
-  </div>
+<template lang='pug'>
+.row.justify-center.items-center.q-col-gutter-y-md.q-pa-md
+  .col-xs-8
+    .column
+      q-img.appIcon.self-center(:src='icon')
+    q-form.q-col-gutter-y-md.q-mt-xs(@submit='onSubmit')
+      q-input(filled, v-model='url', :label="$t('components.registerApp.form.urlBase')", :hint="$t('components.registerApp.form.urlBase')" :rules='[ validationURL ]')
+      q-input(filled, v-model='name', readonly, :label="$t('components.registerApp.form.name')")
+      q-input(filled, v-model='appId', readonly, :label="$t('components.registerApp.form.appId')")
+      q-input(filled, v-model='shortName', readonly, :label="$t('components.registerApp.form.shortName')")
+      q-input(filled, v-model='ownerAccount', readonly, :label="$t('components.registerApp.form.ownerAccount')")
+      div
+        q-btn(label='Submit', type='submit', color='primary')
 </template>
 
 <script>
-// import { amplify-s3-image } from 'aws-amplify-vue'
 import { CustomRegex } from '~/const'
+import { mapActions } from 'vuex'
 export default {
   name: 'register-app-form',
   data () {
     return {
-      shortName: null,
       url: '',
-      email: ''
+      shortName: '',
+      ownerAccount: '',
+      appId: '6f1eae10-f67c-11e9-981f-dbd62af69dcc',
+      icon: '',
+      name: ''
     }
   },
-  // components: { amplify-s3-image },
   methods: {
+    ...mapActions('apps', ['registerApp']),
     onSubmit () {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must accept the license and terms first'
-        })
-      } else if (this.methodComm === null) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must choose one prefer method communication'
-        })
-      } else if (this.paymentsOptions.length === 0) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must choose at least one payment options'
-        })
-      } else {
+      this.registerApp({
+        baseUrl: this.url,
+        appId: this.appId
+      }).then(response => {
+        console.log('form', response)
+        this.shortName = response.shortname
+        this.name = response.name
+        this.ownerAccount = response.ownerAccount
+        this.appId = response.appId
+        this.icon = response.icon
+
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
           message: 'Submitted'
         })
-      }
-    },
-
-    onReset () {
-      this.firstName = null
-      this.lastName = null
-      this.name = null
-      this.age = null
-      this.smsNumber = null
-      this.email = null
-      this.methodComm = null
-      this.accept = false
+      }).catch(e => console.log('ErrorForm', e))
     },
     validationURL () {
       var regex = new RegExp(CustomRegex.URL)
@@ -102,23 +58,31 @@ export default {
       } else {
         return 'URL not valid'
       }
-    },
-    validationEMAIL () {
-      var regex = new RegExp(CustomRegex.EMAIL)
-      if (this.email.match(regex)) {
-        return true
-      } else {
-        return 'Email address not valid'
-      }
-    },
-    validationSMS () {
-      if (this.methodComm === 'sms') {
-        return (
-          (this.smsNumber && this.smsNumber.length > 0) ||
-          'Please type something'
-        )
-      }
     }
+    // validationEMAIL () {
+    //   var regex = new RegExp(CustomRegex.EMAIL)
+    //   if (this.email.match(regex)) {
+    //     return true
+    //   } else {
+    //     return 'Email address not valid'
+    //   }
+    // },
+    // validationSMS () {
+    //   if (this.methodComm === 'sms') {
+    //     return (
+    //       (this.smsNumber && this.smsNumber.length > 0) ||
+    //       'Please type something'
+    //     )
+    //   }
+    // }
   }
 }
 </script>
+
+<style lang="sass">
+.appIcon
+  width: 100%
+  max-width: 100px
+  border: solid 0.01px
+  border-color: black
+</style>
