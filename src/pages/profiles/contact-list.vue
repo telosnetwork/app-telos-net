@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ContactItem from '~/pages/profiles/contact-item.vue'
+import ContactItem from '~/pages/profiles/list/contact-item.vue'
 import { mapActions } from 'vuex'
 export default {
   name: 'contact-list',

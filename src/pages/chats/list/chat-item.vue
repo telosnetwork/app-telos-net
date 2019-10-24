@@ -13,7 +13,7 @@
 
 <script>
 import S3Img from '~/components/s3-image'
-import TimeUtil from '../../utils/TimeUtil'
+import TimeUtil from '~/utils/TimeUtil'
 console.log(TimeUtil)
 export default {
   name: 'message-item',
