@@ -32,7 +32,7 @@ main.column.items-center.q-pa-md.back
               q-icon(color='primary', name='games')
             q-item-section
               q-item-label {{ $t('components.signUp.form.hobbies') }}
-              q-item-label(caption) {{ this.selectedProfile.publicData.hobbies.join() }}
+              q-item-label(caption) {{ this.selectedProfile.publicData.hobbies.join(', ') }}
 </template>
 
 <script>
