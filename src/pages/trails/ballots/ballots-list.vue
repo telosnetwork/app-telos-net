@@ -26,7 +26,10 @@ q-page.q-pa-lg
       :scroll-target="$refs.ballotsRef"
     )
       q-list(bordered)
-        q-item(v-for="ballot in ballots")
+        q-item(
+          v-for="ballot in ballots"
+          :key="ballot.ballot_name"
+        )
           q-item-section(avatar)
             | {{ ballot.publisher }}
           q-item-section
@@ -46,6 +49,7 @@ q-page.q-pa-lg
                 q-list
                   q-item(
                     v-for="option in ballot.options"
+                    :key="option.key"
                     clickable
                     v-close-popup
                   )
