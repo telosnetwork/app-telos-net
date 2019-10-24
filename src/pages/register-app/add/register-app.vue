@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import RegisterAppForm from '~/pages/register-app/register-app-form'
+import RegisterAppForm from '~/pages/register-app/add/register-app-form'
 export default {
   name: 'register-app',
   components: { RegisterAppForm }
