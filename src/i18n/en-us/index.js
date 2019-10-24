@@ -16,6 +16,11 @@ export default {
       required: 'This field is required'
     }
   },
+  menu: {
+    trails: 'Trails',
+    trailsBallots: 'Ballots',
+    trailsTreasuries: 'Treasuries'
+  },
   pages: {
     accounts: {
       add: {
@@ -37,6 +42,21 @@ export default {
         verifyAccountGeneratingKey: 'Generating key pairs',
         verifyAccountHint: 'Copy both keys in a safe place before sending your verification code',
         verifyOTPTitle: 'Enter your verification code'
+      }
+    },
+    trails: {
+      ballots: {
+        castVote: 'Cast vote',
+        ends: 'Ends',
+        starts: 'Starts'
+      },
+      treasuries: {
+        card: {
+          maxSupply: 'Max supply',
+          openBallots: 'Open ballots',
+          supply: 'Supply',
+          voters: 'Voters'
+        }
       }
     },
     index: {
