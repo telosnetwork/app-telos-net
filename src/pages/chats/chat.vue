@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import MessageItem from '~/components/Chat/message-item'
+import MessageItem from '~/pages/chats/message-item'
 import S3Img from '~/components/s3-image'
 import { mapActions } from 'vuex'
 export default {
