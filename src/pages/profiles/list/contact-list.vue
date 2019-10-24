@@ -8,6 +8,9 @@
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
+      template(slot='default')
+        .row.justify-center.q-my-md(v-show="profileList.items.length === 0")
+          p.text-weight-thin {{ $t('components.general.defaultContactList') }}
       .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6

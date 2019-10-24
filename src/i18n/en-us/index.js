@@ -39,7 +39,11 @@ export default {
       search: 'Search',
       name: 'Name',
       eosAccount: 'eosAccount',
-      domain: 'Domain'
+      domain: 'Domain',
+      defaultChatList: 'There are no chats yet',
+      defaultMessageList: 'There are no messages yet',
+      defaultContactList: 'There are no contacts yet',
+      defaultAppList: 'There are no apps yet'
     },
     registerApp: {
       form: {

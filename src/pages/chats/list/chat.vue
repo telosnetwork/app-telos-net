@@ -9,6 +9,9 @@
         template(slot='loading')
           .row.justify-center.q-my-md
             q-spinner(color='primary', name='dots', size='40px')
+        template(slot='default')
+          .row.justify-center.q-my-md(v-if="messagesList.items.length === 0")
+            p.text-weight-thin {{ $t('components.general.defaultMessageList') }}
         .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center
             MessageItem(:message='message')
@@ -67,12 +70,12 @@ export default {
       this.sendingMessage = true
       var container = this.$refs.infiniteScroll.$el
 
-      this.message = null
       container.parentNode.scrollTop = container.clientHeight
       await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
         container.parentNode.scrollTop = container.clientHeight
         this.sendingMessage = false
       }).catch(error => console.log(error))
+      this.message = null
       // this.message = null
     }
   }

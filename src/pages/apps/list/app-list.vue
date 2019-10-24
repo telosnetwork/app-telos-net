@@ -5,6 +5,9 @@
       template(slot='loading')
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
+      template(slot='default')
+        .row.justify-center.q-my-md(v-show="myAppList === undefined")
+          p.text-weight-thin {{ $t('components.general.defaultAppList') }}
       .caption.q-py-sm(v-for='(app, index) in myAppList', :key='index')
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6

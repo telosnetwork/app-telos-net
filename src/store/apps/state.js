@@ -1,3 +1,3 @@
 export default () => ({
-  appList: null
+  appList: undefined
 })

@@ -4,5 +4,5 @@ export const setMyApps = (state, myApps) => {
 }
 
 export const clearMyAppList = (state) => {
-  state.appList = null
+  state.appList = undefined
 }
