@@ -19,7 +19,7 @@
 import ContactItem from '~/components/Contact/contact-item.vue'
 import { mapActions } from 'vuex'
 export default {
-  name: 'ContactList',
+  name: 'contact-list',
   components: { ContactItem },
   data () {
     return {

@@ -23,7 +23,7 @@ import MessageItem from '~/components/Chat/message-item'
 import S3Img from '~/components/s3-image'
 import { mapActions } from 'vuex'
 export default {
-  name: 'Chat',
+  name: 'chat',
   components: { S3Img, MessageItem },
   data () {
     return {

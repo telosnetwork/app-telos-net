@@ -8,11 +8,6 @@
 import SignUpForm from '~/components/sign-up/sign-up-form'
 export default {
   name: 'sign-up',
-  components: { SignUpForm },
-  computed: {
-    title () {
-      return 'Hola'
-    }
-  }
+  components: { SignUpForm }
 }
 </script>

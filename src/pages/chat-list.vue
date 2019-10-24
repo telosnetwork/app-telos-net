@@ -16,7 +16,7 @@
 import ChatItem from '~/components/Chat/chat-item'
 import { mapActions } from 'vuex'
 export default {
-  name: 'ChatList',
+  name: 'chat-list',
   components: { ChatItem },
   data () {
     return {

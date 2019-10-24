@@ -38,7 +38,7 @@ main.column.items-center.q-pa-md.back
 <script>
 import S3Img from '~/components/s3-image'
 export default {
-  name: 'ProfileDetail',
+  name: 'profile-detail',
   components: { S3Img },
   beforeDestroy: function () {
     this.$store.commit('profiles/setSelectedProfile', [])
