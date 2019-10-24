@@ -4,6 +4,10 @@ const routes = [
   { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title' } },
   { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title' } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty' } },
+  // Trails
+  { path: '/trails/ballots', component: () => import('pages/trails/ballots/ballots-list.vue') },
+  { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/treasuries-list.vue') },
+  // Trails
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') }
 ]
 
