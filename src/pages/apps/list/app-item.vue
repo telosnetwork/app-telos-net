@@ -1,6 +1,6 @@
 <template lang="pug">
   q-card
-    q-item.q-pa-md(v-ripple, clickable,  @click='goToProfileDetail')
+    q-item.q-pa-md(v-ripple, clickable,  @click='goToAppDetail')
         q-item-section(avatar)
             q-avatar(size="80px")
                 img(:src='App.icon')
@@ -29,13 +29,9 @@ export default {
     App: Object
   },
   methods: {
-    goToChat () {
-      // this.$store.commit('messages/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
-      // this.$router.push({ name: 'chat' })
-    },
-    goToProfileDetail () {
-      // this.$store.commit('profiles/setSelectedProfile', this.contact)
-      // this.$router.push({ name: 'profileDetail' })
+    goToAppDetail () {
+      this.$store.commit('apps/setSelectedApp', this.App)
+      this.$router.push({ name: 'registerApp' })
     }
   }
 }

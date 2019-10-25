@@ -28,6 +28,23 @@ export default {
       name: ''
     }
   },
+  computed: {
+    selectedApp () {
+      return this.$store.state.apps.selectedApp
+    }
+  },
+  beforeMount () {
+    if (this.selectedApp !== undefined) {
+      this.shortName = this.selectedApp.shortname
+      this.name = this.selectedApp.name
+      this.ownerAccount = this.selectedApp.ownerAccount
+      this.appId = this.selectedApp.appId
+      this.icon = this.selectedApp.icon
+    }
+  },
+  beforeDestroy () {
+    this.$store.commit('apps/setSelectedApp', undefined)
+  },
   methods: {
     ...mapActions('apps', ['registerApp']),
     onSubmit () {

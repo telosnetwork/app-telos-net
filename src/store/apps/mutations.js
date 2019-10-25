@@ -6,3 +6,7 @@ export const setMyApps = (state, myApps) => {
 export const clearMyAppList = (state) => {
   state.appList = undefined
 }
+
+export const setSelectedApp = (state, selectedApp) => {
+  state.selectedApp = selectedApp
+}
