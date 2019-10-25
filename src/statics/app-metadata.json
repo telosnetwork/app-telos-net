@@ -1,0 +1,16 @@
+{
+    "spec_version": "0.2.0",
+    "name": "Telos Net",
+    "shortname": "Telos Net",
+    "scope": "/",
+    "apphome": "/",
+    "icon": "/statics/app-logo-128x128.png#f265e468ebe7fe888d53c4e8c42cc7a34f9068b3bc9f9f11ce8abb97ac867d4a",
+    "description": "Telos onboarding app",
+    "chains": [
+        {
+            "chainId": "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
+            "chainName": "Telos Testnet",
+            "icon": "/img/manifests/telos_testnet.png#6940997f1574636e37799d1efcf04e43c627ac4b4958a21c1b2f3ce82fe2cefd"
+        }
+    ]
+}
