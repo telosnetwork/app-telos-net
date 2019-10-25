@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import accounts from './accounts'
+import trails from './trails'
 import transfers from './transfers'
 
 Vue.use(Vuex)
@@ -15,6 +16,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       accounts,
+      trails,
       transfers
     },
 

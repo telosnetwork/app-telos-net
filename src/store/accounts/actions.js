@@ -41,17 +41,17 @@ export const autoLogin = async function ({ dispatch, commit }) {
 
 export const isAccountFree = async function (context, accountName) {
   try {
-    await this.$axios.get(`/check?telosAccount=${accountName}`)
-    return true
-  } catch (e) {
-    // Catch the error if the account doesn't exist
+    await this.$axios.get(`/v1/accounts/${accountName}`)
     return false
+  } catch (e) {
+    // Catch the 404 error if the account doesn't exist
+    return true
   }
 }
 
 export const sendOTP = async function ({ commit }, form) {
   try {
-    const response = await this.$axios.post('/register', {
+    const response = await this.$axios.post('/v1/registrations', {
       smsNumber: form.smsNumber,
       telosAccount: form.account
     })
@@ -68,7 +68,7 @@ export const sendOTP = async function ({ commit }, form) {
 
 export const verifyOTP = async function ({ commit, state }, { password, publicKey }) {
   try {
-    const response = await this.$axios.post('/create', {
+    const response = await this.$axios.post('/v1/accounts', {
       smsOtp: password,
       smsNumber: state.signUpForm.smsNumber,
       telosAccount: state.signUpForm.account,
