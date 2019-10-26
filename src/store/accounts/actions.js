@@ -1,10 +1,11 @@
-export const login = async function ({ commit }, idx) {
+export const login = async function ({ commit }, { idx, account }) {
   const authenticator = this.$ual.authenticators[idx]
   commit('setLoadingWallet', authenticator.getStyle().text)
   let error
   try {
     await authenticator.init()
-    const users = await authenticator.login()
+    console.log('Login account: ', account)
+    const users = await authenticator.login(account)
     if (users.length) {
       commit('setAccount', users[0].accountName)
       this.$api = users[0]
@@ -34,7 +35,7 @@ export const autoLogin = async function ({ dispatch, commit }) {
   const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
   if (idx !== -1) {
     commit('setAutoLogin', true)
-    await dispatch('login', idx)
+    await dispatch('login', { idx })
     commit('setAutoLogin', false)
   }
 }

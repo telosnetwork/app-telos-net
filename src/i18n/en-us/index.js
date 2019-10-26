@@ -4,7 +4,9 @@ export default {
     buttons: {
       logout: 'Logout'
     },
-    defaultTitle: 'Title'
+    defaultTitle: 'Title',
+    cancel: 'Cancel',
+    continue: 'Continue'
   },
   forms: {
     errors: {
@@ -67,7 +69,8 @@ export default {
     },
     login: {
       getApp: 'Download the app',
-      title: 'Select your wallet'
+      title: 'Select your wallet',
+      enterAccount: 'Please enter your account name'
     }
   }
 }

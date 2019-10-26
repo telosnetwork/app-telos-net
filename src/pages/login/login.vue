@@ -1,12 +1,18 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import RequestAccount from './request-account'
 
 export default {
   name: 'page-login',
+  components: {
+    RequestAccount
+  },
   data () {
     return {
       show: false,
-      error: null
+      error: null,
+      requestAccount: false,
+      idx: null
     }
   },
   computed: {
@@ -15,8 +21,16 @@ export default {
   methods: {
     ...mapActions('accounts', ['login']),
     async onLogin (idx) {
+      this.idx = idx
       this.error = null
-      const error = await this.login(idx)
+      const authenticator = this.$ual.authenticators[idx]
+      this.requestAccount = await authenticator.shouldRequestAccountName()
+      if (!this.requestAccount) {
+        this.loginUser()
+      }
+    },
+    async loginUser (account) {
+      const error = await this.login({ idx: this.idx, account })
       if (!error) {
         this.show = false
       } else {
@@ -72,4 +86,9 @@ export default {
         active-class="bg-red-1 text-grey-8"
       )
         q-item-section {{ error }}
+    request-account(
+      :show.sync="requestAccount"
+      @accountEntered="loginUser"
+    )
+
 </template>
