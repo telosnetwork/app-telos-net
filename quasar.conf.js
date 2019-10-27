@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
@@ -127,6 +128,11 @@ module.exports = function (ctx) {
           test: /\.pug$/,
           loader: 'pug-plain-loader'
         })
+
+        cfg.plugins.push(new CopyWebpackPlugin(
+          [ { from: './src/statics/*.json', to: './', force: true, flatten: true } ],
+          { copyUnmodified: true }
+        ))
 
         cfg.resolve.alias = {
           ...cfg.resolve.alias,
