@@ -1,7 +1,7 @@
 {
     "account": "app.tf",
     "domain": "https://app-dev.telos.net",
-    "appmeta": "https://app-dev.telos.net/statics/app-metadata.json#53254ae922aa557b77e4ba773cd50d5af2a3a17b3e3cae7504869c07a004a17a",
+    "appmeta": "https://app-dev.telos.net/app-metadata.json#53254ae922aa557b77e4ba773cd50d5af2a3a17b3e3cae7504869c07a004a17a",
     "whitelist": [
         {
             "contract": "eosio.token",
