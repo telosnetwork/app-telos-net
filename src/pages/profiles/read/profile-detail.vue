@@ -13,25 +13,25 @@ main.column.items-center.q-pa-md.back
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='account_circle')
             q-item-section
-              q-item-label {{ $t('components.general.name') }}
+              q-item-label {{ $t('pages.general.name') }}
               q-item-label(caption) {{ fullName }}
           q-item
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='short_text')
             q-item-section
-              q-item-label {{ $t('components.signUp.form.presentation') }}
+              q-item-label {{ $t('pages.signUp.form.presentation') }}
               q-item-label(caption) {{ this.selectedProfile.publicData.bio }}
           q-item
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='flag')
             q-item-section
-              q-item-label {{ $t('components.signUp.form.country') }}
+              q-item-label {{ $t('pages.signUp.form.country') }}
               q-item-label(caption) {{ this.selectedProfile.publicData.countryCode }}
           q-item
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
             q-item-section
-              q-item-label {{ $t('components.signUp.form.hobbies') }}
+              q-item-label {{ $t('pages.signUp.form.hobbies') }}
               q-item-label(caption) {{ this.selectedProfile.publicData.hobbies.join(', ') }}
 </template>
 
@@ -39,7 +39,7 @@ main.column.items-center.q-pa-md.back
 import S3Img from '~/components/s3-image'
 export default {
   name: 'profile-detail',
-  components: { S3Img },
+  pages: { S3Img },
   computed: {
     selectedProfile () {
       return this.$store.state.profiles.selectedProfile
