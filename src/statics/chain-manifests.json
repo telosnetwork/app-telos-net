@@ -6,7 +6,7 @@
             "manifest": {
                 "account": "app.tf",
                 "domain": "https://app-dev.telos.net",
-                "appmeta": "https://app-dev.telos.net/app-metadata.json#a2f0b7e5e81ff2dc0f2704ee7a60d1ecbcb10109ff18d630c4ee2cc257ce3d98",
+                "appmeta": "https://app-dev.telos.net/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
                 "whitelist": [
                     {
                         "contract": "eosio.token",
