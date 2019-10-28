@@ -25,5 +25,5 @@ q-btn(
         clickable
         v-close-popup
       )
-        q-item-section {{ $t('components.layout.logout.button') }}
+        q-item-section {{ $t('common.buttons.logout') }}
 </template>

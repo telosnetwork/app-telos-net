@@ -5,6 +5,8 @@ import accounts from './accounts'
 import profiles from './profiles'
 import messages from './messages'
 import apps from './apps'
+import trails from './trails'
+import transfers from './transfers'
 
 Vue.use(Vuex)
 
@@ -19,7 +21,9 @@ export default function (/* { ssrContext } */) {
       accounts,
       profiles,
       messages,
-      apps
+      apps,
+      trails,
+      transfers
     },
 
     // enable strict mode (adds overhead!)

@@ -23,6 +23,7 @@ export default async ({ Vue, store }) => {
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
     new TokenPocket([mainChain])
   ]
+
   const ual = new UAL([mainChain], 'tet-ual', authenticators)
   store['$ual'] = ual
   Vue.prototype.$ual = ual

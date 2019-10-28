@@ -1,12 +1,14 @@
 import PPP from '@smontero/ppp-client-api'
 
-export const login = async function ({ commit, dispatch }, idx) {
+// export const login = async function ({ commit, dispatch }, idx) {
+export const login = async function ({ commit, dispatch }, { idx, account }) {
   const authenticator = this.$ual.authenticators[idx]
   commit('setLoadingWallet', authenticator.getStyle().text)
   let error
   try {
     await authenticator.init()
-    const users = await authenticator.login()
+    console.log('Login account: ', account)
+    const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
       PPP.setActiveUser(this.$api)
@@ -14,6 +16,7 @@ export const login = async function ({ commit, dispatch }, idx) {
       await authApi.signIn()
       commit('setAccount', users[0].accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
+      this.$router.push({ path: '/transfers/add' })
     }
   } catch (e) {
     error = (authenticator.getError() && authenticator.getError().message) || e.message
@@ -33,6 +36,7 @@ export const logout = async function ({ commit }) {
   commit('setAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null
+  this.$router.push({ path: '/' })
 }
 
 export const autoLogin = async function ({ dispatch, commit }) {
@@ -40,7 +44,49 @@ export const autoLogin = async function ({ dispatch, commit }) {
   const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
   if (idx !== -1) {
     commit('setAutoLogin', true)
-    await dispatch('login', idx)
+    await dispatch('login', { idx })
     commit('setAutoLogin', false)
+  }
+}
+
+export const isAccountFree = async function (context, accountName) {
+  try {
+    await this.$axios.get(`/v1/accounts/${accountName}`)
+    return false
+  } catch (e) {
+    // Catch the 404 error if the account doesn't exist
+    return true
+  }
+}
+
+export const sendOTP = async function ({ commit }, form) {
+  try {
+    const response = await this.$axios.post('/v1/registrations', {
+      smsNumber: form.smsNumber,
+      telosAccount: form.account
+    })
+    if (response) {
+      commit('setSignUpForm', form)
+    }
+    return true
+  } catch (e) {
+    return {
+      error: e.message
+    }
+  }
+}
+
+export const verifyOTP = async function ({ commit, state }, { password, publicKey }) {
+  try {
+    const response = await this.$axios.post('/v1/accounts', {
+      smsOtp: password,
+      smsNumber: state.signUpForm.smsNumber,
+      telosAccount: state.signUpForm.account,
+      ownerKey: publicKey,
+      activeKey: publicKey
+    })
+    return !!response
+  } catch (e) {
+    return false
   }
 }

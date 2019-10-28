@@ -76,9 +76,7 @@ deploy_dev:
     - aws configure set aws_secret_access_key $AWS_SECRET
     - aws s3 rm s3://telos-toolkit-dev
     - aws s3 sync ./dist/spa s3://telos-toolkit-dev
-    # - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
-    # - aws configure set aws_secret_access_key $INVALIDATOR_KEY
-    # - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_DEV --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID --paths "/*"
 
 deploy_prod:  
   image: python:latest  
@@ -94,6 +92,4 @@ deploy_prod:
     - aws configure set aws_secret_access_key $AWS_SECRET
     - aws s3 rm s3://telos-toolkit-prod
     - aws s3 sync ./dist/spa s3://telos-toolkit-prod
-#     - aws configure set aws_access_key_id $INVALIDATOR_KEY_ID
-#     - aws configure set aws_secret_access_key $INVALIDATOR_KEY
-#     - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID_PROD --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id $AWS_DIST_ID --paths "/*"

@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
@@ -9,6 +10,7 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
+      'layouts',
       'axios',
       'i18n',
       {
@@ -27,18 +29,18 @@ module.exports = function (ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v4',
-      // 'fontawesome-v5',
+      'fontawesome-v5'
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
+      // 'material-icons' // optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      // iconSet: 'ionicons-v4', // Quasar icon set
+      iconSet: 'fontawesome-v5', // Quasar icon set
       // lang: 'de', // Quasar language pack
 
       // Possible values for "all":
@@ -54,11 +56,17 @@ module.exports = function (ctx) {
         'QBtn',
         'QCard',
         'QCardSection',
+        'QCardActions',
+        'QChip',
         'QDialog',
         'QDrawer',
+        'QExpansionItem',
         'QHeader',
         'QIcon',
         'QImg',
+        'QInfiniteScroll',
+        'QInnerLoading',
+        'QInput',
         'QItem',
         'QItemLabel',
         'QItemSection',
@@ -67,7 +75,9 @@ module.exports = function (ctx) {
         'QMenu',
         'QPage',
         'QPageContainer',
+        'QScrollArea',
         'QSpinner',
+        'QSpinnerDots',
         'QToolbar',
         'QToolbarTitle',
         'QTooltip',
@@ -112,7 +122,9 @@ module.exports = function (ctx) {
         NETWORK_HOST: process.env.NETWORK_HOST,
         NETWORK_PORT: process.env.NETWORK_PORT,
         NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
-        PPP_ENV: process.env.PPP_ENV
+        PPP_ENV: process.env.PPP_ENV,
+        WEBSERVICES_URL: process.env.WEBSERVICES_URL,
+        WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY
       },
       scopeHoisting: true,
       // vueRouterMode: 'history',
@@ -138,6 +150,11 @@ module.exports = function (ctx) {
           test: /\.pug$/,
           loader: 'pug-plain-loader'
         })
+
+        cfg.plugins.push(new CopyWebpackPlugin(
+          [ { from: './src/statics/*.json', to: './', force: true, flatten: true } ],
+          { copyUnmodified: true }
+        ))
 
         cfg.resolve.alias = {
           ...cfg.resolve.alias,
