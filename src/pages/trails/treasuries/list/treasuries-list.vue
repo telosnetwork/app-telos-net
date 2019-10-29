@@ -1,14 +1,25 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import TreasuryCard from './components/treasury-card'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
+import TreasuryCard from '../components/treasury-card'
+import TreasuryForm from '../components/treasury-form'
 
 export default {
   name: 'treasuries-list',
   components: {
-    TreasuryCard
+    TreasuryCard,
+    TreasuryForm
+  },
+  data () {
+    return {
+      show: false
+    }
+  },
+  mounted () {
+    this.resetTreasuries()
   },
   methods: {
     ...mapActions('trails', ['fetchTreasuries']),
+    ...mapMutations('trails', ['resetTreasuries']),
     async onLoad (index, done) {
       await this.fetchTreasuries()
       done()
@@ -22,6 +33,7 @@ export default {
 
 <template lang="pug">
   q-page.q-pa-lg
+    treasury-form(:show.sync="show")
     .treasuries(ref="treasuriesRef")
       q-infinite-scroll(
         :disable="treasuriesLoaded"
@@ -32,4 +44,14 @@ export default {
         .row.q-col-gutter-md
           .col-xs-12.col-sm-6.col-md-4(v-for="treasury in treasuries")
             treasury-card(:treasury="treasury")
+    q-page-sticky(
+      position="bottom-right"
+      :offset="[18, 18]"
+    )
+      q-btn(
+        fab
+        icon="fas fa-plus"
+        color="accent"
+        @click="show = true"
+      )
 </template>

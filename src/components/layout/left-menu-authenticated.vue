@@ -25,7 +25,6 @@ export default {
             q-item-section {{ $t('menu.trailsTreasuries') }}
           q-item(
             to="/trails/ballots"
-            exact
             clickable
             v-ripple
           )
