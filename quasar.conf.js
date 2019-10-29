@@ -111,7 +111,7 @@ module.exports = function (ctx) {
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER
       },
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
       // analyze: true,
