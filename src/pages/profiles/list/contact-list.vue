@@ -1,6 +1,6 @@
 <template lang="pug">
  main
-  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', :label="$t('components.general.search')", counter)
+  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', :label="$t('pages.general.search')", counter)
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
@@ -10,7 +10,7 @@
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
         .row.justify-center.q-my-md(v-show="profileList.items.length === 0")
-          p.text-weight-thin {{ $t('components.general.defaultContactList') }}
+          p.text-weight-thin {{ $t('pages.general.defaultContactList') }}
       .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6

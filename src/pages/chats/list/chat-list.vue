@@ -1,6 +1,6 @@
 <template lang='pug'>
  main
-  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', :label="$t('components.general.search')", counter)
+  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', :label="$t('pages.general.search')", counter)
     template(v-slot:append='')
       q-btn(round='', dense='', flat='', icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
@@ -10,7 +10,7 @@
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
         .row.justify-center.q-my-md(v-show="chatList.items.length === 0")
-          p.text-weight-thin {{ $t('components.general.defaultChatList') }}
+          p.text-weight-thin {{ $t('pages.general.defaultChatList') }}
       .caption.q-py-sm(v-for='(chat, index) in chatList.items', :key='index')
         ChatItem(:Chat='chat')
 </template>

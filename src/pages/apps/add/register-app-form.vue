@@ -4,11 +4,11 @@
     .column
       q-img.appIcon.self-center(:src='icon')
     q-form.q-col-gutter-y-md.q-mt-xs(@submit='onSubmit')
-      q-input(filled, v-model='url', :label="$t('components.registerApp.form.urlBase')", :hint="$t('components.registerApp.form.urlBase')" :rules='[ validationURL ]')
-      q-input(filled, v-model='name', readonly, :label="$t('components.registerApp.form.name')")
-      q-input(filled, v-model='appId', readonly, :label="$t('components.registerApp.form.appId')")
-      q-input(filled, v-model='shortName', readonly, :label="$t('components.registerApp.form.shortName')")
-      q-input(filled, v-model='ownerAccount', readonly, :label="$t('components.registerApp.form.ownerAccount')")
+      q-input(filled, v-model='url', :label="$t('pages.registerApp.form.urlBase')", :hint="$t('pages.registerApp.form.urlBase')" :rules='[ validationURL ]')
+      q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
+      q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-input(filled, v-model='shortName', readonly, :label="$t('pages.registerApp.form.shortName')")
+      q-input(filled, v-model='ownerAccount', readonly, :label="$t('pages.registerApp.form.ownerAccount')")
       div
         q-btn(label='Submit', type='submit', color='primary')
 </template>

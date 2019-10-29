@@ -6,19 +6,19 @@
                 img(:src='App.icon')
         q-item-section
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('components.registerApp.form.name')}} {{': '}}
+           span.text-weight-medium {{$t('pages.registerApp.form.name')}} {{': '}}
            span.text-grey-8 {{App.name}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('components.registerApp.form.ownerAccount')}} {{': '}}
+           span.text-weight-medium {{$t('pages.registerApp.form.ownerAccount')}} {{': '}}
            span.text-grey-8 {{App.ownerAccount}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('components.general.domain')}} {{': '}}
+           span.text-weight-medium {{$t('pages.general.domain')}} {{': '}}
            span.text-grey-8 {{App.domain}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('components.registerApp.form.appId')}} {{': '}}
+           span.text-weight-medium {{$t('pages.registerApp.form.appId')}} {{': '}}
            span.text-grey-8 {{App.appId}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('components.registerApp.form.shortName')}} {{': '}}
+           span.text-weight-medium {{$t('pages.registerApp.form.shortName')}} {{': '}}
            span.text-grey-8 {{App.shortname}}
 </template>
 

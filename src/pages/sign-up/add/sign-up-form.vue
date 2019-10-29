@@ -7,19 +7,19 @@
       .row.justify-center
         q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
           input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
-      q-input(filled, v-model='presentation', :label="$t('components.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']", autogrow)
-      q-input(filled, v-model='firstName', :label="$t('components.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
-      q-input(filled, v-model='lastName', :label="$t('components.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']", autogrow)
+      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
       .row.justify-center
-        q-option-group.items-center(:options='commMeth', :label="$t('components.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      q-input(filled, v-model='smsNumber', :label="$t('components.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
-      q-input(filled, v-model='email', :label="$t('components.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('components.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
+        q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
+      q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
+      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
         template(v-slot:no-option)
           q-item
             q-item-section.text-grey No results
-      q-select(:label="$t('components.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
-      q-btn(:label="$t('components.signUp.form.btnSave')", type='submit', color='primary')
+      q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
 
@@ -77,16 +77,16 @@ export default {
     smsHint () {
       if (this.myProfile !== undefined) {
         if (this.myProfile.smsInfo.exists === true) {
-          return `${this.$t('components.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
+          return `${this.$t('pages.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
         } else return 'SMS'
-      } else return this.$t('components.signUp.form.currentSms')
+      } else return this.$t('pages.signUp.form.currentSms')
     },
     emailHint () {
       if (this.myProfile !== undefined) {
         if (this.myProfile.emailInfo.exists === true) {
-          return `${this.$t('components.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
-        } else return this.$t('components.signUp.form.currentEmail')
-      } else return this.$t('components.signUp.form.currentEmail')
+          return `${this.$t('pages.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
+        } else return this.$t('pages.signUp.form.currentEmail')
+      } else return this.$t('pages.signUp.form.currentEmail')
     }
   },
   beforeMount: async function () {

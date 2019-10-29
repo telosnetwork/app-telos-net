@@ -21,7 +21,13 @@ export default {
   menu: {
     trails: 'Trails',
     trailsBallots: 'Ballots',
-    trailsTreasuries: 'Treasuries'
+    trailsTreasuries: 'Treasuries',
+    profiles: 'Profiles',
+    contacts: 'Contacts',
+    myProfile: 'My profile',
+    chats: 'Chats',
+    registerApp: 'Register App',
+    appList: 'Apps'
   },
   pages: {
     accounts: {
