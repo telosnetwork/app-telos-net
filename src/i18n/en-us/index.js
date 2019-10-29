@@ -2,11 +2,18 @@ export default {
   common: {
     appName: 'Telos Communities',
     buttons: {
-      logout: 'Logout'
+      cancel: 'Cancel',
+      continue: 'Continue',
+      create: 'Create',
+      logout: 'Logout',
+      register: 'Register'
     },
-    defaultTitle: 'Title',
-    cancel: 'Cancel',
-    continue: 'Continue'
+    defaultTitle: 'Title'
+  },
+  components: {
+    notifications: {
+      linkTip: 'Display on block explorer'
+    }
   },
   forms: {
     errors: {
@@ -22,6 +29,13 @@ export default {
     trails: 'Trails',
     trailsBallots: 'Ballots',
     trailsTreasuries: 'Treasuries'
+  },
+  notifications: {
+    title: 'Transactions',
+    trails: {
+      castVote: 'Cast a vote',
+      registerVoter: 'Register as a voter'
+    }
   },
   pages: {
     accounts: {
@@ -57,7 +71,10 @@ export default {
           maxSupply: 'Max supply',
           openBallots: 'Open ballots',
           supply: 'Supply',
-          voters: 'Voters'
+          registerVoter: 'Register as a voters'
+        },
+        registerVoterDialog: {
+          title: 'Do you want to register to this treasury?'
         }
       }
     },

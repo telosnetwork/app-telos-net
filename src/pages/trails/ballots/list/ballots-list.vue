@@ -1,10 +1,14 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'ballots-list',
+  mounted () {
+    this.resetBallots()
+  },
   methods: {
     ...mapActions('trails', ['fetchBallots']),
+    ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
       await this.fetchBallots()
       done()
@@ -31,7 +35,7 @@ q-page.q-pa-lg
           :key="ballot.ballot_name"
         )
           q-item-section(avatar)
-            | {{ ballot.publisher }}
+            router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.publisher }}
           q-item-section
             q-item-label(overline) {{ ballot.ballot_name }}
             q-item-label {{ ballot.title || "Default title" }}
@@ -61,3 +65,7 @@ q-page.q-pa-lg
             size="40px"
           )
 </template>
+<style lang="sass" scoped>
+.link
+  text-decoration: none
+</style>

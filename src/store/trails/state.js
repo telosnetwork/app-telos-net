@@ -6,6 +6,9 @@ export default () => ({
       pagination: {
         limit: 100
       }
+    },
+    view: {
+      ballot: null
     }
   },
   treasuries: {
@@ -15,6 +18,9 @@ export default () => ({
       pagination: {
         limit: 100
       }
+    },
+    view: {
+      treasury: null
     }
   }
 })
