@@ -23,9 +23,6 @@ export default {
       if (!(await this.validate(this.form))) return
       this.$emit('update:show', false)
       this.$emit('accountEntered', this.form.account)
-    },
-    async onCancel () {
-      this.$emit('update:show', false)
     }
   }
 }
@@ -34,7 +31,7 @@ export default {
 <template lang="pug">
   q-dialog(
     v-model="show"
-      persistent
+    persistent
   )
     q-card(
       style="min-width: 350px"
@@ -57,12 +54,12 @@ export default {
         )
           q-btn(
             flat
-            :label="$t('common.cancel')"
-            @click="onCancel"
+            :label="$t('common.buttons.cancel')"
+            @click="$emit('update:show', false)"
           )
           q-btn(
             flat
-            :label="$t('common.continue')"
+            :label="$t('common.buttons.continue')"
             @click="onContinue"
           )
 </template>
