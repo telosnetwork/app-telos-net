@@ -16,7 +16,7 @@ export default async ({ Vue, store }) => {
     }]
   }
   const authenticators = [
-    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME }),
+    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' }),
     new KeycatAuthenticator([mainChain]),
     new Ledger([mainChain]),
     new Lynx([mainChain]),
