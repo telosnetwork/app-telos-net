@@ -31,7 +31,7 @@ export default {
   data () {
     return {
       message: null,
-      limit: 5,
+      limit: 10,
       sendingMessage: false,
       isFirst: true
     }

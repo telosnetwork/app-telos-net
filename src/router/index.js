@@ -23,9 +23,15 @@ export default function ({ store }) {
   })
 
   Router.beforeEach((to, from, next) => {
+    // Verify registered users
     if (to.matched.some(record => !record.meta.layout)) {
       if (store.getters['accounts/isAuthenticated']) {
-        next()
+        // Verify the communication method
+        if (to.matched.some(record => record.meta.needVerifyComm)) {
+          if (store.getters['profiles/needVerifyComm']) {
+            next({ name: 'verifyComm' })
+          } else next()
+        } else next()
       } else {
         next({ path: `/login?returnUrl=${to.path}` })
       }

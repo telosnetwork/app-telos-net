@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       search: null,
-      limit: 1
+      limit: 10
     }
   },
   computed: {

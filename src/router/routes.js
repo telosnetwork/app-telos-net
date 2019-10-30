@@ -1,11 +1,4 @@
 const routes = [
-  // {
-  //   path: '/',
-  //   component: () => import('layouts/main.vue'),
-  //   children: [
-  //     { path: '', component: () => import('pages/index.vue') }
-  //   ]
-  // }
   { path: '/', component: () => import('pages/index.vue'), meta: { layout: 'empty' } },
   { path: '/login', component: () => import('pages/login/login.vue'), meta: { layout: 'guest', title: 'pages.login.title' } },
   { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title' } },
@@ -20,14 +13,14 @@ const routes = [
 
   // PPP
   { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue') },
-  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue') },
-  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), name: 'chat' },
-  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue') },
-  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue') },
-  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), name: 'registerApp' },
-  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue') },
+  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), name: 'verifyComm' },
+  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true }, name: 'chat' },
+  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true } },
+  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true } },
+  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), meta: { needVerifyComm: true }, name: 'registerApp' },
+  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue'), meta: { needVerifyComm: true } },
   { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), name: 'myProfile' },
-  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), name: 'profileDetail' }
+  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true }, name: 'profileDetail' }
 ]
 
 // Always leave this as last one

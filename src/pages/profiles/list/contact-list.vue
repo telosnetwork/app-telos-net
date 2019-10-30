@@ -28,7 +28,7 @@ export default {
     return {
       items: [{}, {}, {}, {}, {}, {}, {}],
       search: null,
-      limit: 1,
+      limit: 10,
       isMore: false
     }
   },
@@ -37,6 +37,11 @@ export default {
       return this.$store.state.profiles.profilesList
     }
   },
+  // beforeMount () {
+  //   if (this.$store.getters['profiles/needVerifyComm']) {
+  //     this.$router.push({ name: 'verifyComm' })
+  //   }
+  // },
   beforeDestroy: function () {
     this.clearProfilesList()
   },
