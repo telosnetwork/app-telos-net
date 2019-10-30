@@ -152,6 +152,11 @@ module.exports = function (ctx) {
           loader: 'pug-plain-loader'
         })
 
+        cfg.module.rules.push({
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        })
+
         cfg.plugins.push(new CopyWebpackPlugin(
           [ { from: './src/statics/*.json', to: './', force: true, flatten: true } ],
           { copyUnmodified: true }
