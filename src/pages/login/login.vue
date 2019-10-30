@@ -1,6 +1,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import RequestAccount from './request-account'
+import RequestAccount from './components/request-account'
 
 export default {
   name: 'page-login',
@@ -16,10 +16,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['loading', 'isAutoLoading'])
+    ...mapGetters('accounts', ['loading'])
   },
   methods: {
-    ...mapActions('accounts', ['login']),
+    ...mapActions('accounts', ['login', 'autoLogin']),
     async onLogin (idx) {
       this.idx = idx
       this.error = null
@@ -30,7 +30,7 @@ export default {
       }
     },
     async loginUser (account) {
-      const error = await this.login({ idx: this.idx, account })
+      const error = await this.login({ idx: this.idx, account, returnUrl: this.$route.query.returnUrl })
       if (!error) {
         this.show = false
       } else {
@@ -40,6 +40,9 @@ export default {
     openUrl (url) {
       window.open(url)
     }
+  },
+  async mounted () {
+    await this.autoLogin(this.$route.query.returnUrl)
   }
 }
 </script>

@@ -1,24 +1,38 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import LeftMenuAuthenticated from '~/components/layout/left-menu-authenticated'
 import RightMenuAuthenticated from '~/components/layout/right-menu-authenticated'
+import RightMenuNotifications from '~/components/layout/right-menu-notifications'
 
 export default {
   name: 'layout-auth',
   components: {
     LeftMenuAuthenticated,
-    RightMenuAuthenticated
+    RightMenuAuthenticated,
+    RightMenuNotifications
   },
   data () {
     return {
-      menu: false
+      menu: false,
+      right: false
     }
   },
   computed: {
-    ...mapGetters('accounts', ['isAuthenticated'])
+    ...mapGetters('accounts', ['isAuthenticated']),
+    ...mapGetters('notifications', ['successCount', 'errorCount'])
   },
   methods: {
-    ...mapActions('accounts', ['autoLogin'])
+    ...mapMutations('notifications', ['initNotifications', 'unmarkRead', 'unmarkNew']),
+    ...mapActions('accounts', ['autoLogin']),
+    toggleNotifications () {
+      if (this.right) {
+        this.unmarkRead()
+      }
+      this.right = !this.right
+    }
+  },
+  async mounted () {
+    this.initNotifications()
   }
 }
 </script>
@@ -28,7 +42,6 @@ export default {
     q-header(elevated)
       q-toolbar
         q-btn(
-          v-if="isAuthenticated"
           flat
           dense
           round
@@ -37,7 +50,34 @@ export default {
           aria-label="Menu"
         )
         q-toolbar-title Telos Net
-        right-menu-authenticated(v-if="isAuthenticated")
+        q-btn(
+          dense
+          flat
+          round
+          icon="fas fa-broadcast-tower"
+          @click="toggleNotifications"
+          size="sm"
+        )
+          q-badge.notification-badge(
+            v-if="successCount"
+            color="green"
+            :label="successCount"
+            floating
+          )
+          q-badge.notification-badge.badge-left(
+            v-if="errorCount"
+            color="red"
+            :label="errorCount"
+            floating
+          )
+        right-menu-authenticated
+    q-drawer(
+      v-model="right"
+      side="right"
+      overlay
+      bordered
+    )
+      right-menu-notifications
     q-drawer(
       show-if-above
       v-model="menu"
@@ -48,3 +88,13 @@ export default {
     q-page-container
       router-view
 </template>
+
+<style lang="sass" scoped>
+.notification-badge
+  font-size: 10px
+  padding: 2px 3px
+  right: -5px
+.badge-left
+  left: -5px
+  right: auto
+</style>

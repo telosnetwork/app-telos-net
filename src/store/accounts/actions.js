@@ -1,13 +1,13 @@
 import PPP from '@smontero/ppp-client-api'
 
 // export const login = async function ({ commit, dispatch }, idx) {
-export const login = async function ({ commit, dispatch }, { idx, account }) {
+// export const login = async function ({ commit, dispatch }, { idx, account }) {
+export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
   commit('setLoadingWallet', authenticator.getStyle().text)
   let error
   try {
     await authenticator.init()
-    console.log('Login account: ', account)
     const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
@@ -16,7 +16,7 @@ export const login = async function ({ commit, dispatch }, { idx, account }) {
       await authApi.signIn()
       commit('setAccount', users[0].accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
-      this.$router.push({ path: '/transfers/add' })
+      this.$router.push({ path: returnUrl || '/trails/treasuries' })
     }
   } catch (e) {
     error = (authenticator.getError() && authenticator.getError().message) || e.message
@@ -39,12 +39,12 @@ export const logout = async function ({ commit }) {
   this.$router.push({ path: '/' })
 }
 
-export const autoLogin = async function ({ dispatch, commit }) {
+export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
   const wallet = localStorage.getItem('autoLogin')
   const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
   if (idx !== -1) {
     commit('setAutoLogin', true)
-    await dispatch('login', { idx })
+    await dispatch('login', { idx, returnUrl })
     commit('setAutoLogin', false)
   }
 }
