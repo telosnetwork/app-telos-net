@@ -10,7 +10,7 @@
           .row.justify-center.q-my-md
             q-spinner(color='primary', name='dots', size='40px')
         template(slot='default')
-          .row.justify-center.q-my-md(v-if="messagesList.items.length === 0")
+          .row.justify-center.q-my-md(v-if="messagesList.items.length === 0 && !isFirst")
             p.text-weight-thin {{ $t('pages.general.defaultMessageList') }}
         .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center

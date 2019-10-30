@@ -6,7 +6,7 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="myAppList === undefined || myAppList.length === 0")
+        .row.justify-center.q-my-md(v-show="!isLoading && myAppList.length === 0")
           p.text-weight-thin {{ $t('pages.general.defaultAppList') }}
       .caption.q-py-sm(v-for='(app, index) in myAppList', :key='index')
         .row.justify-center
@@ -24,7 +24,8 @@ export default {
   data () {
     return {
       search: null,
-      limit: 10
+      limit: 10,
+      isLoading: true
     }
   },
   computed: {
@@ -38,7 +39,9 @@ export default {
   methods: {
     ...mapActions('apps', ['getMyApps', 'clearMyAppList']),
     async onLoad (index, done) {
+      this.isLoading = true
       await this.getMyApps()
+      this.isLoading = false
       this.$refs.infiniteScroll.stop()
     },
     async onSearch (v) {

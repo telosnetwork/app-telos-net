@@ -9,7 +9,7 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="profileList.items.length === 0")
+        .row.justify-center.q-my-md(v-show="profileList.items.length === 0 && !isLoading")
           p.text-weight-thin {{ $t('pages.general.defaultContactList') }}
       .caption.q-py-sm(v-for='(profile, index) in profileList.items', :key='index')
         .row.justify-center
@@ -29,7 +29,7 @@ export default {
       items: [{}, {}, {}, {}, {}, {}, {}],
       search: null,
       limit: 10,
-      isMore: false
+      isLoading: true
     }
   },
   computed: {
@@ -49,7 +49,9 @@ export default {
     ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),
     async onLoad (index, done) {
       if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === this.limit) || this.profileList.items.length === 0) {
+        this.isLoading = true
         await this.searchProfiles({ search: this.search, limit: this.limit, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
+        this.isLoading = false
         done()
       } else this.$refs.infiniteScroll.stop()
     },

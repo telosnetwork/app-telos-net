@@ -191,7 +191,7 @@ export default {
 
     validationSMS () {
       if (this.methodComm === CommMethods.SMS.value) {
-        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.smsInfo.exists) {
+        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.smsInfo || !this.myProfile.smsInfo.exists) {
           return (
             (this.smsNumber && this.smsNumber.length > 0) ||
           'Please type something'
@@ -202,7 +202,7 @@ export default {
 
     validationEMAIL () {
       if (this.methodComm === CommMethods.EMAIL.value) {
-        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.emailInfo.exists) {
+        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.emailInfo || !this.myProfile.emailInfo.exists) {
           return (
             (this.email && this.email.length > 0) || 'Please type something'
           )

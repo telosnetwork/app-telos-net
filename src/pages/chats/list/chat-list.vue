@@ -9,7 +9,7 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="chatList.items.length === 0")
+        .row.justify-center.q-my-md(v-show="chatList.items.length === 0 && !isFirst")
           p.text-weight-thin {{ $t('pages.general.defaultChatList') }}
       .caption.q-py-sm(v-for='(chat, index) in chatList.items', :key='index')
         ChatItem(:Chat='chat')
