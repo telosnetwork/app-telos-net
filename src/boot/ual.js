@@ -1,5 +1,5 @@
 import { UAL } from 'universal-authenticator-library'
-import { EOSIOAuth } from 'ual-eosio-reference-authenticator'
+import { EOSIOAuth } from '@smontero/ual-eosio-reference-authenticator'
 import { KeycatAuthenticator } from '@smontero/ual-keycat'
 import { Ledger } from 'ual-ledger'
 import { Lynx } from 'ual-lynx'
