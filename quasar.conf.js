@@ -99,7 +99,8 @@ module.exports = function (ctx) {
         'QItemSection',
         'QItemLabel',
         'QSpinnerComment',
-        'QSeparator'
+        'QSeparator',
+        'QPageSticky'
       ],
 
       directives: [

@@ -6,7 +6,7 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="myAppList === undefined")
+        .row.justify-center.q-my-md(v-show="myAppList === undefined || myAppList.length === 0")
           p.text-weight-thin {{ $t('pages.general.defaultAppList') }}
       .caption.q-py-sm(v-for='(app, index) in myAppList', :key='index')
         .row.justify-center
@@ -19,7 +19,7 @@
 import AppItem from '~/pages/apps/list/app-item.vue'
 import { mapActions } from 'vuex'
 export default {
-  name: 'contact-list',
+  name: 'app-list',
   components: { AppItem },
   data () {
     return {

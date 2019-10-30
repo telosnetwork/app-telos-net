@@ -119,6 +119,12 @@ export default {
       getApp: 'Download the app',
       title: 'Select your wallet',
       enterAccount: 'Please enter your account name'
+    },
+    verifyProfile: {
+      verifySMS: 'Verify SMS',
+      codeSMS: 'Verification code',
+      verifyEMAIL: 'Verify EMAIL',
+      codeEMAIL: 'Verification code'
     }
   }
 }

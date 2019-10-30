@@ -18,13 +18,15 @@ const routes = [
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
   // PPP
-  { path: '/signUp', component: () => import('pages/sign-up/add/sign-up.vue') },
-  { path: '/chat', component: () => import('pages/chats/list/chat.vue'), name: 'chat' },
-  { path: '/chatList', component: () => import('pages/chats/list/chat-list.vue') },
-  { path: '/contactList', component: () => import('pages/profiles/list/contact-list.vue') },
-  { path: '/registerApp', component: () => import('pages/apps/add/register-app.vue'), name: 'registerApp' },
-  { path: '/appList', component: () => import('pages/apps/list/app-list.vue') },
-  { path: '/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), name: 'profileDetail' }
+  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue') },
+  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue') },
+  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), name: 'chat' },
+  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue') },
+  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue') },
+  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), name: 'registerApp' },
+  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue') },
+  { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), name: 'myProfile' },
+  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), name: 'profileDetail' }
 ]
 
 // Always leave this as last one

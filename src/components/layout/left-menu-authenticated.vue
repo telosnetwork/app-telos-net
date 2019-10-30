@@ -41,8 +41,7 @@ export default {
       )
         q-list
           q-item(
-            to="/signUp"
-            exact
+            to="/profiles/myProfile"
             clickable
             v-ripple
           )
@@ -50,8 +49,7 @@ export default {
               q-icon(name="fas fa-user")
             q-item-section {{ $t('menu.myProfile') }}
           q-item(
-            to="/contactList"
-            exact
+            to="/profiles/contacts"
             clickable
             v-ripple
           )
@@ -59,8 +57,7 @@ export default {
               q-icon(name="fas fa-users")
             q-item-section {{ $t('menu.contacts') }}
           q-item(
-            to="/chatList"
-            exact
+            to="/profiles/chat"
             clickable
             v-ripple
           )
@@ -68,7 +65,7 @@ export default {
               q-icon(name="fas fa-comment-dots")
             q-item-section {{ $t('menu.chats') }}
           q-item(
-            to="/registerApp"
+            to="/profiles/registerApp"
             exact
             clickable
             v-ripple
@@ -77,7 +74,7 @@ export default {
               q-icon(name="fas fa-plus-square")
             q-item-section {{ $t('menu.registerApp') }}
           q-item(
-            to="/appList"
+            to="/profiles/appList"
             exact
             clickable
             v-ripple

@@ -12,7 +12,7 @@
       q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
       .row.justify-center
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
         template(v-slot:no-option)
@@ -148,7 +148,7 @@ export default {
     async doSignup () {
       const mData = {
         [RootFields.EMAIL]: this.email,
-        [RootFields.SMS_NUMBER]: this.smsNumber,
+        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
         [RootFields.COMM_PREF]: this.methodComm,
         publicData: {
           [PublicFields.FIRST_NAME]: this.firstName,
@@ -161,6 +161,7 @@ export default {
         }
       }
       await this.signUp(mData)
+      this.$router.push({ name: 'myProfile' })
     },
     onReset () {
       this.firstName = null
