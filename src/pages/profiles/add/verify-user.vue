@@ -49,12 +49,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions('profiles', ['verifySMS', 'verifyEmail']),
+    ...mapActions('profiles', ['verifySMS', 'verifyEmail', 'getProfile']),
     _verifySMS: function () {
       this.verifySMS(this.codeSMS)
-        .then(v => {
-          console.log(v)
-          this.$router.push({ name: 'myProfile' })
+        .then(async v => {
+          const returnUrl = this.$route.query.returnUrl
+          await this.getProfile()
+          this.$router.push({ path: returnUrl || '/profiles/myProfile' })
         })
         .catch(e => {
           console.log(e)
@@ -62,9 +63,10 @@ export default {
     },
     _verifyEmail: function () {
       this.verifyEmail(this.codeEMAIL)
-        .then(v => {
-          console.log(v)
-          this.$router.push({ name: 'myProfile' })
+        .then(async v => {
+          const returnUrl = this.$route.query.returnUrl
+          await this.getProfile()
+          this.$router.push({ path: returnUrl || '/profiles/myProfile' })
         })
         .catch(e => {
           console.log(e)

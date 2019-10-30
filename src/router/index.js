@@ -31,7 +31,7 @@ export default function ({ store }) {
           if (!store.getters['profiles/isRegistered']) {
             next({ name: 'userRegister' })
           } else if (store.getters['profiles/needVerifyComm']) {
-            next({ name: 'verifyComm' })
+            next({ name: 'verifyComm', query: { returnUrl: to.path } })
           } else next()
         } else next()
       } else {
