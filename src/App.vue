@@ -1,5 +1,5 @@
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -8,12 +8,6 @@ export default {
     layout () {
       return `layout-${this.$route.meta.layout || 'auth'}`
     }
-  },
-  async mounted () {
-    await this.autoLogin()
-  },
-  methods: {
-    ...mapActions('accounts', ['autoLogin'])
   }
 }
 </script>

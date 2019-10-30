@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import accounts from './accounts'
+import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
 
@@ -16,6 +17,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       accounts,
+      notifications,
       trails,
       transfers
     },
