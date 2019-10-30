@@ -27,10 +27,8 @@ export const clearProfilesList = function ({ commit }, options = {}) {
 
 export const getProfile = async function ({ commit }) {
   const profileApi = PPP.profileApi()
-  // const { eosAccount, limit, lastEvaluatedKey, clean } = params
   try {
     await profileApi.getProfile().then(response => {
-      console.log('GetProfile', response)
       commit('setProfile', response)
     })
   } catch (error) {

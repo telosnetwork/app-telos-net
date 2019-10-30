@@ -12,7 +12,7 @@ const routes = [
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
   // PPP
-  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue') },
+  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), name: 'userRegister' },
   { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), name: 'verifyComm' },
   { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true }, name: 'chat' },
   { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true } },

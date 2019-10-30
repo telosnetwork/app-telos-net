@@ -16,6 +16,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       await authApi.signIn()
       commit('setAccount', users[0].accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
+      this.dispatch('profiles/getProfile', { root: true })
       this.$router.push({ path: returnUrl || '/trails/treasuries' })
     }
   } catch (e) {

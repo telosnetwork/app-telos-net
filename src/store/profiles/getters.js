@@ -7,3 +7,15 @@ export const needVerifyComm = (state) => {
     return !!profile.smsInfo.needsToVerify
   }
 }
+
+export const isRegistered = (state) => {
+  const profile = state.myProfile
+
+  if (profile === undefined) {
+    return false
+  } else if (profile !== undefined) {
+    return true
+  }
+
+  return false
+}

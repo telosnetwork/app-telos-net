@@ -28,7 +28,9 @@ export default function ({ store }) {
       if (store.getters['accounts/isAuthenticated']) {
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
-          if (store.getters['profiles/needVerifyComm']) {
+          if (!store.getters['profiles/isRegistered']) {
+            next({ name: 'userRegister' })
+          } else if (store.getters['profiles/needVerifyComm']) {
             next({ name: 'verifyComm' })
           } else next()
         } else next()

@@ -1,5 +1,5 @@
 <template lang="pug">
-main.column.items-center.back
+main.column.items-center.back(v-if="this.Profile")
     q-card.my-card
       q-card-section
         .column.items-center
@@ -74,6 +74,11 @@ export default {
     },
     fullName () {
       return `${this.Profile.publicData.firstName} ${this.Profile.publicData.lastName}`
+    }
+  },
+  beforeCreate () {
+    if (!this.$store.getters['profiles/isRegistered']) {
+      this.$router.push({ name: 'userRegister' })
     }
   },
   beforeDestroy: function () {
