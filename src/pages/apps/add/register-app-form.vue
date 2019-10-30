@@ -23,7 +23,7 @@ export default {
       url: '',
       shortName: '',
       ownerAccount: '',
-      appId: '6f1eae10-f67c-11e9-981f-dbd62af69dcc',
+      appId: '',
       icon: '',
       name: ''
     }
