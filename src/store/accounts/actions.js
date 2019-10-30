@@ -3,7 +3,6 @@ export const login = async function ({ commit }, { idx, account, returnUrl }) {
   commit('setLoadingWallet', authenticator.getStyle().text)
   let error
   try {
-    await authenticator.init()
     const users = await authenticator.login(account)
     if (users.length) {
       commit('setAccount', users[0].accountName)
@@ -34,6 +33,8 @@ export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
   const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
   if (idx !== -1) {
     commit('setAutoLogin', true)
+    const authenticator = this.$ual.authenticators[idx]
+    await authenticator.init()
     await dispatch('login', { idx, returnUrl })
     commit('setAutoLogin', false)
   }
@@ -79,4 +80,13 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
   } catch (e) {
     return false
   }
+}
+
+export const fetchAvailableAccounts = async function ({ commit }, { idx }) {
+  commit('resetAvailableAccounts')
+  const chainId = process.env.NETWORK_CHAIN_ID
+  const authenticator = this.$ual.authenticators[idx]
+  const map = await authenticator.getAccountNamesPerChain()
+  const accounts = map.has(chainId) ? map.get(chainId) : []
+  commit('setAvailableAccounts', accounts)
 }
