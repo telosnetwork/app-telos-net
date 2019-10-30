@@ -1,5 +1,5 @@
 <template lang="pug">
-main.column.items-center.q-pa-md.back
+main.column.items-center.back
     q-card.my-card
       q-card-section
         .column.items-center
@@ -39,7 +39,7 @@ main.column.items-center.q-pa-md.back
               q-item-section
                 q-item-label {{ $t('pages.signUp.form.email') }}
                 q-item-label(caption) {{ this.Profile.emailInfo.mask }}
-              q-item-section.col.col-xs-5(v-if='this.Profile.emailInfo.needsToVerify',side)
+              q-item-section.col.col-xs-5.gt-xs(v-if='this.Profile.emailInfo.needsToVerify',side)
                 q-btn(color="orange" icon-right="fas fa-user-check" label="Verify email" to='/profiles/myProfile/verify')
           q-item.row.q-mx-md(v-if='owner && this.Profile.smsInfo.exists')
               q-item-section(top, thumbnail)
@@ -49,8 +49,14 @@ main.column.items-center.q-pa-md.back
                 q-item-label(caption) {{ this.Profile.smsInfo.mask }}
               q-item-section.col.col-xs-5.gt-xs(v-if='this.Profile.smsInfo.needsToVerify',side)
                 q-btn(color="orange" icon-right="fas fa-user-check" label="Verify sms" to='/profiles/myProfile/verify')
+          q-item.row.q-mx-md.lt-sm(v-if='owner && this.Profile.emailInfo.needsToVerify')
+            q-item-section.col.col-xs-12.lt-sm(v-if='this.Profile.emailInfo.needsToVerify',side)
+                q-btn.full-width(color="orange" icon-right="fas fa-user-check" label="Verify email" to='/profiles/myProfile/verify')
+          q-item.row.q-mx-md.lt-sm(v-if='owner && this.Profile.smsInfo.needsToVerify')
+            q-item-section.col.col-xs-12(v-if='this.Profile.smsInfo.needsToVerify',side)
+                q-btn.full-width(color="orange" icon-right="fas fa-user-check" label="Verify sms" to='/profiles/myProfile/verify')
       .row.justify-end(v-if='owner')
-        .col-2
+        .col-2.fab-edit
           q-btn(fab icon='edit' color='primary' to="/profiles/myProfile/add")
 </template>
 
@@ -79,10 +85,23 @@ export default {
 <style lang="sass">
 .my-card
   width: 100%
-  max-width: 70%
-  height: 90vh
+  max-width: 100%
+  height: 100vh
 
 .back
   background: rgba(204,255,229,.4)
+  height: 100vh
 
+.fab-edit
+  margin-right: 25px
+
+@media screen and (min-width: 500px)
+  .my-card
+    width: 100%
+    max-width: 70%
+    height: 90vh
+    margin-top: 20px
+
+  .fab-edit
+    margin-right: 2px
 </style>
