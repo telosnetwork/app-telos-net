@@ -29,8 +29,6 @@ import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
-console.log('CommMethods', CommMethods)
-console.log('hola')
 
 export default {
   name: 'sign-up-form',
@@ -136,12 +134,6 @@ export default {
           message: 'You must write at least one hobby'
         })
       } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
         this.doSignup()
       }
     },
@@ -161,6 +153,13 @@ export default {
         }
       }
       await this.signUp(mData)
+      this.$q.notify({
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done',
+        message: 'Submitted'
+      })
+      await this.getProfile()
       this.$router.push({ name: 'myProfile' })
     },
     onReset () {
@@ -191,19 +190,23 @@ export default {
     },
 
     validationSMS () {
-      if (this.methodComm === 'sms') {
-        return (
-          (this.smsNumber && this.smsNumber.length > 0) ||
+      if (this.methodComm === CommMethods.SMS.value) {
+        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.smsInfo.exists) {
+          return (
+            (this.smsNumber && this.smsNumber.length > 0) ||
           'Please type something'
-        )
+          )
+        }
       }
     },
 
     validationEMAIL () {
-      if (this.methodComm === 'email') {
-        return (
-          (this.email && this.email.length > 0) || 'Please type something'
-        )
+      if (this.methodComm === CommMethods.EMAIL.value) {
+        if (!this.$store.getters['profiles/isRegistered'] || !this.myProfile.emailInfo.exists) {
+          return (
+            (this.email && this.email.length > 0) || 'Please type something'
+          )
+        }
       }
     }
   }
