@@ -16,8 +16,10 @@
 <script>
 import { CustomRegex } from '~/const'
 import { mapActions } from 'vuex'
+import { utils } from '~/mixins/utils'
 export default {
   name: 'register-app-form',
+  mixins: [utils],
   data () {
     return {
       url: '',
@@ -48,6 +50,7 @@ export default {
   methods: {
     ...mapActions('apps', ['registerApp']),
     onSubmit () {
+      this.$store.commit('profiles/setPPPLoading', true)
       this.registerApp({
         baseUrl: this.url,
         appId: this.appId
@@ -59,13 +62,19 @@ export default {
         this.appId = response.appId
         this.icon = response.icon
 
+        this.$store.commit('profiles/setPPPLoading', false)
+
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
           message: 'Submitted'
         })
-      }).catch(e => console.log('ErrorForm', e))
+      }).catch(e => {
+        console.log('ErrorForm', e)
+        this.showNotification(e.message, 'error')
+        this.$store.commit('profiles/setPPPLoading', false)
+      })
     },
     validationURL () {
       var regex = new RegExp(CustomRegex.URL)

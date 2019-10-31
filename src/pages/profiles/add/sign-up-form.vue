@@ -29,9 +29,11 @@ import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
+import { utils } from '~/mixins/utils'
 
 export default {
   name: 'sign-up-form',
+  mixins: [utils],
   components: {
     S3Image
   },
@@ -88,6 +90,7 @@ export default {
     }
   },
   beforeMount: async function () {
+    this.$store.commit('profiles/setPPPLoading', true)
     await this.getProfile()
     if (this.myProfile !== undefined) {
       this.firstName = this.myProfile.publicData.firstName
@@ -99,6 +102,7 @@ export default {
       this.identity = this.myProfile.publicData.s3Identity
       this.methodComm = this.myProfile.commPref
     }
+    this.$store.commit('profiles/setPPPLoading', false)
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
@@ -152,6 +156,7 @@ export default {
           [PublicFields.BIO]: this.presentation
         }
       }
+      this.$store.commit('profiles/setPPPLoading', true)
       await this.signUp(mData)
       this.$q.notify({
         color: 'green-4',
@@ -160,6 +165,7 @@ export default {
         message: 'Submitted'
       })
       await this.getProfile()
+      this.$store.commit('profiles/setPPPLoading', false)
       this.$router.push({ name: 'myProfile' })
     },
     onReset () {

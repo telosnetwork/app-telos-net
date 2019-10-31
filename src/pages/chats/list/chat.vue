@@ -25,9 +25,11 @@
 import MessageItem from '~/pages/chats/list/message-item'
 import S3Img from '~/components/s3-image'
 import { mapActions } from 'vuex'
+import { utils } from '~/mixins/utils'
 export default {
   name: 'chat',
   components: { S3Img, MessageItem },
+  mixins: [utils],
   data () {
     return {
       message: null,
@@ -74,7 +76,10 @@ export default {
       await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
         container.parentNode.scrollTop = container.clientHeight
         this.sendingMessage = false
-      }).catch(error => console.log(error))
+      }).catch(error => {
+        console.log(error)
+        this.showNotification(error.message, 'error')
+      })
       this.message = null
       // this.message = null
     }

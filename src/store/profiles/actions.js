@@ -55,3 +55,7 @@ export const verifyEmail = async function ({ commit }, code) {
     console.log('Error', error)
   }
 }
+
+export const setPPPLoading = async function ({ commit }, PPPLoading) {
+  commit('setPPPLoading', PPPLoading)
+}

@@ -19,3 +19,7 @@ export const isRegistered = (state) => {
 
   return false
 }
+
+export const isPPPLoading = (state) => {
+  return state.isPPPLoading
+}

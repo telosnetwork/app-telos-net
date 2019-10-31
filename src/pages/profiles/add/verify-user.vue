@@ -12,8 +12,10 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { utils } from '~/mixins/utils'
 export default {
   name: 'verify-user',
+  mixins: [utils],
   data () {
     return {
       codeEMAIL: '',
@@ -59,6 +61,7 @@ export default {
         })
         .catch(e => {
           console.log(e)
+          this.showNotification(e.message, 'error')
         })
     },
     _verifyEmail: function () {
@@ -70,6 +73,7 @@ export default {
         })
         .catch(e => {
           console.log(e)
+          this.showNotification(e.message, 'error')
         })
     }
   }

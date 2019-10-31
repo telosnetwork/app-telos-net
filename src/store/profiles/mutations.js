@@ -29,3 +29,7 @@ export const setSelectedProfile = (state, selectedProfile) => {
 export const setProfile = (state, Profile) => {
   state.myProfile = Profile
 }
+
+export const setPPPLoading = (state, isPPPLoading) => {
+  state.isPPPLoading = isPPPLoading
+}
