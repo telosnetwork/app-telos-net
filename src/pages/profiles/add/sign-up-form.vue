@@ -19,11 +19,22 @@
           q-item
             q-item-section.text-grey No results
       q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
-      div(v-for='(cField, index) in customFieldsC', :key='index')
-        q-input(filled, v-model='customField[cField.label].value', :label="cField.label", lazy-rules,)
+      div(v-for='(cField, index) in customFields', :key='index')
+        q-input(filled, v-model='customFields[index].value', :label="cField.label", lazy-rules,)
       .row
-        q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="addCusomField")
+        q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
+      q-dialog(v-model='addingNewField' persistent)
+        q-card
+          q-card-section
+            .text-h6
+              | Write the name of new custom field
+          q-card-section
+            q-input(dense, v-model="newFieldName", autofocus)
+          q-card-section
+            q-btn(flat, label='Cancel', v-close-popup)
+            q-btn(flat, label='Add custom field', v-close-popup, @click='addCustomField')
+
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
 
@@ -63,16 +74,9 @@ export default {
       hobbies: [],
       presentation: '',
       loadingFile: false,
-      customField: {
-        University: {
-          display: 'University',
-          value: 'UPT'
-        },
-        Address: {
-          display: 'Address',
-          value: 'CDMX'
-        }
-      }
+      customFields: [],
+      addingNewField: false,
+      newFieldName: ''
     }
   },
   computed: {
@@ -84,14 +88,14 @@ export default {
       }
       return commMeth
     },
-    customFieldsC () {
-      const customFields = []
-      const color = 'green'
-      for (const cField in this.customField) {
-        customFields.push({ label: this.customField[cField].display, value: this.customField[cField].value, color: color })
-      }
-      return customFields
-    },
+    // customFieldsC () {
+    //   const customFields = []
+    //   const color = 'green'
+    //   for (const cField in this.customField) {
+    //     customFields.push({ label: this.customField[cField].display, value: this.customField[cField].value, color: color })
+    //   }
+    //   return customFields
+    // },
     myProfile () {
       return this.$store.state.profiles.myProfile
     },
@@ -122,6 +126,7 @@ export default {
       this.imgKey = this.myProfile.publicData.profileImage
       this.identity = this.myProfile.publicData.s3Identity
       this.methodComm = this.myProfile.commPref
+      this.customFields = this.myProfile.publicData.customFields
     }
     this.$store.commit('profiles/setPPPLoading', false)
   },
@@ -164,7 +169,8 @@ export default {
           [PublicFields.PROFILE_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
           [PublicFields.HOBBIES]: this.hobbies,
-          [PublicFields.BIO]: this.presentation
+          [PublicFields.BIO]: this.presentation,
+          'customFields': this.customFields
         }
       }
       this.$store.commit('profiles/setPPPLoading', true)
@@ -222,8 +228,13 @@ export default {
       }
     },
 
-    addCusomField () {
-      alert('add')
+    addCustomField () {
+      this.customFields.push({ label: this.newFieldName, value: '' })
+      this.newFieldName = ''
+    },
+
+    openCustomFieldModal () {
+      this.addingNewField = true
     }
   }
 }
