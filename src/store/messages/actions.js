@@ -5,7 +5,7 @@ export const sendMessage = async function ({ commit }, params = {}) {
   const { eosAccount, message, senderAccount } = params
   console.log('sendMessage', params)
   try {
-    return await profileApi.sendMessage(eosAccount, message).then(response => {
+    return profileApi.sendMessage(eosAccount, message).then(response => {
       commit('addNewMessage', { eosAccount: eosAccount, message: message, sentAt: new Date(), senderAccount: senderAccount })
     })
   } catch (error) {

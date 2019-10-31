@@ -3,9 +3,7 @@ import PPP from '@smontero/ppp-client-api'
 export const signUp = async function ({ state }, mData) {
   PPP.setActiveUser(this.$api)
   const profileApi = PPP.profileApi()
-  await profileApi.register(mData).then(response => {
-    console.log('Register', response)
-  })
+  return profileApi.register(mData)
 }
 
 export const searchProfiles = async function ({ commit }, options = {}) {

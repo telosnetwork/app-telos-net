@@ -124,19 +124,9 @@ export default {
     },
     onSubmit () {
       if (this.methodComm === null) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must choose one prefer method communication'
-        })
+        this.showNotification('You must choose one prefer method communication', 'error')
       } else if (this.hobbies.length === 0) {
-        this.$q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: 'You must write at least one hobby'
-        })
+        this.showNotification('You must write at least one hobby', 'error')
       } else {
         this.doSignup()
       }
@@ -158,12 +148,7 @@ export default {
       }
       this.$store.commit('profiles/setPPPLoading', true)
       await this.signUp(mData)
-      this.$q.notify({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done',
-        message: 'Submitted'
-      })
+      this.showNotification('Submited')
       await this.getProfile()
       this.$store.commit('profiles/setPPPLoading', false)
       this.$router.push({ name: 'myProfile' })

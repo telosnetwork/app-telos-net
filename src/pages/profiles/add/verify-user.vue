@@ -52,29 +52,33 @@ export default {
   },
   methods: {
     ...mapActions('profiles', ['verifySMS', 'verifyEmail', 'getProfile']),
-    _verifySMS: function () {
-      this.verifySMS(this.codeSMS)
-        .then(async v => {
-          const returnUrl = this.$route.query.returnUrl
-          await this.getProfile()
-          this.$router.push({ path: returnUrl || '/profiles/myProfile' })
-        })
-        .catch(e => {
-          console.log(e)
-          this.showNotification(e.message, 'error')
-        })
+    _verifySMS: async function () {
+      this.$store.commit('profiles/setPPPLoading', true)
+      try {
+        await this.verifySMS(this.codeSMS)
+        const returnUrl = this.$route.query.returnUrl
+        await this.getProfile()
+        this.$router.push({ path: returnUrl || '/profiles/myProfile' })
+        this.$store.commit('profiles/setPPPLoading', false)
+      } catch (e) {
+        console.log(e)
+        this.showNotification(e.message, 'error')
+        this.$store.commit('profiles/setPPPLoading', false)
+      }
     },
-    _verifyEmail: function () {
-      this.verifyEmail(this.codeEMAIL)
-        .then(async v => {
-          const returnUrl = this.$route.query.returnUrl
-          await this.getProfile()
-          this.$router.push({ path: returnUrl || '/profiles/myProfile' })
-        })
-        .catch(e => {
-          console.log(e)
-          this.showNotification(e.message, 'error')
-        })
+    _verifyEmail: async function () {
+      this.$store.commit('profiles/setPPPLoading', true)
+      try {
+        await this.verifyEmail(this.codeEMAIL)
+        const returnUrl = this.$route.query.returnUrl
+        await this.getProfile()
+        this.$router.push({ path: returnUrl || '/profiles/myProfile' })
+        this.$store.commit('profiles/setPPPLoading', false)
+      } catch (e) {
+        console.log(e)
+        this.showNotification(e.message, 'error')
+        this.$store.commit('profiles/setPPPLoading', false)
+      }
     }
   }
 }

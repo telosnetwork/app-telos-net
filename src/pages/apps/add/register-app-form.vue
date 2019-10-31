@@ -49,32 +49,32 @@ export default {
   },
   methods: {
     ...mapActions('apps', ['registerApp']),
-    onSubmit () {
+    async onSubmit () {
       this.$store.commit('profiles/setPPPLoading', true)
-      this.registerApp({
-        baseUrl: this.url,
-        appId: this.appId
-      }).then(response => {
+      try {
+        const response = await this.registerApp({
+          baseUrl: this.url,
+          appId: this.appId
+        })
+
+        const { shortname, name, ownerAccount, appId, icon } = response
+
         console.log('form', response)
-        this.shortName = response.shortname
-        this.name = response.name
-        this.ownerAccount = response.ownerAccount
-        this.appId = response.appId
-        this.icon = response.icon
+        this.shortName = shortname
+        this.name = name
+        this.ownerAccount = ownerAccount
+        this.appId = appId
+        this.icon = icon
 
         this.$store.commit('profiles/setPPPLoading', false)
 
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }).catch(e => {
+        this.showNotification('Submitted')
+        this.$router.push({ path: '/profiles/appList' })
+      } catch (e) {
         console.log('ErrorForm', e)
         this.showNotification(e.message, 'error')
         this.$store.commit('profiles/setPPPLoading', false)
-      })
+      }
     },
     validationURL () {
       var regex = new RegExp(CustomRegex.URL)
