@@ -19,6 +19,10 @@
           q-item
             q-item-section.text-grey No results
       q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      div(v-for='(cField, index) in customFieldsC', :key='index')
+        q-input(filled, v-model='customField[cField.label].value', :label="cField.label", lazy-rules,)
+      .row
+        q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="addCusomField")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
@@ -58,8 +62,17 @@ export default {
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
-      presentationStr: '/components/signUp/form/presentation',
-      loadingFile: false
+      loadingFile: false,
+      customField: {
+        University: {
+          display: 'University',
+          value: 'UPT'
+        },
+        Address: {
+          display: 'Address',
+          value: 'CDMX'
+        }
+      }
     }
   },
   computed: {
@@ -70,6 +83,14 @@ export default {
         commMeth.push({ label: CommMethods[comm].display, value: CommMethods[comm].value, color: color })
       }
       return commMeth
+    },
+    customFieldsC () {
+      const customFields = []
+      const color = 'green'
+      for (const cField in this.customField) {
+        customFields.push({ label: this.customField[cField].display, value: this.customField[cField].value, color: color })
+      }
+      return customFields
     },
     myProfile () {
       return this.$store.state.profiles.myProfile
@@ -199,6 +220,10 @@ export default {
           )
         }
       }
+    },
+
+    addCusomField () {
+      alert('add')
     }
   }
 }
