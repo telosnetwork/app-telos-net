@@ -25,9 +25,10 @@ export default {
       this.error = null
       const authenticator = this.$ual.authenticators[idx]
       await authenticator.init()
-      this.requestAccount = await authenticator.shouldRequestAccountName()
-      if (this.requestAccount) {
-        this.fetchAvailableAccounts({ idx })
+      const requestAccount = await authenticator.shouldRequestAccountName()
+      if (requestAccount) {
+        await this.fetchAvailableAccounts({ idx })
+        this.requestAccount = requestAccount
       } else {
         this.loginUser()
       }

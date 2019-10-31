@@ -79,6 +79,7 @@ module.exports = function (ctx) {
         'QPageSticky',
         'QScrollArea',
         'QSeparator',
+        'QSpace',
         'QSpinner',
         'QSpinnerDots',
         'QToolbar',
@@ -136,7 +137,7 @@ module.exports = function (ctx) {
         })
 
         cfg.plugins.push(new CopyWebpackPlugin(
-          [ { from: './src/statics/*.json', to: './', force: true, flatten: true } ],
+          [{ from: './src/statics/*.json', to: './', force: true, flatten: true }],
           { copyUnmodified: true }
         ))
 

@@ -9,7 +9,7 @@ export default () => ({
   availableAccounts: {
     list: {
       data: [],
-      loaded: false
+      loaded: true
     }
   }
 })

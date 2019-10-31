@@ -87,7 +87,7 @@ export default {
     login: {
       getApp: 'Download the app',
       title: 'Select your wallet',
-      enterAccount: 'Please enter your account name'
+      selectAccount: 'Please select an account'
     }
   }
 }
