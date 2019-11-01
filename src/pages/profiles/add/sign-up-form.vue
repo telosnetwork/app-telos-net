@@ -268,6 +268,7 @@ export default {
       this.addingNewField = true
       this.editingCustomField = true
       this.indexEditField = index
+      this.newFieldName = this.customFields[this.indexEditField].label
     },
 
     editCustomFieldName () {
