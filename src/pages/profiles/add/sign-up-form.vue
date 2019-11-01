@@ -20,7 +20,7 @@
             q-item-section.text-grey No results
       q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
       div(v-for='(cField, index) in customFields', :key='index')
-        q-input(filled, v-model='customFields[index].value', :label="cField.label", lazy-rules,)
+        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules,)
       .row
         q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
@@ -89,6 +89,13 @@ export default {
       return commMeth
     },
     // customFieldsC () {
+    //   let mCustomFieldsC
+    //   if (this.customFS === undefined) {
+    //     mCustomFieldsC = this.customFields
+    //   } else mCustomFieldsC = this.customFS
+    //   return mCustomFieldsC
+    // },
+    // customFieldsC () {
     //   const customFields = []
     //   const color = 'green'
     //   for (const cField in this.customField) {
@@ -116,17 +123,17 @@ export default {
   },
   beforeMount: async function () {
     this.$store.commit('profiles/setPPPLoading', true)
-    await this.getProfile()
-    if (this.myProfile !== undefined) {
-      this.firstName = this.myProfile.publicData.firstName
-      this.lastName = this.myProfile.publicData.lastName
-      this.presentation = this.myProfile.publicData.bio
-      this.country = this.myProfile.publicData.countryCode
-      this.hobbies = this.myProfile.publicData.hobbies
-      this.imgKey = this.myProfile.publicData.profileImage
-      this.identity = this.myProfile.publicData.s3Identity
-      this.methodComm = this.myProfile.commPref
-      this.customFields = this.myProfile.publicData.customFields
+    const response = await this.getProfile(true)
+    if (response !== undefined) {
+      this.firstName = response.publicData.firstName
+      this.lastName = response.publicData.lastName
+      this.presentation = response.publicData.bio
+      this.country = response.publicData.countryCode
+      this.hobbies = response.publicData.hobbies
+      this.imgKey = response.publicData.profileImage
+      this.identity = response.publicData.s3Identity
+      this.methodComm = response.commPref
+      this.customFields = response.publicData.customFields
     }
     this.$store.commit('profiles/setPPPLoading', false)
   },
@@ -170,15 +177,20 @@ export default {
           [PublicFields.S3_IDENTITY]: this.identity,
           [PublicFields.HOBBIES]: this.hobbies,
           [PublicFields.BIO]: this.presentation,
-          'customFields': this.customFields
+          [PublicFields.CUSTOM_FIELDS]: this.customFields
         }
       }
       this.$store.commit('profiles/setPPPLoading', true)
-      await this.signUp(mData)
-      this.showNotification('Submited')
-      await this.getProfile()
-      this.$store.commit('profiles/setPPPLoading', false)
-      this.$router.push({ name: 'myProfile' })
+      try {
+        await this.signUp(mData)
+        this.showNotification('Submited')
+        await this.getProfile()
+        this.$store.commit('profiles/setPPPLoading', false)
+        this.$router.push({ name: 'myProfile' })
+      } catch (e) {
+        this.showNotification(e.message, 'error')
+        this.$store.commit('profiles/setPPPLoading', false)
+      }
     },
     onReset () {
       this.firstName = null
