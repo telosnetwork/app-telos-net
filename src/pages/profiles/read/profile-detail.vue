@@ -8,7 +8,7 @@ main.column.items-center.back(v-if="this.Profile")
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
 
       //- q-separator(spaced, inset)
-      q-card-section.q-ma-md
+      q-card-section.q-mx-md
         q-list(padding, separator)
           q-item.q-mx-md
             q-item-section(top, thumbnail)
@@ -111,6 +111,7 @@ export default {
 
 .fab-edit
   margin-right: 25px
+  margin-bottom: 10px
 
 @media screen and (min-width: 500px)
   .my-card
@@ -118,6 +119,7 @@ export default {
     max-width: 70%
     min-height: 90vh
     margin-top: 20px
+    margin-bottom: 20px
 
   .fab-edit
     margin-right: 2px

@@ -20,7 +20,7 @@
             q-item-section.text-grey No results
       q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
       div(v-for='(cField, index) in customFields', :key='index')
-        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules,)
+        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
           template(v-slot:append)
             q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
             q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
