@@ -1,11 +1,18 @@
 export const needVerifyComm = (state) => {
   const profile = state.myProfile
+  console.log(profile)
 
-  if (profile.commPref === 'EMAIL') {
-    return !!profile.emailInfo.needsToVerify
-  } else if (profile.commPref === 'SMS') {
-    return !!profile.smsInfo.needsToVerify
+  if (!profile.publicData.isVerified || profile.publicData.isVerified === 0) {
+    return true
+  } else {
+    return false
   }
+
+  // if (profile.commPref === 'EMAIL') {
+  //   return !!profile.emailInfo.needsToVerify
+  // } else if (profile.commPref === 'SMS') {
+  //   return !!profile.smsInfo.needsToVerify
+  // }
 }
 
 export const isRegistered = (state) => {

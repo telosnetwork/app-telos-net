@@ -146,12 +146,17 @@ export default {
           [PublicFields.BIO]: this.presentation
         }
       }
-      this.$store.commit('profiles/setPPPLoading', true)
-      await this.signUp(mData)
-      this.showNotification('Submited')
-      await this.getProfile()
-      this.$store.commit('profiles/setPPPLoading', false)
-      this.$router.push({ name: 'myProfile' })
+      try {
+        this.$store.commit('profiles/setPPPLoading', true)
+        await this.signUp(mData)
+        this.showNotification('Submited')
+        await this.getProfile()
+        this.$store.commit('profiles/setPPPLoading', false)
+        this.$router.push({ name: 'myProfile' })
+      } catch (e) {
+        this.$store.commit('profiles/setPPPLoading', false)
+        this.showNotification(e.message, 'error')
+      }
     },
     onReset () {
       this.firstName = null
