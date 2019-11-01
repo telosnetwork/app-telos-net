@@ -16,7 +16,8 @@ module.exports = function (ctx) {
       {
         server: false,
         path: 'ual'
-      }
+      },
+      'ppp'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -28,13 +29,13 @@ module.exports = function (ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v4',
-      'fontawesome-v5'
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       // 'roboto-font', // optional, you are not bound to it
-      // 'material-icons' // optional, you are not bound to it
+      'material-icons' // optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -65,6 +66,7 @@ module.exports = function (ctx) {
         'QFabAction',
         'QHeader',
         'QIcon',
+        'QImg',
         'QInfiniteScroll',
         'QInnerLoading',
         'QInput',
@@ -84,7 +86,27 @@ module.exports = function (ctx) {
         'QSpinnerDots',
         'QToolbar',
         'QToolbarTitle',
-        'QTooltip'
+        'QTooltip',
+        'QAvatar',
+        'QChip',
+        'QInfiniteScroll',
+        'QChatMessage',
+        'QInput',
+        'QForm',
+        'QOptionGroup',
+        'QToggle',
+        'QSelect',
+        'QBadge',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
+        'QList',
+        'QItem',
+        'QItemSection',
+        'QItemLabel',
+        'QSpinnerComment',
+        'QSeparator',
+        'QPageSticky'
       ],
 
       directives: [
@@ -93,7 +115,7 @@ module.exports = function (ctx) {
       ],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -107,6 +129,7 @@ module.exports = function (ctx) {
         NETWORK_HOST: process.env.NETWORK_HOST,
         NETWORK_PORT: process.env.NETWORK_PORT,
         NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
+        PPP_ENV: process.env.PPP_ENV,
         WEBSERVICES_URL: process.env.WEBSERVICES_URL,
         WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY,
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER
@@ -134,6 +157,11 @@ module.exports = function (ctx) {
         cfg.module.rules.push({
           test: /\.pug$/,
           loader: 'pug-plain-loader'
+        })
+
+        cfg.module.rules.push({
+          test: /\.mjs$/,
+          type: 'javascript/auto'
         })
 
         cfg.plugins.push(new CopyWebpackPlugin(

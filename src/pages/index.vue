@@ -1,3 +1,13 @@
+<template lang="pug">
+  q-page.flex.flex-center
+    <router-link class="routers" to="/chat">{{ $t('pages.index.router.chat') }}</router-link>
+    <router-link class="routers" to="/signUp">{{ $t('pages.index.router.signUp') }}</router-link>
+    <router-link class="routers" to="/chatList">{{ $t('pages.index.router.chatList') }}</router-link>
+    <router-link class="routers" to="/contactList">{{ $t('pages.index.router.contactList') }}</router-link>
+    <router-link class="routers" to="/registerApp">{{ $t('pages.index.router.registerApp') }}</router-link>
+    <router-link class="routers" to="/appList">{{ $t('pages.index.router.appList') }}</router-link>
+</template>
+
 <script>
 export default {
   name: 'page-index'

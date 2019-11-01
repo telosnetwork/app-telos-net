@@ -18,6 +18,18 @@ export const utils = {
         document.getSelection().removeAllRanges()
         document.getSelection().addRange(selected)
       }
+    },
+    showNotification (message, type = 'success') {
+      const color = type.toLowerCase() === 'success' ? 'green' : 'red'
+      const icon = type.toLowerCase() === 'success' ? 'done' : 'error'
+      this.$q.notify({
+        color: color,
+        textColor: 'white',
+        message: message,
+        icon: icon,
+        timeout: 20000,
+        actions: [{ label: 'Close', color: 'white' }]
+      })
     }
   }
 }

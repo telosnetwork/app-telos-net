@@ -28,7 +28,13 @@ export default {
   menu: {
     trails: 'Trails',
     trailsBallots: 'Ballots',
-    trailsTreasuries: 'Treasuries'
+    trailsTreasuries: 'Treasuries',
+    profiles: 'Profiles',
+    contacts: 'Contacts',
+    myProfile: 'My profile',
+    chats: 'Chats',
+    registerApp: 'Register App',
+    appList: 'Apps'
   },
   notifications: {
     title: 'Transactions',
@@ -82,12 +88,60 @@ export default {
       buttons: {
         createAccount: 'Create account',
         login: 'Login with Telos'
+      },
+      router: {
+        chat: 'Chat',
+        signUp: 'Sign Up',
+        chatList: 'Chat List',
+        contactList: 'Contact List',
+        registerApp: 'Register App',
+        appList: 'App List'
+      }
+    },
+    signUp: {
+      form: {
+        presentation: 'Presentation',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        preferMethodComm: 'Prefer method of communication',
+        sms: 'SMS Number',
+        email: 'Email',
+        currentSms: 'Current SMS Number',
+        currentEmail: 'Current Email',
+        country: 'Country',
+        hobbies: 'Hobbies',
+        btnSave: 'Save'
+      }
+    },
+    general: {
+      search: 'Search',
+      name: 'Name',
+      eosAccount: 'eosAccount',
+      domain: 'Domain',
+      defaultChatList: 'There are no chats yet',
+      defaultMessageList: 'There are no messages yet',
+      defaultContactList: 'There are no contacts yet',
+      defaultAppList: 'There are no apps yet'
+    },
+    registerApp: {
+      form: {
+        urlBase: 'URL',
+        name: 'Name',
+        appId: 'AppId',
+        shortName: 'Short Name',
+        ownerAccount: 'Owner Account'
       }
     },
     login: {
       getApp: 'Download the app',
       title: 'Select your wallet',
       selectAccount: 'Please select an account'
+    },
+    verifyProfile: {
+      verifySMS: 'Verify SMS',
+      codeSMS: 'Verification code',
+      verifyEMAIL: 'Verify EMAIL',
+      codeEMAIL: 'Verification code'
     }
   }
 }
