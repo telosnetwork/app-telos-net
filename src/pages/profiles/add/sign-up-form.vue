@@ -22,13 +22,13 @@
       div(v-for='(cField, index) in customFields', :key='index')
         q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules,)
           template(v-slot:append)
-            q-btn(round, dense, flat, icon='edit', color='green', @click='editCustomField(index)')
+            q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
             q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
       .row
         q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
-      q-dialog(v-model='addingNewField' persistent)
-        q-card
+      q-dialog(v-model='addingNewField', persistent, @hide='editingCustomField = false')
+        q-card(v-if="!editingCustomField")
           q-card-section
             .text-h6
               | Write the name of new custom field
@@ -37,6 +37,15 @@
           q-card-section
             q-btn(flat, label='Cancel', v-close-popup)
             q-btn(flat, label='Add custom field', v-close-popup, @click='addCustomField')
+        q-card(v-if="editingCustomField")
+          q-card-section
+            .text-h6
+              | Write the new field name
+          q-card-section
+            q-input(dense, v-model="newFieldName", autofocus)
+          q-card-section
+            q-btn(flat, label='Cancel', v-close-popup)
+            q-btn(flat, label='Change name', v-close-popup, @click='editCustomFieldName')
 
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
@@ -80,7 +89,9 @@ export default {
       loadingFile: false,
       customFields: [],
       addingNewField: false,
-      newFieldName: ''
+      editingCustomField: false,
+      newFieldName: '',
+      indexEditField: 0
     }
   },
   computed: {
@@ -137,7 +148,7 @@ export default {
       this.imgKey = response.publicData.profileImage
       this.identity = response.publicData.s3Identity
       this.methodComm = response.commPref
-      this.customFields = response.publicData.customFields
+      this.customFields = response.publicData.customFields ? response.publicData.customFields : []
     }
     this.$store.commit('profiles/setPPPLoading', false)
   },
@@ -253,8 +264,16 @@ export default {
       this.addingNewField = true
     },
 
-    editCustomField (index) {
-      alert(index)
+    openEditCustomField (index) {
+      this.addingNewField = true
+      this.editingCustomField = true
+      this.indexEditField = index
+    },
+
+    editCustomFieldName () {
+      this.customFields[this.indexEditField].label = this.newFieldName
+      this.indexEditField = 0
+      this.newFieldName = ''
     },
 
     deleteCustomField (index) {
