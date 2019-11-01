@@ -19,13 +19,17 @@ export default {
     ...mapGetters('accounts', ['loading'])
   },
   methods: {
-    ...mapActions('accounts', ['login', 'autoLogin']),
+    ...mapActions('accounts', ['login', 'autoLogin', 'fetchAvailableAccounts']),
     async onLogin (idx) {
       this.idx = idx
       this.error = null
       const authenticator = this.$ual.authenticators[idx]
-      this.requestAccount = await authenticator.shouldRequestAccountName()
-      if (!this.requestAccount) {
+      await authenticator.init()
+      const requestAccount = await authenticator.shouldRequestAccountName()
+      if (requestAccount) {
+        await this.fetchAvailableAccounts({ idx })
+        this.requestAccount = requestAccount
+      } else {
         this.loginUser()
       }
     },

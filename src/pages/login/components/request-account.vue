@@ -1,28 +1,22 @@
 <script>
-import { validation } from '~/mixins/validation'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'request-account',
-  mixins: [validation],
   props: {
     show: {
       type: Boolean,
       required: true
     }
   },
-  data () {
-    return {
-      form: {
-        account: null
-      }
-    }
+  computed: {
+    ...mapGetters('accounts', ['availableAccounts', 'availableAccountsLoaded'])
   },
   methods: {
-    async onContinue () {
-      this.resetValidation(this.form)
-      if (!(await this.validate(this.form))) return
+    async onContinue (account) {
+      console.log(account)
       this.$emit('update:show', false)
-      this.$emit('accountEntered', this.form.account)
+      this.$emit('accountEntered', account)
     }
   }
 }
@@ -33,33 +27,26 @@ export default {
     v-model="show"
     persistent
   )
-    q-card(
-      style="min-width: 350px"
-    )
-      q-card-section
-        div.text-h6 {{ $t('pages.login.enterAccount') }}
-
-        q-card-section
-          q-input(
-            dense
-            ref="account"
-            v-model="form.account"
-            autofocus
-            @keyup.enter="onContinue"
-            :rules="[rules.required, rules.accountFormat, rules.accountLength]"
-          )
-
-        q-card-actions.text-primary(
-          align="right"
+    q-card
+      q-card-section.row.items-center.q-mb-md.bg-primary.text-white
+        div.text-h6.q-mr-md {{ $t('pages.login.selectAccount') }}
+        q-space
+        q-btn(
+          flat
+          round
+          dense
+          @click="$emit('update:show', false)"
+          icon="fas fa-times"
         )
-          q-btn(
-            flat
-            :label="$t('common.buttons.cancel')"
-            @click="$emit('update:show', false)"
-          )
-          q-btn(
-            flat
-            :label="$t('common.buttons.continue')"
-            @click="onContinue"
-          )
+
+      q-card-section.row.justify-start.q-gutter-sm
+        q-btn.col-auto(
+          v-for="account in availableAccounts"
+          color="primary"
+          :key="account"
+          no-caps
+          :label="account"
+          @click="onContinue(account)"
+        )
+
 </template>

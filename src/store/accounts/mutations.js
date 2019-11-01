@@ -13,3 +13,13 @@ export const setAutoLogin = (state, status) => {
 export const setSignUpForm = (state, form) => {
   state.signUpForm = form
 }
+
+export const resetAvailableAccounts = (state) => {
+  state.availableAccounts.list.data = []
+  state.availableAccounts.list.loaded = false
+}
+
+export const setAvailableAccounts = (state, accounts) => {
+  state.availableAccounts.list.data = accounts
+  state.availableAccounts.list.loaded = true
+}
