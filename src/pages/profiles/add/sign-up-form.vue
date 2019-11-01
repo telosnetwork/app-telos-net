@@ -21,6 +21,9 @@
       q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
       div(v-for='(cField, index) in customFields', :key='index')
         q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules,)
+          template(v-slot:append)
+            q-btn(round, dense, flat, icon='edit', color='green', @click='editCustomField(index)')
+            q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
       .row
         q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
@@ -45,6 +48,7 @@ import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import { utils } from '~/mixins/utils'
+console.log('Public', PublicFields)
 
 export default {
   name: 'sign-up-form',
@@ -177,7 +181,7 @@ export default {
           [PublicFields.S3_IDENTITY]: this.identity,
           [PublicFields.HOBBIES]: this.hobbies,
           [PublicFields.BIO]: this.presentation,
-          [PublicFields.CUSTOM_FIELDS]: this.customFields
+          'customFields': this.customFields
         }
       }
       this.$store.commit('profiles/setPPPLoading', true)
@@ -247,6 +251,14 @@ export default {
 
     openCustomFieldModal () {
       this.addingNewField = true
+    },
+
+    editCustomField (index) {
+      alert(index)
+    },
+
+    deleteCustomField (index) {
+      this.customFields.splice(index, 1)
     }
   }
 }
