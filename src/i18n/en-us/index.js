@@ -137,6 +137,15 @@ export default {
       title: 'Select your wallet',
       selectAccount: 'Please select an account'
     },
+    testnetRotation: {
+      title: 'Add your testnet BP to the schedule'
+    },
+    testnetDevelopers: {
+      title: 'Get a testnet account or testnet TLOS'
+    },
+    pocSmartSafe: {
+      title: 'SmartSafe POC'
+    },
     verifyProfile: {
       verifySMS: 'Verify SMS',
       codeSMS: 'Verification code',

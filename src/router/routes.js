@@ -11,6 +11,13 @@ const routes = [
   // Trails
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
+  // Testnet
+  { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'guest', title: 'pages.testnetRotation.title' } },
+  { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title' } },
+
+  // POC
+  { path: '/poc/smartsafe', component: () => import('pages/poc/smartsafe.vue'), meta: { title: 'pages.pocSmartSafe.title' } },
+
   // PPP
   { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: true }, name: 'userRegister' },
   { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), meta: { needBackendLogin: true }, name: 'verifyComm' },
