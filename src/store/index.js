@@ -2,6 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import accounts from './accounts'
+import profiles from './profiles'
+import messages from './messages'
+import apps from './apps'
+import notifications from './notifications'
+import trails from './trails'
+import transfers from './transfers'
 
 Vue.use(Vuex)
 
@@ -13,7 +19,13 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      accounts
+      accounts,
+      profiles,
+      messages,
+      apps,
+      notifications,
+      trails,
+      transfers
     },
 
     // enable strict mode (adds overhead!)

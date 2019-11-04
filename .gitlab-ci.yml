@@ -10,12 +10,14 @@ build_dev:
   environment:
     name: dev
   variables:
-    APP_NAME: '"Telos Net Dev"'
+    APP_NAME: '"Telos Test Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
     NETWORK_HOST: '"test.telos.kitchen"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
+    BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
+    PPP_ENV: '"test"'
   cache:
     paths:
       - node_modules/
@@ -46,6 +48,8 @@ build_prod:
     NETWORK_HOST: '"api.telos.kitchen"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
+    BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
+    PPP_ENV: '"test"'
   cache:
     paths:
       - node_modules/

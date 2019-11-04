@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
@@ -9,12 +10,14 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
+      'layouts',
       'axios',
       'i18n',
       {
         server: false,
         path: 'ual'
-      }
+      },
+      'ppp'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -26,18 +29,18 @@ module.exports = function (ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v4',
-      // 'fontawesome-v5',
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      // iconSet: 'ionicons-v4', // Quasar icon set
+      iconSet: 'fontawesome-v5', // Quasar icon set
       // lang: 'de', // Quasar language pack
 
       // Possible values for "all":
@@ -50,13 +53,23 @@ module.exports = function (ctx) {
       all: false,
 
       components: [
+        'QBadge',
         'QBtn',
         'QCard',
+        'QCardActions',
         'QCardSection',
+        'QChip',
         'QDialog',
         'QDrawer',
+        'QExpansionItem',
+        'QFab',
+        'QFabAction',
         'QHeader',
         'QIcon',
+        'QImg',
+        'QInfiniteScroll',
+        'QInnerLoading',
+        'QInput',
         'QItem',
         'QItemLabel',
         'QItemSection',
@@ -65,10 +78,35 @@ module.exports = function (ctx) {
         'QMenu',
         'QPage',
         'QPageContainer',
+        'QPageSticky',
+        'QScrollArea',
+        'QSeparator',
+        'QSpace',
         'QSpinner',
+        'QSpinnerDots',
         'QToolbar',
         'QToolbarTitle',
-        'QTooltip'
+        'QTooltip',
+        'QAvatar',
+        'QChip',
+        'QInfiniteScroll',
+        'QChatMessage',
+        'QInput',
+        'QForm',
+        'QOptionGroup',
+        'QToggle',
+        'QSelect',
+        'QBadge',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
+        'QList',
+        'QItem',
+        'QItemSection',
+        'QItemLabel',
+        'QSpinnerComment',
+        'QSeparator',
+        'QPageSticky'
       ],
 
       directives: [
@@ -77,7 +115,7 @@ module.exports = function (ctx) {
       ],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -90,10 +128,14 @@ module.exports = function (ctx) {
         NETWORK_PROTOCOL: process.env.NETWORK_PROTOCOL,
         NETWORK_HOST: process.env.NETWORK_HOST,
         NETWORK_PORT: process.env.NETWORK_PORT,
-        NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID
+        NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
+        PPP_ENV: process.env.PPP_ENV,
+        WEBSERVICES_URL: process.env.WEBSERVICES_URL,
+        WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY,
+        BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER
       },
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
       // analyze: true,
@@ -116,6 +158,16 @@ module.exports = function (ctx) {
           test: /\.pug$/,
           loader: 'pug-plain-loader'
         })
+
+        cfg.module.rules.push({
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        })
+
+        cfg.plugins.push(new CopyWebpackPlugin(
+          [{ from: './src/statics/*.json', to: './', force: true, flatten: true }],
+          { copyUnmodified: true }
+        ))
 
         cfg.resolve.alias = {
           ...cfg.resolve.alias,

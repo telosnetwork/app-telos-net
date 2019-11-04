@@ -10,7 +10,7 @@ Vue.use(VueRouter)
  * directly export the Router instantiation
  */
 
-export default function (/* { store, ssrContext } */) {
+export default function ({ store }) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -20,6 +20,26 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  Router.beforeEach((to, from, next) => {
+    // Verify registered users
+    if (to.matched.some(record => !record.meta.layout)) {
+      if (store.getters['accounts/isAuthenticated']) {
+        // Verify the communication method
+        if (to.matched.some(record => record.meta.needVerifyComm)) {
+          if (!store.getters['profiles/isRegistered']) {
+            next({ name: 'userRegister' })
+          } else if (store.getters['profiles/needVerifyComm']) {
+            next({ name: 'verifyComm', query: { returnUrl: to.path } })
+          } else next()
+        } else next()
+      } else {
+        next({ path: `/login?returnUrl=${to.path}` })
+      }
+    } else {
+      next()
+    }
   })
 
   return Router

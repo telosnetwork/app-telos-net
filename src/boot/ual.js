@@ -1,5 +1,5 @@
 import { UAL } from 'universal-authenticator-library'
-import { EOSIOAuth } from 'ual-eosio-reference-authenticator'
+import { EOSIOAuth } from '@smontero/ual-eosio-reference-authenticator'
 import { KeycatAuthenticator } from '@smontero/ual-keycat'
 import { Ledger } from 'ual-ledger'
 import { Lynx } from 'ual-lynx'
@@ -16,13 +16,14 @@ export default async ({ Vue, store }) => {
     }]
   }
   const authenticators = [
-    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME }),
+    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' }),
     new KeycatAuthenticator([mainChain]),
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
     new TokenPocket([mainChain])
   ]
+
   const ual = new UAL([mainChain], 'tet-ual', authenticators)
   store['$ual'] = ual
   Vue.prototype.$ual = ual
