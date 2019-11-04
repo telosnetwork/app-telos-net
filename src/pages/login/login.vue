@@ -59,6 +59,7 @@ export default {
         :key="wallet.getStyle().text"
         v-ripple
         :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
+        v-if="wallet.shouldRender()"
       )
         q-item-section.cursor-pointer(
           avatar

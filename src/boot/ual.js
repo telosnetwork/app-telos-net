@@ -4,6 +4,7 @@ import { KeycatAuthenticator } from '@smontero/ual-keycat'
 import { Ledger } from 'ual-ledger'
 import { Lynx } from 'ual-lynx'
 import { Scatter } from 'ual-scatter'
+import { Sqrl } from '@smontero/ual-sqrl'
 import { TokenPocket } from 'ual-token-pocket'
 
 export default async ({ Vue, store }) => {
@@ -21,6 +22,7 @@ export default async ({ Vue, store }) => {
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
+    new Sqrl([mainChain], { appName: process.env.APP_NAME }),
     new TokenPocket([mainChain])
   ]
 
