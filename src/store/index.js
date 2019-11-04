@@ -8,6 +8,7 @@ import apps from './apps'
 import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
+import general from './general'
 
 Vue.use(Vuex)
 
@@ -25,7 +26,8 @@ export default function (/* { ssrContext } */) {
       apps,
       notifications,
       trails,
-      transfers
+      transfers,
+      general
     },
 
     // enable strict mode (adds overhead!)

@@ -2,6 +2,10 @@ export const setLoadingWallet = (state, wallet) => {
   state.loading = wallet
 }
 
+export const setRequestAccount = (state, requestAccount) => {
+  state.requestAccount = requestAccount
+}
+
 export const setAccount = (state, account) => {
   state.account = account
 }

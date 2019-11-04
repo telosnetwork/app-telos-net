@@ -1,14 +1,34 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import { utils } from './mixins/utils'
 
 export default {
   name: 'App',
+  mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),
+    ...mapGetters('general', ['errorMsg', 'successMsg']),
     layout () {
       return `layout-${this.$route.meta.layout || 'auth'}`
     }
+  },
+  watch: {
+    errorMsg (msg) {
+      if (msg) {
+        this.showNotification(msg, 'error')
+        this.setErrorMsg(null)
+      }
+    },
+    successMsg (msg) {
+      if (msg) {
+        this.showNotification(msg, 'success')
+        this.setSuccessMsg(null)
+      }
+    }
+  },
+  methods: {
+    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg'])
   }
 }
 </script>
