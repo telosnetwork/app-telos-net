@@ -1,21 +1,16 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'request-account',
-  props: {
-    show: {
-      type: Boolean,
-      required: true
-    }
-  },
   computed: {
-    ...mapGetters('accounts', ['availableAccounts', 'availableAccountsLoaded'])
+    ...mapGetters('accounts', ['requestAccount', 'availableAccounts', 'availableAccountsLoaded'])
   },
   methods: {
+    ...mapMutations('accounts', ['setRequestAccount']),
     async onContinue (account) {
       console.log(account)
-      this.$emit('update:show', false)
+      this.setRequestAccount(false)
       this.$emit('accountEntered', account)
     }
   }
@@ -24,7 +19,7 @@ export default {
 
 <template lang="pug">
   q-dialog(
-    v-model="show"
+    v-model="requestAccount"
     persistent
   )
     q-card
@@ -35,7 +30,7 @@ export default {
           flat
           round
           dense
-          @click="$emit('update:show', false)"
+          @click="setRequestAccount(false)"
           icon="fas fa-times"
         )
 

@@ -27,7 +27,7 @@ export const utils = {
         textColor: 'white',
         message: message,
         icon: icon,
-        timeout: 20000,
+        timeout: 5000,
         actions: [{ label: 'Close', color: 'white' }]
       })
     }
