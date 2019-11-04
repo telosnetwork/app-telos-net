@@ -7,45 +7,45 @@
       .row.justify-center
         q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
           input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
-      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']", autogrow)
-      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
-      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
       q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
+      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]")
         template(v-slot:no-option)
           q-item
-            q-item-section.text-grey No results
-      q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+            q-item-section.text-grey {{ $t('lists.empty.countries') }}
+      q-select(:label="$t('pages.signUp.form.hobbies')", :hint="$t('forms.hints.pressToAddHobbie')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
       div(v-for='(cField, index) in customFields', :key='index')
-        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
           template(v-slot:append)
             q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
             q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
       .row
-        q-btn(label="Add custom field", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
+        q-btn(:label="$t('pages.signUp.form.addCustomField')", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
       q-dialog(v-model='addingNewField', persistent, @hide='editingCustomField = false')
         q-card(v-if="!editingCustomField")
           q-card-section
             .text-h6
-              | Write the name of new custom field
+              | {{ $t('pages.signUp.form.newCustomFieldName') }}
           q-card-section
             q-input(dense, v-model="newFieldName", autofocus)
           q-card-section
-            q-btn(flat, label='Cancel', v-close-popup)
-            q-btn(flat, label='Add custom field', v-close-popup, @click='addCustomField')
+            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+            q-btn(flat, :label="$t('pages.signUp.form.addCustomField')", v-close-popup, @click='addCustomField')
         q-card(v-if="editingCustomField")
           q-card-section
             .text-h6
-              | Write the new field name
+              | {{ $t('pages.signUp.form.editCustomFieldName') }}
           q-card-section
             q-input(dense, v-model="newFieldName", autofocus)
           q-card-section
-            q-btn(flat, label='Cancel', v-close-popup)
-            q-btn(flat, label='Change name', v-close-popup, @click='editCustomFieldName')
+            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+            q-btn(flat, :label="$t('common.buttons.save')", v-close-popup, @click='editCustomFieldName')
 
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>

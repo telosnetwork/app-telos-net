@@ -6,7 +6,8 @@ export default {
       continue: 'Continue',
       create: 'Create',
       logout: 'Logout',
-      register: 'Register'
+      register: 'Register',
+      save: 'Save'
     },
     defaultTitle: 'Title'
   },
@@ -23,6 +24,10 @@ export default {
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
       required: 'This field is required'
+    },
+    hints: {
+      selectCountrie: 'Please select your countrie',
+      pressToAddHobbie: 'Press enter to add a hobbie'
     }
   },
   menu: {
@@ -41,6 +46,11 @@ export default {
     trails: {
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
+    }
+  },
+  lists: {
+    empty: {
+      countries: 'Not countries'
     }
   },
   pages: {
@@ -110,7 +120,10 @@ export default {
         currentEmail: 'Current Email',
         country: 'Country',
         hobbies: 'Hobbies',
-        btnSave: 'Save'
+        btnSave: 'Save',
+        newCustomFieldName: 'Write the name of new custom field',
+        editCustomFieldName: 'Write the new field name',
+        addCustomField: 'Add custom field'
       }
     },
     general: {

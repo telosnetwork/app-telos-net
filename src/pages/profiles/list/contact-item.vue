@@ -10,9 +10,9 @@
             q-item-label(caption='', lines='1') {{contact.email}}
             q-item-label(caption, lines='2') {{contact.publicData.countryCode}}
         q-item-section(side, v-if="!isOwn")
-            q-btn(icon='chat', round, color='green' @click='goToChat')
+            q-btn.side-btn(icon='chat', size='18px', round, color='green' @click='goToChat')
         q-item-section(side, v-if="isOwn")
-            q-btn(icon='edit', round, color='green' @click='goToEditOwnProfile')
+            q-btn.side-btn(icon='edit', size='18px', round, color='green' @click='goToEditOwnProfile')
 </template>
 
 <script>
@@ -53,4 +53,7 @@ export default {
     width: 100%;
 .own
   border: solid 2px green
+
+.side-btn
+  z-index: 100
 </style>
