@@ -1,3 +1,4 @@
 export default () => ({
-  error: null
+  errorMsg: null,
+  successMsg: null
 })

@@ -1,1 +1,2 @@
-export const error = ({ error }) => error
+export const errorMsg = ({ errorMsg }) => errorMsg
+export const successMsg = ({ successMsg }) => successMsg
