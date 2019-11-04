@@ -28,7 +28,7 @@
     "@smontero/ppp-common": "0.0.6",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.4",
     "@smontero/ual-keycat": "^1.0.19",
-    "@smontero/ual-sqrl": "^0.1.6",
+    "@smontero/ual-sqrl": "^0.1.7",
     "axios": "^0.18.1",
     "date-diff": "^0.2.1",
     "dotenv": "^8.1.0",
