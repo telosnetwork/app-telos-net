@@ -31,11 +31,13 @@ export default function ({ store }) {
           if (!await PPP.authApi().hasValidSession()) {
             if (!await store.dispatch('accounts/loginToBackend')) {
               next(false)
+              return
             }
           }
         }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
+          console.log('Need to verify comm')
           if (!store.getters['profiles/isRegistered']) {
             next({ name: 'userRegister' })
           } else if (store.getters['profiles/needVerifyComm']) {
