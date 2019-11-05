@@ -13,7 +13,7 @@ main
         q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
           input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
 
-        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='myEvent', icon='start', style='width: 100px')
+        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='upload', icon='start', style='width: 100px')
 </template>
 
 <script>
@@ -22,7 +22,7 @@ import PPP from '@smontero/ppp-client-api'
 // import croppa from 'vue-croppa'
 
 export default {
-  name: 'edit-name',
+  name: 'edit-image',
   props: {
     imgKey: String,
     identity: String
@@ -31,7 +31,9 @@ export default {
     return {
       url: '',
       croppa: {},
-      loadingFile: false
+      loadingFile: false,
+      mImgKey: '',
+      mIdentity: ''
     }
   },
   watch: {
@@ -47,15 +49,51 @@ export default {
   },
   methods: {
     myEvent () {
-      this.$emit('Change', 'Soy la data')
+      this.$emit('Change', {
+        url: this.url,
+        key: this.imgKey,
+        identity: this.identity
+      })
       // alert('hi')
+    },
+    async upload () {
+      if (!this.croppa.hasImage()) {
+        alert('no image to upload')
+        return
+      }
+      this.croppa.generateBlob(async (blob) => {
+        console.log(blob)
+        const file = blob
+        var fd = new FormData()
+        fd.append('file', blob, 'filename.jpg')
+        console.log(fd)
+        console.log(file)
+        // console.log('File changed!')
+        const profileApi = PPP.profileApi()
+        const authApi = PPP.authApi()
+        const key = await profileApi.uploadAvatar(file)
+        // console.log(key)
+        const userInfo = await authApi.userInfo()
+        // console.log(userInfo)
+        const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+        // console.log(url)
+        this.url = urlr
+        this.mImgKey = key
+        this.mIdentity = userInfo.id
+        this.loadingFile = false
+        this.$emit('Change', {
+          url: this.url,
+          key: this.mImgKey,
+          identity: this.mIdentity
+        })
+      })
     },
     async updateUrl () {
       this.url = ''
       if (this.imgKey && this.identity) {
         await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity).then((rUrl) => {
           this.url = rUrl
-          this.$emit('Change', rUrl)
+          // this.$emit('Change', rUrl)
           var image = new Image()
           // Notice: it's necessary to set "crossorigin" attribute before "src" attribute.
           image.setAttribute('crossorigin', 'anonymous')
@@ -84,6 +122,7 @@ export default {
     async onFileChange (e) {
       this.loadingFile = true
       const file = e.target.files[0]
+      console.log(file)
       // console.log('File changed!')
       const profileApi = PPP.profileApi()
       const authApi = PPP.authApi()
@@ -94,8 +133,8 @@ export default {
       const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
       // console.log(url)
       this.url = urlr
-      this.imgKey = key
-      this.identity = userInfo.id
+      this.mImgKey = key
+      this.mIdentity = userInfo.id
       this.loadingFile = false
     }
   }

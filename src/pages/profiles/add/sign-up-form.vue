@@ -141,6 +141,10 @@ export default {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
     changeCroppa (v) {
       alert(v)
+      console.log(v)
+      this.imgKey = v.key
+      this.identity = v.identity
+      this.url = v.url
     },
     onSubmit () {
       if (this.methodComm === null) {
