@@ -29,7 +29,10 @@ export default function ({ store }) {
       if (store.getters['accounts/isAuthenticated']) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
           if (!await PPP.authApi().hasValidSession()) {
-            if (!await store.dispatch('accounts/loginToBackend')) {
+            store.commit('general/setIsLoading', true)
+            const loggedIn = await store.dispatch('accounts/loginToBackend')
+            store.commit('general/setIsLoading', false)
+            if (!loggedIn) {
               next(false)
               return
             }

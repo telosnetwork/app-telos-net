@@ -31,7 +31,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
   }
 }
 
-export const loginToBackend = async function ({ dispatch }) {
+export const loginToBackend = async function ({ commit }) {
   try {
     PPP.setActiveUser(this.$api)
     const authApi = PPP.authApi()
@@ -40,6 +40,7 @@ export const loginToBackend = async function ({ dispatch }) {
     return true
   } catch (e) {
     console.log('Failed to login to backend: ', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
     return false
   }
 }
