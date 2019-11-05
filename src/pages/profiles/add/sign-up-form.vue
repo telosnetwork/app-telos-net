@@ -2,13 +2,9 @@
 .row.justify-center.items-center
   .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
-      s3-image.S3Img(:img-key='imgKey', :identity='identity')
-      div.r
-        edit-image(:img-key='imgKey', :identity='identity')
+      //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
+      edit-image(:img-key='imgKey', :identity='identity' v-on:Change="changeCroppa")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
-      .row.justify-center
-        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
-          input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
       q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
       q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
@@ -53,7 +49,7 @@
 </template>
 
 <script>
-import PPP from '@smontero/ppp-client-api'
+// import PPP from '@smontero/ppp-client-api'
 import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
@@ -90,7 +86,6 @@ export default {
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
-      loadingFile: false,
       customFields: [],
       addingNewField: false,
       editingCustomField: false,
@@ -108,21 +103,6 @@ export default {
       }
       return commMeth
     },
-    // customFieldsC () {
-    //   let mCustomFieldsC
-    //   if (this.customFS === undefined) {
-    //     mCustomFieldsC = this.customFields
-    //   } else mCustomFieldsC = this.customFS
-    //   return mCustomFieldsC
-    // },
-    // customFieldsC () {
-    //   const customFields = []
-    //   const color = 'green'
-    //   for (const cField in this.customField) {
-    //     customFields.push({ label: this.customField[cField].display, value: this.customField[cField].value, color: color })
-    //   }
-    //   return customFields
-    // },
     myProfile () {
       return this.$store.state.profiles.myProfile
     },
@@ -159,22 +139,8 @@ export default {
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
-    async onFileChange (e) {
-      this.loadingFile = true
-      const file = e.target.files[0]
-      // console.log('File changed!')
-      const profileApi = PPP.profileApi()
-      const authApi = PPP.authApi()
-      const key = await profileApi.uploadAvatar(file)
-      // console.log(key)
-      const userInfo = await authApi.userInfo()
-      // console.log(userInfo)
-      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
-      // console.log(url)
-      this.url = urlr
-      this.imgKey = key
-      this.identity = userInfo.id
-      this.loadingFile = false
+    changeCroppa (v) {
+      alert(v)
     },
     onSubmit () {
       if (this.methodComm === null) {

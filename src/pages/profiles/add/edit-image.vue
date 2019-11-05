@@ -1,18 +1,19 @@
-<template>
-<!-- croppa(prevent-white-space, @init="onInit", :width="250", :height="250", initial-image="https://zhanziyang.github.io/vue-croppa/static/500.jpeg") -->
-<!-- img(slot='placeholder', :src='url') -->
-    <croppa
-    v-model="croppa"
-    :width="250"
-    :height="250"
-    prevent-white-space
-    :image-border-radius="100"
-    :initial-image="url"
+<template lang="pug">
+main
+  croppa.radio(
+    v-model="croppa",
+    :width="200",
+    :height="200",
+    prevent-white-space,
+    :image-border-radius="100",
+    :initial-image="url",
     @init="onInit"
-    class="radio"
-    >
-    <img class="radio" slot="placeholder" :src="getUw"/>
-  </croppa>
+  )
+  .row.justify-center
+        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
+          input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
+
+        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='myEvent', icon='start', style='width: 100px')
 </template>
 
 <script>
@@ -29,7 +30,8 @@ export default {
   data: function () {
     return {
       url: '',
-      croppa: {}
+      croppa: {},
+      loadingFile: false
     }
   },
   watch: {
@@ -43,22 +45,21 @@ export default {
   async created () {
     this.updateUrl()
   },
-  computed: {
-    getUw () {
-      return this.url
-    }
-  },
   methods: {
+    myEvent () {
+      this.$emit('Change', 'Soy la data')
+      // alert('hi')
+    },
     async updateUrl () {
       this.url = ''
       if (this.imgKey && this.identity) {
         await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity).then((rUrl) => {
           this.url = rUrl
+          this.$emit('Change', rUrl)
           var image = new Image()
           // Notice: it's necessary to set "crossorigin" attribute before "src" attribute.
           image.setAttribute('crossorigin', 'anonymous')
           image.src = rUrl
-
           this.url = image
           this.croppa.refresh()
         })
@@ -79,6 +80,23 @@ export default {
         ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
         ctx.closePath()
       })
+    },
+    async onFileChange (e) {
+      this.loadingFile = true
+      const file = e.target.files[0]
+      // console.log('File changed!')
+      const profileApi = PPP.profileApi()
+      const authApi = PPP.authApi()
+      const key = await profileApi.uploadAvatar(file)
+      // console.log(key)
+      const userInfo = await authApi.userInfo()
+      // console.log(userInfo)
+      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+      // console.log(url)
+      this.url = urlr
+      this.imgKey = key
+      this.identity = userInfo.id
+      this.loadingFile = false
     }
   }
 }
