@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import PPP from '@smontero/ppp-client-api'
 
 import routes from './routes'
 
@@ -22,10 +23,17 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     // Verify registered users
     if (to.matched.some(record => !record.meta.layout)) {
       if (store.getters['accounts/isAuthenticated']) {
+        if (to.matched.some(record => record.meta.needBackendLogin)) {
+          if (!await PPP.authApi().hasValidSession()) {
+            if (!await store.dispatch('accounts/loginToBackend')) {
+              next(false)
+            }
+          }
+        }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
           if (!store.getters['profiles/isRegistered']) {

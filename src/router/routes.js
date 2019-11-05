@@ -12,15 +12,15 @@ const routes = [
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
   // PPP
-  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), name: 'userRegister' },
-  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), name: 'verifyComm' },
-  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true }, name: 'chat' },
-  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true } },
-  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true } },
-  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), meta: { needVerifyComm: true }, name: 'registerApp' },
-  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue'), meta: { needVerifyComm: true } },
-  { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), name: 'myProfile' },
-  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true }, name: 'profileDetail' }
+  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: true }, name: 'userRegister' },
+  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), meta: { needBackendLogin: true }, name: 'verifyComm' },
+  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'chat' },
+  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
+  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
+  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'registerApp' },
+  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
+  { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), meta: { needBackendLogin: true }, name: 'myProfile' },
+  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'profileDetail' }
 ]
 
 // Always leave this as last one

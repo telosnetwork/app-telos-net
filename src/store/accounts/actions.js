@@ -18,7 +18,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
-      await dispatch('loginToBackend')
+      // await dispatch('loginToBackend')
       commit('setAccount', users[0].accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       this.$router.push({ path: returnUrl || '/trails/treasuries' })
@@ -37,10 +37,11 @@ export const loginToBackend = async function ({ dispatch }) {
     PPP.setActiveUser(this.$api)
     const authApi = PPP.authApi()
     await authApi.signIn()
-    this.dispatch('profiles/getProfile', { root: true })
+    await dispatch('profiles/getProfile', { root: true })
+    return true
   } catch (e) {
-    dispatch('logout')
-    throw e
+    console.log('Failed to login to backend: ', e)
+    return false
   }
 }
 
