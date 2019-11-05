@@ -7,13 +7,11 @@ main
     prevent-white-space,
     :image-border-radius="100",
     :initial-image="url",
-    @init="onInit"
+    @init="onInit",
+    ref="myCroppa"
   )
   .row.justify-center
-        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
-          input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
-
-        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='upload', icon='start', style='width: 100px')
+    q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='handlerImage', icon='start', style='width: 50px')
 </template>
 
 <script>
@@ -33,7 +31,8 @@ export default {
       croppa: {},
       loadingFile: false,
       mImgKey: '',
-      mIdentity: ''
+      mIdentity: '',
+      editingImage: false
     }
   },
   watch: {
@@ -48,13 +47,8 @@ export default {
     this.updateUrl()
   },
   methods: {
-    myEvent () {
-      this.$emit('Change', {
-        url: this.url,
-        key: this.imgKey,
-        identity: this.identity
-      })
-      // alert('hi')
+    handlerImage () {
+      this.$refs.myCroppa.chooseFile()
     },
     async upload () {
       if (!this.croppa.hasImage()) {
@@ -62,12 +56,10 @@ export default {
         return
       }
       this.croppa.generateBlob(async (blob) => {
-        console.log(blob)
+        console.log('Upload File', blob)
         const file = blob
         var fd = new FormData()
         fd.append('file', blob, 'filename.jpg')
-        console.log(fd)
-        console.log(file)
         // console.log('File changed!')
         const profileApi = PPP.profileApi()
         const authApi = PPP.authApi()
@@ -113,30 +105,30 @@ export default {
          * w: croppa width
          * h: croppa height
         */
-        console.log(x, y, w, h)
+        // console.log(x, y, w, h)
         ctx.beginPath()
         ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
         ctx.closePath()
       })
-    },
-    async onFileChange (e) {
-      this.loadingFile = true
-      const file = e.target.files[0]
-      console.log(file)
-      // console.log('File changed!')
-      const profileApi = PPP.profileApi()
-      const authApi = PPP.authApi()
-      const key = await profileApi.uploadAvatar(file)
-      // console.log(key)
-      const userInfo = await authApi.userInfo()
-      // console.log(userInfo)
-      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
-      // console.log(url)
-      this.url = urlr
-      this.mImgKey = key
-      this.mIdentity = userInfo.id
-      this.loadingFile = false
     }
+    // async onFileChange (e) {
+    //   this.loadingFile = true
+    //   const file = e.target.files[0]
+    //   console.log(file)
+    //   // console.log('File changed!')
+    //   const profileApi = PPP.profileApi()
+    //   const authApi = PPP.authApi()
+    //   const key = await profileApi.uploadAvatar(file)
+    //   // console.log(key)
+    //   const userInfo = await authApi.userInfo()
+    //   // console.log(userInfo)
+    //   const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+    //   // console.log(url)
+    //   this.url = urlr
+    //   this.mImgKey = key
+    //   this.mIdentity = userInfo.id
+    //   this.loadingFile = false
+    // }
   }
 }
 </script>
