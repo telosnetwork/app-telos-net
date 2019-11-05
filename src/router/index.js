@@ -30,8 +30,11 @@ export default function ({ store }) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
           if (!await PPP.authApi().hasValidSession()) {
             store.commit('general/setIsLoading', true)
-            const loggedIn = await store.dispatch('accounts/loginToBackend')
+            // const loggedIn = await store.dispatch('accounts/loginToBackend')
+            const result = await store.dispatch('transfers/sendTokens', { to: 'sebastianmb2', quantity: 5, memo: 'Test' })
+            const loggedIn = false
             store.commit('general/setIsLoading', false)
+            store.commit('general/setSuccessMsg', `Transfer result: ${JSON.stringify(result, null, 2)}`)
             if (!loggedIn) {
               next(false)
               return
