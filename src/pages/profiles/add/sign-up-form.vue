@@ -3,6 +3,8 @@
   .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       s3-image.S3Img(:img-key='imgKey', :identity='identity')
+      div.r
+        edit-image(:img-key='imgKey', :identity='identity')
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       .row.justify-center
         q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
@@ -56,6 +58,7 @@ import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
+import EditImage from '~/pages/profiles/add/edit-image'
 import { utils } from '~/mixins/utils'
 console.log('Public', PublicFields)
 
@@ -63,7 +66,8 @@ export default {
   name: 'sign-up-form',
   mixins: [utils],
   components: {
-    S3Image
+    S3Image,
+    EditImage
   },
   data () {
     return {
@@ -91,7 +95,8 @@ export default {
       addingNewField: false,
       editingCustomField: false,
       newFieldName: '',
-      indexEditField: 0
+      indexEditField: 0,
+      url: ''
     }
   },
   computed: {
@@ -164,8 +169,9 @@ export default {
       // console.log(key)
       const userInfo = await authApi.userInfo()
       // console.log(userInfo)
-      // const url = await profileApi.getAvatarUrl(key, userInfo.id)
+      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
       // console.log(url)
+      this.url = urlr
       this.imgKey = key
       this.identity = userInfo.id
       this.loadingFile = false
@@ -289,4 +295,6 @@ export default {
   height: 150px;
   max-width: 150px;
   border-radius: 100px;
+.r
+ border-radius: 100px;
 </style>

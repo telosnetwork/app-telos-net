@@ -2,7 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
+import Croppa from 'vue-croppa'
 
+Vue.use(Croppa)
 Vue.use(VueRouter)
 
 /*
