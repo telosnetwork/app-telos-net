@@ -12,7 +12,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('poc', ['lock', 'unlock'])
+    ...mapActions('poc', ['toggleLock']),
+    onToggleLock () {
+      this.toggleLock({
+        lock: !this.safe.locked,
+        safeName: this.safe.safe_name,
+        accountName: this.account
+      })
+    }
   },
   computed: {
     ...mapGetters('accounts', ['account']),
@@ -56,6 +63,6 @@ div
           size='md'
           :label='safe.locked === 0 ? $t("pages.poc.smartsafe.lock") : $t("pages.poc.smartsafe.unlock")'
           :disabled='safe.locked === 1 && !lockedByUser'
-          @click='safe.locked === 0 ? lock(safe.safe_name) : unlock(safe.safe_name)'
+          @click='onToggleLock'
         )
 </template>
