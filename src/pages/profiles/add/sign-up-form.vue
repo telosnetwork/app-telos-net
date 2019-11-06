@@ -124,7 +124,7 @@ export default {
     }
   },
   beforeMount: async function () {
-    this.$store.commit('profiles/setPPPLoading', true)
+    this.showIsLoading(true)
     const response = await this.getProfile(true)
     if (response !== undefined) {
       this.firstName = response.publicData.firstName
@@ -137,17 +137,16 @@ export default {
       this.methodComm = response.commPref
       this.customFields = response.publicData.customFields ? response.publicData.customFields : []
     }
-    this.$store.commit('profiles/setPPPLoading', false)
+    this.showIsLoading(false)
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
     // ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg']),
     onSubmit () {
-      this.sentNoti('hi')
       if (this.methodComm === null) {
-        this.showNotification('You must choose one prefer method communication', 'error')
+        this.showErrorMsg('You must choose one prefer method communication')
       } else if (this.hobbies.length === 0) {
-        this.showNotification('You must write at least one hobby', 'error')
+        this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
       }
@@ -165,7 +164,7 @@ export default {
       this.loadingFile = false
     },
     async doSignup () {
-      this.$store.commit('profiles/setPPPLoading', true)
+      this.showIsLoading(true)
       await this.$refs.mEditImage.getBlob()
         .then((v) => this.getImg(v))
         .catch(e => console.log(e))
@@ -186,16 +185,15 @@ export default {
         }
       }
       try {
-        this.$store.commit('profiles/setPPPLoading', true)
+        this.showIsLoading(true)
         await this.signUp(mData)
-        // this.showNotification('Submited')
-        this.setSuccessMsg('Subbbb')
+        this.showSuccessMsg('Submited')
         await this.getProfile()
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showIsLoading(false)
         this.$router.push({ name: 'myProfile' })
       } catch (e) {
-        this.$store.commit('profiles/setPPPLoading', false)
-        this.showNotification(e.message, 'error')
+        this.showIsLoading(false)
+        this.showErrorMsg(e.message)
       }
     },
     onReset () {

@@ -59,31 +59,31 @@ export default {
   methods: {
     ...mapActions('profiles', ['verifySMS', 'verifyEmail', 'getProfile']),
     _verifySMS: async function () {
-      this.$store.commit('profiles/setPPPLoading', true)
+      this.showIsLoading(true)
       try {
         await this.verifySMS(this.codeSMS)
         const returnUrl = this.$route.query.returnUrl
         await this.getProfile()
         this.$router.push({ path: returnUrl || '/profiles/myProfile' })
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showIsLoading(true)
       } catch (e) {
         console.log(e)
-        this.showNotification(e.message, 'error')
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showErrorMsg(e.message)
+        this.showIsLoading(false)
       }
     },
     _verifyEmail: async function () {
-      this.$store.commit('profiles/setPPPLoading', true)
+      this.showIsLoading(true)
       try {
         await this.verifyEmail(this.codeEMAIL)
         const returnUrl = this.$route.query.returnUrl
         await this.getProfile()
         this.$router.push({ path: returnUrl || '/profiles/myProfile' })
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showIsLoading(true)
       } catch (e) {
         console.log(e)
-        this.showNotification(e.message, 'error')
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showErrorMsg(e.message)
+        this.showIsLoading(false)
       }
     }
   }

@@ -81,7 +81,7 @@ export default {
         }).catch(error => {
           console.log(error)
           this.sendingMessage = false
-          this.showNotification(error.message, 'error')
+          this.showErrorMsg(error.message)
           messageInput.focus()
         })
         this.message = null

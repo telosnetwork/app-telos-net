@@ -1,6 +1,5 @@
 <script>
-// import Vue from 'vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 // import { utils } from './mixins/utils'
 
 // Vue.mixin(utils)
@@ -18,20 +17,18 @@ export default {
   },
   watch: {
     errorMsg (msg) {
+      console.log('error', msg)
       if (msg) {
         this.showNotification(msg, 'error')
-        this.setErrorMsg(null)
+        this.showErrorMsg(null)
       }
     },
     successMsg (msg) {
       if (msg) {
         this.showNotification(msg, 'success')
-        this.setSuccessMsg(null)
+        this.showSuccessMsg(null)
       }
     }
-  },
-  methods: {
-    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg'])
   }
 }
 </script>
