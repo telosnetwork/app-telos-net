@@ -1,18 +1,21 @@
 <template lang="pug">
 main
-  croppa.radio(
-    v-model="croppa",
-    :width="200",
-    :height="200",
-    prevent-white-space,
-    :image-border-radius="100",
-    :initial-image="url",
-    :show-remove-button="false"
-    @init="onInit",
-    :show-loading="true"
-    @draw="isEdited"
-    ref="myCroppa"
-  )
+  .row.justify-center
+    croppa.radio(
+      v-model="croppa",
+      :width="200",
+      :height="200",
+      prevent-white-space,
+      :image-border-radius="100",
+      :initial-image="url",
+      :show-remove-button="false"
+      @init="onInit",
+      :show-loading="true"
+      @draw="isEdited"
+      ref="myCroppa"
+    )
+  .row.justify-center.q-mt-sm
+    p.text-weight-thin Use your mouse to zoom in/out and move the image to select the desired part
   .row.justify-center
     q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='choseImage', icon='edit', style='width: 100px')
 </template>
