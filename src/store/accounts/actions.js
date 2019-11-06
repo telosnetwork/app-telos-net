@@ -1,13 +1,21 @@
 import PPP from '@smontero/ppp-client-api'
 
+const getAuthenticator = function (ual, wallet = null) {
+  wallet = wallet || localStorage.getItem('autoLogin')
+  const idx = ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
+  return {
+    authenticator: ual.authenticators[idx],
+    idx
+  }
+}
 // export const login = async function ({ commit, dispatch }, idx) {
 // export const login = async function ({ commit, dispatch }, { idx, account }) {
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
   try {
     commit('setLoadingWallet', authenticator.getStyle().text)
+    await authenticator.init()
     if (!account) {
-      await authenticator.init()
       const requestAccount = await authenticator.shouldRequestAccountName()
       if (requestAccount) {
         await dispatch('fetchAvailableAccounts', idx)
@@ -18,8 +26,10 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
-      commit('setAccount', await users[0].getAccountName())
+      const accountName = await users[0].getAccountName()
+      commit('setAccount', accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
+      localStorage.setItem('account', accountName)
       this.$router.push({ path: returnUrl || '/trails/treasuries' })
     }
   } catch (e) {
@@ -47,11 +57,8 @@ export const loginToBackend = async function ({ commit }) {
 
 export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
-  const wallet = localStorage.getItem('autoLogin')
-  const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
-  if (idx !== -1) {
-    this.$ual.authenticators[idx].logout()
-  }
+  const { authenticator } = getAuthenticator(this.$ual)
+  authenticator && authenticator.logout()
   commit('setAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null
@@ -59,11 +66,10 @@ export const logout = async function ({ commit }) {
 }
 
 export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
-  const wallet = localStorage.getItem('autoLogin')
-  const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
-  if (idx !== -1) {
+  const { authenticator, idx } = getAuthenticator(this.$ual)
+  if (authenticator) {
     commit('setAutoLogin', true)
-    await dispatch('login', { idx, returnUrl })
+    await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }
 }
