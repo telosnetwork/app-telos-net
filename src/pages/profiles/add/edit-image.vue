@@ -32,7 +32,8 @@ export default {
       loadingFile: false,
       mImgKey: '',
       mIdentity: '',
-      editingImage: false
+      editingImage: false,
+      imageChanged: false
     }
   },
   watch: {
@@ -48,19 +49,25 @@ export default {
   },
   methods: {
     choseImage () {
+      this.imageChanged = true
       this.$refs.myCroppa.chooseFile()
     },
     getBlob () {
       const self = this
       return new Promise(function (resolve, reject) {
         try {
-          console.log(self.croppa)
-          self.croppa.generateBlob((blob) => {
-            console.log('getBlob refs static')
-            resolve(blob)
-          })
+          if (!self.imageChanged) {
+            reject(new Error('No image has changed'))
+          }
+          if (self.croppa.hasImage) {
+            self.croppa.generateBlob((blob) => {
+              resolve(blob)
+            })
+          } else {
+            reject(new Error('No selected image'))
+          }
         } catch (e) {
-          reject(Error(e.message))
+          reject(new Error(e))
         }
       })
     },
@@ -80,7 +87,6 @@ export default {
       }
     },
     onInit () {
-      console.log(this.croppa)
       this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
         /*
          * ctx: canvas context

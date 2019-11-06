@@ -3,7 +3,7 @@
   .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
-      edit-image(:img-key='imgKey', :identity='identity' v-on:Change="changeCroppa", ref="mEditImage")
+      edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
       q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
@@ -141,15 +141,7 @@ export default {
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
-    changeCroppa (v) {
-      alert(v)
-      console.log(v)
-      this.imgKey = v.key
-      this.identity = v.identity
-      this.url = v.url
-    },
     onSubmit () {
-      console.log(this.$refs)
       if (this.methodComm === null) {
         this.showNotification('You must choose one prefer method communication', 'error')
       } else if (this.hobbies.length === 0) {
@@ -174,7 +166,8 @@ export default {
       this.$store.commit('profiles/setPPPLoading', true)
       await this.$refs.mEditImage.getBlob()
         .then((v) => this.getImg(v))
-        .catch((e) => alert(e))
+        .catch(e => console.log(e))
+
       const mData = {
         [RootFields.EMAIL]: this.email,
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
