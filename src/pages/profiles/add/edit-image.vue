@@ -50,6 +50,22 @@ export default {
     handlerImage () {
       this.$refs.myCroppa.chooseFile()
     },
+    getBlob () {
+      // const crop = this.croppa
+      const self = this
+      return new Promise(function (resolve, reject) {
+        // do a thing, possibly async, then…
+        try {
+          console.log(self.croppa)
+          self.croppa.generateBlob((blob) => {
+            console.log('getBlob refs static')
+            resolve(blob)
+          })
+        } catch (e) {
+          reject(Error(e.message))
+        }
+      })
+    },
     async upload () {
       if (!this.croppa.hasImage()) {
         alert('no image to upload')

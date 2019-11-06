@@ -155,39 +155,26 @@ export default {
       } else if (this.hobbies.length === 0) {
         this.showNotification('You must write at least one hobby', 'error')
       } else {
-        this.getImg()
+        this.doSignup()
       }
     },
-    async getImg () {
-      console.log('Start IMG')
-      await this.$refs.mEditImage.croppa.generateBlob(async (blob) => {
-        console.log('Start Async IMG')
-        console.log('Upload File', blob)
-        const file = blob
-        var fd = new FormData()
-        fd.append('file', blob, 'filename.jpg')
-        // console.log('File changed!')
-        const profileApi = PPP.profileApi()
-        const authApi = PPP.authApi()
-        const key = await profileApi.uploadAvatar(file)
-        // console.log(key)
-        const userInfo = await authApi.userInfo()
-        // console.log(userInfo)
-        const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
-        // console.log(url)
-        this.url = urlr
-        // this.mImgKey = key
-        this.imgKey = key
-        this.identity = userInfo.id
-        this.loadingFile = false
-        this.doSignup()
-      })
+    async getImg (blob) {
+      console.log('Upload File', blob)
+      const profileApi = PPP.profileApi()
+      const authApi = PPP.authApi()
+      const key = await profileApi.uploadAvatar(blob)
+      const userInfo = await authApi.userInfo()
+      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+      this.url = urlr
+      this.imgKey = key
+      this.identity = userInfo.id
+      this.loadingFile = false
     },
     async doSignup () {
       this.$store.commit('profiles/setPPPLoading', true)
-      // const newParams = await this.$refs.mEditImage.upload()
-      // await this.getImg()
-      // console.log(newParams)
+      await this.$refs.mEditImage.getBlob()
+        .then((v) => this.getImg(v))
+        .catch((e) => console.log(e))
       const mData = {
         [RootFields.EMAIL]: this.email,
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
