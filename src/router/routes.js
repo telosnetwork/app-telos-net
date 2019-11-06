@@ -16,7 +16,7 @@ const routes = [
   { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title' } },
 
   // POC
-  { path: '/poc/smartsafe', component: () => import('pages/poc/smartsafe.vue'), meta: { title: 'pages.pocSmartSafe.title' } },
+  { path: '/poc/smartsafe', component: () => import('pages/poc/smartsafe/safe-list.vue'), meta: { title: 'pages.poc.smartSafe.title' } },
 
   // PPP
   { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: true }, name: 'userRegister' },

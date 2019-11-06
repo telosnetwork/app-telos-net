@@ -143,8 +143,16 @@ export default {
     testnetDevelopers: {
       title: 'Get a testnet account or testnet TLOS'
     },
-    pocSmartSafe: {
-      title: 'SmartSafe POC'
+    poc: {
+      smartsafe: {
+        title: 'SmartSafe POC',
+        last_unlocker: 'Last unlocked by',
+        last_unlock_time: 'Last unlocked',
+        lock: 'Lock',
+        unlock: 'Unlock',
+        locked_by: 'Locked by',
+        lock_time: 'Locked at'
+      }
     },
     verifyProfile: {
       verifySMS: 'Verify SMS',
