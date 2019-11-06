@@ -1,10 +1,11 @@
 import { UAL } from 'universal-authenticator-library'
-import { EOSIOAuth } from 'ual-eosio-reference-authenticator'
+import { EOSIOAuth } from '@smontero/ual-eosio-reference-authenticator'
 import { KeycatAuthenticator } from '@smontero/ual-keycat'
 import { Ledger } from 'ual-ledger'
-import { Lynx } from 'ual-lynx'
+import { Lynx } from '@smontero/ual-lynx'
 import { Scatter } from 'ual-scatter'
-import { TokenPocket } from 'ual-token-pocket'
+import { Sqrl } from '@smontero/ual-sqrl'
+import { TokenPocket } from '@smontero/ual-token-pocket'
 
 export default async ({ Vue, store }) => {
   const mainChain = {
@@ -21,6 +22,7 @@ export default async ({ Vue, store }) => {
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
+    new Sqrl([mainChain], { appName: process.env.APP_NAME }),
     new TokenPocket([mainChain])
   ]
 

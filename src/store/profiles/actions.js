@@ -29,9 +29,11 @@ export const getProfile = async function ({ commit }, promise = false) {
     if (promise) {
       return profileApi.getProfile()
     } else {
-      await profileApi.getProfile().then(response => {
-        commit('setProfile', response)
-      })
+      // await profileApi.getProfile().then(response => {
+      //   commit('setProfile', response)
+      // })
+      const profile = await profileApi.getProfile()
+      commit('setProfile', profile)
     }
   } catch (error) {
     console.log('Error', error)

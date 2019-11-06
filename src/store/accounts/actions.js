@@ -4,27 +4,45 @@ import PPP from '@smontero/ppp-client-api'
 // export const login = async function ({ commit, dispatch }, { idx, account }) {
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
-  commit('setLoadingWallet', authenticator.getStyle().text)
-  let error
   try {
-    await authenticator.init()
+    commit('setLoadingWallet', authenticator.getStyle().text)
+    if (!account) {
+      await authenticator.init()
+      const requestAccount = await authenticator.shouldRequestAccountName()
+      if (requestAccount) {
+        await dispatch('fetchAvailableAccounts', idx)
+        commit('setRequestAccount', true)
+        return
+      }
+    }
     const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
-      PPP.setActiveUser(this.$api)
-      const authApi = PPP.authApi()
-      await authApi.signIn()
-      commit('setAccount', users[0].accountName)
+      commit('setAccount', await users[0].getAccountName())
       localStorage.setItem('autoLogin', authenticator.constructor.name)
-      this.dispatch('profiles/getProfile', { root: true })
       this.$router.push({ path: returnUrl || '/trails/treasuries' })
     }
   } catch (e) {
-    error = (authenticator.getError() && authenticator.getError().message) || e.message
-    dispatch('logout')
+    const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
+    commit('general/setErrorMsg', error, { root: true })
+    console.log('Login error: ', error)
+  } finally {
+    commit('setLoadingWallet')
   }
-  commit('setLoadingWallet')
-  return error
+}
+
+export const loginToBackend = async function ({ commit }) {
+  try {
+    PPP.setActiveUser(this.$api)
+    const authApi = PPP.authApi()
+    await authApi.signIn()
+    await this.dispatch('profiles/getProfile', { root: true })
+    return true
+  } catch (e) {
+    console.log('Failed to login to backend: ', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    return false
+  }
 }
 
 export const logout = async function ({ commit }) {
@@ -90,4 +108,13 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
   } catch (e) {
     return false
   }
+}
+
+export const fetchAvailableAccounts = async function ({ commit }, idx) {
+  commit('resetAvailableAccounts')
+  const chainId = process.env.NETWORK_CHAIN_ID
+  const authenticator = this.$ual.authenticators[idx]
+  const map = await authenticator.getAccountNamesPerChain()
+  const accounts = map.has(chainId) ? map.get(chainId) : []
+  commit('setAvailableAccounts', accounts)
 }

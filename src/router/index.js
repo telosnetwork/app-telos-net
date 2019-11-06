@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import PPP from '@smontero/ppp-client-api'
 
 import routes from './routes'
 import Croppa from 'vue-croppa'
@@ -24,12 +25,32 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     // Verify registered users
     if (to.matched.some(record => !record.meta.layout)) {
       if (store.getters['accounts/isAuthenticated']) {
+        if (to.matched.some(record => record.meta.needBackendLogin)) {
+          if (!await PPP.authApi().hasValidSession()) {
+            store.commit('general/setIsLoading', true)
+            const loggedIn = await store.dispatch('accounts/loginToBackend')
+            /* try {
+              const result = await store.dispatch('transfers/sendTokens', { to: 'sebastianmb2', quantity: 5, memo: 'Test' })
+              store.commit('general/setSuccessMsg', `Transfer result: ${JSON.stringify(result, null, 2)}`)
+            } catch (e) {
+              store.commit('general/setErrorMsg', `Transfer error: ${JSON.stringify(e, null, 2)}`)
+            }
+            const loggedIn = false */
+            store.commit('general/setIsLoading', false)
+
+            if (!loggedIn) {
+              next(false)
+              return
+            }
+          }
+        }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
+          console.log('Need to verify comm')
           if (!store.getters['profiles/isRegistered']) {
             next({ name: 'userRegister' })
           } else if (store.getters['profiles/needVerifyComm']) {

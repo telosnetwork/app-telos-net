@@ -9,9 +9,6 @@ export default {
   },
   data () {
     return {
-      show: false,
-      error: null,
-      requestAccount: false,
       idx: null
     }
   },
@@ -22,20 +19,10 @@ export default {
     ...mapActions('accounts', ['login', 'autoLogin']),
     async onLogin (idx) {
       this.idx = idx
-      this.error = null
-      const authenticator = this.$ual.authenticators[idx]
-      this.requestAccount = await authenticator.shouldRequestAccountName()
-      if (!this.requestAccount) {
-        this.loginUser()
-      }
+      await this.login({ idx: this.idx, returnUrl: this.$route.query.returnUrl })
     },
-    async loginUser (account) {
-      const error = await this.login({ idx: this.idx, account, returnUrl: this.$route.query.returnUrl })
-      if (!error) {
-        this.show = false
-      } else {
-        this.error = error
-      }
+    async onAccountEntered (account) {
+      await this.login({ idx: this.idx, account, returnUrl: this.$route.query.returnUrl })
     },
     openUrl (url) {
       window.open(url)
@@ -55,6 +42,7 @@ export default {
         :key="wallet.getStyle().text"
         v-ripple
         :style="{ background: wallet.getStyle().background, color: wallet.getStyle().textColor }"
+        v-if="wallet.shouldRender()"
       )
         q-item-section.cursor-pointer(
           avatar
@@ -83,15 +71,8 @@ export default {
               size="12px"
             )
               q-tooltip {{ $t('pages.login.getApp') }}
-      q-item(
-        v-if="error"
-        :active="!!error"
-        active-class="bg-red-1 text-grey-8"
-      )
-        q-item-section {{ error }}
     request-account(
-      :show.sync="requestAccount"
-      @accountEntered="loginUser"
+      @accountEntered="onAccountEntered"
     )
 
 </template>

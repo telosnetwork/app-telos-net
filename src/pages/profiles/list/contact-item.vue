@@ -9,10 +9,12 @@
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
             q-item-label(caption='', lines='1') {{contact.email}}
             q-item-label(caption, lines='2') {{contact.publicData.countryCode}}
-        q-item-section(side, v-if="!isOwn")
-            q-btn.side-btn(icon='chat', size='18px', round, color='green' @click='goToChat')
-        q-item-section(side, v-if="isOwn")
-            q-btn.side-btn(icon='edit', size='18px', round, color='green' @click='goToEditOwnProfile')
+        q-item-section(side, v-if="!isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
+            q-btn(icon='chat', round, color='green' @click='goToChat')
+        q-item-section(side, v-if="isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
+            q-btn(icon='edit', round, color='green' @click='goToEditOwnProfile')
+        q-item-section(side, v-if="!contact.publicData.isVerified || contact.publicData.isVerified === 0")
+            q-item-label(caption='', lines='1') Is not verified
 </template>
 
 <script>

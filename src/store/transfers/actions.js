@@ -1,15 +1,16 @@
 export const sendTokens = async function (context, { to, quantity, memo }) {
   try {
+    const accountName = await this.$api.getAccountName()
     const result = await this.$api.signTransaction({
       actions: [{
         account: 'eosio.token',
         name: 'transfer',
         authorization: [{
-          actor: this.$api.accountName,
+          actor: accountName,
           permission: 'active'
         }],
         data: {
-          from: this.$api.accountName,
+          from: accountName,
           to,
           quantity: `${parseFloat(quantity).toFixed(4)} TLOS`,
           memo
@@ -23,6 +24,6 @@ export const sendTokens = async function (context, { to, quantity, memo }) {
     return result
   } catch (e) {
     console.log(e)
-    return false
+    throw e
   }
 }

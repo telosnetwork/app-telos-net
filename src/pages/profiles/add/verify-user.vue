@@ -23,6 +23,12 @@ export default {
     }
   },
   computed: {
+    needVerifyEmail () {
+      const profile = this.$store.state.profiles.myProfile
+      if (profile.emailInfo.exist && profile.emailInfo.needsToVerify) {
+        return true
+      } else return false
+    },
     toValidate () {
       const profile = this.$store.state.profiles.myProfile
       switch (profile.commPref) {
