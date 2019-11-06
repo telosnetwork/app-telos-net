@@ -18,7 +18,6 @@ export const faucet = async function (context, accountName) {
 
 export const account = async function (context, form) {
   try {
-    debugger
     const response = await this.$axios.post(`/v1/testnet/account`, {
       ownerKey: form.owner_key, activeKey: form.active_key, accountName: form.account_name
     })
