@@ -28,6 +28,13 @@ export default {
         this.showNotification(msg, 'success')
         this.showSuccessMsg(null)
       }
+    },
+    isLoading (value) {
+      if (value) {
+        this.$q.loading.show()
+      } else {
+        this.$q.loading.hide()
+      }
     }
   }
 }
@@ -37,6 +44,6 @@ export default {
   .q-app
     component(:is="layout")
       router-view
-    q-inner-loading(:showing="isLoading || isAutoLoading || isPPPLoading")
+    q-inner-loading(:showing="isAutoLoading || isPPPLoading")
       q-spinner(size="3em")
 </template>

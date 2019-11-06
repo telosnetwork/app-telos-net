@@ -1,5 +1,6 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
+import { DeepError } from '@smontero/ppp-client-api'
 import { validation } from '~/mixins/validation'
 
 export default {
@@ -18,14 +19,20 @@ export default {
   },
   methods: {
     ...mapActions('transfers', ['sendTokens']),
+    ...mapMutations('general', ['setErrorMsg']),
     async onSendTokens () {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      const result = await this.sendTokens(this.form)
-      if (result) {
-        this.transactionId = result.transactionId
-        console.log(result)
+      try {
+        const result = await this.sendTokens(this.form)
+        if (result) {
+          this.transactionId = result.transactionId
+          console.log(result)
+        }
+      } catch (e) {
+        const error = new DeepError(e)
+        this.setErrorMsg(error.message)
       }
       this.submitting = false
     }
