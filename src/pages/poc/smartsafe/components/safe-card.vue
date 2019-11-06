@@ -42,7 +42,7 @@ div
       strong {{ $t('pages.poc.smartsafe.lock_time') }}: {{ safe.last_lock_time }}
     q-card-section
       br
-      strong {{ $t('pages.poc.smartsafe.last_unlocker') }}: {{ safe.last_unlocker }}
+      strong {{ $t('pages.poc.smartsafe.last_unlocker') }}: {{ safe.unlocked_by }}
       br
       strong {{ $t('pages.poc.smartsafe.last_unlock_time') }}: {{ safe.last_unlock_time }}
     q-card-section.flex.justify-end
