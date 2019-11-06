@@ -11,7 +11,7 @@ main
     ref="myCroppa"
   )
   .row.justify-center
-    q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='handlerImage', icon='start', style='width: 50px')
+    q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='handlerImage', icon='edit', style='width: 100px')
 </template>
 
 <script>
@@ -73,11 +73,17 @@ export default {
         this.mImgKey = key
         this.mIdentity = userInfo.id
         this.loadingFile = false
+        console.log('mKey', key)
         this.$emit('Change', {
           url: this.url,
           key: this.mImgKey,
           identity: this.mIdentity
         })
+        return {
+          url: this.url,
+          key: this.mImgKey,
+          identity: this.mIdentity
+        }
       })
     },
     async updateUrl () {

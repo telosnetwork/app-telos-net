@@ -3,7 +3,7 @@
   .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
-      edit-image(:img-key='imgKey', :identity='identity' v-on:Change="changeCroppa")
+      edit-image(:img-key='imgKey', :identity='identity' v-on:Change="changeCroppa", ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
       q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
@@ -56,6 +56,8 @@ import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import { utils } from '~/mixins/utils'
+import PPP from '@smontero/ppp-client-api'
+
 console.log('Public', PublicFields)
 
 export default {
@@ -147,15 +149,45 @@ export default {
       this.url = v.url
     },
     onSubmit () {
+      console.log(this.$refs)
       if (this.methodComm === null) {
         this.showNotification('You must choose one prefer method communication', 'error')
       } else if (this.hobbies.length === 0) {
         this.showNotification('You must write at least one hobby', 'error')
       } else {
-        this.doSignup()
+        this.getImg()
       }
     },
+    async getImg () {
+      console.log('Start IMG')
+      await this.$refs.mEditImage.croppa.generateBlob(async (blob) => {
+        console.log('Start Async IMG')
+        console.log('Upload File', blob)
+        const file = blob
+        var fd = new FormData()
+        fd.append('file', blob, 'filename.jpg')
+        // console.log('File changed!')
+        const profileApi = PPP.profileApi()
+        const authApi = PPP.authApi()
+        const key = await profileApi.uploadAvatar(file)
+        // console.log(key)
+        const userInfo = await authApi.userInfo()
+        // console.log(userInfo)
+        const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+        // console.log(url)
+        this.url = urlr
+        // this.mImgKey = key
+        this.imgKey = key
+        this.identity = userInfo.id
+        this.loadingFile = false
+        this.doSignup()
+      })
+    },
     async doSignup () {
+      this.$store.commit('profiles/setPPPLoading', true)
+      // const newParams = await this.$refs.mEditImage.upload()
+      // await this.getImg()
+      // console.log(newParams)
       const mData = {
         [RootFields.EMAIL]: this.email,
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
@@ -171,7 +203,7 @@ export default {
           'customFields': this.customFields
         }
       }
-      this.$store.commit('profiles/setPPPLoading', true)
+      console.log('MData', mData)
       try {
         await this.signUp(mData)
         this.showNotification('Submited')
