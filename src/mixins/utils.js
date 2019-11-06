@@ -30,6 +30,9 @@ export const utils = {
         timeout: 5000,
         actions: [{ label: 'Close', color: 'white' }]
       })
+    },
+    sentNoti (message) {
+      alert(message)
     }
   }
 }

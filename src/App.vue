@@ -1,10 +1,13 @@
 <script>
+// import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
-import { utils } from './mixins/utils'
+// import { utils } from './mixins/utils'
+
+// Vue.mixin(utils)
 
 export default {
   name: 'App',
-  mixins: [utils],
+  // mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),

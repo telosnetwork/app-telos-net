@@ -55,14 +55,14 @@ import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
-import { utils } from '~/mixins/utils'
+// import { utils } from '~/mixins/utils'
 import PPP from '@smontero/ppp-client-api'
 
 console.log('Public', PublicFields)
 
 export default {
   name: 'sign-up-form',
-  mixins: [utils],
+  // mixins: [utils],
   components: {
     S3Image,
     EditImage
@@ -141,7 +141,9 @@ export default {
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
+    // ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg']),
     onSubmit () {
+      this.sentNoti('hi')
       if (this.methodComm === null) {
         this.showNotification('You must choose one prefer method communication', 'error')
       } else if (this.hobbies.length === 0) {
@@ -186,7 +188,8 @@ export default {
       try {
         this.$store.commit('profiles/setPPPLoading', true)
         await this.signUp(mData)
-        this.showNotification('Submited')
+        // this.showNotification('Submited')
+        this.setSuccessMsg('Subbbb')
         await this.getProfile()
         this.$store.commit('profiles/setPPPLoading', false)
         this.$router.push({ name: 'myProfile' })
