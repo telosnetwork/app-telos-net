@@ -174,7 +174,7 @@ export default {
       this.$store.commit('profiles/setPPPLoading', true)
       await this.$refs.mEditImage.getBlob()
         .then((v) => this.getImg(v))
-        .catch((e) => console.log(e))
+        .catch((e) => alert(e))
       const mData = {
         [RootFields.EMAIL]: this.email,
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,

@@ -11,7 +11,7 @@ main
     ref="myCroppa"
   )
   .row.justify-center
-    q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='handlerImage', icon='edit', style='width: 100px')
+    q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='choseImage', icon='edit', style='width: 100px')
 </template>
 
 <script>
@@ -47,14 +47,12 @@ export default {
     this.updateUrl()
   },
   methods: {
-    handlerImage () {
+    choseImage () {
       this.$refs.myCroppa.chooseFile()
     },
     getBlob () {
-      // const crop = this.croppa
       const self = this
       return new Promise(function (resolve, reject) {
-        // do a thing, possibly async, then…
         try {
           console.log(self.croppa)
           self.croppa.generateBlob((blob) => {
@@ -63,42 +61,6 @@ export default {
           })
         } catch (e) {
           reject(Error(e.message))
-        }
-      })
-    },
-    async upload () {
-      if (!this.croppa.hasImage()) {
-        alert('no image to upload')
-        return
-      }
-      this.croppa.generateBlob(async (blob) => {
-        console.log('Upload File', blob)
-        const file = blob
-        var fd = new FormData()
-        fd.append('file', blob, 'filename.jpg')
-        // console.log('File changed!')
-        const profileApi = PPP.profileApi()
-        const authApi = PPP.authApi()
-        const key = await profileApi.uploadAvatar(file)
-        // console.log(key)
-        const userInfo = await authApi.userInfo()
-        // console.log(userInfo)
-        const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
-        // console.log(url)
-        this.url = urlr
-        this.mImgKey = key
-        this.mIdentity = userInfo.id
-        this.loadingFile = false
-        console.log('mKey', key)
-        this.$emit('Change', {
-          url: this.url,
-          key: this.mImgKey,
-          identity: this.mIdentity
-        })
-        return {
-          url: this.url,
-          key: this.mImgKey,
-          identity: this.mIdentity
         }
       })
     },
@@ -133,24 +95,6 @@ export default {
         ctx.closePath()
       })
     }
-    // async onFileChange (e) {
-    //   this.loadingFile = true
-    //   const file = e.target.files[0]
-    //   console.log(file)
-    //   // console.log('File changed!')
-    //   const profileApi = PPP.profileApi()
-    //   const authApi = PPP.authApi()
-    //   const key = await profileApi.uploadAvatar(file)
-    //   // console.log(key)
-    //   const userInfo = await authApi.userInfo()
-    //   // console.log(userInfo)
-    //   const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
-    //   // console.log(url)
-    //   this.url = urlr
-    //   this.mImgKey = key
-    //   this.mIdentity = userInfo.id
-    //   this.loadingFile = false
-    // }
   }
 }
 </script>
