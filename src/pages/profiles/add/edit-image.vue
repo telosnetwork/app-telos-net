@@ -7,7 +7,10 @@ main
     prevent-white-space,
     :image-border-radius="100",
     :initial-image="url",
+    :show-remove-button="false"
     @init="onInit",
+    :show-loading="true"
+    @draw="isEdited"
     ref="myCroppa"
   )
   .row.justify-center
@@ -32,8 +35,8 @@ export default {
       loadingFile: false,
       mImgKey: '',
       mIdentity: '',
-      editingImage: false,
-      imageChanged: false
+      imageChanged: false,
+      isFirstDraw: true
     }
   },
   watch: {
@@ -48,6 +51,11 @@ export default {
     this.updateUrl()
   },
   methods: {
+    isEdited () {
+      if (!this.isFirstDraw) {
+        this.imageChanged = true
+      } else this.isFirstDraw = false
+    },
     choseImage () {
       this.imageChanged = true
       this.$refs.myCroppa.chooseFile()
@@ -59,7 +67,7 @@ export default {
           if (!self.imageChanged) {
             reject(new Error('No image has changed'))
           }
-          if (self.croppa.hasImage) {
+          if (self.croppa.hasImage()) {
             self.croppa.generateBlob((blob) => {
               resolve(blob)
             })
