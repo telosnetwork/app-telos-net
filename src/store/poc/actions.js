@@ -1,16 +1,16 @@
-export const lock = async function (context, safeName, accountName) {
+export const lock = async function (context, safeName) {
   try {
     const result = await this.$api.signTransaction({
       actions: [{
         account: 'safe.poc.tbs',
         name: 'locksafe',
         authorization: [{
-          actor: this.$api.account,
+          actor: this.$api.accountName,
           permission: 'active'
         }],
         data: {
           safe_name: safeName,
-          locking_account: accountName
+          locking_account: this.$api.accountName
         }
       }]
     }, {
@@ -18,6 +18,8 @@ export const lock = async function (context, safeName, accountName) {
       blocksBehind: 3,
       expireSeconds: 30
     })
+    await context.commit('resetSafes')
+    await context.commit('fetchSafes')
     return result
   } catch (e) {
     console.log(e)
@@ -25,19 +27,19 @@ export const lock = async function (context, safeName, accountName) {
   }
 }
 
-export const unlock = async function (context, safeName, accountName) {
+export const unlock = async function (context, safeName) {
   try {
     const result = await this.$api.signTransaction({
       actions: [{
         account: 'safe.poc.tbs',
         name: 'unlocksafe',
         authorization: [{
-          actor: this.$api.account,
+          actor: this.$api.accountName,
           permission: 'active'
         }],
         data: {
           safe_name: safeName,
-          unlocking_account: accountName
+          unlocking_account: this.$api.accountName
         }
       }]
     }, {
@@ -45,6 +47,8 @@ export const unlock = async function (context, safeName, accountName) {
       blocksBehind: 3,
       expireSeconds: 30
     })
+    await context.commit('resetSafes')
+    await context.commit('fetchSafes')
     return result
   } catch (e) {
     console.log(e)

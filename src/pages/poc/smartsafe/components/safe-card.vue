@@ -15,7 +15,10 @@ export default {
     ...mapActions('poc', ['lock', 'unlock'])
   },
   computed: {
-    ...mapGetters('accounts', ['account'])
+    ...mapGetters('accounts', ['account']),
+    lockedByUser () {
+      return this.safe.locked_by === this.account
+    }
   }
 }
 </script>
@@ -52,7 +55,7 @@ div
           flat
           size='md'
           :label='safe.locked === 0 ? $t("pages.poc.smartsafe.lock") : $t("pages.poc.smartsafe.unlock")'
-          :disabled='safe.locked === 1 || account == safe.locked_by'
-          @click='safe.locked === 0 ? lock(safe.safe_name, account) : unlock(safe.safe_name, account)'
+          :disabled='safe.locked === 1 && !lockedByUser'
+          @click='safe.locked === 0 ? lock(safe.safe_name) : unlock(safe.safe_name)'
         )
 </template>
