@@ -22,7 +22,7 @@
         behavior='dialog',
         :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]",
         option-value="code",
-        option-label="name_en",
+        option-label="label",
         emit-value,
         map-options
       )
@@ -80,10 +80,15 @@ import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import CountriesJSON from '~/pages/profiles/add/countries.json'
+const CountriesNPM = require('i18n-iso-countries')
+CountriesNPM.registerLocale(require('i18n-iso-countries/langs/en.json'))
+CountriesNPM.registerLocale(require('i18n-iso-countries/langs/es.json'))
+const CountriesES = CountriesNPM.getNames('es')
+
 // import { utils } from '~/mixins/utils'
 import PPP from '@smontero/ppp-client-api'
 console.log('Public', PublicFields)
-console.log('Countries', CountriesJSON)
+console.log('CountriesJSON', CountriesJSON)
 export default {
   name: 'sign-up-form',
   // mixins: [utils],
@@ -148,8 +153,12 @@ export default {
     },
     countries () {
       const countries = []
-      for (const country in CountriesJSON.countries) {
-        countries.push(CountriesJSON.countries[country])
+      // for (const country in CountriesJSON.countries) {
+      //   countries.push(CountriesJSON.countries[country])
+      // }
+      for (const country in CountriesES) {
+        console.log(CountriesES[country])
+        countries.push({ code: country, label: CountriesES[country] })
       }
       return countries
     }
@@ -249,7 +258,7 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.optionsCountriesFiltered = this.countries.filter(
-          v => v.name_es.toLowerCase().indexOf(needle) > -1
+          v => v.label.toLowerCase().indexOf(needle) > -1
           // console.log(v)
         )
       })
