@@ -51,7 +51,7 @@ build_prod:
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
-    PPP_ENV: '"test"'
+    PPP_ENV: '"prod"'
   cache:
     paths:
       - node_modules/
