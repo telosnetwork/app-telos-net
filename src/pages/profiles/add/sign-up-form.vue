@@ -12,11 +12,35 @@
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
       q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]")
+      q-select(
+        filled,
+        v-model='country',
+        use-input, input-debounce='0',
+        :label="$t('pages.signUp.form.country')",
+        :options='optionsCountriesFiltered',
+        @filter='filterCountries',
+        behavior='dialog',
+        :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]",
+        option-value="code",
+        option-label="name_en",
+        emit-value,
+        map-options
+      )
         template(v-slot:no-option)
           q-item
             q-item-section.text-grey {{ $t('lists.empty.countries') }}
-      q-select(:label="$t('pages.signUp.form.hobbies')", :hint="$t('forms.hints.pressToAddHobbie')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      q-select(
+        :label="$t('pages.signUp.form.hobbies')",
+        :hint="$t('forms.hints.pressToAddHobbie')",
+        filled,
+        v-model='hobbies',
+        use-input,
+        use-chips,
+        multiple,
+        hide-dropdown-icon,
+        input-debounce='0',
+        new-value-mode='add-unique',
+      )
       div(v-for='(cField, index) in customFields', :key='index')
         q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
           template(v-slot:append)
@@ -125,7 +149,7 @@ export default {
     countries () {
       const countries = []
       for (const country in CountriesJSON.countries) {
-        countries.push(CountriesJSON.countries[country].name_es)
+        countries.push(CountriesJSON.countries[country])
       }
       return countries
     }
@@ -225,7 +249,8 @@ export default {
       update(() => {
         const needle = val.toLowerCase()
         this.optionsCountriesFiltered = this.countries.filter(
-          v => v.toLowerCase().indexOf(needle) > -1
+          v => v.name_es.toLowerCase().indexOf(needle) > -1
+          // console.log(v)
         )
       })
     },
