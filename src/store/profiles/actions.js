@@ -23,18 +23,12 @@ export const clearProfilesList = function ({ commit }, options = {}) {
   commit('clearProfilesList')
 }
 
-export const getProfile = async function ({ commit }, promise = false) {
+export const getProfile = async function ({ commit }) {
   const profileApi = PPP.profileApi()
   try {
-    if (promise) {
-      return profileApi.getProfile()
-    } else {
-      // await profileApi.getProfile().then(response => {
-      //   commit('setProfile', response)
-      // })
-      const profile = await profileApi.getProfile()
-      commit('setProfile', profile)
-    }
+    const profile = await profileApi.getProfile()
+    commit('setProfile', profile)
+    return profile
   } catch (error) {
     console.log('Error', error)
   }
