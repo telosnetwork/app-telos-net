@@ -1,6 +1,6 @@
 {
     "account": "app.tf",
-    "domain": "https://app.telos.net/",
+    "domain": "https://app.telos.net",
     "appmeta": "https://app.telos.net/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
     "whitelist": [
         {
