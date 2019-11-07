@@ -27,7 +27,7 @@ build_dev:
     # Install dependencies
     - yarn install
     # Deploy chain manifests config file based on env
-    - mv src/statics/chain-manifests-dev.json statics/chain-manifests.json 
+    - mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json 
     # Build App    
     - yarn build  
   artifacts:    
@@ -61,7 +61,7 @@ build_prod:
     # Install dependencies    
     - yarn install
     # Deploy chain manifests config file based on env
-    - mv src/statics/chain-manifests-prod.json statics/chain-manifests.json
+    - mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
     # Build App    
     - yarn build  
   artifacts:    
