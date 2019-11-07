@@ -9,14 +9,18 @@
         },
         {
             "contract": "logintester1",
-            "action": "loginuser"
+            "action": ""
         },
         {
             "contract": "eosio.login",
-            "action": "loginuser"
+            "action": ""
         },
         {
             "contract": "trailservice",
+            "action": ""
+        },
+        {
+            "contract": "safe.poc.tbs",
             "action": ""
         }
     ]

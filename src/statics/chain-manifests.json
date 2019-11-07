@@ -23,6 +23,10 @@
                     {
                         "contract": "trailservice",
                         "action": ""
+                    },
+                    {
+                        "contract": "safe.poc.tbs",
+                        "action": ""
                     }
                 ]
             }
