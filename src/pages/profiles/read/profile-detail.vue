@@ -5,7 +5,10 @@ main.column.items-center.back(v-if="this.Profile")
         .column.items-center
           q-avatar.col(size='200px')
               S3Img(:img-key='this.Profile.publicData.profileImage', :identity='this.Profile.publicData.s3Identity' )
+      q-card-section
+        .row.justify-center.q-gutter-x-md
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
+          q-btn.side-btn(v-if='!owner', icon='chat',size="0.8rem", round, color='green' @click='goToChat')
 
       //- q-separator(spaced, inset)
       q-card-section.q-mx-md
@@ -94,7 +97,13 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.$store.commit('profiles/setSelectedProfile', [])
+    // this.$store.commit('profiles/setSelectedProfile', [])
+  },
+  methods: {
+    goToChat () {
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, profileImage: this.Profile.publicData.profileImage, s3Identity: this.Profile.publicData.s3Identity })
+      this.$router.push({ name: 'chat' })
+    }
   }
 }
 </script>

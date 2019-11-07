@@ -55,11 +55,11 @@ import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
+import CountriesJSON from '~/pages/profiles/add/countries.json'
 // import { utils } from '~/mixins/utils'
 import PPP from '@smontero/ppp-client-api'
-
 console.log('Public', PublicFields)
-
+console.log('Countries', CountriesJSON)
 export default {
   name: 'sign-up-form',
   // mixins: [utils],
@@ -121,6 +121,13 @@ export default {
           return `${this.$t('pages.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
         } else return this.$t('pages.signUp.form.currentEmail')
       } else return this.$t('pages.signUp.form.currentEmail')
+    },
+    countries () {
+      const countries = []
+      for (const country in CountriesJSON.countries) {
+        countries.push(CountriesJSON.countries[country].name_en)
+      }
+      return countries
     }
   },
   beforeMount: async function () {
@@ -210,14 +217,14 @@ export default {
     filterCountries (val, update) {
       if (val === '') {
         update(() => {
-          this.optionsCountriesFiltered = this.optionsCountries
+          this.optionsCountriesFiltered = this.countries
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.optionsCountriesFiltered = this.optionsCountries.filter(
+        this.optionsCountriesFiltered = this.countries.filter(
           v => v.toLowerCase().indexOf(needle) > -1
         )
       })
