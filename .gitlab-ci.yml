@@ -23,9 +23,11 @@ build_dev:
       - node_modules/
   script:    
      # Install vuecli    
-    - yarn global add @quasar/cli    
-    # Install dependencies    
-    - yarn install    
+    - yarn global add @quasar/cli
+    # Install dependencies
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-dev.json statics/chain-manifests.json 
     # Build App    
     - yarn build  
   artifacts:    
@@ -57,7 +59,9 @@ build_prod:
     # Install vuecli    
     - yarn global add @quasar/cli    
     # Install dependencies    
-    - yarn install    
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-prod.json statics/chain-manifests.json
     # Build App    
     - yarn build  
   artifacts:    

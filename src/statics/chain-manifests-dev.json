@@ -5,8 +5,8 @@
             "chainId": "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
             "manifest": {
                 "account": "app.tf",
-                "domain": "http://localhost:8080",
-                "appmeta": "http://localhost:8080/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
+                "domain": "https://app-dev.telos.net",
+                "appmeta": "https://app-dev.telos.net/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
                 "whitelist": [
                     {
                         "contract": "eosio.token",
