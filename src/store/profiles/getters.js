@@ -17,7 +17,7 @@ export const needVerifyComm = (state) => {
 
 export const isRegistered = (state) => {
   const profile = state.myProfile
-
+  // console.log('isRegistered', profile)
   if (profile === undefined) {
     return false
   } else if (profile !== undefined) {
