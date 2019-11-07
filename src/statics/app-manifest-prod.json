@@ -1,0 +1,23 @@
+{
+    "account": "app.tf",
+    "domain": "https://app.telos.net/",
+    "appmeta": "https://app.telos.net/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
+    "whitelist": [
+        {
+            "contract": "eosio.token",
+            "action": ""
+        },
+        {
+            "contract": "eosio.login",
+            "action": ""
+        },
+        {
+            "contract": "trailservice",
+            "action": ""
+        },
+        {
+            "contract": "safe.poc.tbs",
+            "action": ""
+        }
+    ]
+}
