@@ -6,8 +6,9 @@ main.column.items-center.back(v-if="this.Profile")
           q-avatar.col(size='200px')
               S3Img(:img-key='this.Profile.publicData.profileImage', :identity='this.Profile.publicData.s3Identity' )
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
+
       //- q-separator(spaced, inset)
-      q-card-section.q-ma-md
+      q-card-section.q-mx-md
         q-list(padding, separator)
           q-item.q-mx-md
             q-item-section(top, thumbnail)
@@ -41,6 +42,7 @@ main.column.items-center.back(v-if="this.Profile")
                 q-item-label(caption) {{ this.Profile.emailInfo.mask }}
               q-item-section.col.col-xs-5.gt-xs(v-if='this.Profile.emailInfo.needsToVerify',side)
                 q-btn(color="orange" icon-right="fas fa-user-check" label="Verify email" to='/profiles/myProfile/verify')
+
           q-item.row.q-mx-md(v-if='owner && this.Profile.smsInfo.exists')
               q-item-section(top, thumbnail)
                 q-icon(color='primary', name='sms')
@@ -55,6 +57,16 @@ main.column.items-center.back(v-if="this.Profile")
           q-item.row.q-mx-md.lt-sm(v-if='owner && this.Profile.smsInfo.needsToVerify')
             q-item-section.col.col-xs-12(v-if='this.Profile.smsInfo.needsToVerify',side)
                 q-btn.full-width(color="orange" icon-right="fas fa-user-check" label="Verify sms" to='/profiles/myProfile/verify')
+
+          q-list(separator, v-for='(cField, index) in Profile.publicData.customFields', :key='index')
+            q-separator(inset)
+            q-item.q-mx-md
+              q-item-section(top, thumbnail)
+                q-icon(color='primary', name='settings_applications')
+              q-item-section
+                q-item-label {{ cField.label }}
+                q-item-label(caption) {{ cField.value }}
+
       .row.justify-end(v-if='owner')
         .col-2.fab-edit
           q-btn(fab icon='edit' color='primary' to="/profiles/myProfile/add")
@@ -91,21 +103,23 @@ export default {
 .my-card
   width: 100%
   max-width: 100%
-  height: 100vh
+  min-height: 100vh
 
 .back
   background: rgba(204,255,229,.4)
-  height: 100vh
+  height: auto
 
 .fab-edit
   margin-right: 25px
+  margin-bottom: 10px
 
 @media screen and (min-width: 500px)
   .my-card
     width: 100%
     max-width: 70%
-    height: 90vh
+    min-height: 90vh
     margin-top: 20px
+    margin-bottom: 20px
 
   .fab-edit
     margin-right: 2px

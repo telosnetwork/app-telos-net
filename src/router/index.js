@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import PPP from '@smontero/ppp-client-api'
 
 import routes from './routes'
+import Croppa from 'vue-croppa'
 
+Vue.use(Croppa)
 Vue.use(VueRouter)
 
 /*

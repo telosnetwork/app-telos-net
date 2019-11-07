@@ -2,40 +2,70 @@
 .row.justify-center.items-center
   .col-xs-8.q-gutter-y-md.q-pa-md
     .row.justify-center
-      s3-image.S3Img(:img-key='imgKey', :identity='identity')
+      //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
+      edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
-      .row.justify-center
-        q-btn(:loading='loadingFile', color='orange', text-color='grey-9', @click='$refs.btnUp.click()', icon='cloud_upload', style='width: 100px')
-          input(ref='btnUp', label='btnUp', type='file', accept='image/png, image/jpeg', v-on:change='onFileChange', style='display: none;')
-      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']", autogrow)
-      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
-      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || 'Please type something']")
+      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
       q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || 'Please select your countrie']")
+      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]")
         template(v-slot:no-option)
           q-item
-            q-item-section.text-grey No results
-      q-select(:label="$t('pages.signUp.form.hobbies')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+            q-item-section.text-grey {{ $t('lists.empty.countries') }}
+      q-select(:label="$t('pages.signUp.form.hobbies')", :hint="$t('forms.hints.pressToAddHobbie')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      div(v-for='(cField, index) in customFields', :key='index')
+        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+          template(v-slot:append)
+            q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
+            q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
+      .row
+        q-btn(:label="$t('pages.signUp.form.addCustomField')", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
+      q-dialog(v-model='addingNewField', persistent, @hide='editingCustomField = false')
+        q-card(v-if="!editingCustomField")
+          q-card-section
+            .text-h6
+              | {{ $t('pages.signUp.form.newCustomFieldName') }}
+          q-card-section
+            q-input(dense, v-model="newFieldName", autofocus)
+          q-card-section
+            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+            q-btn(flat, :label="$t('pages.signUp.form.addCustomField')", v-close-popup, @click='addCustomField')
+        q-card(v-if="editingCustomField")
+          q-card-section
+            .text-h6
+              | {{ $t('pages.signUp.form.editCustomFieldName') }}
+          q-card-section
+            q-input(dense, v-model="newFieldName", autofocus)
+          q-card-section
+            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+            q-btn(flat, :label="$t('common.buttons.save')", v-close-popup, @click='editCustomFieldName')
+
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
 
 <script>
-import PPP from '@smontero/ppp-client-api'
+// import PPP from '@smontero/ppp-client-api'
 import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
-import { utils } from '~/mixins/utils'
+import EditImage from '~/pages/profiles/add/edit-image'
+// import { utils } from '~/mixins/utils'
+import PPP from '@smontero/ppp-client-api'
+
+console.log('Public', PublicFields)
 
 export default {
   name: 'sign-up-form',
-  mixins: [utils],
+  // mixins: [utils],
   components: {
-    S3Image
+    S3Image,
+    EditImage
   },
   data () {
     return {
@@ -58,8 +88,12 @@ export default {
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
-      presentationStr: '/components/signUp/form/presentation',
-      loadingFile: false
+      customFields: [],
+      addingNewField: false,
+      editingCustomField: false,
+      newFieldName: '',
+      indexEditField: 0,
+      url: ''
     }
   },
   computed: {
@@ -90,48 +124,51 @@ export default {
     }
   },
   beforeMount: async function () {
-    this.$store.commit('profiles/setPPPLoading', true)
-    await this.getProfile()
-    if (this.myProfile !== undefined) {
-      this.firstName = this.myProfile.publicData.firstName
-      this.lastName = this.myProfile.publicData.lastName
-      this.presentation = this.myProfile.publicData.bio
-      this.country = this.myProfile.publicData.countryCode
-      this.hobbies = this.myProfile.publicData.hobbies
-      this.imgKey = this.myProfile.publicData.profileImage
-      this.identity = this.myProfile.publicData.s3Identity
-      this.methodComm = this.myProfile.commPref
+    this.showIsLoading(true)
+    const response = await this.getProfile(true)
+    if (response !== undefined) {
+      this.firstName = response.publicData.firstName
+      this.lastName = response.publicData.lastName
+      this.presentation = response.publicData.bio
+      this.country = response.publicData.countryCode
+      this.hobbies = response.publicData.hobbies
+      this.imgKey = response.publicData.profileImage
+      this.identity = response.publicData.s3Identity
+      this.methodComm = response.commPref
+      this.customFields = response.publicData.customFields ? response.publicData.customFields : []
     }
-    this.$store.commit('profiles/setPPPLoading', false)
+    this.showIsLoading(false)
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
-    async onFileChange (e) {
-      this.loadingFile = true
-      const file = e.target.files[0]
-      // console.log('File changed!')
-      const profileApi = PPP.profileApi()
-      const authApi = PPP.authApi()
-      const key = await profileApi.uploadAvatar(file)
-      // console.log(key)
-      const userInfo = await authApi.userInfo()
-      // console.log(userInfo)
-      // const url = await profileApi.getAvatarUrl(key, userInfo.id)
-      // console.log(url)
-      this.imgKey = key
-      this.identity = userInfo.id
-      this.loadingFile = false
-    },
+    // ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg']),
     onSubmit () {
       if (this.methodComm === null) {
-        this.showNotification('You must choose one prefer method communication', 'error')
+        this.showErrorMsg('You must choose one prefer method communication')
       } else if (this.hobbies.length === 0) {
-        this.showNotification('You must write at least one hobby', 'error')
+        this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
       }
     },
+    async getImg (blob) {
+      console.log('Upload File', blob)
+      const profileApi = PPP.profileApi()
+      const authApi = PPP.authApi()
+      const key = await profileApi.uploadAvatar(blob)
+      const userInfo = await authApi.userInfo()
+      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+      this.url = urlr
+      this.imgKey = key
+      this.identity = userInfo.id
+      this.loadingFile = false
+    },
     async doSignup () {
+      this.showIsLoading(true)
+      await this.$refs.mEditImage.getBlob()
+        .then((v) => this.getImg(v))
+        .catch(e => console.log(e))
+
       const mData = {
         [RootFields.EMAIL]: this.email,
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
@@ -143,19 +180,20 @@ export default {
           [PublicFields.PROFILE_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
           [PublicFields.HOBBIES]: this.hobbies,
-          [PublicFields.BIO]: this.presentation
+          [PublicFields.BIO]: this.presentation,
+          'customFields': this.customFields
         }
       }
       try {
-        this.$store.commit('profiles/setPPPLoading', true)
+        this.showIsLoading(true)
         await this.signUp(mData)
-        this.showNotification('Submited')
+        this.showSuccessMsg('Submited')
         await this.getProfile()
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showIsLoading(false)
         this.$router.push({ name: 'myProfile' })
       } catch (e) {
-        this.$store.commit('profiles/setPPPLoading', false)
-        this.showNotification(e.message, 'error')
+        this.showIsLoading(false)
+        this.showErrorMsg(e.message)
       }
     },
     onReset () {
@@ -204,6 +242,32 @@ export default {
           )
         }
       }
+    },
+
+    addCustomField () {
+      this.customFields.push({ label: this.newFieldName, value: '' })
+      this.newFieldName = ''
+    },
+
+    openCustomFieldModal () {
+      this.addingNewField = true
+    },
+
+    openEditCustomField (index) {
+      this.addingNewField = true
+      this.editingCustomField = true
+      this.indexEditField = index
+      this.newFieldName = this.customFields[this.indexEditField].label
+    },
+
+    editCustomFieldName () {
+      this.customFields[this.indexEditField].label = this.newFieldName
+      this.indexEditField = 0
+      this.newFieldName = ''
+    },
+
+    deleteCustomField (index) {
+      this.customFields.splice(index, 1)
     }
   }
 }
@@ -214,4 +278,6 @@ export default {
   height: 150px;
   max-width: 150px;
   border-radius: 100px;
+.r
+ border-radius: 100px;
 </style>

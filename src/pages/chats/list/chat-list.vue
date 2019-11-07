@@ -23,7 +23,7 @@ export default {
   components: { ChatItem },
   data () {
     return {
-      search: null,
+      search: '',
       limit: 10,
       isFirst: true
     }
@@ -39,17 +39,20 @@ export default {
   methods: {
     ...mapActions('messages', ['getChats', 'clearChatList']),
     async onLoad (index, done) {
+      console.log(this.isFirst)
       if ((this.chatList.lastEvaluatedKey !== undefined && this.chatList.count === this.limit) || this.isFirst) {
         await this.getChats({ search: this.search, limit: this.limit, lastEvaluatedKey: this.chatList.lastEvaluatedKey })
-        if (this.isFirst) this.isFirst = false
+        this.isFirst = false
         done()
       } else this.$refs.infiniteScroll.stop()
     },
     async onSearch (v) {
       // await this.getChats({ search: this.search, clean: true })
       this.clearChatList()
+      this.isFirst = true
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()
+      this.$refs.infiniteScroll.poll()
       v.preventDefault()
     }
   }

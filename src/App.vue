@@ -1,10 +1,12 @@
 <script>
-import { mapGetters, mapMutations } from 'vuex'
-import { utils } from './mixins/utils'
+import { mapGetters } from 'vuex'
+// import { utils } from './mixins/utils'
+
+// Vue.mixin(utils)
 
 export default {
   name: 'App',
-  mixins: [utils],
+  // mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),
@@ -15,15 +17,16 @@ export default {
   },
   watch: {
     errorMsg (msg) {
+      console.log('error', msg)
       if (msg) {
         this.showNotification(msg, 'error')
-        this.setErrorMsg(null)
+        this.showErrorMsg(null)
       }
     },
     successMsg (msg) {
       if (msg) {
         this.showNotification(msg, 'success')
-        this.setSuccessMsg(null)
+        this.showSuccessMsg(null)
       }
     },
     isLoading (value) {
@@ -33,9 +36,6 @@ export default {
         this.$q.loading.hide()
       }
     }
-  },
-  methods: {
-    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg'])
   }
 }
 </script>
