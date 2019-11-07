@@ -132,7 +132,7 @@ export default {
   },
   beforeMount: async function () {
     this.showIsLoading(true)
-    const response = await this.getProfile(true)
+    const response = await this.getProfile()
     if (response !== undefined) {
       this.firstName = response.publicData.firstName
       this.lastName = response.publicData.lastName
