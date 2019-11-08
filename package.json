@@ -37,7 +37,7 @@
     "eosjs-ecc": "^4.0.4",
     "quasar": "^1.2.1",
     "ual-ledger": "^0.1.3",
-    "ual-scateventloc1ter": "^0.1.6",
+    "ual-scatter": "^0.1.6",
     "universal-authenticator-library": "^0.1.4",
     "vue-croppa": "^1.3.8",
     "vue-i18n": "^8.0.0"
