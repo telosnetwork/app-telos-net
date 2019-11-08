@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
 
 export default {
@@ -14,11 +14,23 @@ export default {
         manager: null,
         maxSupply: null,
         access: null
-      }
+      },
+      submitting: false
     }
   },
+  computed: {
+    ...mapGetters('trails', ['treasuryFees'])
+  },
   methods: {
-    ...mapActions('trails', ['addTreasury'])
+    ...mapActions('trails', ['addTreasury']),
+    async onAddTreasury () {
+      this.submitting = true
+      const success = await this.addTreasury(this.form)
+      this.submitting = false
+      if (success) {
+        this.$emit('update:show', false)
+      }
+    }
   }
 }
 </script>
@@ -48,9 +60,12 @@ q-dialog(
       )
       q-select(
         v-model="form.access"
+        label="Access"
         :options=["public", "private", "invite"]
         :rules="[rules.required]"
       )
+    q-card-section(v-if="treasuryFees")
+      strong.text-red.fees There is a deposit fee of {{ treasuryFees.value }}
     q-card-actions(align="right")
       q-btn(
         flat
@@ -60,6 +75,12 @@ q-dialog(
       q-btn(
         color="primary"
         :label="$t('common.buttons.create')"
-        @click="addTreasury(form)"
+        :loading="submitting"
+        @click="onAddTreasury()"
       )
 </template>
+
+<style lang="sass" scoped>
+  .fees
+    font-size: 12px
+</style>

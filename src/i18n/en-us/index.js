@@ -44,6 +44,7 @@ export default {
   notifications: {
     title: 'Transactions',
     trails: {
+      addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
     }

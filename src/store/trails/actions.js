@@ -1,3 +1,16 @@
+// Fees
+export const fetchFees = async function ({ commit }) {
+  const result = await this.$api.rpc.get_table_rows({
+    json: true,
+    code: 'trailservice',
+    scope: 'trailservice',
+    table: 'config',
+    limit: 1
+  })
+  commit('setFees', result.rows[0])
+}
+// Fees
+
 // Ballots
 export const fetchBallots = async function ({ commit, state }) {
   const rows = await this.$api.rpc.get_table_rows({
@@ -133,32 +146,58 @@ export const fetchTreasury = async function ({ commit }, treasury) {
   commit('setTreasury', result.rows[0])
 }
 
-export const addTreasury = async function ({ commit }, { manager, maxSupply, access }) {
+export const addTreasury = async function ({ commit, state }, { manager, maxSupply, access }) {
+  const deposit = state.fees.find(fee => fee.key === 'treasury').value
+  const notification = {
+    icon: 'fas fa-users',
+    title: 'notifications.trails.addTreasury',
+    content: `Treasury manager: ${manager}, supply: ${maxSupply}, deposit: ${deposit}`
+  }
   try {
-    const result = await this.$api.signTransaction({
-      actions: [{
-        account: 'trailservice',
-        name: 'newtreasury',
-        authorization: [{
-          actor: this.$api.accountName,
-          permission: 'active'
-        }],
-        data: {
-          manager,
-          max_supply: maxSupply,
-          access
+    const transaction = await this.$api.signTransaction({
+      actions: [
+        {
+          account: 'eosio.token',
+          name: 'transfer',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            from: this.$api.accountName,
+            to: 'trailservice',
+            quantity: deposit,
+            memo: 'fees-deposit'
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'newtreasury',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            manager,
+            max_supply: maxSupply,
+            access
+          }
         }
-      }]
+      ]
     }, {
       broadcast: true,
       blocksBehind: 3,
       expireSeconds: 30
     })
-    commit('resetLoadingTreasuries')
-    return result
+    commit('resetTreasuries')
+    notification.status = 'success'
+    notification.transaction = transaction
   } catch (e) {
     console.log(e)
-    return false
+    notification.status = 'error'
+    notification.error = e.message
   }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
 }
 // Treasuries
