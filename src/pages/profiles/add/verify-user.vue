@@ -67,7 +67,6 @@ export default {
         this.$router.push({ path: returnUrl || '/profiles/myProfile' })
         this.showIsLoading(true)
       } catch (e) {
-        console.log(e)
         this.showErrorMsg(e.message)
         this.showIsLoading(false)
       }
@@ -81,7 +80,6 @@ export default {
         this.$router.push({ path: returnUrl || '/profiles/myProfile' })
         this.showIsLoading(true)
       } catch (e) {
-        console.log(e)
         this.showErrorMsg(e.message)
         this.showIsLoading(false)
       }

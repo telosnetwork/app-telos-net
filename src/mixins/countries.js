@@ -12,11 +12,6 @@ export const countriesLang = {
   beforeMount () {
     this.countriesLang = CountriesNPM.getNames(this.language)
   },
-  // watch: {
-  //   language () {
-  //     console.log('Language Changed!!')
-  //   }
-  // },
   computed: {
     language () {
       let ln
@@ -31,7 +26,6 @@ export const countriesLang = {
           ln = 'en'
           break
       }
-      // console.log('Language', ln)
       return ln
     }
   },

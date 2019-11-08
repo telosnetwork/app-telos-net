@@ -30,9 +30,7 @@ export default function ({ store }) {
     if (to.matched.some(record => !record.meta.layout)) {
       if (store.getters['accounts/isAuthenticated']) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
-          // console.log('first')
           if (!await PPP.authApi().hasValidSession()) {
-            // console.log('second')
             store.commit('general/setIsLoading', true)
             const loggedIn = await store.dispatch('accounts/loginToBackend')
             // const loggedIn = null
@@ -46,7 +44,6 @@ export default function ({ store }) {
             store.commit('general/setIsLoading', false)
 
             if (!loggedIn) {
-              // console.log('tree')
               next(false)
               return
             }
@@ -54,14 +51,10 @@ export default function ({ store }) {
         }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
-          // console.log('Need to verify comm')
           const isRegistered = store.getters['profiles/isRegistered']
-          // console.log(isRegistered)
           if (!isRegistered) {
-            // console.log('Need to verify comm first')
             next({ name: 'userRegister' })
           } else if (store.getters['profiles/needVerifyComm']) {
-            // console.log('Need to verify comm second')
             next({ name: 'verifyComm', query: { returnUrl: to.path } })
           } else next()
         } else next()

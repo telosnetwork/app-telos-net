@@ -79,7 +79,6 @@ export default {
           this.sendingMessage = false
           messageInput.focus()
         }).catch(error => {
-          console.log(error)
           this.sendingMessage = false
           this.showErrorMsg(error.message)
           messageInput.focus()

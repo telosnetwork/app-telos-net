@@ -1,6 +1,5 @@
 export const needVerifyComm = (state) => {
   const profile = state.myProfile
-  // console.log(profile)
 
   if (!profile.publicData.isVerified || profile.publicData.isVerified === 0) {
     return true
@@ -17,7 +16,6 @@ export const needVerifyComm = (state) => {
 
 export const isRegistered = (state) => {
   const profile = state.myProfile
-  // console.log('isRegistered', profile)
   if (profile === undefined) {
     return false
   } else if (profile !== undefined) {
