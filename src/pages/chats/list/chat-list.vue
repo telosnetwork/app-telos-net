@@ -39,7 +39,6 @@ export default {
   methods: {
     ...mapActions('messages', ['getChats', 'clearChatList']),
     async onLoad (index, done) {
-      console.log(this.isFirst)
       if ((this.chatList.lastEvaluatedKey !== undefined && this.chatList.count === this.limit) || this.isFirst) {
         await this.getChats({ search: this.search, limit: this.limit, lastEvaluatedKey: this.chatList.lastEvaluatedKey })
         this.isFirst = false

@@ -5,7 +5,10 @@ main.column.items-center.back(v-if="this.Profile")
         .column.items-center
           q-avatar.col(size='200px')
               S3Img(:img-key='this.Profile.publicData.profileImage', :identity='this.Profile.publicData.s3Identity' )
+      q-card-section
+        .row.justify-center.q-gutter-x-md
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
+          q-btn.side-btn(v-if='!owner', icon='chat',size="0.8rem", round, color='green' @click='goToChat')
 
       //- q-separator(spaced, inset)
       q-card-section.q-mx-md
@@ -27,7 +30,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ this.Profile.publicData.countryCode }}
+              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry(this.language) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
@@ -67,6 +70,14 @@ main.column.items-center.back(v-if="this.Profile")
                 q-item-label {{ cField.label }}
                 q-item-label(caption) {{ cField.value }}
 
+          q-select(
+            v-if="!$i18n.locale",
+            filled,
+            v-model='$i18n.locale',
+            label="Language",
+            :options='langs',
+          )
+
       .row.justify-end(v-if='owner')
         .col-2.fab-edit
           q-btn(fab icon='edit' color='primary' to="/profiles/myProfile/add")
@@ -74,9 +85,11 @@ main.column.items-center.back(v-if="this.Profile")
 
 <script>
 import S3Img from '~/components/s3-image.vue'
+import { countriesLang } from '~/mixins/countries'
 export default {
   name: 'profile-detail',
   components: { S3Img },
+  mixins: [countriesLang],
   props: { owner: Boolean },
   computed: {
     Profile () {
@@ -94,7 +107,13 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.$store.commit('profiles/setSelectedProfile', [])
+    // this.$store.commit('profiles/setSelectedProfile', [])
+  },
+  methods: {
+    goToChat () {
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, profileImage: this.Profile.publicData.profileImage, s3Identity: this.Profile.publicData.s3Identity })
+      this.$router.push({ name: 'chat' })
+    }
   }
 }
 </script>

@@ -12,11 +12,36 @@
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
       q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(filled, v-model='country', use-input, input-debounce='0', :label="$t('pages.signUp.form.country')", :options='optionsCountriesFiltered', @filter='filterCountries', behavior='dialog', :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]")
+      q-select(
+        v-if="countries.length > 0",
+        filled,
+        v-model='country',
+        use-input, input-debounce='0',
+        :label="$t('pages.signUp.form.country')",
+        :options='optionsCountriesFiltered',
+        @filter='filterCountries',
+        behavior='dialog',
+        :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]",
+        option-value="code",
+        option-label="label",
+        emit-value,
+        map-options
+      )
         template(v-slot:no-option)
           q-item
             q-item-section.text-grey {{ $t('lists.empty.countries') }}
-      q-select(:label="$t('pages.signUp.form.hobbies')", :hint="$t('forms.hints.pressToAddHobbie')", filled, v-model='hobbies', use-input, use-chips, multiple, hide-dropdown-icon, input-debounce='0', new-value-mode='add-unique')
+      q-select(
+        :label="$t('pages.signUp.form.hobbies')",
+        :hint="$t('forms.hints.pressToAddHobbie')",
+        filled,
+        v-model='hobbies',
+        use-input,
+        use-chips,
+        multiple,
+        hide-dropdown-icon,
+        input-debounce='0',
+        new-value-mode='add-unique',
+      )
       div(v-for='(cField, index) in customFields', :key='index')
         q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
           template(v-slot:append)
@@ -49,24 +74,21 @@
 </template>
 
 <script>
-// import PPP from '@smontero/ppp-client-api'
 import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
-// import { utils } from '~/mixins/utils'
 import PPP from '@smontero/ppp-client-api'
-
-console.log('Public', PublicFields)
+import { countriesLang } from '~/mixins/countries'
 
 export default {
   name: 'sign-up-form',
-  // mixins: [utils],
   components: {
     S3Image,
     EditImage
   },
+  mixins: [countriesLang],
   data () {
     return {
       imgKey: '',
@@ -78,13 +100,6 @@ export default {
       methodComm: 'EMAIL',
       paymentsOptions: [],
       country: '',
-      optionsCountries: [
-        'Mexico',
-        'Estados Unidos',
-        'Reino Unido',
-        'Canada',
-        'India'
-      ],
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
@@ -121,6 +136,13 @@ export default {
           return `${this.$t('pages.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
         } else return this.$t('pages.signUp.form.currentEmail')
       } else return this.$t('pages.signUp.form.currentEmail')
+    },
+    countries () {
+      const countries = []
+      for (const country in this.countriesLang) {
+        countries.push({ code: country, label: this.countriesLang[country] })
+      }
+      return countries
     }
   },
   beforeMount: async function () {
@@ -139,9 +161,11 @@ export default {
     }
     this.showIsLoading(false)
   },
+  mounted () {
+    this.optionsCountriesFiltered = this.countries
+  },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
-    // ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg']),
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
@@ -210,15 +234,16 @@ export default {
     filterCountries (val, update) {
       if (val === '') {
         update(() => {
-          this.optionsCountriesFiltered = this.optionsCountries
+          this.optionsCountriesFiltered = this.countries
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.optionsCountriesFiltered = this.optionsCountries.filter(
-          v => v.toLowerCase().indexOf(needle) > -1
+        this.optionsCountriesFiltered = this.countries.filter(
+          v => v.label.toLowerCase().indexOf(needle) > -1
+          // console.log(v)
         )
       })
     },
