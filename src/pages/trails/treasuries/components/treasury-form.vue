@@ -1,7 +1,6 @@
 <script>
-import { validation } from '~/mixins/validation'
-
 import { mapActions } from 'vuex'
+import { validation } from '~/mixins/validation'
 
 export default {
   name: 'treasury-form',
@@ -32,19 +31,25 @@ q-dialog(
   q-card(
     flat
     bordered
+    style="width: 400px; max-width: 80vw;"
   )
+    q-card-section.bg-primary.text-white
+      .text-h6 Create a treasury
     q-card-section
       q-input(
         v-model="form.manager"
+        label="Manager"
         :rules="[rules.required, rules.accountFormat, rules.accountLength]"
       )
       q-input(
         v-model="form.maxSupply"
+        label="Max supply"
         :rules="[rules.required]"
       )
-      q-input(
+      q-select(
         v-model="form.access"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength]"
+        :options=["public", "private", "invite"]
+        :rules="[rules.required]"
       )
     q-card-actions(align="right")
       q-btn(
@@ -53,7 +58,8 @@ q-dialog(
         @click="$emit('update:show', false)"
       )
       q-btn(
-        flat
+        color="primary"
         :label="$t('common.buttons.create')"
+        @click="addTreasury(form)"
       )
 </template>

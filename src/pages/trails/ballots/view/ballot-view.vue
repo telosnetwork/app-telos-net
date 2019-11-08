@@ -26,6 +26,9 @@ export default {
       })
       this.voting = false
     },
+    isBallotOpened () {
+      return new Date(this.ballot.end_time).getTime() > Date.now() && new Date(this.ballot.begin_time).getTime() < Date.now()
+    },
     getBallotStatusColor (status) {
       switch (status) {
         case 'cancelled':
@@ -75,7 +78,10 @@ q-page.q-pa-lg.row.flex.justify-center
       q-card-section
         .text-right.text-italic {{ ballot.publisher }}
       q-separator
-      q-card-actions(align="right")
+      q-card-actions(
+        align="right"
+        v-if="ballot.status !== 'cancelled' && isBallotOpened()"
+      )
         q-btn(
           v-for="option in ballot.options"
           :key="option.key"
@@ -84,6 +90,11 @@ q-page.q-pa-lg.row.flex.justify-center
           @click="onCastVote(option.key)"
           :loading="voting"
         )
+      q-card-actions(
+        v-else
+        align="right"
+      )
+        strong Votes closed
     q-inner-loading(
       v-else
     )

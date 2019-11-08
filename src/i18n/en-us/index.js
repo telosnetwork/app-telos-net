@@ -85,7 +85,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openBallots: 'Open ballots',
+          openedBallots: 'Opened ballots',
           supply: 'Supply',
           registerVoter: 'Register as a voters'
         },

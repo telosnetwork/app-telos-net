@@ -133,7 +133,7 @@ export const fetchTreasury = async function ({ commit }, treasury) {
   commit('setTreasury', result.rows[0])
 }
 
-export const addTreasury = async function (context, { manager, maxSupply, access }) {
+export const addTreasury = async function ({ commit }, { manager, maxSupply, access }) {
   try {
     const result = await this.$api.signTransaction({
       actions: [{
@@ -154,6 +154,7 @@ export const addTreasury = async function (context, { manager, maxSupply, access
       blocksBehind: 3,
       expireSeconds: 30
     })
+    commit('resetLoadingTreasuries')
     return result
   } catch (e) {
     console.log(e)
