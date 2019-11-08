@@ -50,7 +50,7 @@ export default {
   },
   lists: {
     empty: {
-      countries: 'Not countries'
+      countries: 'No countries'
     }
   },
   pages: {
