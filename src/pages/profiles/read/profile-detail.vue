@@ -30,7 +30,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry }}
+              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry(this.language) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
@@ -69,6 +69,14 @@ main.column.items-center.back(v-if="this.Profile")
               q-item-section
                 q-item-label {{ cField.label }}
                 q-item-label(caption) {{ cField.value }}
+
+          q-select(
+            v-if="!$i18n.locale",
+            filled,
+            v-model='$i18n.locale',
+            label="Language",
+            :options='langs',
+          )
 
       .row.justify-end(v-if='owner')
         .col-2.fab-edit

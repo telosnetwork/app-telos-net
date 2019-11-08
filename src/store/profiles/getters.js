@@ -1,6 +1,6 @@
 export const needVerifyComm = (state) => {
   const profile = state.myProfile
-  console.log(profile)
+  // console.log(profile)
 
   if (!profile.publicData.isVerified || profile.publicData.isVerified === 0) {
     return true

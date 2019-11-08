@@ -81,9 +81,6 @@ import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import PPP from '@smontero/ppp-client-api'
 import { countriesLang } from '~/mixins/countries'
-const CountriesNPM = require('i18n-iso-countries')
-CountriesNPM.registerLocale(require('i18n-iso-countries/langs/en.json'))
-CountriesNPM.registerLocale(require('i18n-iso-countries/langs/es.json'))
 
 export default {
   name: 'sign-up-form',
@@ -103,7 +100,6 @@ export default {
       methodComm: 'EMAIL',
       paymentsOptions: [],
       country: '',
-      countriesLang: [],
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
@@ -151,7 +147,6 @@ export default {
   },
   beforeMount: async function () {
     this.showIsLoading(true)
-    this.countriesLang = CountriesNPM.getNames('es')
     const response = await this.getProfile()
     if (response !== undefined) {
       this.firstName = response.publicData.firstName
@@ -167,7 +162,6 @@ export default {
     this.showIsLoading(false)
   },
   mounted () {
-    // this.countriesLang = CountriesNPM.getNames('es')
     this.optionsCountriesFiltered = this.countries
   },
   methods: {
