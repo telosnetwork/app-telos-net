@@ -27,7 +27,7 @@
     "@smontero/ppp-client-api": "0.0.21",
     "@smontero/ppp-common": "0.0.6",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.4",
-    "@smontero/ual-keycat": "^1.0.20",
+    "@smontero/ual-keycat": "^1.0.21",
     "@smontero/ual-lynx": "^0.2.3",
     "@smontero/ual-sqrl": "^0.1.8",
     "@smontero/ual-token-pocket": "^0.1.3",
