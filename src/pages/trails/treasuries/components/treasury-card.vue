@@ -56,8 +56,8 @@ div
           color="white"
           text-color="primary"
           dense
-          size="xs"
+          size="sm"
         )
           | &nbsp; {{ treasury.open_ballots }}
-          q-tooltip {{ $t('pages.trails.treasuries.card.openBallots') }}
+          q-tooltip {{ $t('pages.trails.treasuries.card.openedBallots') }}
 </template>

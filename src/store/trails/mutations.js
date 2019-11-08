@@ -21,6 +21,10 @@ export const resetTreasuries = (state) => {
   state.treasuries.list.loaded = false
 }
 
+export const resetLoadingTreasuries = (state) => {
+  state.treasuries.list.loaded = false
+}
+
 export const addTreasuries = (state, { rows, more }) => {
   if (rows) {
     // Remove the first item as it's the lower_bound
