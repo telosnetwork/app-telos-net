@@ -28,6 +28,18 @@ export default {
     },
     isBallotOpened (ballot) {
       return new Date(ballot.end_time).getTime() > Date.now() && new Date(ballot.begin_time).getTime() < Date.now()
+    },
+    displayWinner (ballot) {
+      if (!ballot.total_voters) return 'No votes'
+      let winnerValue = -1
+      let winner
+      ballot.options.forEach(option => {
+        if (parseFloat(option.value) > winnerValue) {
+          winnerValue = parseFloat(option.value)
+          winner = option.key
+        }
+      })
+      return `Result: ${winner}`
     }
   },
   computed: {
@@ -76,7 +88,7 @@ q-page.q-pa-lg
                     @click="onCastVote({ option: option.key, ballotName: ballot.ballot_name })"
                   )
                     q-item-section {{ option.key }}
-            strong(v-else) Votes closed
+            strong(v-else) {{ displayWinner(ballot) }}
       template(v-slot:loading)
         .row.justify-center.q-my-md
           q-spinner-dots(
