@@ -5,3 +5,4 @@ export const ballot = ({ ballots }) => ballots.view.ballot
 export const treasuries = ({ treasuries }) => treasuries.list.data
 export const treasuriesLoaded = ({ treasuries }) => treasuries.list.loaded
 export const treasury = ({ treasuries }) => treasuries.view.treasury
+export const treasuryFees = ({ fees }) => fees.find(fee => fee.key === 'treasury')

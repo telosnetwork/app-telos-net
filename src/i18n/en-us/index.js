@@ -44,6 +44,7 @@ export default {
   notifications: {
     title: 'Transactions',
     trails: {
+      addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
     }
@@ -85,7 +86,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openBallots: 'Open ballots',
+          openedBallots: 'Opened ballots',
           supply: 'Supply',
           registerVoter: 'Register as a voters'
         },

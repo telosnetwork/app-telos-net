@@ -1,3 +1,7 @@
+export const setFees = (state, config) => {
+  state.fees = config.fees
+}
+
 export const resetBallots = (state) => {
   state.ballots.list.data = []
   state.ballots.list.loaded = false

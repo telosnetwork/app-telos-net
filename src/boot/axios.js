@@ -8,7 +8,10 @@ export const http = axios.create({
   }
 })
 
-http.interceptors.response.use(response => response.data || {})
+http.interceptors.response.use(
+  response => response.data || {},
+  error => throw new Error(error.response.data.message || null)
+)
 
 export default ({ Vue, store }) => {
   Vue.prototype.$axios = http

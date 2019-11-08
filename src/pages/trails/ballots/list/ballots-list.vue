@@ -6,12 +6,28 @@ export default {
   mounted () {
     this.resetBallots()
   },
+  data () {
+    return {
+      voting: false
+    }
+  },
   methods: {
-    ...mapActions('trails', ['fetchBallots']),
+    ...mapActions('trails', ['fetchBallots', 'castVote']),
     ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
       await this.fetchBallots()
       done()
+    },
+    async onCastVote ({ option, ballotName }) {
+      this.voting = true
+      await this.castVote({
+        ballotName,
+        options: [option]
+      })
+      this.voting = false
+    },
+    isBallotOpened (ballot) {
+      return new Date(ballot.end_time).getTime() > Date.now() && new Date(ballot.begin_time).getTime() < Date.now()
     }
   },
   computed: {
@@ -45,9 +61,10 @@ q-page.q-pa-lg
               | {{ $t('pages.trails.ballots.ends') }}: {{ ballot.end_time }}
           q-item-section(side)
             q-btn(
+              v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)"
               :label="$t('pages.trails.ballots.castVote')"
               color="primary"
-              :disable="ballot.status === 'cancelled'"
+              :loading="voting"
             )
               q-menu
                 q-list
@@ -56,8 +73,10 @@ q-page.q-pa-lg
                     :key="option.key"
                     clickable
                     v-close-popup
+                    @click="onCastVote({ option: option.key, ballotName: ballot.ballot_name })"
                   )
                     q-item-section {{ option.key }}
+            strong(v-else) Votes closed
       template(v-slot:loading)
         .row.justify-center.q-my-md
           q-spinner-dots(
