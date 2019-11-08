@@ -30,7 +30,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ this.Profile.publicData.countryCode }}
+              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
@@ -77,9 +77,11 @@ main.column.items-center.back(v-if="this.Profile")
 
 <script>
 import S3Img from '~/components/s3-image.vue'
+import { countriesLang } from '~/mixins/countries'
 export default {
   name: 'profile-detail',
   components: { S3Img },
+  mixins: [countriesLang],
   props: { owner: Boolean },
   computed: {
     Profile () {

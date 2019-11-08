@@ -13,6 +13,7 @@
       q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(
+        v-if="countries.length > 0",
         filled,
         v-model='country',
         use-input, input-debounce='0',
@@ -73,29 +74,24 @@
 </template>
 
 <script>
-// import PPP from '@smontero/ppp-client-api'
 import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
-import CountriesJSON from '~/pages/profiles/add/countries.json'
+import PPP from '@smontero/ppp-client-api'
+import { countriesLang } from '~/mixins/countries'
 const CountriesNPM = require('i18n-iso-countries')
 CountriesNPM.registerLocale(require('i18n-iso-countries/langs/en.json'))
 CountriesNPM.registerLocale(require('i18n-iso-countries/langs/es.json'))
-const CountriesES = CountriesNPM.getNames('es')
 
-// import { utils } from '~/mixins/utils'
-import PPP from '@smontero/ppp-client-api'
-console.log('Public', PublicFields)
-console.log('CountriesJSON', CountriesJSON)
 export default {
   name: 'sign-up-form',
-  // mixins: [utils],
   components: {
     S3Image,
     EditImage
   },
+  mixins: [countriesLang],
   data () {
     return {
       imgKey: '',
@@ -107,13 +103,7 @@ export default {
       methodComm: 'EMAIL',
       paymentsOptions: [],
       country: '',
-      optionsCountries: [
-        'Mexico',
-        'Estados Unidos',
-        'Reino Unido',
-        'Canada',
-        'India'
-      ],
+      countriesLang: [],
       optionsCountriesFiltered: [],
       hobbies: [],
       presentation: '',
@@ -153,18 +143,15 @@ export default {
     },
     countries () {
       const countries = []
-      // for (const country in CountriesJSON.countries) {
-      //   countries.push(CountriesJSON.countries[country])
-      // }
-      for (const country in CountriesES) {
-        console.log(CountriesES[country])
-        countries.push({ code: country, label: CountriesES[country] })
+      for (const country in this.countriesLang) {
+        countries.push({ code: country, label: this.countriesLang[country] })
       }
       return countries
     }
   },
   beforeMount: async function () {
     this.showIsLoading(true)
+    this.countriesLang = CountriesNPM.getNames('es')
     const response = await this.getProfile()
     if (response !== undefined) {
       this.firstName = response.publicData.firstName
@@ -179,9 +166,12 @@ export default {
     }
     this.showIsLoading(false)
   },
+  mounted () {
+    // this.countriesLang = CountriesNPM.getNames('es')
+    this.optionsCountriesFiltered = this.countries
+  },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
-    // ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg']),
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
