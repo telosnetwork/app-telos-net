@@ -1,0 +1,31 @@
+{
+    "spec_version": "0.2.0",
+    "manifests": [
+        {
+            "chainId": "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11",
+            "manifest": {
+                "account": "app.tf",
+                "domain": "https://app.telos.net",
+                "appmeta": "https://app.telos.net/app-metadata.json#a973b8b5f554baa1d491731844eeb10cff4cb2f92f995030dda669a711cf441c",
+                "whitelist": [
+                    {
+                        "contract": "eosio.token",
+                        "action": ""
+                    },
+                    {
+                        "contract": "eosio.login",
+                        "action": ""
+                    },
+                    {
+                        "contract": "trailservice",
+                        "action": ""
+                    },
+                    {
+                        "contract": "safe.poc.tbs",
+                        "action": ""
+                    }
+                ]
+            }
+        }
+    ]
+}

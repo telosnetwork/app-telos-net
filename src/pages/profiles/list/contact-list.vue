@@ -26,10 +26,10 @@ export default {
   components: { ContactItem },
   data () {
     return {
-      items: [{}, {}, {}, {}, {}, {}, {}],
-      search: null,
+      search: '',
       limit: 10,
-      isLoading: true
+      isLoading: true,
+      isFirst: true
     }
   },
   computed: {
@@ -37,30 +37,37 @@ export default {
       return this.$store.state.profiles.profilesList
     }
   },
-  // beforeMount () {
-  //   if (this.$store.getters['profiles/needVerifyComm']) {
-  //     this.$router.push({ name: 'verifyComm' })
-  //   }
-  // },
+  watch: {
+    search () {
+      this.isFirst = true
+    }
+  },
   beforeDestroy: function () {
     this.clearProfilesList()
   },
   methods: {
     ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),
     async onLoad (index, done) {
-      if ((this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === this.limit) || this.profileList.items.length === 0) {
+      // console.log('isFirst', this.isFirst)
+      if (this.isFirst || (this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === this.limit)) {
+        // console.log('Pagino')
+        this.isFirst = false
         this.isLoading = true
         await this.searchProfiles({ search: this.search, limit: this.limit, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
         this.isLoading = false
         done()
-      } else this.$refs.infiniteScroll.stop()
+      } else {
+        this.$refs.infiniteScroll.stop()
+      }
     },
     async onSearch (v) {
       // await this.searchProfiles({ search: this.search, clean: true, lastEvaluatedKey: this.profileList.lastEvaluatedKey })
       this.clearProfilesList()
+      this.isFirst = true
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()
-      v.preventDefault()
+      this.$refs.infiniteScroll.poll()
+      // v.preventDefault()
     }
   }
 }

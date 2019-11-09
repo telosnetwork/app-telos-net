@@ -1,5 +1,7 @@
+import { mapMutations } from 'vuex'
 export const utils = {
   methods: {
+    ...mapMutations('general', ['setErrorMsg', 'setSuccessMsg', 'setIsLoading']),
     copyToClipboard (str) {
       const el = document.createElement('textarea')
       el.value = str
@@ -27,9 +29,18 @@ export const utils = {
         textColor: 'white',
         message: message,
         icon: icon,
-        timeout: 20000,
+        timeout: 5000,
         actions: [{ label: 'Close', color: 'white' }]
       })
+    },
+    showSuccessMsg (message) {
+      this.setSuccessMsg(message)
+    },
+    showErrorMsg (message) {
+      this.setErrorMsg(message)
+    },
+    showIsLoading (state) {
+      this.setIsLoading(state)
     }
   }
 }

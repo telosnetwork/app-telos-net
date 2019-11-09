@@ -6,7 +6,8 @@ export default {
       continue: 'Continue',
       create: 'Create',
       logout: 'Logout',
-      register: 'Register'
+      register: 'Register',
+      save: 'Save'
     },
     defaultTitle: 'Title'
   },
@@ -23,6 +24,10 @@ export default {
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
       required: 'This field is required'
+    },
+    hints: {
+      selectCountrie: 'Please select your countrie',
+      pressToAddHobbie: 'Press enter to add a hobbie'
     }
   },
   menu: {
@@ -39,8 +44,14 @@ export default {
   notifications: {
     title: 'Transactions',
     trails: {
+      addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
+    }
+  },
+  lists: {
+    empty: {
+      countries: 'No countries'
     }
   },
   pages: {
@@ -75,7 +86,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openBallots: 'Open ballots',
+          openedBallots: 'Opened ballots',
           supply: 'Supply',
           registerVoter: 'Register as a voters'
         },
@@ -110,7 +121,10 @@ export default {
         currentEmail: 'Current Email',
         country: 'Country',
         hobbies: 'Hobbies',
-        btnSave: 'Save'
+        btnSave: 'Save',
+        newCustomFieldName: 'Write the name of new custom field',
+        editCustomFieldName: 'Write the new field name',
+        addCustomField: 'Add custom field'
       }
     },
     general: {
@@ -136,6 +150,23 @@ export default {
       getApp: 'Download the app',
       title: 'Select your wallet',
       selectAccount: 'Please select an account'
+    },
+    testnetRotation: {
+      title: 'Add your testnet BP to the schedule'
+    },
+    testnetDevelopers: {
+      title: 'Get a testnet account or testnet TLOS'
+    },
+    poc: {
+      smartsafe: {
+        title: 'SmartSafe POC',
+        last_unlocker: 'Last unlocked by',
+        last_unlock_time: 'Last unlocked',
+        lock: 'Lock',
+        unlock: 'Unlock',
+        locked_by: 'Locked by',
+        lock_time: 'Locked at'
+      }
     },
     verifyProfile: {
       verifySMS: 'Verify SMS',

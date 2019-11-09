@@ -15,10 +15,10 @@
         .caption.q-py-sm(v-for='(message, index) in messagesList.items', :key='index')
           .q-pa-md.row.justify-center
             MessageItem(:message='message')
-    q-input.send-input(@keypress.enter='sendMessageToChat', standout='bg-teal text-white', bottom-slots, v-model='message', label='Message', counter, ref='messageInput')
+    q-input.send-input(@keypress.enter='sendMessageToChat', standout='bg-teal text-white', :disable='sendingMessage', bottom-slots, v-model='message', label='Message', counter, ref='messageInput')
       template(v-slot:append)
         q-btn(v-show='!sendingMessage', round, dense, flat, icon='send', @click='sendMessageToChat' )
-        q-spinner-comment(v-show='sendingMessage' , color='amber', size='1.5em')
+        q-spinner-comment(v-show='sendingMessage' , color='amber', size='2em')
 </template>
 
 <script>
@@ -69,19 +69,25 @@ export default {
       } else this.$refs.infiniteScroll.stop()
     },
     async sendMessageToChat (v) {
-      this.sendingMessage = true
       var container = this.$refs.infiniteScroll.$el
-
-      container.parentNode.scrollTop = container.clientHeight
-      await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
+      const messageInput = this.$refs.messageInput.$el
+      if (!this.sendingMessage) {
+        this.sendingMessage = true
         container.parentNode.scrollTop = container.clientHeight
-        this.sendingMessage = false
-      }).catch(error => {
-        console.log(error)
-        this.showNotification(error.message, 'error')
-      })
-      this.message = null
-      // this.message = null
+        await this.sendMessage({ eosAccount: this.activeChat.activeChat, message: this.message, senderAccount: this.eosAccount }).then((v) => {
+          container.parentNode.scrollTop = container.clientHeight
+          this.sendingMessage = false
+          messageInput.focus()
+        }).catch(error => {
+          console.log(error)
+          this.sendingMessage = false
+          this.showErrorMsg(error.message)
+          messageInput.focus()
+        })
+        this.message = null
+        messageInput.focus()
+        // this.message = null
+      }
     }
   }
 }

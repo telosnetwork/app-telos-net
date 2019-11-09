@@ -1,13 +1,40 @@
 <script>
 import { mapGetters } from 'vuex'
+// import { utils } from './mixins/utils'
+
+// Vue.mixin(utils)
 
 export default {
   name: 'App',
+  // mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),
+    ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg']),
     layout () {
       return `layout-${this.$route.meta.layout || 'auth'}`
+    }
+  },
+  watch: {
+    errorMsg (msg) {
+      console.log('error', msg)
+      if (msg) {
+        this.showNotification(msg, 'error')
+        this.showErrorMsg(null)
+      }
+    },
+    successMsg (msg) {
+      if (msg) {
+        this.showNotification(msg, 'success')
+        this.showSuccessMsg(null)
+      }
+    },
+    isLoading (value) {
+      if (value) {
+        this.$q.loading.show()
+      } else {
+        this.$q.loading.hide()
+      }
     }
   }
 }

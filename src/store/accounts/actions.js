@@ -1,38 +1,64 @@
 import PPP from '@smontero/ppp-client-api'
 
+const getAuthenticator = function (ual, wallet = null) {
+  wallet = wallet || localStorage.getItem('autoLogin')
+  const idx = ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
+  return {
+    authenticator: ual.authenticators[idx],
+    idx
+  }
+}
 // export const login = async function ({ commit, dispatch }, idx) {
 // export const login = async function ({ commit, dispatch }, { idx, account }) {
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
-  commit('setLoadingWallet', authenticator.getStyle().text)
-  let error
   try {
+    commit('setLoadingWallet', authenticator.getStyle().text)
+    await authenticator.init()
+    if (!account) {
+      const requestAccount = await authenticator.shouldRequestAccountName()
+      if (requestAccount) {
+        await dispatch('fetchAvailableAccounts', idx)
+        commit('setRequestAccount', true)
+        return
+      }
+    }
     const users = await authenticator.login(account)
     if (users.length) {
       this.$api = users[0]
-      PPP.setActiveUser(this.$api)
-      const authApi = PPP.authApi()
-      await authApi.signIn()
-      commit('setAccount', users[0].accountName)
+      const accountName = await users[0].getAccountName()
+      commit('setAccount', accountName)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
-      this.dispatch('profiles/getProfile', { root: true })
+      localStorage.setItem('account', accountName)
       this.$router.push({ path: returnUrl || '/trails/treasuries' })
     }
   } catch (e) {
-    error = (authenticator.getError() && authenticator.getError().message) || e.message
-    dispatch('logout')
+    const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
+    commit('general/setErrorMsg', error, { root: true })
+    console.log('Login error: ', error)
+  } finally {
+    commit('setLoadingWallet')
   }
-  commit('setLoadingWallet')
-  return error
+}
+
+export const loginToBackend = async function ({ commit }) {
+  try {
+    PPP.setActiveUser(this.$api)
+    const authApi = PPP.authApi()
+    await authApi.signIn()
+    await this.dispatch('profiles/getProfile', { root: true })
+    return true
+  } catch (e) {
+    console.log('Failed to login to backend: ', e)
+    commit('general/setErrorMsg', e.message || e, { root: true })
+    return false
+  }
 }
 
 export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
-  const wallet = localStorage.getItem('autoLogin')
-  const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
-  if (idx !== -1) {
-    this.$ual.authenticators[idx].logout()
-  }
+  const { authenticator } = getAuthenticator(this.$ual)
+  authenticator && authenticator.logout()
   commit('setAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null
@@ -40,13 +66,10 @@ export const logout = async function ({ commit }) {
 }
 
 export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
-  const wallet = localStorage.getItem('autoLogin')
-  const idx = this.$ual.authenticators.findIndex(auth => auth.constructor.name === wallet)
-  if (idx !== -1) {
+  const { authenticator, idx } = getAuthenticator(this.$ual)
+  if (authenticator) {
     commit('setAutoLogin', true)
-    const authenticator = this.$ual.authenticators[idx]
-    await authenticator.init()
-    await dispatch('login', { idx, returnUrl })
+    await dispatch('login', { idx, returnUrl, account: localStorage.getItem('account') })
     commit('setAutoLogin', false)
   }
 }
@@ -93,7 +116,7 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
   }
 }
 
-export const fetchAvailableAccounts = async function ({ commit }, { idx }) {
+export const fetchAvailableAccounts = async function ({ commit }, idx) {
   commit('resetAvailableAccounts')
   const chainId = process.env.NETWORK_CHAIN_ID
   const authenticator = this.$ual.authenticators[idx]

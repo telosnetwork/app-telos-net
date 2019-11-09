@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import PPP from '@smontero/ppp-client-api'
 
 import routes from './routes'
+import Croppa from 'vue-croppa'
 
+Vue.use(Croppa)
 Vue.use(VueRouter)
 
 /*
@@ -22,15 +25,43 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     // Verify registered users
     if (to.matched.some(record => !record.meta.layout)) {
       if (store.getters['accounts/isAuthenticated']) {
+        if (to.matched.some(record => record.meta.needBackendLogin)) {
+          // console.log('first')
+          if (!await PPP.authApi().hasValidSession()) {
+            // console.log('second')
+            store.commit('general/setIsLoading', true)
+            const loggedIn = await store.dispatch('accounts/loginToBackend')
+            // const loggedIn = null
+            /* try {
+              const result = await store.dispatch('transfers/sendTokens', { to: 'sebastianmb2', quantity: 5, memo: 'Test' })
+              store.commit('general/setSuccessMsg', `Transfer result: ${JSON.stringify(result, null, 2)}`)
+            } catch (e) {
+              store.commit('general/setErrorMsg', `Transfer error: ${JSON.stringify(e, null, 2)}`)
+            }
+            const loggedIn = false */
+            store.commit('general/setIsLoading', false)
+
+            if (!loggedIn) {
+              // console.log('tree')
+              next(false)
+              return
+            }
+          } else store.dispatch('profiles/getProfile')
+        }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
-          if (!store.getters['profiles/isRegistered']) {
+          // console.log('Need to verify comm')
+          const isRegistered = store.getters['profiles/isRegistered']
+          // console.log(isRegistered)
+          if (!isRegistered) {
+            // console.log('Need to verify comm first')
             next({ name: 'userRegister' })
           } else if (store.getters['profiles/needVerifyComm']) {
+            // console.log('Need to verify comm second')
             next({ name: 'verifyComm', query: { returnUrl: to.path } })
           } else next()
         } else next()

@@ -23,9 +23,11 @@ build_dev:
       - node_modules/
   script:    
      # Install vuecli    
-    - yarn global add @quasar/cli    
-    # Install dependencies    
-    - yarn install    
+    - yarn global add @quasar/cli
+    # Install dependencies
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json 
     # Build App    
     - yarn build  
   artifacts:    
@@ -49,7 +51,7 @@ build_prod:
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
-    PPP_ENV: '"test"'
+    PPP_ENV: '"prod"'
   cache:
     paths:
       - node_modules/
@@ -57,7 +59,9 @@ build_prod:
     # Install vuecli    
     - yarn global add @quasar/cli    
     # Install dependencies    
-    - yarn install    
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
     # Build App    
     - yarn build  
   artifacts:    

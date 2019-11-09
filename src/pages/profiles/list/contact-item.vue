@@ -10,9 +10,9 @@
             q-item-label(caption='', lines='1') {{contact.email}}
             q-item-label(caption, lines='2') {{contact.publicData.countryCode}}
         q-item-section(side, v-if="!isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
-            q-btn(icon='chat', round, color='green' @click='goToChat')
+            q-btn.side-btn(icon='chat',size="1.1rem", round, color='green' @click='goToChat')
         q-item-section(side, v-if="isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
-            q-btn(icon='edit', round, color='green' @click='goToEditOwnProfile')
+            q-btn.side-btn(icon='edit',size="1.1rem", round, color='green' @click='goToEditOwnProfile')
         q-item-section(side, v-if="!contact.publicData.isVerified || contact.publicData.isVerified === 0")
             q-item-label(caption='', lines='1') Is not verified
 </template>
@@ -55,4 +55,7 @@ export default {
     width: 100%;
 .own
   border: solid 2px green
+
+.side-btn
+  z-index: 100
 </style>

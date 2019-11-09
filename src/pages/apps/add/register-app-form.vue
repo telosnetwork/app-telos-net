@@ -50,7 +50,7 @@ export default {
   methods: {
     ...mapActions('apps', ['registerApp']),
     async onSubmit () {
-      this.$store.commit('profiles/setPPPLoading', true)
+      this.showIsLoading(true)
       try {
         const response = await this.registerApp({
           baseUrl: this.url,
@@ -66,14 +66,14 @@ export default {
         this.appId = appId
         this.icon = icon
 
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showIsLoading(false)
 
-        this.showNotification('Submitted')
+        this.showSuccessMsg('Submitted')
         this.$router.push({ path: '/profiles/appList' })
       } catch (e) {
         console.log('ErrorForm', e)
-        this.showNotification(e.message, 'error')
-        this.$store.commit('profiles/setPPPLoading', false)
+        this.showErrorMsg(e.message)
+        this.showIsLoading(false)
       }
     },
     validationURL () {

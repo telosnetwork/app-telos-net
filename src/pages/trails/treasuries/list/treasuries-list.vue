@@ -14,11 +14,12 @@ export default {
       show: false
     }
   },
-  mounted () {
+  async mounted () {
     this.resetTreasuries()
+    await this.fetchFees()
   },
   methods: {
-    ...mapActions('trails', ['fetchTreasuries']),
+    ...mapActions('trails', ['fetchTreasuries', 'fetchFees']),
     ...mapMutations('trails', ['resetTreasuries']),
     async onLoad (index, done) {
       await this.fetchTreasuries()

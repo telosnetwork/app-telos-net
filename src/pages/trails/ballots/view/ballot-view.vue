@@ -14,7 +14,19 @@ export default {
     this.loading = false
   },
   computed: {
-    ...mapGetters('trails', ['ballot'])
+    ...mapGetters('trails', ['ballot']),
+    displayWinner () {
+      if (!this.ballot.total_voters) return 'No votes'
+      let winnerValue = -1
+      let winner
+      this.ballot.options.forEach(option => {
+        if (parseFloat(option.value) > winnerValue) {
+          winnerValue = parseFloat(option.value)
+          winner = option.key
+        }
+      })
+      return `Result: ${winner}`
+    }
   },
   methods: {
     ...mapActions('trails', ['fetchBallot', 'castVote']),
@@ -25,6 +37,9 @@ export default {
         options: [option]
       })
       this.voting = false
+    },
+    isBallotOpened () {
+      return new Date(this.ballot.end_time).getTime() > Date.now() && new Date(this.ballot.begin_time).getTime() < Date.now()
     },
     getBallotStatusColor (status) {
       switch (status) {
@@ -75,7 +90,10 @@ q-page.q-pa-lg.row.flex.justify-center
       q-card-section
         .text-right.text-italic {{ ballot.publisher }}
       q-separator
-      q-card-actions(align="right")
+      q-card-actions(
+        align="right"
+        v-if="ballot.status !== 'cancelled' && isBallotOpened()"
+      )
         q-btn(
           v-for="option in ballot.options"
           :key="option.key"
@@ -84,6 +102,11 @@ q-page.q-pa-lg.row.flex.justify-center
           @click="onCastVote(option.key)"
           :loading="voting"
         )
+      q-card-actions(
+        v-else
+        align="right"
+      )
+        strong {{ displayWinner }}
     q-inner-loading(
       v-else
     )

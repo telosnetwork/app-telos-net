@@ -8,6 +8,9 @@ import apps from './apps'
 import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
+import testnet from './testnet'
+import poc from './poc'
+import general from './general'
 
 Vue.use(Vuex)
 
@@ -24,8 +27,11 @@ export default function (/* { ssrContext } */) {
       messages,
       apps,
       notifications,
+      poc,
+      testnet,
       trails,
-      transfers
+      transfers,
+      general
     },
 
     // enable strict mode (adds overhead!)
