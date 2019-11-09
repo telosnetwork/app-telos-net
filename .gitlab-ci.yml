@@ -18,6 +18,7 @@ build_dev:
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
     PPP_ENV: '"test"'
+    WEBSERVICES_URL: '"https://api-dev.telos.net"'
   cache:
     paths:
       - node_modules/
@@ -42,7 +43,7 @@ build_prod:
   only:
     - master
   environment:
-    name: master
+    name: production
   variables:
     APP_NAME: '"Telos Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
@@ -52,6 +53,7 @@ build_prod:
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
     PPP_ENV: '"prod"'
+    WEBSERVICES_URL: '"https://api.telos.net"'
   cache:
     paths:
       - node_modules/

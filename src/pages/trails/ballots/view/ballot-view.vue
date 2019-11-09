@@ -14,7 +14,19 @@ export default {
     this.loading = false
   },
   computed: {
-    ...mapGetters('trails', ['ballot'])
+    ...mapGetters('trails', ['ballot']),
+    displayWinner () {
+      if (!this.ballot.total_voters) return 'No votes'
+      let winnerValue = -1
+      let winner
+      this.ballot.options.forEach(option => {
+        if (parseFloat(option.value) > winnerValue) {
+          winnerValue = parseFloat(option.value)
+          winner = option.key
+        }
+      })
+      return `Result: ${winner}`
+    }
   },
   methods: {
     ...mapActions('trails', ['fetchBallot', 'castVote']),
@@ -94,7 +106,7 @@ q-page.q-pa-lg.row.flex.justify-center
         v-else
         align="right"
       )
-        strong Votes closed
+        strong {{ displayWinner }}
     q-inner-loading(
       v-else
     )
