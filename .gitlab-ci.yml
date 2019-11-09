@@ -43,7 +43,7 @@ build_prod:
   only:
     - master
   environment:
-    name: master
+    name: production
   variables:
     APP_NAME: '"Telos Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
