@@ -35,10 +35,9 @@ export const countriesLang = {
       return ln
     }
   },
-  filters: {
-    codeToNameCountry: function (code, language) {
-      console.log('Lang', language)
-      return CountriesNPM.getName(code, language)
+  methods: {
+    codeToNameCountry: function (code) {
+      return CountriesNPM.getName(code, this.language)
     }
   }
 }
