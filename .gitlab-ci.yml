@@ -48,7 +48,7 @@ build_prod:
     APP_NAME: '"Telos Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
-    NETWORK_HOST: '"api.telos.kitchen"'
+    NETWORK_HOST: '"telos.caleos.io"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
