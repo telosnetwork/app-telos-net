@@ -135,7 +135,8 @@ export default {
       defaultChatList: 'There are no chats yet',
       defaultMessageList: 'There are no messages yet',
       defaultContactList: 'There are no contacts yet',
-      defaultAppList: 'There are no apps yet'
+      defaultAppList: 'There are no apps yet',
+      noAccountsFound: 'No accounts found'
     },
     registerApp: {
       form: {
