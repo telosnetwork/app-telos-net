@@ -30,7 +30,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry(this.language) }}
+              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.countryCode) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
