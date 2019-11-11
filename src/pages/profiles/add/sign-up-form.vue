@@ -176,7 +176,6 @@ export default {
       }
     },
     async getImg (blob) {
-      console.log('Upload File', blob)
       const profileApi = PPP.profileApi()
       const authApi = PPP.authApi()
       const key = await profileApi.uploadAvatar(blob)
@@ -243,7 +242,6 @@ export default {
         const needle = val.toLowerCase()
         this.optionsCountriesFiltered = this.countries.filter(
           v => v.label.toLowerCase().indexOf(needle) > -1
-          // console.log(v)
         )
       })
     },
