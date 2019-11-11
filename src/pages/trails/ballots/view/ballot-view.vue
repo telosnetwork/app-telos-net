@@ -15,17 +15,17 @@ export default {
   },
   computed: {
     ...mapGetters('trails', ['ballot']),
-    displayWinner () {
+    getWinner () {
       if (!this.ballot.total_voters) return 'No votes'
       let winnerValue = -1
       let winner
-      this.ballot.options.forEach(option => {
+      this.ballot.options.forEach((option, idx) => {
         if (parseFloat(option.value) > winnerValue) {
           winnerValue = parseFloat(option.value)
-          winner = option.key
+          winner = idx
         }
       })
-      return `Result: ${winner}`
+      return winner
     }
   },
   methods: {
@@ -97,7 +97,7 @@ q-page.q-pa-lg.row.flex.justify-center
         q-btn(
           v-for="option in ballot.options"
           :key="option.key"
-          :label="option.key"
+          :label="`${option.key} (${parseInt(option.value)} votes)`"
           color="primary"
           @click="onCastVote(option.key)"
           :loading="voting"
@@ -106,15 +106,23 @@ q-page.q-pa-lg.row.flex.justify-center
         v-else
         align="right"
       )
-        strong {{ displayWinner }}
+        span.full-width.text-right(
+          v-for="(option, idx) in ballot.options"
+          :key="idx"
+          :class="{ winner: idx === getWinner}"
+        ) {{ option.key }} {{ parseInt(option.value) }} votes
     q-inner-loading(
       v-else
     )
       q-spinner(size="3em")
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .ballot-status
   right: 0
   top: 0
+.winner
+  color: green
+  font-size: 15px
+  font-weight: 600
 </style>
