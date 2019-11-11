@@ -77,7 +77,6 @@ export default {
         await this.getProfile()
         this.$router.push({ path: returnUrl || '/profiles/myProfile' })
       } catch (e) {
-        console.error(e)
         this.showErrorMsg(e.message)
       } finally {
         this.showIsLoading(false)
