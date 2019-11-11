@@ -62,6 +62,7 @@ module.exports = function (ctx) {
         'QCardSection',
         'QChatMessage',
         'QChip',
+        'QDate',
         'QDialog',
         'QDrawer',
         'QExpansionItem',
@@ -84,6 +85,7 @@ module.exports = function (ctx) {
         'QPage',
         'QPageContainer',
         'QPageSticky',
+        'QPopupProxy',
         'QScrollArea',
         'QSelect',
         'QSeparator',
@@ -92,6 +94,7 @@ module.exports = function (ctx) {
         'QSpinnerComment',
         'QSpinnerDots',
         'QToggle',
+        'QTime',
         'QToolbar',
         'QToolbarTitle',
         'QTooltip'
