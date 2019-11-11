@@ -54,12 +54,7 @@ module.exports = function (ctx) {
       all: false,
 
       components: [
-        'QBadge',
         'QBtn',
-        'QCard',
-        'QCardActions',
-        'QCardSection',
-        'QChip',
         'QDialog',
         'QDrawer',
         'QExpansionItem',
@@ -68,20 +63,13 @@ module.exports = function (ctx) {
         'QHeader',
         'QIcon',
         'QImg',
-        'QInfiniteScroll',
         'QInnerLoading',
-        'QInput',
-        'QItem',
-        'QItemLabel',
-        'QItemSection',
         'QLayout',
-        'QList',
         'QMenu',
         'QPage',
         'QPageContainer',
         'QPageSticky',
         'QScrollArea',
-        'QSeparator',
         'QSpace',
         'QSpinner',
         'QSpinnerDots',
@@ -106,8 +94,7 @@ module.exports = function (ctx) {
         'QItemSection',
         'QItemLabel',
         'QSpinnerComment',
-        'QSeparator',
-        'QPageSticky'
+        'QSeparator'
       ],
 
       directives: [
