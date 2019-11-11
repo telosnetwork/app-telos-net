@@ -30,7 +30,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ this.Profile.publicData.countryCode | codeToNameCountry(this.language) }}
+              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.countryCode) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
@@ -44,7 +44,7 @@ main.column.items-center.back(v-if="this.Profile")
                 q-item-label {{ $t('pages.signUp.form.email') }}
                 q-item-label(caption) {{ this.Profile.emailInfo.mask }}
               q-item-section.col.col-xs-5.gt-xs(v-if='this.Profile.emailInfo.needsToVerify',side)
-                q-btn(color="orange" icon-right="fas fa-user-check" label="Verify email" to='/profiles/myProfile/verify')
+                q-btn(color="orange" icon-right="fas fa-user-check" :label="$t('pages.verifyProfile.verifyEMAIL')" :to='verifyEmailUrl')
 
           q-item.row.q-mx-md(v-if='owner && this.Profile.smsInfo.exists')
               q-item-section(top, thumbnail)
@@ -53,13 +53,13 @@ main.column.items-center.back(v-if="this.Profile")
                 q-item-label {{ $t('pages.signUp.form.sms') }}
                 q-item-label(caption) {{ this.Profile.smsInfo.mask }}
               q-item-section.col.col-xs-5.gt-xs(v-if='this.Profile.smsInfo.needsToVerify',side)
-                q-btn(color="orange" icon-right="fas fa-user-check" label="Verify sms" to='/profiles/myProfile/verify')
+                q-btn(color="orange" icon-right="fas fa-user-check" :label="$t('pages.verifyProfile.verifySMS')" :to='verifySMSUrl')
           q-item.row.q-mx-md.lt-sm(v-if='owner && this.Profile.emailInfo.needsToVerify')
             q-item-section.col.col-xs-12.lt-sm(v-if='this.Profile.emailInfo.needsToVerify',side)
-                q-btn.full-width(color="orange" icon-right="fas fa-user-check" label="Verify email" to='/profiles/myProfile/verify')
+                q-btn.full-width(color="orange" icon-right="fas fa-user-check" :label="$t('pages.verifyProfile.verifyEMAIL')" :to='verifyEmailUrl')
           q-item.row.q-mx-md.lt-sm(v-if='owner && this.Profile.smsInfo.needsToVerify')
             q-item-section.col.col-xs-12(v-if='this.Profile.smsInfo.needsToVerify',side)
-                q-btn.full-width(color="orange" icon-right="fas fa-user-check" label="Verify sms" to='/profiles/myProfile/verify')
+                q-btn.full-width(color="orange" icon-right="fas fa-user-check" :label="$t('pages.verifyProfile.verifySMS')" :to='verifySMSUrl')
 
           q-list(separator, v-for='(cField, index) in Profile.publicData.customFields', :key='index')
             q-separator(inset)
@@ -84,6 +84,7 @@ main.column.items-center.back(v-if="this.Profile")
 </template>
 
 <script>
+import { CommMethods } from '@smontero/ppp-common'
 import S3Img from '~/components/s3-image.vue'
 import { countriesLang } from '~/mixins/countries'
 export default {
@@ -99,6 +100,12 @@ export default {
     },
     fullName () {
       return `${this.Profile.publicData.firstName} ${this.Profile.publicData.lastName}`
+    },
+    verifySMSUrl () {
+      return `/profiles/myProfile/verify/${CommMethods.SMS.value}`
+    },
+    verifyEmailUrl () {
+      return `/profiles/myProfile/verify/${CommMethods.EMAIL.value}`
     }
   },
   beforeCreate () {

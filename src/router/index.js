@@ -33,14 +33,6 @@ export default function ({ store }) {
           if (!await PPP.authApi().hasValidSession()) {
             store.commit('general/setIsLoading', true)
             const loggedIn = await store.dispatch('accounts/loginToBackend')
-            // const loggedIn = null
-            /* try {
-              const result = await store.dispatch('transfers/sendTokens', { to: 'sebastianmb2', quantity: 5, memo: 'Test' })
-              store.commit('general/setSuccessMsg', `Transfer result: ${JSON.stringify(result, null, 2)}`)
-            } catch (e) {
-              store.commit('general/setErrorMsg', `Transfer error: ${JSON.stringify(e, null, 2)}`)
-            }
-            const loggedIn = false */
             store.commit('general/setIsLoading', false)
 
             if (!loggedIn) {

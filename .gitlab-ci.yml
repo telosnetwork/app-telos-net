@@ -18,14 +18,17 @@ build_dev:
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
     PPP_ENV: '"test"'
+    WEBSERVICES_URL: '"https://api-dev.telos.net"'
   cache:
     paths:
       - node_modules/
   script:    
      # Install vuecli    
-    - yarn global add @quasar/cli    
-    # Install dependencies    
-    - yarn install    
+    - yarn global add @quasar/cli
+    # Install dependencies
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-dev.json src/statics/chain-manifests.json 
     # Build App    
     - yarn build  
   artifacts:    
@@ -40,16 +43,17 @@ build_prod:
   only:
     - master
   environment:
-    name: master
+    name: production
   variables:
     APP_NAME: '"Telos Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
-    NETWORK_HOST: '"api.telos.kitchen"'
+    NETWORK_HOST: '"telos.caleos.io"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
-    PPP_ENV: '"test"'
+    PPP_ENV: '"prod"'
+    WEBSERVICES_URL: '"https://api.telos.net"'
   cache:
     paths:
       - node_modules/
@@ -57,7 +61,9 @@ build_prod:
     # Install vuecli    
     - yarn global add @quasar/cli    
     # Install dependencies    
-    - yarn install    
+    - yarn install
+    # Deploy chain manifests config file based on env
+    - mv src/statics/chain-manifests-prod.json src/statics/chain-manifests.json
     # Build App    
     - yarn build  
   artifacts:    

@@ -44,13 +44,18 @@ export default {
   notifications: {
     title: 'Transactions',
     trails: {
+      addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
+    },
+    poc: {
+      lockSafe: 'Lock safe',
+      unlockSafe: 'Unlock safe'
     }
   },
   lists: {
     empty: {
-      countries: 'Not countries'
+      countries: 'No countries'
     }
   },
   pages: {
@@ -85,7 +90,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openBallots: 'Open ballots',
+          openedBallots: 'Opened ballots',
           supply: 'Supply',
           registerVoter: 'Register as a voters'
         },
@@ -134,7 +139,8 @@ export default {
       defaultChatList: 'There are no chats yet',
       defaultMessageList: 'There are no messages yet',
       defaultContactList: 'There are no contacts yet',
-      defaultAppList: 'There are no apps yet'
+      defaultAppList: 'There are no apps yet',
+      noAccountsFound: 'No accounts found'
     },
     registerApp: {
       form: {

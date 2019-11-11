@@ -1,7 +1,6 @@
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
-
-import { mapActions } from 'vuex'
 
 export default {
   name: 'treasury-form',
@@ -15,11 +14,23 @@ export default {
         manager: null,
         maxSupply: null,
         access: null
-      }
+      },
+      submitting: false
     }
   },
+  computed: {
+    ...mapGetters('trails', ['treasuryFees'])
+  },
   methods: {
-    ...mapActions('trails', ['addTreasury'])
+    ...mapActions('trails', ['addTreasury']),
+    async onAddTreasury () {
+      this.submitting = true
+      const success = await this.addTreasury(this.form)
+      this.submitting = false
+      if (success) {
+        this.$emit('update:show', false)
+      }
+    }
   }
 }
 </script>
@@ -32,20 +43,29 @@ q-dialog(
   q-card(
     flat
     bordered
+    style="width: 400px; max-width: 80vw;"
   )
+    q-card-section.bg-primary.text-white
+      .text-h6 Create a treasury
     q-card-section
       q-input(
         v-model="form.manager"
+        label="Manager"
         :rules="[rules.required, rules.accountFormat, rules.accountLength]"
       )
       q-input(
         v-model="form.maxSupply"
+        label="Max supply"
         :rules="[rules.required]"
       )
-      q-input(
+      q-select(
         v-model="form.access"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength]"
+        label="Access"
+        :options=["public", "private", "invite"]
+        :rules="[rules.required]"
       )
+    q-card-section(v-if="treasuryFees")
+      strong.text-red.fees There is a deposit fee of {{ treasuryFees.value }}
     q-card-actions(align="right")
       q-btn(
         flat
@@ -53,7 +73,14 @@ q-dialog(
         @click="$emit('update:show', false)"
       )
       q-btn(
-        flat
+        color="primary"
         :label="$t('common.buttons.create')"
+        :loading="submitting"
+        @click="onAddTreasury()"
       )
 </template>
+
+<style lang="sass" scoped>
+  .fees
+    font-size: 12px
+</style>

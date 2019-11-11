@@ -4,7 +4,7 @@
     "shortname": "Telos Net",
     "scope": "/",
     "apphome": "/",
-    "icon": "/statics/app-logo-128x128.png#f265e468ebe7fe888d53c4e8c42cc7a34f9068b3bc9f9f11ce8abb97ac867d4a",
+    "icon": "/statics/app-logo-128x128.png#f4bc706f857b0ce3f4de6c7a80711e871607b788ecc75b158eb255f8ec3b0262",
     "description": "Telos onboarding app",
     "chains": [
         {

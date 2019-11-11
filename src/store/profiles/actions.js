@@ -35,23 +35,11 @@ export const getProfile = async function ({ commit }) {
 }
 
 export const verifySMS = async function ({ commit }, code) {
-  const profileApi = PPP.profileApi()
-  // const { eosAccount, limit, lastEvaluatedKey, clean } = params
-  try {
-    return profileApi.verifySms(code)
-  } catch (error) {
-    console.log('Error', error)
-  }
+  return PPP.profileApi().verifySms(code)
 }
 
 export const verifyEmail = async function ({ commit }, code) {
-  const profileApi = PPP.profileApi()
-  // const { eosAccount, limit, lastEvaluatedKey, clean } = params
-  try {
-    return profileApi.verifyEmail(code)
-  } catch (error) {
-    console.log('Error', error)
-  }
+  return PPP.profileApi().verifyEmail(code)
 }
 
 export const setPPPLoading = async function ({ commit }, PPPLoading) {

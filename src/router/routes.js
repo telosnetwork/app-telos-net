@@ -20,7 +20,7 @@ const routes = [
 
   // PPP
   { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: true }, name: 'userRegister' },
-  { path: '/profiles/myProfile/verify', component: () => import('pages/profiles/add/verify-user.vue'), meta: { needBackendLogin: true }, name: 'verifyComm' },
+  { path: '/profiles/myProfile/verify/:type', component: () => import('pages/profiles/add/verify-user.vue'), meta: { needBackendLogin: true }, name: 'verifyComm' },
   { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'chat' },
   { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
   { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },

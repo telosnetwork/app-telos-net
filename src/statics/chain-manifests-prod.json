@@ -2,18 +2,14 @@
     "spec_version": "0.2.0",
     "manifests": [
         {
-            "chainId": "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
+            "chainId": "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11",
             "manifest": {
                 "account": "app.tf",
-                "domain": "http://localhost:8080",
-                "appmeta": "http://localhost:8080/app-metadata.json#bc204f962e5cc6879c926826b11a46034aba37450d956a847afaa878079476b1",
+                "domain": "https://app.telos.net",
+                "appmeta": "https://app.telos.net/app-metadata.json#bc204f962e5cc6879c926826b11a46034aba37450d956a847afaa878079476b1",
                 "whitelist": [
                     {
                         "contract": "eosio.token",
-                        "action": ""
-                    },
-                    {
-                        "contract": "logintester1",
                         "action": ""
                     },
                     {

@@ -34,7 +34,14 @@ export default {
           icon="fas fa-times"
         )
 
-      q-card-section.row.justify-start.q-gutter-sm
+      q-card-section.row.justify-center.q-mb-sm(
+        v-if="!availableAccounts.length"
+      )
+        p.text-weight-thin {{ $t('pages.general.noAccountsFound') }}
+
+      q-card-section.row.justify-start.q-gutter-sm(
+        v-if="availableAccounts.length"
+      )
         q-btn.col-auto(
           v-for="account in availableAccounts"
           color="primary"
