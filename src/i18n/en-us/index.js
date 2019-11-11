@@ -47,6 +47,10 @@ export default {
       addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
+    },
+    poc: {
+      lockSafe: 'Lock safe',
+      unlockSafe: 'Unlock safe'
     }
   },
   lists: {
