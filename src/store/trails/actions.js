@@ -1,3 +1,4 @@
+import slugify from 'slugify'
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.rpc.get_table_rows({
@@ -36,6 +37,94 @@ export const fetchBallot = async function ({ commit }, ballot) {
   commit('setBallot', result.rows[0])
 }
 
+export const addBallot = async function ({ commit, state }, ballot) {
+  const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
+  const deposit = state.fees.find(fee => fee.key === 'ballot').value
+  const [, digits] = ballot.treasurySymbol.value.replace(/[a-zA-Z]*\s*/g, '').split('.')
+  const symbol = ballot.treasurySymbol.value.replace(/\d*\s*\.*/g, '')
+  const precision = (digits && digits.length) || 0
+
+  const notification = {
+    icon: 'fas fa-person-booth',
+    title: 'notifications.trails.addBallot',
+    content: `Ballot: ${ballot.title}, deposit: ${deposit}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction({
+      actions: [
+        {
+          account: 'eosio.token',
+          name: 'transfer',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            from: this.$api.accountName,
+            to: 'trailservice',
+            quantity: deposit,
+            memo: 'fees-deposit'
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'newballot',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            ballot_name: ballotName,
+            category: ballot.category,
+            publisher: this.$api.accountName,
+            treasury_symbol: `${precision},${symbol}`,
+            voting_method: ballot.votingMethod,
+            initial_options: ballot.initialOptions
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'editdetails',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            ballot_name: ballotName,
+            title: ballot.title,
+            description: ballot.description,
+            content: ''
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'openvoting',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            ballot_name: ballotName,
+            end_time: new Date(ballot.endDate).toISOString().slice(0, -5)
+          }
+        }
+      ]
+    }, {
+      broadcast: true,
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
+    commit('resetBallots')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.cause.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
 export const castVote = async function ({ commit }, { ballotName, options }) {
   const notification = {
     icon: 'fas fa-person-booth',
@@ -67,9 +156,8 @@ export const castVote = async function ({ commit }, { ballotName, options }) {
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e.cause.message
   }
 
   commit('notifications/addNotification', notification, { root: true })
@@ -111,9 +199,8 @@ export const registerVoter = async function ({ commit, state }, supply) {
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e.cause.message
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
@@ -193,9 +280,8 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e.cause.message
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'

@@ -24,11 +24,21 @@ export default {
   methods: {
     ...mapActions('trails', ['addTreasury']),
     async onAddTreasury () {
+      this.resetValidation(this.form)
+      if (!(await this.validate(this.form))) return
       this.submitting = true
       const success = await this.addTreasury(this.form)
       this.submitting = false
       if (success) {
         this.$emit('update:show', false)
+        this.resetTreasury()
+      }
+    },
+    resetTreasury () {
+      this.form = {
+        manager: null,
+        maxSupply: null,
+        access: null
       }
     }
   }
@@ -49,6 +59,7 @@ q-dialog(
       .text-h6 Create a treasury
     q-card-section
       q-input(
+        ref="manager"
         v-model="form.manager"
         label="Manager"
         :rules="[rules.required, rules.accountFormat, rules.accountLength]"

@@ -37,9 +37,8 @@ export const toggleLock = async function ({ commit }, { lock, safeName, accountN
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e.cause.message
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
