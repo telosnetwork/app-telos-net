@@ -1,8 +1,8 @@
 {
   "name": "telos-net",
   "version": "0.0.1",
-  "description": "TODO desc",
-  "productName": "Telos Net",
+  "description": "Telos Network Portal",
+  "productName": "Telos",
   "cordovaId": "org.cordova.quasar.app",
   "author": "gregory-latinier <gregory.latinier@gmail.com>",
   "private": true,
@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.2.1",
+    "@quasar/quasar-app-extension-icon-genie": "^1.1.2",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
