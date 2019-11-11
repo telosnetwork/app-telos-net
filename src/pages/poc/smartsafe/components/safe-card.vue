@@ -25,6 +25,9 @@ export default {
     ...mapGetters('accounts', ['account']),
     lockedByUser () {
       return this.safe.locked_by === this.account
+    },
+    userIsAdmin () {
+      return this.safe.admins.includes(this.account)
     }
   }
 }
@@ -62,7 +65,7 @@ div
           flat
           size='md'
           :label='safe.locked === 0 ? $t("pages.poc.smartsafe.lock") : $t("pages.poc.smartsafe.unlock")'
-          :disabled='safe.locked === 1 && !lockedByUser'
+          :disabled='safe.locked === 1 && !lockedByUser && !userIsAdmin'
           @click='onToggleLock'
         )
 </template>

@@ -47,6 +47,10 @@ export default {
       addTreasury: 'Create a treasury',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
+    },
+    poc: {
+      lockSafe: 'Lock safe',
+      unlockSafe: 'Unlock safe'
     }
   },
   lists: {
@@ -135,7 +139,8 @@ export default {
       defaultChatList: 'There are no chats yet',
       defaultMessageList: 'There are no messages yet',
       defaultContactList: 'There are no contacts yet',
-      defaultAppList: 'There are no apps yet'
+      defaultAppList: 'There are no apps yet',
+      noAccountsFound: 'No accounts found'
     },
     registerApp: {
       form: {
