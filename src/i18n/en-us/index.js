@@ -26,14 +26,14 @@ export default {
       required: 'This field is required'
     },
     hints: {
-      selectCountrie: 'Please select your countrie',
-      pressToAddHobbie: 'Press enter to add a hobbie'
+      selectCountrie: 'Please select your country',
+      pressToAddHobbie: 'Press enter to add a hobby'
     }
   },
   menu: {
-    trails: 'Trails',
+    trails: 'Voting',
     trailsBallots: 'Ballots',
-    trailsTreasuries: 'Treasuries',
+    trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
     myProfile: 'My profile',
@@ -45,7 +45,7 @@ export default {
     title: 'Transactions',
     trails: {
       addBallot: 'Create a ballot',
-      addTreasury: 'Create a treasury',
+      addTreasury: 'Create a group',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
     },
@@ -78,7 +78,7 @@ export default {
         },
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
-        verifyAccountHint: 'Copy both keys in a safe place before sending your verification code',
+        verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
         verifyOTPTitle: 'Enter your verification code'
       }
     },
@@ -93,10 +93,10 @@ export default {
           maxSupply: 'Max supply',
           openedBallots: 'Opened ballots',
           supply: 'Supply',
-          registerVoter: 'Register as a voters'
+          registerVoter: 'Register as a voter'
         },
         registerVoterDialog: {
-          title: 'Do you want to register to this treasury?'
+          title: 'Do you want to register to this group?'
         }
       }
     },
@@ -116,10 +116,10 @@ export default {
     },
     signUp: {
       form: {
-        presentation: 'Presentation',
+        presentation: 'Salutation (Mr./Mrs.)',
         firstName: 'First Name',
         lastName: 'Last Name',
-        preferMethodComm: 'Prefer method of communication',
+        preferMethodComm: 'Preferred method of communication',
         sms: 'SMS Number',
         email: 'Email',
         currentSms: 'Current SMS Number',
