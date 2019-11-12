@@ -1567,10 +1567,10 @@
     query-string "^6.5.0"
     web3-provider-engine "^15.0.0"
 
-"@smontero/ppp-client-api@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.21.tgz#6d4d665ec35a537f8047826d9a4905711d9bd5bd"
-  integrity sha512-OzsuQ5d4TgiPxnLGtJblaL7/MGPavqarqdbIOdwktaEywUKhyrLpCrSwsqEP+AhBgt1rK8bKNUQTcji/I71sUQ==
+"@smontero/ppp-client-api@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.28.tgz#3aa4d0f6e3c659e2a054153774826c3e3059e162"
+  integrity sha512-OSqI29Bnwrp/E8isJ+pUplLPQauur/hDWC0eXwx53Q6/3tM45n6MorpWwzxA0aMkZnmjCGo5X+pXpQnoI/nXbw==
   dependencies:
     "@babel/runtime" "^7.6.3"
     "@smontero/ppp-common" "0.0.6"
@@ -1588,10 +1588,10 @@
   resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.9.tgz#f6b4c899b2de86267d6692aa8465719ad30c2dde"
   integrity sha512-toEFUYmVEAyWgVjpEHwt0DKkJBjYkE33EDiqi0bJKTwL3txzzHXuc29xwQMbdzBGGUMFbli0VnUdxZXMMhrK8g==
 
-"@smontero/ual-eosio-reference-authenticator@^0.1.4":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@smontero/ual-eosio-reference-authenticator/-/ual-eosio-reference-authenticator-0.1.5.tgz#c26b00a26eca6ab7022402ef0f1b7d5d55a4e38d"
-  integrity sha512-G4HEptYHX26bMV9Jg00fdtqYq7SYkOkskZcBYpNL4awnSTmbP478GGc1FphjGgUvrHG3q21fKzic6KyDE/w4kA==
+"@smontero/ual-eosio-reference-authenticator@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@smontero/ual-eosio-reference-authenticator/-/ual-eosio-reference-authenticator-0.1.7.tgz#9d4a0ccfbd7ba5259f9254cea29dc2929e43ad94"
+  integrity sha512-Vl7MmNge4XM45Xzu/0fcNAdIM9B7VpW2yBHUOu9iwdJ8WlYVvjWM1BeaJLDg6IyojskJy+/bj1o53+WZ0LzwDA==
   dependencies:
     bs58 "4.0.1"
     eosjs "20.0.0"
