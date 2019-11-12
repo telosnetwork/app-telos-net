@@ -26,8 +26,8 @@ export default {
       required: 'This field is required'
     },
     hints: {
-      selectCountrie: 'Please select your countrie',
-      pressToAddHobbie: 'Press enter to add a hobbie'
+      selectCountrie: 'Please select your country',
+      pressToAddHobbie: 'Press enter to add a hobby'
     }
   },
   menu: {
@@ -78,7 +78,7 @@ export default {
         },
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
-        verifyAccountHint: 'Copy both keys in a safe place before sending your verification code',
+        verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
         verifyOTPTitle: 'Enter your verification code'
       }
     },
@@ -119,7 +119,7 @@ export default {
         presentation: 'Presentation',
         firstName: 'First Name',
         lastName: 'Last Name',
-        preferMethodComm: 'Prefer method of communication',
+        preferMethodComm: 'Preferred method of communication',
         sms: 'SMS Number',
         email: 'Email',
         currentSms: 'Current SMS Number',
