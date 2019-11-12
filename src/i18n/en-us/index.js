@@ -179,6 +179,9 @@ export default {
       codeSMS: 'Verification code',
       verifyEMAIL: 'Verify EMAIL',
       codeEMAIL: 'Verification code'
+    },
+    profileLogin: {
+      failed: 'Unable to login to the profile service'
     }
   }
 }
