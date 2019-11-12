@@ -31,15 +31,10 @@ export default function ({ store }) {
       if (store.getters['accounts/isAuthenticated']) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
           if (!await PPP.authApi().hasValidSession()) {
-            store.commit('general/setIsLoading', true)
-            const loggedIn = await store.dispatch('accounts/loginToBackend')
-            store.commit('general/setIsLoading', false)
-
-            if (!loggedIn) {
-              next(false)
-              return
-            }
-          } else store.dispatch('profiles/getProfile')
+            next({ name: 'profileLogin', query: { returnUrl: to.path } })
+          } else {
+            await store.dispatch('profiles/getProfile')
+          }
         }
         // Verify the communication method
         if (to.matched.some(record => record.meta.needVerifyComm)) {
