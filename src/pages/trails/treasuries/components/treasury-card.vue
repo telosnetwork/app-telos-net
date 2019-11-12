@@ -24,7 +24,7 @@ div
   q-card
     q-card-section.bg-primary.text-white
       .text-h6
-        | {{ treasury.title || "Default treasury" }}
+        | {{ treasury.title || "Group" }}
         q-icon.q-ml-sm(
           :name="`fas ${treasury.access === 'private' ? 'fa-lock' : 'fa-lock-open'}`"
           size="12px"

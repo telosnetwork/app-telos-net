@@ -31,9 +31,9 @@ export default {
     }
   },
   menu: {
-    trails: 'Trails',
+    trails: 'Voting',
     trailsBallots: 'Ballots',
-    trailsTreasuries: 'Treasuries',
+    trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
     myProfile: 'My profile',
@@ -45,7 +45,7 @@ export default {
     title: 'Transactions',
     trails: {
       addBallot: 'Create a ballot',
-      addTreasury: 'Create a treasury',
+      addTreasury: 'Create a group',
       castVote: 'Cast a vote',
       registerVoter: 'Register as a voter'
     },
@@ -93,10 +93,10 @@ export default {
           maxSupply: 'Max supply',
           openedBallots: 'Opened ballots',
           supply: 'Supply',
-          registerVoter: 'Register as a voters'
+          registerVoter: 'Register as a voter'
         },
         registerVoterDialog: {
-          title: 'Do you want to register to this treasury?'
+          title: 'Do you want to register to this group?'
         }
       }
     },
