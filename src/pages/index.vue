@@ -16,8 +16,6 @@ export default {
 
 <template lang="pug">
   q-page.flex.column
-    .col-3.main-title
-      p.p-title.text-caption {{ $t('common.appName') }}
     .main-splash
       img.imgSplash(src="../app-splashscreen.png")
     .col-9.flex.flex-center.col-grow.q-pa-lg
@@ -62,7 +60,7 @@ export default {
 .imgSplash
   min-width: 200px
   max-height: 100px
-  margin-top: 30px
+  margin-top: 80px
 
 @media screen and (max-width: 360px)
   .imgSplash
