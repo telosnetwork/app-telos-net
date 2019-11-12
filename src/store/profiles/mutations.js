@@ -26,7 +26,7 @@ export const setSelectedProfile = (state, selectedProfile) => {
   state.selectedProfile = selectedProfile
 }
 
-export const setProfile = (state, Profile) => {
+export const setProfile = (state, Profile = undefined) => {
   state.myProfile = Profile
 }
 
