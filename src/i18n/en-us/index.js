@@ -116,7 +116,7 @@ export default {
     },
     signUp: {
       form: {
-        presentation: 'Presentation',
+        presentation: 'Salutation (Mr./Mrs.)',
         firstName: 'First Name',
         lastName: 'Last Name',
         preferMethodComm: 'Preferred method of communication',
