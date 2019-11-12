@@ -16,8 +16,8 @@ export default {
 
 <template lang="pug">
   q-page.flex.column
-    .col-3.main-title
-      h1 {{ $t('common.appName') }}
+    .main-splash
+      img.imgSplash(src="../app-splashscreen.png")
     .col-9.flex.flex-center.col-grow.q-pa-lg
       div
         q-btn.full-width.q-mb-lg(
@@ -46,12 +46,25 @@ export default {
   background: $primary
   max-height: 25%
   text-align: center
-  h1
-    font-size: 36px
-    padding: 50px 20px 0
+.main-splash
+  max-height: 25%
+  text-align: center
+.p-title
+  margin-top: 10px
+  font-size: 18px
 .q-btn-item
   /deep/div
     font-size: 14px
   /deep/i
     font-size: 18px
+.imgSplash
+  min-width: 200px
+  max-height: 100px
+  margin-top: 80px
+
+@media screen and (max-width: 360px)
+  .imgSplash
+    max-width: 150px
+    max-height: 100px
+    margin-bottom: 20px
 </style>

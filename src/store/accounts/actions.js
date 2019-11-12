@@ -59,6 +59,7 @@ export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
   const { authenticator } = getAuthenticator(this.$ual)
   authenticator && authenticator.logout()
+  commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   localStorage.removeItem('autoLogin')
   this.$api = null

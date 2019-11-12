@@ -103,12 +103,12 @@ q-page.q-pa-lg
     position="bottom-right"
     :offset="[18, 18]"
   )
-    q-btn(
+    //-q-btn(
       fab
       icon="fas fa-plus"
       color="accent"
       @click="show = true"
-    )
+      )
 </template>
 <style lang="sass" scoped>
 .link

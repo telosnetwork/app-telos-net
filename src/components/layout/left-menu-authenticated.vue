@@ -63,21 +63,21 @@ export default {
             q-item-section(avatar)
               q-icon(name="fas fa-comment-dots")
             q-item-section {{ $t('menu.chats') }}
-          q-item(
+          //- q-item(
             to="/profiles/registerApp"
             exact
             clickable
             v-ripple
-          )
+           )
             q-item-section(avatar)
               q-icon(name="fas fa-plus-square")
             q-item-section {{ $t('menu.registerApp') }}
-          q-item(
+          //- q-item(
             to="/profiles/appList"
             exact
             clickable
             v-ripple
-          )
+           )
             q-item-section(avatar)
               q-icon(name="fas fa-list-alt")
             q-item-section {{ $t('menu.appList') }}
