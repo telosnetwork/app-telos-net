@@ -32,6 +32,7 @@ export default function ({ store }) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
           if (!await PPP.authApi().hasValidSession()) {
             next({ name: 'profileLogin', query: { returnUrl: to.path } })
+            return
           } else {
             await store.dispatch('profiles/getProfile')
           }
