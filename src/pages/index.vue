@@ -18,6 +18,7 @@ export default {
   q-page.flex.column
     .col-3.main-title
       h1 {{ $t('common.appName') }}
+      img.imgSplash(src="../app-splashscreen.png")
     .col-9.flex.flex-center.col-grow.q-pa-lg
       div
         q-btn.full-width.q-mb-lg(
@@ -47,11 +48,24 @@ export default {
   max-height: 25%
   text-align: center
   h1
-    font-size: 36px
-    padding: 50px 20px 0
+    font-size: 28px
+    padding: 10px 20px 0
 .q-btn-item
   /deep/div
     font-size: 14px
   /deep/i
     font-size: 18px
+.imgSplash
+  min-width: 200px
+  max-height: 100px
+  margin-bottom: 30px
+
+@media screen and (max-width: 360px)
+  .imgSplash
+    max-width: 150px
+    max-height: 100px
+    margin-bottom: 20px
+  .main-title
+    h1
+      font-size: 20px
 </style>
