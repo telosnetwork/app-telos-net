@@ -31,7 +31,8 @@ export default {
       this.voting = false
     },
     isBallotOpened (ballot) {
-      return new Date(ballot.end_time).getTime() > Date.now() && new Date(ballot.begin_time).getTime() < Date.now()
+      // return new Date(ballot.end_time).getTime() > Date.now() && new Date(ballot.begin_time).getTime() < Date.now()
+      return true
     },
     displayWinner (ballot) {
       if (!ballot.total_voters) return 'No votes'
