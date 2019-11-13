@@ -27,7 +27,8 @@ const routes = [
   { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'registerApp' },
   { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
   { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), meta: { needBackendLogin: true }, name: 'myProfile' },
-  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'profileDetail' }
+  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'profileDetail' },
+  { path: '/profiles/add/profileLogin', component: () => import('pages/profiles/read/profile-login.vue'), name: 'profileLogin' }
 ]
 
 // Always leave this as last one

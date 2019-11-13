@@ -1,18 +1,22 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import BallotForm from '../components/ballot-form'
 
 export default {
   name: 'ballots-list',
-  mounted () {
-    this.resetBallots()
-  },
+  components: { BallotForm },
   data () {
     return {
+      show: false,
       voting: false
     }
   },
+  async mounted () {
+    this.resetBallots()
+    await this.fetchFees()
+  },
   methods: {
-    ...mapActions('trails', ['fetchBallots', 'castVote']),
+    ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote']),
     ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
       await this.fetchBallots()
@@ -39,7 +43,7 @@ export default {
           winner = option.key
         }
       })
-      return `Result: ${winner}`
+      return `Result: ${winner}, (${parseInt(winnerValue)} votes)`
     }
   },
   computed: {
@@ -50,6 +54,7 @@ export default {
 
 <template lang="pug">
 q-page.q-pa-lg
+  ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       :disable="ballotsLoaded"
@@ -65,8 +70,7 @@ q-page.q-pa-lg
           q-item-section(avatar)
             router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.publisher }}
           q-item-section
-            q-item-label(overline) {{ ballot.ballot_name }}
-            q-item-label {{ ballot.title || "Default title" }}
+            q-item-label(overline) {{ ballot.title || "Default title" }}
             q-item-label(caption)
               | {{ $t('pages.trails.ballots.starts') }}: {{ ballot.begin_time }}
               br
@@ -95,6 +99,16 @@ q-page.q-pa-lg
             color="primary"
             size="40px"
           )
+  q-page-sticky(
+    position="bottom-right"
+    :offset="[18, 18]"
+  )
+    //-q-btn(
+      fab
+      icon="fas fa-plus"
+      color="accent"
+      @click="show = true"
+      )
 </template>
 <style lang="sass" scoped>
 .link

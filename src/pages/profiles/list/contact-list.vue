@@ -48,9 +48,7 @@ export default {
   methods: {
     ...mapActions('profiles', ['searchProfiles', 'clearProfilesList']),
     async onLoad (index, done) {
-      // console.log('isFirst', this.isFirst)
       if (this.isFirst || (this.profileList.lastEvaluatedKey !== undefined && this.profileList.count === this.limit)) {
-        // console.log('Pagino')
         this.isFirst = false
         this.isLoading = true
         await this.searchProfiles({ search: this.search, limit: this.limit, lastEvaluatedKey: this.profileList.lastEvaluatedKey })

@@ -8,9 +8,6 @@ import { mapActions } from 'vuex'
 export default {
   name: 'my-profile',
   components: { ProfileDetail },
-  async beforeMount () {
-    await this.getProfile()
-  },
   methods: {
     ...mapActions('profiles', ['getProfile'])
   }

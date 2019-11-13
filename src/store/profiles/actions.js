@@ -30,7 +30,7 @@ export const getProfile = async function ({ commit }) {
     commit('setProfile', profile)
     return profile
   } catch (error) {
-    console.log('Error', error)
+    commit('general/setErrorMsg', error.message || error, { root: true })
   }
 }
 

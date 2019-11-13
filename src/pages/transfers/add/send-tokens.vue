@@ -35,6 +35,9 @@ export default {
         this.setErrorMsg(error.message)
       }
       this.submitting = false
+    },
+    openUrl (url) {
+      window.open(`${process.env.BLOCKCHAIN_EXPLORER}${url}`)
     }
   }
 }
@@ -79,8 +82,15 @@ q-page.flex.flex-center
         @click="onSendTokens"
       )
     q-card-section(v-if="transactionId")
-      a(
-        :href="`https://telos-test.bloks.io/transaction/${transactionId}`"
+      q-btn(
+        label="Transaction"
+        color="primary"
+        icon="fas fa-external-link-alt"
+        @click="openUrl(`/transaction/${transactionId}`)"
         target="_blank"
-      ) Trx explorer
+        dense
+        flat
+        size="8px"
+      )
+
 </template>
