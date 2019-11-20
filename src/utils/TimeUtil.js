@@ -136,12 +136,17 @@ class TimeUtil {
 
   static formDateToChat (date) {
     const diff = new DateDiff(new Date(), date)
+    let hours, minutes, seconds
+    hours = date.getHours()
+    console.log('Length', date.getMinutes())
+    minutes = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
+    seconds = date.getSeconds()
     if (diff.hours() < 24) {
-      return `today ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+      return `today ${hours}:${minutes}:${seconds}`
     } else if (diff.hours() > 24 && diff.hours() < 48) {
-      return `yesterday ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+      return `yesterday ${hours}:${minutes}:${seconds}`
     }
-    return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${hours}:${minutes}:${seconds}`
   }
 }
 
