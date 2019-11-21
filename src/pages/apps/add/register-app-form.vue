@@ -2,7 +2,11 @@
 .row.justify-center.items-center.q-col-gutter-y-md.q-pa-md
   .col-xs-8
     .column
-      q-img.appIcon.self-center(:src='icon')
+      q-avatar.self-center(size="120px")
+        q-img(:src='icon', :ratio='1', spinner-color="primary", @load="successLoadIcon", @error="errorLoadIcon")
+          template(v-slot:error)
+            div.absolute-full.flex.flex-center.bg-negative
+              .text-white.text-caption.text-center Cannot load image
     .row.justify-center
       q-radio(v-model='appType', :disable="editing", :val='appTypes.WEB_APP', :label='appTypes.WEB_APP')
       q-radio(v-model='appType', :disable="editing", :val='appTypes.STANDALONE_APP', :label='appTypes.STANDALONE_APP')
@@ -14,7 +18,7 @@
       div
         q-btn(label='Submit', type='submit', color='primary')
     q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.STANDALONE_APP")
-      q-input.q-mt-md(filled, v-model='icon', :label="$t('pages.registerApp.form.urlImage')", :hint="$t('pages.registerApp.form.urlImage')")
+      q-input.q-mt-md(filled, ref="inputImage" , v-model='icon', :label="$t('pages.registerApp.form.urlImage')", :hint="$t('pages.registerApp.form.urlImage')", :rules="[ value => iconLoaded !== false || 'Cannot load image', rules.required ]")
       q-input.q-mt-md(filled, v-model='name', :label="$t('pages.registerApp.form.name')", :rules='[ rules.required ]')
       q-input(filled, v-model='shortName', :label="$t('pages.registerApp.form.shortName')", :rules='[ rules.required ]')
       q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
@@ -40,7 +44,8 @@ export default {
       icon: '',
       name: '',
       appType: '',
-      editing: false
+      editing: false,
+      iconLoaded: false
     }
   },
   watch: {
@@ -88,6 +93,14 @@ export default {
   },
   methods: {
     ...mapActions('apps', ['registerApp']),
+    successLoadIcon () {
+      this.iconLoaded = true
+      this.$refs.inputImage.resetValidation()
+    },
+    errorLoadIcon () {
+      this.iconLoaded = false
+      this.$refs.inputImage.resetValidation()
+    },
     async onSubmit () {
       this.showIsLoading(true)
       let response
