@@ -4,7 +4,8 @@ q-dialog(
 )
   q-card
     q-card-section
-      .text-h6 {{ $t('pages.trails.treasuries.registerVoterDialog.title') }}
+      slot(name='body')
+        .text-h6 {{ $t('pages.general.confirmActions') }}
     q-card-actions(
       align="right"
     )

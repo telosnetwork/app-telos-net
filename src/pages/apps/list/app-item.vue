@@ -1,11 +1,16 @@
 <template lang="pug">
 main
-  confirm-dialog(:show.sync="showConfirm", @Confirmed="deleteMyApp")
+  confirm-dialog(
+    :show.sync="showConfirm",
+    @Confirmed="deleteMyApp",
+  )
+    template(v-slot:body)
+      .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
   q-card
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
             q-avatar(size="80px")
-                img(:src='App.icon')
+              q-img(:src='App.icon', :ratio='1')
         q-item-section(clickable,  @click='goToAppDetail')
           q-item-label(lines='1')
            span.text-weight-medium {{$t('pages.registerApp.form.name')}} {{': '}}
