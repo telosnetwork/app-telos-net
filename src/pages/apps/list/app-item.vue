@@ -1,10 +1,12 @@
 <template lang="pug">
+main
+  confirm-dialog(:show.sync="showConfirm", @Confirmed="deleteMyApp")
   q-card
-    q-item.q-pa-md(v-ripple, clickable,  @click='goToAppDetail')
+    q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
             q-avatar(size="80px")
                 img(:src='App.icon')
-        q-item-section
+        q-item-section(clickable,  @click='goToAppDetail')
           q-item-label(lines='1')
            span.text-weight-medium {{$t('pages.registerApp.form.name')}} {{': '}}
            span.text-grey-8 {{App.name}}
@@ -20,18 +22,43 @@
           q-item-label(lines='1')
            span.text-weight-medium {{$t('pages.registerApp.form.shortName')}} {{': '}}
            span.text-grey-8 {{App.shortname}}
+        q-item-section(side)
+          q-btn.side-btn(icon='delete',size="1.1rem", round, color='red', @click="showConfirm = true")
 </template>
 
 <script>
+import ConfirmDialog from '~/components/confirm-dialog'
+import { mapActions } from 'vuex'
 export default {
   name: 'app-item',
   props: {
-    App: Object
+    App: { type: Object, required: true }
+  },
+  components: { ConfirmDialog },
+  data () {
+    return {
+      showConfirm: false
+    }
   },
   methods: {
+    ...mapActions('apps', ['deleteApp']),
     goToAppDetail () {
       this.$store.commit('apps/setSelectedApp', this.App)
       this.$router.push({ name: 'registerApp' })
+    },
+    async deleteMyApp () {
+      this.showIsLoading(true)
+      try {
+        await this.deleteApp({ appId: this.App.appId })
+        this.showSuccessMsg('Deleted')
+        this.showIsLoading(false)
+      } catch (e) {
+        this.showIsLoading(false)
+        this.showErrorMsg(e.message)
+      }
+    },
+    cancelDelete () {
+      alert('Canceled')
     }
   }
 }

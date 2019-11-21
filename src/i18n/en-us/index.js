@@ -7,7 +7,8 @@ export default {
       create: 'Create',
       logout: 'Logout',
       register: 'Register',
-      save: 'Save'
+      save: 'Save',
+      confirm: 'Confirm'
     },
     defaultTitle: 'Title'
   },
@@ -146,6 +147,7 @@ export default {
     registerApp: {
       form: {
         urlBase: 'URL',
+        urlImage: 'Image URL',
         name: 'Name',
         appId: 'AppId',
         shortName: 'Short Name',
