@@ -46,10 +46,12 @@ export default {
             v-model="form.account"
             color="accent"
             :label="$t('pages.accounts.add.forms.account')"
+            :hint="$t('pages.accounts.add.forms.accountHint')"
             outlined
             maxlength="12"
             :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.isAccountAvailable]"
             lazy-rules
+            @keyup="form.account = form.account.toLowerCase()"
           )
           q-input(
             ref="smsNumber"
