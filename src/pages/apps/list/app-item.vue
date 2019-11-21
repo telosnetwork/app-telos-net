@@ -57,6 +57,7 @@ export default {
         await this.deleteApp({ appId: this.App.appId })
         this.showSuccessMsg('Deleted')
         this.showIsLoading(false)
+        this.$emit('Deleted', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)

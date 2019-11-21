@@ -51,7 +51,6 @@ export default {
   watch: {
     appType: function (newType, oldType) {
       if (oldType !== '') {
-        console.log('Se limpio')
         this.shortName = ''
         this.name = ''
         this.icon = ''
@@ -117,7 +116,8 @@ export default {
             shortname: this.shortName,
             name: this.name,
             icon: this.icon,
-            type: this.appType
+            type: this.appType,
+            appId: this.appId
           })
         }
 

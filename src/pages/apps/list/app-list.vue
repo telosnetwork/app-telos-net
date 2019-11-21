@@ -12,7 +12,7 @@
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6
             q-list(bordered)
-              AppItem(:App="app")
+              AppItem(:App="app", @Deleted="onAppDeleted")
 </template>
 
 <script>
@@ -50,6 +50,11 @@ export default {
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()
       v.preventDefault()
+    },
+    onAppDeleted () {
+      this.clearMyAppList()
+      this.$refs.infiniteScroll.reset()
+      this.$refs.infiniteScroll.resume()
     }
   }
 }

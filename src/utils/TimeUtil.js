@@ -140,7 +140,7 @@ class TimeUtil {
     hours = date.getHours()
     console.log('Length', date.getMinutes())
     minutes = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
-    seconds = date.getSeconds()
+    seconds = date.getSeconds() >= 10 ? date.getSeconds() : `0${date.getSeconds()}`
     if (diff.hours() < 24) {
       return `today ${hours}:${minutes}:${seconds}`
     } else if (diff.hours() > 24 && diff.hours() < 48) {
