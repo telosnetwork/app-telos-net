@@ -73,6 +73,7 @@ export default {
         createAccountTitle: 'Create an Account',
         forms: {
           account: 'Account name',
+          accountHint: '12 characters, alphanumeric a-z, 1-5',
           smsNumber: 'Phone number',
           verificationCode: 'Verification code'
         },
