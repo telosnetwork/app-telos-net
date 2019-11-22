@@ -138,7 +138,6 @@ class TimeUtil {
     const diff = new DateDiff(new Date(), date)
     let hours, minutes, seconds
     hours = date.getHours()
-    console.log('Length', date.getMinutes())
     minutes = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`
     seconds = date.getSeconds() >= 10 ? date.getSeconds() : `0${date.getSeconds()}`
     if (diff.hours() < 24) {
