@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { validation } from '~/mixins/validation'
 import { utils } from '~/mixins/utils'
 import { generateKeys } from '~/utils/eosio'
@@ -14,23 +14,25 @@ export default {
         publicKey: null,
         privateKey: null
       },
-      copy: {
-        publicKey: false,
-        privateKey: false
-      },
+      copy: false,
       generating: false,
-      submitting: false
+      submitting: false,
+      error: null
     }
   },
   methods: {
     ...mapActions('accounts', ['verifyOTP']),
+    ...mapMutations('general', ['setSuccessMsg']),
     async onVerifyOTP () {
       this.resetValidation(this.form)
+      this.error = null
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      const result = await this.verifyOTP(this.form)
-      if (result) {
+      const { success, error } = await this.verifyOTP(this.form)
+      if (success) {
         this.$router.push({ path: '/accounts/add/congratulations' })
+      } else {
+        this.error = error
       }
       this.submitting = false
     }
@@ -59,8 +61,9 @@ export default {
               ref="publicKey"
               v-model="form.publicKey"
               label="Public Key"
-              :rules="[() => copy.publicKey || $t('forms.errors.copyKey')]"
+              :rules="[() => copy || $t('forms.errors.copyKey')]"
               lazy-rules
+              @click="$refs['publicKey'].select()"
             )
               template(v-slot:after)
                 q-btn(
@@ -68,14 +71,15 @@ export default {
                   color="primary"
                   icon="fas fa-clipboard"
                   size="sm"
-                  @click="() => {copyToClipboard(form.publicKey); copy.publicKey = true;}"
+                  @click="() => { copyToClipboard(form.publicKey); setSuccessMsg($t('pages.accounts.add.keyCopyClipboard'))}"
                 )
             q-input(
               ref="privateKey"
               v-model="form.privateKey"
               label="Private Key"
-              :rules="[() => copy.privateKey || $t('forms.errors.copyKey')]"
+              :rules="[() => copy || $t('forms.errors.copyKey')]"
               lazy-rules
+              @click="$refs['privateKey'].select()"
             )
               template(v-slot:after)
                 q-btn(
@@ -83,17 +87,25 @@ export default {
                   color="primary"
                   icon="fas fa-clipboard"
                   size="sm"
-                  @click="() => {copyToClipboard(form.privateKey); copy.privateKey = true;}"
+                  @click="() => { copyToClipboard(form.privateKey); setSuccessMsg($t('pages.accounts.add.keyCopyClipboard'))}"
                 )
+        q-card-section
+          q-checkbox(
+            v-model="copy"
+            label="I have copied my keys somewhere safe"
+          )
         q-card-section
           q-input(
             ref="password"
             v-model="form.password"
             color="accent"
+            :readonly="!copy"
             :label="$t('pages.accounts.add.forms.verificationCode')"
             outlined
             :rules="[rules.required]"
             lazy-rules
+            :error="!!error"
+            :error-message="error"
           )
     .col-3
       .hint {{ $t('pages.accounts.add.verifyAccountHint') }}

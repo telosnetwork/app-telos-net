@@ -24,6 +24,7 @@ export default {
       accountNotAvailable: 'The account "{account}" already exists',
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
+      phoneFormat: 'Please type a valid phone',
       required: 'This field is required'
     },
     hints: {
@@ -74,9 +75,12 @@ export default {
         createAccountTitle: 'Create an Account',
         forms: {
           account: 'Account name',
+          accountHint: '12 characters, alphanumeric a-z, 1-5',
+          phoneCode: 'Code',
           smsNumber: 'Phone number',
           verificationCode: 'Verification code'
         },
+        keyCopyClipboard: 'Key copied to clipboard',
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
         verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
