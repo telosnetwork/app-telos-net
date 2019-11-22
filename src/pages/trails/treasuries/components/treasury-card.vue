@@ -51,13 +51,15 @@ div
           @click="show = true"
         )
           q-tooltip {{ $t('pages.trails.treasuries.card.registerVoter') }}
-        q-chip(
+        q-btn(
           icon="fas fa-person-booth"
           color="white"
           text-color="primary"
           dense
-          size="sm"
+          flat
+          size="xs"
+          :label="treasury.open_ballots"
+          :to="`/trails/ballots?treasury=${treasury.symbol}`"
         )
-          | &nbsp; {{ treasury.open_ballots }}
           q-tooltip {{ $t('pages.trails.treasuries.card.openedBallots') }}
 </template>

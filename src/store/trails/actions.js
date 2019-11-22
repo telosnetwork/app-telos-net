@@ -1,4 +1,5 @@
 import slugify from 'slugify'
+import { supplyToAsset } from '../../utils/assets'
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.rpc.get_table_rows({
@@ -13,13 +14,17 @@ export const fetchFees = async function ({ commit }) {
 // Fees
 
 // Ballots
-export const fetchBallots = async function ({ commit, state }) {
+export const fetchBallots = async function ({ commit, state }, query) {
   const rows = await this.$api.rpc.get_table_rows({
     json: true,
     code: 'trailservice',
     scope: 'trailservice',
     table: 'ballots',
-    limit: state.ballots.list.pagination.limit
+    limit: state.ballots.list.pagination.limit,
+    index_position: query.index || 0,
+    key_type: 'i64',
+    lower_bound: query.lower,
+    upper_bound: query.upper
   })
   commit('addBallots', rows)
 }
@@ -40,9 +45,6 @@ export const fetchBallot = async function ({ commit }, ballot) {
 export const addBallot = async function ({ commit, state }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
-  const [, digits] = ballot.treasurySymbol.value.replace(/[a-zA-Z]*\s*/g, '').split('.')
-  const symbol = ballot.treasurySymbol.value.replace(/\d*\s*\.*/g, '')
-  const precision = (digits && digits.length) || 0
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -77,7 +79,7 @@ export const addBallot = async function ({ commit, state }, ballot) {
             ballot_name: ballotName,
             category: ballot.category,
             publisher: this.$api.accountName,
-            treasury_symbol: `${precision},${symbol}`,
+            treasury_symbol: supplyToAsset(ballot.treasurySymbol),
             voting_method: ballot.votingMethod,
             initial_options: ballot.initialOptions
           }
@@ -171,10 +173,6 @@ export const registerVoter = async function ({ commit, state }, supply) {
     content: `Treasury: ${supply}`
   }
 
-  const [, digits] = supply.replace(/[a-zA-Z]*\s*/g, '').split('.')
-  const symbol = supply.replace(/\d*\s*\.*/g, '')
-  const precision = (digits && digits.length) || 0
-
   try {
     const transaction = await this.$api.signTransaction({
       actions: [{
@@ -186,7 +184,7 @@ export const registerVoter = async function ({ commit, state }, supply) {
         }],
         data: {
           voter: this.$api.accountName,
-          treasury_symbol: `${precision},${symbol}`,
+          treasury_symbol: supplyToAsset(supply),
           referrer: null
         }
       }]

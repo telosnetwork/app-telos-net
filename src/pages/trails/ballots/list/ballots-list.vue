@@ -8,10 +8,14 @@ export default {
   data () {
     return {
       show: false,
-      voting: false
+      voting: false,
+      treasury: null
     }
   },
   async mounted () {
+    if (this.$route.query) {
+      this.treasury = this.$route.query.treasury
+    }
     this.resetBallots()
     await this.fetchFees()
   },
@@ -19,7 +23,12 @@ export default {
     ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote']),
     ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
-      await this.fetchBallots()
+      const filter = {
+        index: 4,
+        lower: this.treasury || (this.$route.query && this.$route.query.treasury),
+        upper: this.treasury || (this.$route.query && this.$route.query.treasury)
+      }
+      await this.fetchBallots(filter)
       done()
     },
     async onCastVote ({ option, ballotName }) {
@@ -47,7 +56,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('trails', ['ballots', 'ballotsLoaded'])
+    ...mapGetters('trails', ['ballots', 'ballotsLoaded', 'treasuriesOptions'])
+  },
+  watch: {
+    treasury: function (val, old) {
+      if (val !== old) {
+        this.resetBallots()
+      }
+    }
   }
 }
 </script>
@@ -55,6 +71,15 @@ export default {
 <template lang="pug">
 q-page.q-pa-lg
   ballot-form(:show.sync="show")
+  .row.flex.justify-end
+    q-select.q-mb-lg(
+      v-model="treasury"
+      :options="treasuriesOptions"
+      label="Treasury filter"
+      :style="{width: '200px'}"
+      emit-value
+      map-options
+    )
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       :disable="ballotsLoaded"
