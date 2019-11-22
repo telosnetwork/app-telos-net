@@ -79,6 +79,7 @@ export default {
           smsNumber: 'Phone number',
           verificationCode: 'Verification code'
         },
+        keyCopyClipboard: 'Key copied to clipboard',
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
         verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
