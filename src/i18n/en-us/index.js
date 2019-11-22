@@ -7,7 +7,8 @@ export default {
       create: 'Create',
       logout: 'Logout',
       register: 'Register',
-      save: 'Save'
+      save: 'Save',
+      confirm: 'Confirm'
     },
     defaultTitle: 'Title'
   },
@@ -145,15 +146,18 @@ export default {
       defaultMessageList: 'There are no messages yet',
       defaultContactList: 'There are no contacts yet',
       defaultAppList: 'There are no apps yet',
-      noAccountsFound: 'No accounts found'
+      noAccountsFound: 'No accounts found',
+      confirmActions: 'Do you want confirm this action?'
     },
     registerApp: {
       form: {
         urlBase: 'URL',
+        urlImage: 'Image URL',
         name: 'Name',
         appId: 'AppId',
         shortName: 'Short Name',
-        ownerAccount: 'Owner Account'
+        ownerAccount: 'Owner Account',
+        confirmDeleteApp: 'Do you want delete this app?'
       }
     },
     login: {

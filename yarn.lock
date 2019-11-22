@@ -1567,10 +1567,10 @@
     query-string "^6.5.0"
     web3-provider-engine "^15.0.0"
 
-"@smontero/ppp-client-api@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.28.tgz#3aa4d0f6e3c659e2a054153774826c3e3059e162"
-  integrity sha512-OSqI29Bnwrp/E8isJ+pUplLPQauur/hDWC0eXwx53Q6/3tM45n6MorpWwzxA0aMkZnmjCGo5X+pXpQnoI/nXbw==
+"@smontero/ppp-client-api@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.30.tgz#fbd5b2a22325ce9632248d2117865be591808ff5"
+  integrity sha512-MGex/1VmrkBkS6nUrGjHIgCvFOofcag10Sdiwj0QjsvZ59lF02rubyoKouNSFk3NAyFDgBUnpdheN63p8P5eRQ==
   dependencies:
     "@babel/runtime" "^7.6.3"
     "@smontero/ppp-common" "0.0.6"
@@ -1578,15 +1578,15 @@
     get-random-values "^1.2.0"
     mime "^2.4.4"
 
+"@smontero/ppp-common@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.10.tgz#926957e864f4da1cc674e39d6bcecd61002165fc"
+  integrity sha512-GPvOKxya35JDoICw8in00uwlnXUsfkv8JKB0U16NmFVVw8wW7VVtyo7D148XAtPLEMRyCf0kog9mMqU3Xhewow==
+
 "@smontero/ppp-common@0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.6.tgz#e05462aea482ac6a4cbdf050bcfc70b017b33649"
   integrity sha512-Ksl1XaytBCQcNdZc31+kxv2pJU3S4+0x5dAViS+E0+Ceix5XX8RFGBOYt08rv/IrxeYfS2UCXFDc4ShCNnVAJw==
-
-"@smontero/ppp-common@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.9.tgz#f6b4c899b2de86267d6692aa8465719ad30c2dde"
-  integrity sha512-toEFUYmVEAyWgVjpEHwt0DKkJBjYkE33EDiqi0bJKTwL3txzzHXuc29xwQMbdzBGGUMFbli0VnUdxZXMMhrK8g==
 
 "@smontero/ual-eosio-reference-authenticator@^0.1.7":
   version "0.1.7"
