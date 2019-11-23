@@ -9,7 +9,15 @@ export default {
     return {
       show: false,
       voting: false,
-      treasury: null
+      treasury: null,
+      statuses: [],
+      statusOptions: [
+        { value: 'setup', label: 'Setup' },
+        { value: 'voting', label: 'Voting' },
+        { value: 'closed', label: 'Closed' },
+        { value: 'cancelled', label: 'Cancelled' },
+        { value: 'archived', label: 'Archived' }
+      ]
     }
   },
   async mounted () {
@@ -72,6 +80,27 @@ export default {
 q-page.q-pa-lg
   ballot-form(:show.sync="show")
   .row.flex.justify-end
+    q-select.q-mb-lg.q-mr-sm(
+      v-model="statuses"
+      :options="statusOptions"
+      label="Status"
+      multiple
+      :style="{width: '200px'}"
+      emit-value
+      map-options
+    )
+      template(v-slot:option="scope")
+        q-item(
+          v-bind="scope.itemProps"
+          v-on="scope.itemEvents"
+        )
+          q-item-section(side)
+            q-checkbox(
+              v-model="statuses"
+              :val="scope.opt.value"
+            )
+          q-item-section
+            q-item-label(v-html="scope.opt.label")
     q-select.q-mb-lg(
       v-model="treasury"
       :options="treasuriesOptions"
@@ -89,7 +118,7 @@ q-page.q-pa-lg
     )
       q-list(bordered)
         q-item(
-          v-for="ballot in ballots"
+          v-for="ballot in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
           :key="ballot.ballot_name"
         )
           q-item-section(avatar)
