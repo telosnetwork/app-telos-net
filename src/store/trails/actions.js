@@ -79,7 +79,7 @@ export const addBallot = async function ({ commit, state }, ballot) {
             ballot_name: ballotName,
             category: ballot.category,
             publisher: this.$api.accountName,
-            treasury_symbol: supplyToAsset(ballot.treasurySymbol),
+            treasury_symbol: supplyToAsset(ballot.treasurySymbol.value),
             voting_method: ballot.votingMethod,
             initial_options: ballot.initialOptions
           }
@@ -96,6 +96,19 @@ export const addBallot = async function ({ commit, state }, ballot) {
             title: ballot.title,
             description: ballot.description,
             content: ''
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'editminmax',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            ballot_name: ballotName,
+            new_min_options: ballot.minOptions,
+            new_max_options: ballot.maxOptions
           }
         },
         {

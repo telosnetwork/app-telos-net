@@ -8,7 +8,11 @@ export const validation = {
         accountLength: val => val.length === 12 || this.$t('forms.errors.accountLength'),
         isAccountAvailable: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountNotAvailable', { account }),
         accountExists: async account => !(await this.isAccountFree(account)) || this.$t('forms.errors.accountNotExists', { account }),
-        required: val => !!val || this.$t('forms.errors.required')
+        required: val => !!val || this.$t('forms.errors.required'),
+        isInteger: val => Number.isInteger(val) || this.$t('forms.errors.integer'),
+        positiveInteger: val => val > 0 || this.$t('forms.errors.positiveInteger'),
+        greaterOrEqualThan: value => val => val >= value || this.$t('forms.errors.greaterOrEqualThan', { value }),
+        dateFuture: date => val => new Date(val).getTime() >= new Date(date).getTime() || this.$t('forms.errors.dateFuture')
       }
     }
   },

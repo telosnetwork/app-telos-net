@@ -104,7 +104,7 @@ q-page.q-pa-lg
     q-select.q-mb-lg(
       v-model="treasury"
       :options="treasuriesOptions"
-      label="Treasury filter"
+      label="Group filter"
       :style="{width: '200px'}"
       emit-value
       map-options
@@ -157,7 +157,7 @@ q-page.q-pa-lg
     position="bottom-right"
     :offset="[18, 18]"
   )
-    //-q-btn(
+    q-btn(
       fab
       icon="fas fa-plus"
       color="accent"
