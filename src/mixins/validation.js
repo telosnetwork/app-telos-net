@@ -4,16 +4,18 @@ export const validation = {
   data () {
     return {
       rules: {
-        accountFormatBasic: val => /^([a-z]|[1-5]){12}$/.test(val) || this.$t('forms.errors.accountFormatBasic'),
-        accountFormat: val => /^([a-z]|[1-5]|.){1,12}$/.test(val) || this.$t('forms.errors.accountFormat'),
-        accountLength: val => val.length <= 12 || this.$t('forms.errors.accountLength'),
-        isAccountAvailable: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountNotAvailable', { account }),
         accountExists: async account => !(await this.isAccountFree(account)) || this.$t('forms.errors.accountNotExists', { account }),
-        required: val => !!val || this.$t('forms.errors.required'),
-        isInteger: val => Number.isInteger(val) || this.$t('forms.errors.integer'),
-        positiveInteger: val => val > 0 || this.$t('forms.errors.positiveInteger'),
+        accountFormat: val => /^([a-z]|[1-5]|.){1,12}$/.test(val) || this.$t('forms.errors.accountFormat'),
+        accountFormatBasic: val => /^([a-z]|[1-5]){12}$/.test(val) || this.$t('forms.errors.accountFormatBasic'),
+        accountLength: val => val.length <= 12 || this.$t('forms.errors.accountLength'),
+        dateFuture: date => val => new Date(val).getTime() >= new Date(date).getTime() || this.$t('forms.errors.dateFuture'),
         greaterOrEqualThan: value => val => val >= value || this.$t('forms.errors.greaterOrEqualThan', { value }),
-        dateFuture: date => val => new Date(val).getTime() >= new Date(date).getTime() || this.$t('forms.errors.dateFuture')
+        isAccountAvailable: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountNotAvailable', { account }),
+        isInteger: val => Number.isInteger(parseInt(val)) || this.$t('forms.errors.integer'),
+        isToken: val => (val.length >= 2 && val.length <= 6) || this.$t('forms.errors.token'),
+        isTokenDecimals: val => (parseInt(val) >= 2 && parseInt(val) <= 9) || this.$t('forms.errors.tokenDecimals'),
+        positiveInteger: val => parseInt(val) > 0 || this.$t('forms.errors.positiveInteger'),
+        required: val => !!val || this.$t('forms.errors.required')
       }
     }
   },

@@ -13,6 +13,9 @@ export default {
       form: {
         manager: null,
         maxSupply: null,
+        maxSupplyValue: null,
+        maxSupplyToken: null,
+        maxSupplyDecimals: null,
         access: null,
         title: null,
         description: null
@@ -44,6 +47,24 @@ export default {
         title: null,
         description: null
       }
+    },
+    setMaxSupply () {
+      if (this.form.maxSupplyDecimals && parseInt(this.form.maxSupplyDecimals) > 0) {
+        this.form.maxSupply = `${this.form.maxSupplyValue || 0}.${''.padStart(parseInt(this.form.maxSupplyDecimals), '0')} ${this.form.maxSupplyToken}`
+      } else {
+        this.form.maxSupply = `${this.form.maxSupplyValue || 0} ${this.form.maxSupplyToken}`
+      }
+    }
+  },
+  watch: {
+    'form.maxSupplyValue': function () {
+      this.setMaxSupply()
+    },
+    'form.maxSupplyToken': function () {
+      this.setMaxSupply()
+    },
+    'form.maxSupplyDecimals': function () {
+      this.setMaxSupply()
     }
   }
 }
@@ -72,13 +93,32 @@ q-dialog(
         :debounce="200"
         @keyup="form.manager = form.manager.toLowerCase()"
       )
-      q-input(
-        ref="maxSupply"
-        v-model="form.maxSupply"
-        label="Max supply"
-        :rules="[rules.required]"
-        lazy-rules
-      )
+      .row
+        q-input.col-4(
+          ref="maxSupplyValue"
+          v-model="form.maxSupplyValue"
+          label="Max supply"
+          type="number"
+          :rules="[rules.required, rules.isInteger, rules.positiveInteger]"
+          lazy-rules
+        )
+        q-input.col-4(
+          ref="maxSupplyToken"
+          v-model="form.maxSupplyToken"
+          label="Token"
+          maxlength="6"
+          :rules="[rules.required, rules.isToken]"
+          lazy-rules
+          @keyup="form.maxSupplyToken = form.maxSupplyToken.toUpperCase()"
+        )
+        q-input.col-4(
+          ref="maxSupplyDecimals"
+          v-model="form.maxSupplyDecimals"
+          label="Decimals"
+          type="number"
+          :rules="[rules.required, rules.isInteger, rules.isTokenDecimals]"
+          lazy-rules
+        )
       q-input(
         ref="title"
         v-model="form.title"
