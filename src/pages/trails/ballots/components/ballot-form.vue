@@ -73,6 +73,9 @@ export default {
         initialOptions: [],
         endDate: null
       }
+    },
+    addBallotOption (val, done) {
+      done(val.toLowerCase(), 'add-unique')
     }
   }
 }
@@ -138,23 +141,24 @@ q-dialog(
         multiple
         hide-dropdown-icon
         input-debounce="0"
-        new-value-mode="add-unique"
+        @new-value="addBallotOption"
         :rules="[rules.required]"
       )
-      q-input(
-        type="number"
-        ref="minOptions"
-        v-model="form.minOptions"
-        label="Min options"
-        :rules="[rules.required, rules.integer, rules.positiveInteger]"
-      )
-      q-input(
-        type="number"
-        ref="maxOptions"
-        v-model="form.maxOptions"
-        label="Max options"
-        :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
-      )
+      .row
+        q-input.col-6(
+          type="number"
+          ref="minOptions"
+          v-model="form.minOptions"
+          label="Min options"
+          :rules="[rules.required, rules.integer, rules.positiveInteger]"
+        )
+        q-input.col-6(
+          type="number"
+          ref="maxOptions"
+          v-model="form.maxOptions"
+          label="Max options"
+          :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
+        )
       q-input(
         ref="endDate"
         v-model="form.endDate"
