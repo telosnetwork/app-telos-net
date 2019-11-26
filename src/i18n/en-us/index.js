@@ -20,8 +20,9 @@ export default {
   },
   forms: {
     errors: {
-      accountFormat: 'The account must contain lowercase characters only and number from 1 to 5',
-      accountLength: 'The account must contain 12 characters',
+      accountFormat: 'The account can contain lowercase characters only, numbers from 1 to 5 or a dot (.)',
+      accountFormatBasic: 'The account must contain 12 lowercase characters only and number from 1 to 5',
+      accountLength: 'The account must contain at most 12 characters',
       accountNotAvailable: 'The account "{account}" already exists',
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
