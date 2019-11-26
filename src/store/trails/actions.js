@@ -244,7 +244,7 @@ export const fetchTreasury = async function ({ commit }, treasury) {
   commit('setTreasury', result.rows[0])
 }
 
-export const addTreasury = async function ({ commit, state }, { manager, maxSupply, access }) {
+export const addTreasury = async function ({ commit, state }, { manager, maxSupply, access, title, description }) {
   const deposit = state.fees.find(fee => fee.key === 'treasury').value
   const notification = {
     icon: 'fas fa-users',
@@ -279,6 +279,20 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
             manager,
             max_supply: maxSupply,
             access
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'edittrsinfo',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            treasury_symbol: supplyToAsset(maxSupply),
+            title,
+            description,
+            icon: null
           }
         }
       ]

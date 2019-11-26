@@ -13,7 +13,9 @@ export default {
       form: {
         manager: null,
         maxSupply: null,
-        access: null
+        access: null,
+        title: null,
+        description: null
       },
       submitting: false
     }
@@ -38,7 +40,9 @@ export default {
       this.form = {
         manager: null,
         maxSupply: null,
-        access: null
+        access: null,
+        title: null,
+        description: null
       }
     }
   }
@@ -65,8 +69,23 @@ q-dialog(
         :rules="[rules.required, rules.accountFormat, rules.accountLength]"
       )
       q-input(
+        ref="maxSupply"
         v-model="form.maxSupply"
         label="Max supply"
+        :rules="[rules.required]"
+      )
+      q-input(
+        ref="title"
+        v-model="form.title"
+        label="Title"
+        maxlength="50"
+        :rules="[rules.required]"
+      )
+      q-input(
+        ref="description"
+        v-model="form.description"
+        label="Description"
+        maxlength="250"
         :rules="[rules.required]"
       )
       q-select(
