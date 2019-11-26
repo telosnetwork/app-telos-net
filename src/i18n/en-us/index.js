@@ -26,12 +26,14 @@ export default {
       accountNotAvailable: 'The account "{account}" already exists',
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
+      dateFuture: 'The date must be in the future',
       greaterOrEqualThan: 'The value must be greater than than or equal to {value}',
       integer: 'Please type an integer',
       phoneFormat: 'Please type a valid phone',
       positiveInteger: 'The value must be greater than 0',
-      dateFuture: 'The date must be in the future',
-      required: 'This field is required'
+      required: 'This field is required',
+      token: 'The field must contain between 2 and 6 characters',
+      tokenDecimals: 'The decimals must be between 2 and 9'
     },
     hints: {
       selectCountrie: 'Please select your country',
