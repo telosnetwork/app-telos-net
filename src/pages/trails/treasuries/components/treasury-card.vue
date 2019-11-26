@@ -1,16 +1,25 @@
 <script>
+import { mapGetters } from 'vuex'
 import AddVoterDialog from './add-voter-dialog'
+import MintTokenDialog from './mint-token-dialog'
 
 export default {
   name: 'treasury-card',
-  components: { AddVoterDialog },
+  components: {
+    AddVoterDialog,
+    MintTokenDialog
+  },
   props: {
     treasury: { type: Object, required: true }
   },
   data () {
     return {
-      show: false
+      show: false,
+      showMint: false
     }
+  },
+  computed: {
+    ...mapGetters('accounts', ['account'])
   }
 }
 </script>
@@ -19,6 +28,10 @@ export default {
 div
   add-voter-dialog(
     :show.sync="show"
+    :supply="treasury.max_supply"
+  )
+  mint-token-dialog(
+    :show.sync="showMint"
     :supply="treasury.max_supply"
   )
   q-card
@@ -30,6 +43,11 @@ div
           size="12px"
         )
           q-tooltip {{ treasury.access }}
+        q-icon.q-ml-sm.cursor-pointer(
+          v-if="account === treasury.manager"
+          name="fas fa-comment-dollar"
+          @click="showMint = true"
+        )
       .text-right.text-italic {{ treasury.manager }}
     q-card-section.q-mt-lg
       p {{ treasury.description || "No desc" }}
