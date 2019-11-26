@@ -91,6 +91,7 @@ q-dialog(
         ref="description"
         v-model="form.description"
         label="Description"
+        type="textarea"
         maxlength="250"
         :rules="[rules.required]"
         lazy-rules
