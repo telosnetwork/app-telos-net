@@ -6,6 +6,7 @@ export default {
       continue: 'Continue',
       create: 'Create',
       logout: 'Logout',
+      mint: 'Mint',
       register: 'Register',
       save: 'Save',
       confirm: 'Confirm'
@@ -53,6 +54,7 @@ export default {
       addBallot: 'Create a ballot',
       addTreasury: 'Create a group',
       castVote: 'Cast a vote',
+      mintTokens: 'Mint tokens',
       registerVoter: 'Register as a voter'
     },
     poc: {

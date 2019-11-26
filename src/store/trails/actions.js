@@ -1,5 +1,5 @@
 import slugify from 'slugify'
-import { supplyToAsset } from '../../utils/assets'
+import { supplyToAsset, supplyToSymbol } from '../../utils/assets'
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.rpc.get_table_rows({
@@ -288,6 +288,42 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
       expireSeconds: 30
     })
     commit('resetTreasuries')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.cause.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export const mint = async function ({ commit }, { to, quantity, memo, supply }) {
+  const notification = {
+    icon: 'fas fa-comment-dollar',
+    title: 'notifications.trails.mintTokens',
+    content: `Mint ${quantity} ${supplyToSymbol(supply)} to ${to}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction({
+      actions: [{
+        account: 'trailservice',
+        name: 'mint',
+        authorization: [{
+          actor: this.$api.accountName,
+          permission: 'active'
+        }],
+        data: {
+          to,
+          quantity: `${quantity} ${supplyToSymbol(supply)}`,
+          memo
+        }
+      }]
+    }, {
+      broadcast: true,
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
