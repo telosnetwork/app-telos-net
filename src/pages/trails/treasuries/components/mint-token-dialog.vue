@@ -49,8 +49,9 @@ q-dialog(
         v-model="form.to"
         label="To"
         maxlength="12"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength]"
+        :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
         lazy-rules
+        :debounce="200"
         @keyup="form.to = form.account.toLowerCase()"
       )
       q-input(

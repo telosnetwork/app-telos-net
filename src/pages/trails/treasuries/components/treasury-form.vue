@@ -66,13 +66,18 @@ q-dialog(
         ref="manager"
         v-model="form.manager"
         label="Manager"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength]"
+        maxlength="12"
+        :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
+        lazy-rules
+        :debounce="200"
+        @keyup="form.manager = form.manager.toLowerCase()"
       )
       q-input(
         ref="maxSupply"
         v-model="form.maxSupply"
         label="Max supply"
         :rules="[rules.required]"
+        lazy-rules
       )
       q-input(
         ref="title"
@@ -80,6 +85,7 @@ q-dialog(
         label="Title"
         maxlength="50"
         :rules="[rules.required]"
+        lazy-rules
       )
       q-input(
         ref="description"
@@ -87,12 +93,14 @@ q-dialog(
         label="Description"
         maxlength="250"
         :rules="[rules.required]"
+        lazy-rules
       )
       q-select(
         v-model="form.access"
         label="Access"
         :options=["public", "private", "invite"]
         :rules="[rules.required]"
+        lazy-rules
       )
     q-card-section(v-if="treasuryFees")
       strong.text-red.fees There is a deposit fee of {{ treasuryFees.value }}

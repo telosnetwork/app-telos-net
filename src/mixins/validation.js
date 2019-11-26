@@ -4,8 +4,9 @@ export const validation = {
   data () {
     return {
       rules: {
-        accountFormat: val => !/[^a-z1-5]/.test(val) || this.$t('forms.errors.accountFormat'),
-        accountLength: val => val.length === 12 || this.$t('forms.errors.accountLength'),
+        accountFormatBasic: val => /^([a-z]|[1-5]){12}$/.test(val) || this.$t('forms.errors.accountFormatBasic'),
+        accountFormat: val => /^([a-z]|[1-5]|.){1,12}$/.test(val) || this.$t('forms.errors.accountFormat'),
+        accountLength: val => val.length <= 12 || this.$t('forms.errors.accountLength'),
         isAccountAvailable: async account => (await this.isAccountFree(account)) || this.$t('forms.errors.accountNotAvailable', { account }),
         accountExists: async account => !(await this.isAccountFree(account)) || this.$t('forms.errors.accountNotExists', { account }),
         required: val => !!val || this.$t('forms.errors.required'),

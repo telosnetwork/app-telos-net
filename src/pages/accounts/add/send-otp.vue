@@ -70,8 +70,9 @@ export default {
             :hint="$t('pages.accounts.add.forms.accountHint')"
             outlined
             maxlength="12"
-            :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.isAccountAvailable]"
+            :rules="[rules.required, rules.accountFormatBasic, rules.accountLength, rules.isAccountAvailable]"
             lazy-rules
+            :debounce="200"
             @keyup="form.account = form.account.toLowerCase()"
           )
           .row.flex.phone-input
