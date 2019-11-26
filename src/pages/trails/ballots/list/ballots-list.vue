@@ -29,7 +29,7 @@ export default {
     await this.fetchFees()
   },
   methods: {
-    ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote']),
+    ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote', 'fetchTreasuries']),
     ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
       const filter = {
@@ -48,6 +48,15 @@ export default {
     treasury: function (val, old) {
       if (val !== old) {
         this.resetBallots()
+      }
+    },
+    treasuriesOptions: {
+      immediate: true,
+      handler: async function (val) {
+        if (!val.length) {
+          // TODO past 100 groups we need to switch to autocomplete search
+          await this.fetchTreasuries()
+        }
       }
     }
   }
