@@ -70,6 +70,7 @@ div
     q-card-section.flex.justify-end
       div
         q-btn(
+          v-if="!treasury.isRegistered"
           icon="fas fa-user-plus"
           color="white"
           text-color="primary"
@@ -81,6 +82,17 @@ div
           @click="show = true"
         )
           q-tooltip {{ $t('pages.trails.treasuries.card.registerVoter') }}
+        q-btn.cursor-inherit(
+          v-else
+          icon="fas fa-user-check"
+          color="white"
+          text-color="primary"
+          dense
+          flat
+          size="xs"
+          :label="treasury.voters"
+        )
+          q-tooltip {{ $t('pages.trails.treasuries.card.registered') }}
         q-btn(
           icon="fas fa-person-booth"
           color="white"

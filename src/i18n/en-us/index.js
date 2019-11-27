@@ -108,6 +108,7 @@ export default {
           maxSupply: 'Max supply',
           openedBallots: 'Opened ballots',
           supply: 'Supply',
+          registered: 'Registered',
           registerVoter: 'Register as a voter'
         },
         registerVoterDialog: {
