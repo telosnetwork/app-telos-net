@@ -45,7 +45,8 @@ export default {
 <template lang="pug">
 q-item
   q-item-section(avatar)
-    router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.publisher }}
+    strong {{ ballot.treasury.title || ballot.treasury_symbol }}
+    router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") By {{ ballot.publisher }}
   q-item-section
     q-item-label(overline) {{ ballot.title || "Default title" }}
     q-item-label(caption)
@@ -91,3 +92,8 @@ q-item
               )
     strong(v-else) {{ displayWinner(ballot) }}
 </template>
+
+<style lang="sass" scoped>
+.link
+  text-decoration: none
+</style>

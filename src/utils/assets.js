@@ -6,5 +6,5 @@ export const supplyToAsset = supply => {
 }
 
 export const supplyToSymbol = supply => {
-  return supply.replace(/\d*\s*\.*/g, '')
+  return supply.replace(/[^A-Z]*/g, '')
 }

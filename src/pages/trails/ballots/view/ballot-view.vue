@@ -75,6 +75,7 @@ q-page.q-pa-lg.row.flex.justify-center
           )
             | {{ ballot.status }}
         .text-h6 {{ ballot.title || 'Default title' }}
+        .text-subtitle2 {{ ballot.treasury.title }}
         .text-right Opened from {{ new Date(ballot.begin_time).toLocaleDateString() }} to {{ new Date(ballot.end_time).toLocaleDateString() }}
       q-card-section
         .q-pa-lg {{ ballot.description }}

@@ -27,18 +27,24 @@ export default {
     }
     this.resetBallots()
     await this.fetchFees()
+    this.$refs.infiniteScroll.reset()
+    this.$refs.infiniteScroll.poll()
   },
   methods: {
     ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote', 'fetchTreasuries']),
     ...mapMutations('trails', ['resetBallots']),
     async onLoad (index, done) {
-      const filter = {
-        index: 4,
-        lower: this.treasury || (this.$route.query && this.$route.query.treasury),
-        upper: this.treasury || (this.$route.query && this.$route.query.treasury)
+      if (!this.ballotsLoaded) {
+        const filter = {
+          index: 4,
+          lower: this.treasury || (this.$route.query && this.$route.query.treasury),
+          upper: this.treasury || (this.$route.query && this.$route.query.treasury)
+        }
+        await this.fetchBallots(filter)
+        done()
+      } else {
+        this.$refs.infiniteScroll.stop()
       }
-      await this.fetchBallots(filter)
-      done()
     }
   },
   computed: {
@@ -98,6 +104,7 @@ q-page.q-pa-lg
     )
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
+      ref="infiniteScroll"
       :disable="ballotsLoaded"
       @load="onLoad"
       :offset="250"

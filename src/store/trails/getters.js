@@ -4,7 +4,7 @@ export const ballot = ({ ballots }) => ballots.view.ballot
 
 export const treasuries = ({ treasuries }) => treasuries.list.data
 export const treasuriesOptions = ({ treasuries }) => treasuries.list.data.map(treasury => ({
-  label: treasury.title,
+  label: `${treasury.title} (${treasury.symbol})`,
   value: treasury.symbol
 }))
 export const treasuriesLoaded = ({ treasuries }) => treasuries.list.loaded

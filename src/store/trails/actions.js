@@ -15,7 +15,7 @@ export const fetchFees = async function ({ commit }) {
 
 // Ballots
 export const fetchBallots = async function ({ commit, state }, query) {
-  const rows = await this.$api.rpc.get_table_rows({
+  const result = await this.$api.rpc.get_table_rows({
     json: true,
     code: 'trailservice',
     scope: 'trailservice',
@@ -26,7 +26,22 @@ export const fetchBallots = async function ({ commit, state }, query) {
     lower_bound: query.lower,
     upper_bound: query.upper
   })
-  commit('addBallots', rows)
+
+  for await (const ballot of result.rows) {
+    const treasury = await this.$api.rpc.get_table_rows({
+      json: true,
+      code: 'trailservice',
+      scope: 'trailservice',
+      table: 'treasuries',
+      limit: 1,
+      lower_bound: supplyToSymbol(ballot.treasury_symbol),
+      upper_bound: supplyToSymbol(ballot.treasury_symbol)
+    })
+
+    ballot.treasury = treasury.rows[0]
+  }
+
+  commit('addBallots', result)
 }
 
 export const fetchBallot = async function ({ commit }, ballot) {
@@ -39,6 +54,19 @@ export const fetchBallot = async function ({ commit }, ballot) {
     lower_bound: ballot,
     upper_bound: ballot
   })
+
+  const treasury = await this.$api.rpc.get_table_rows({
+    json: true,
+    code: 'trailservice',
+    scope: 'trailservice',
+    table: 'treasuries',
+    limit: 1,
+    lower_bound: supplyToSymbol(result.rows[0].treasury_symbol),
+    upper_bound: supplyToSymbol(result.rows[0].treasury_symbol)
+  })
+
+  result.rows[0].treasury = treasury.rows[0]
+
   commit('setBallot', result.rows[0])
 }
 
