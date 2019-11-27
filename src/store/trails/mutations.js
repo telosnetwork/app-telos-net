@@ -52,4 +52,5 @@ export const setTreasury = (state, treasury) => {
 
 export const increaseVoters = (state, idx) => {
   state.treasuries.list.data[idx].voters++
+  state.treasuries.list.data[idx].isRegistered = true
 }

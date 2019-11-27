@@ -249,14 +249,27 @@ export const registerVoter = async function ({ commit, state }, supply) {
 
 // Treasuries
 export const fetchTreasuries = async function ({ commit, state }) {
-  const rows = await this.$api.rpc.get_table_rows({
+  const result = await this.$api.rpc.get_table_rows({
     json: true,
     code: 'trailservice',
     scope: 'trailservice',
     table: 'treasuries',
     limit: state.treasuries.list.pagination.limit
   })
-  commit('addTreasuries', rows)
+
+  const voter = await this.$api.rpc.get_table_rows({
+    json: true,
+    code: 'trailservice',
+    scope: this.$api.accountName,
+    table: 'voters',
+    limit: 1000
+  })
+
+  for await (const treasury of result.rows) {
+    treasury.isRegistered = voter.rows.some(v => supplyToSymbol(v.liquid) === supplyToSymbol(treasury.max_supply))
+  }
+
+  commit('addTreasuries', result)
 }
 
 export const fetchTreasury = async function ({ commit }, treasury) {
