@@ -8,3 +8,8 @@ export const supplyToAsset = supply => {
 export const supplyToSymbol = supply => {
   return supply.replace(/[^A-Z]*/g, '')
 }
+
+export const supplyToDecimals = supply => {
+  const [, digits] = supply.replace(/[a-zA-Z]*\s*/g, '').split('.')
+  return (digits && digits.length) || 0
+}

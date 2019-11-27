@@ -22,6 +22,8 @@ export default {
   methods: {
     ...mapActions('trails', ['mint']),
     async onMintTokens () {
+      this.resetValidation(this.form)
+      if (!(await this.validate(this.form))) return
       this.submitting = true
       const success = await this.mint({
         ...this.form,
@@ -52,7 +54,7 @@ q-dialog(
         :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
         lazy-rules
         :debounce="200"
-        @keyup="form.to = form.account.toLowerCase()"
+        @blur="form.to = (form.to || '').toLowerCase()"
       )
       q-input(
         ref="quantity"
