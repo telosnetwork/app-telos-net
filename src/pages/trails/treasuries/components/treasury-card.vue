@@ -2,12 +2,14 @@
 import { mapGetters } from 'vuex'
 import AddVoterDialog from './add-voter-dialog'
 import MintTokenDialog from './mint-token-dialog'
+import TreasuryEditDialog from './treasury-edit-dialog'
 
 export default {
   name: 'treasury-card',
   components: {
     AddVoterDialog,
-    MintTokenDialog
+    MintTokenDialog,
+    TreasuryEditDialog
   },
   props: {
     treasury: { type: Object, required: true }
@@ -15,7 +17,8 @@ export default {
   data () {
     return {
       show: false,
-      showMint: false
+      showMint: false,
+      showEdit: false
     }
   },
   computed: {
@@ -34,12 +37,16 @@ div
     :show.sync="showMint"
     :supply="treasury.max_supply"
   )
+  treasury-edit-dialog(
+    :show.sync="showEdit"
+    :treasury="treasury"
+  )
   q-card
     q-card-section.bg-primary.text-white
       .text-h6
         | {{ treasury.title || "Group" }}
         q-icon.q-ml-sm(
-          :name="`fas ${treasury.access === 'private' ? 'fa-lock' : 'fa-lock-open'}`"
+          :name="`fas ${treasury.access === 'private' ? 'fa-lock' : 'fa-globe'}`"
           size="12px"
         )
           q-tooltip {{ treasury.access }}
@@ -47,6 +54,11 @@ div
           v-if="account === treasury.manager"
           name="fas fa-comment-dollar"
           @click="showMint = true"
+        )
+        q-icon.q-ml-sm.cursor-pointer(
+          v-if="account === treasury.manager"
+          name="fas fa-edit"
+          @click="showEdit = true"
         )
       .text-right.text-italic {{ treasury.manager }}
     q-card-section.q-mt-lg

@@ -3,31 +3,30 @@ import { mapActions } from 'vuex'
 import { validation } from '~/mixins/validation'
 
 export default {
-  name: 'mint-token-dialog',
+  name: 'treasury-edit-dialog',
   mixins: [validation],
   props: {
     show: { type: Boolean, required: true },
-    supply: { type: String, required: true }
+    treasury: { type: Object, required: true }
   },
   data () {
     return {
       form: {
-        to: null,
-        quantity: null,
-        memo: null
+        title: this.treasury.title,
+        description: this.treasury.description
       },
       submitting: false
     }
   },
   methods: {
-    ...mapActions('trails', ['mint']),
-    async onMintTokens () {
+    ...mapActions('trails', ['editTreasury']),
+    async onEditTreasury () {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      const success = await this.mint({
+      const success = await this.editTreasury({
         ...this.form,
-        supply: this.supply
+        treasury: this.treasury
       })
       this.submitting = false
       if (success) {
@@ -44,29 +43,24 @@ q-dialog(
 )
   q-card(style="width: 500px; max-width: 80vw;")
     q-card-section
-      .text-h6 Mint tokens
+      .text-h6 Edit treasury
     q-card-section
       q-input(
-        ref="to"
-        v-model="form.to"
-        label="To"
-        maxlength="12"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
-        lazy-rules
-        :debounce="200"
-        @blur="form.to = (form.to || '').toLowerCase()"
-      )
-      q-input(
-        ref="quantity"
-        v-model="form.quantity"
-        label="Quantity"
+        ref="title"
+        v-model="form.title"
+        label="Title"
+        maxlength="50"
         :rules="[rules.required]"
         lazy-rules
       )
       q-input(
-        ref="memo"
-        v-model="form.memo"
-        label="Memo"
+        ref="description"
+        v-model="form.description"
+        label="Description"
+        type="textarea"
+        maxlength="250"
+        :rules="[rules.required]"
+        lazy-rules
       )
     q-card-actions(
       align="right"
@@ -78,8 +72,8 @@ q-dialog(
       )
       q-btn(
         color="primary"
-        :label="$t('common.buttons.mint')"
-        @click="onMintTokens"
+        :label="$t('common.buttons.save')"
+        @click="onEditTreasury"
         :loading="submitting"
       )
 </template>

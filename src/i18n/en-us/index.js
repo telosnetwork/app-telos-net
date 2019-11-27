@@ -57,6 +57,7 @@ export default {
       addBallot: 'Create a ballot',
       addTreasury: 'Create a group',
       castVote: 'Cast a vote',
+      editTreasury: 'Edit a group',
       mintTokens: 'Mint tokens',
       registerVoter: 'Register as a voter'
     },

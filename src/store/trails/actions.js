@@ -340,6 +340,46 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
   return notification.status === 'success'
 }
 
+export const editTreasury = async function ({ commit }, { title, description, treasury }) {
+  const notification = {
+    icon: 'fas fa-edit',
+    title: 'notifications.trails.editTreasury',
+    content: `Treasury: ${title}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction({
+      actions: [
+        {
+          account: 'trailservice',
+          name: 'edittrsinfo',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            treasury_symbol: supplyToAsset(treasury.max_supply),
+            title,
+            description,
+            icon: null
+          }
+        }
+      ]
+    }, {
+      broadcast: true,
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
+    commit('updateTreasury', { title, description, treasury })
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.cause.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
 export const mint = async function ({ commit }, { to, quantity, memo, supply }) {
   const notification = {
     icon: 'fas fa-comment-dollar',
