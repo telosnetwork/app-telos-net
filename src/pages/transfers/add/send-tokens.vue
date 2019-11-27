@@ -57,7 +57,7 @@ q-page.flex.flex-center
         :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
         lazy-rules
         :debounce="200"
-        @keyup="form.to = form.to.toLowerCase()"
+        @blur="form.to = (form.to || '').toLowerCase()"
       )
       q-input.q-mb-lg(
         ref="quantity"

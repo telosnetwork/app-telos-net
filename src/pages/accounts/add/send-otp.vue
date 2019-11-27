@@ -73,7 +73,7 @@ export default {
             :rules="[rules.required, rules.accountFormatBasic, rules.accountLength, rules.isAccountAvailable]"
             lazy-rules
             :debounce="200"
-            @keyup="form.account = form.account.toLowerCase()"
+            @blur="form.account = (form.account || '').toLowerCase()"
           )
           .row.flex.phone-input
             q-select(

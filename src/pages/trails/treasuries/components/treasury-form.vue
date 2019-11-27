@@ -91,7 +91,7 @@ q-dialog(
         :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
         lazy-rules
         :debounce="200"
-        @keyup="form.manager = form.manager.toLowerCase()"
+        @blur="form.manager = (form.manager || '').toLowerCase()"
       )
       .row
         q-input.col-4(
@@ -109,7 +109,7 @@ q-dialog(
           maxlength="6"
           :rules="[rules.required, rules.isToken]"
           lazy-rules
-          @keyup="form.maxSupplyToken = form.maxSupplyToken.toUpperCase()"
+          @keyup="form.maxSupplyToken = (form.maxSupplyToken || '').toUpperCase()"
         )
         q-input.col-4(
           ref="maxSupplyDecimals"

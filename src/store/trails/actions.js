@@ -1,5 +1,5 @@
 import slugify from 'slugify'
-import { supplyToAsset, supplyToSymbol } from '../../utils/assets'
+import { supplyToAsset, supplyToDecimals, supplyToSymbol } from '../../utils/assets'
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.rpc.get_table_rows({
@@ -357,7 +357,7 @@ export const mint = async function ({ commit }, { to, quantity, memo, supply }) 
         }],
         data: {
           to,
-          quantity: `${quantity} ${supplyToSymbol(supply)}`,
+          quantity: `${parseFloat(quantity).toFixed(supplyToDecimals(supply))} ${supplyToSymbol(supply)}`,
           memo
         }
       }]
