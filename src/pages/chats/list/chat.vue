@@ -32,7 +32,7 @@ export default {
   mixins: [utils],
   data () {
     return {
-      message: null,
+      message: '',
       limit: 10,
       sendingMessage: false,
       isFirst: true
@@ -71,6 +71,7 @@ export default {
     async sendMessageToChat (v) {
       var container = this.$refs.infiniteScroll.$el
       const messageInput = this.$refs.messageInput.$el
+      if (this.message === '') return
       if (!this.sendingMessage) {
         this.sendingMessage = true
         container.parentNode.scrollTop = container.clientHeight
@@ -83,7 +84,7 @@ export default {
           this.showErrorMsg(error.message)
           messageInput.focus()
         })
-        this.message = null
+        this.message = ''
         messageInput.focus()
         // this.message = null
       }
