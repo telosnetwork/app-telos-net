@@ -1,3 +1,5 @@
+import { supplyToSymbol } from '../../utils/assets'
+
 export const setFees = (state, config) => {
   state.fees = config.fees
 }
@@ -29,9 +31,19 @@ export const addTreasuries = (state, { rows, more }) => {
   if (rows) {
     // Remove the first item as it's the lower_bound
     const arr = state.treasuries.list.data.length ? rows.slice(1) : rows
-    state.treasuries.list.data = state.treasuries.list.data.concat(arr)
+    state.treasuries.list.data = state.treasuries.list.data.concat(arr
+      .map(treasury => ({
+        ...treasury,
+        symbol: supplyToSymbol(treasury.max_supply)
+      })))
   }
   state.treasuries.list.loaded = !more
+}
+
+export const updateTreasury = (state, { title, description, treasury }) => {
+  const obj = state.treasuries.list.data.find(t => t.max_supply === treasury.max_supply)
+  obj.title = title
+  obj.description = description
 }
 
 export const setTreasury = (state, treasury) => {
@@ -40,4 +52,5 @@ export const setTreasury = (state, treasury) => {
 
 export const increaseVoters = (state, idx) => {
   state.treasuries.list.data[idx].voters++
+  state.treasuries.list.data[idx].isRegistered = true
 }

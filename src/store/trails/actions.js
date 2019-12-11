@@ -1,4 +1,5 @@
 import slugify from 'slugify'
+import { supplyToAsset, supplyToDecimals, supplyToSymbol } from '../../utils/assets'
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.rpc.get_table_rows({
@@ -13,15 +14,34 @@ export const fetchFees = async function ({ commit }) {
 // Fees
 
 // Ballots
-export const fetchBallots = async function ({ commit, state }) {
-  const rows = await this.$api.rpc.get_table_rows({
+export const fetchBallots = async function ({ commit, state }, query) {
+  const result = await this.$api.rpc.get_table_rows({
     json: true,
     code: 'trailservice',
     scope: 'trailservice',
     table: 'ballots',
-    limit: state.ballots.list.pagination.limit
+    limit: state.ballots.list.pagination.limit,
+    index_position: query.index || 0,
+    key_type: 'i64',
+    lower_bound: query.lower,
+    upper_bound: query.upper
   })
-  commit('addBallots', rows)
+
+  for await (const ballot of result.rows) {
+    const treasury = await this.$api.rpc.get_table_rows({
+      json: true,
+      code: 'trailservice',
+      scope: 'trailservice',
+      table: 'treasuries',
+      limit: 1,
+      lower_bound: supplyToSymbol(ballot.treasury_symbol),
+      upper_bound: supplyToSymbol(ballot.treasury_symbol)
+    })
+
+    ballot.treasury = treasury.rows[0]
+  }
+
+  commit('addBallots', result)
 }
 
 export const fetchBallot = async function ({ commit }, ballot) {
@@ -34,15 +54,25 @@ export const fetchBallot = async function ({ commit }, ballot) {
     lower_bound: ballot,
     upper_bound: ballot
   })
+
+  const treasury = await this.$api.rpc.get_table_rows({
+    json: true,
+    code: 'trailservice',
+    scope: 'trailservice',
+    table: 'treasuries',
+    limit: 1,
+    lower_bound: supplyToSymbol(result.rows[0].treasury_symbol),
+    upper_bound: supplyToSymbol(result.rows[0].treasury_symbol)
+  })
+
+  result.rows[0].treasury = treasury.rows[0]
+
   commit('setBallot', result.rows[0])
 }
 
 export const addBallot = async function ({ commit, state }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
-  const [, digits] = ballot.treasurySymbol.value.replace(/[a-zA-Z]*\s*/g, '').split('.')
-  const symbol = ballot.treasurySymbol.value.replace(/\d*\s*\.*/g, '')
-  const precision = (digits && digits.length) || 0
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -77,7 +107,7 @@ export const addBallot = async function ({ commit, state }, ballot) {
             ballot_name: ballotName,
             category: ballot.category,
             publisher: this.$api.accountName,
-            treasury_symbol: `${precision},${symbol}`,
+            treasury_symbol: supplyToAsset(ballot.treasurySymbol.value),
             voting_method: ballot.votingMethod,
             initial_options: ballot.initialOptions
           }
@@ -94,6 +124,19 @@ export const addBallot = async function ({ commit, state }, ballot) {
             title: ballot.title,
             description: ballot.description,
             content: ''
+          }
+        },
+        {
+          account: 'trailservice',
+          name: 'editminmax',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            ballot_name: ballotName,
+            new_min_options: ballot.minOptions,
+            new_max_options: ballot.maxOptions
           }
         },
         {
@@ -171,10 +214,6 @@ export const registerVoter = async function ({ commit, state }, supply) {
     content: `Treasury: ${supply}`
   }
 
-  const [, digits] = supply.replace(/[a-zA-Z]*\s*/g, '').split('.')
-  const symbol = supply.replace(/\d*\s*\.*/g, '')
-  const precision = (digits && digits.length) || 0
-
   try {
     const transaction = await this.$api.signTransaction({
       actions: [{
@@ -186,7 +225,7 @@ export const registerVoter = async function ({ commit, state }, supply) {
         }],
         data: {
           voter: this.$api.accountName,
-          treasury_symbol: `${precision},${symbol}`,
+          treasury_symbol: supplyToAsset(supply),
           referrer: null
         }
       }]
@@ -210,14 +249,27 @@ export const registerVoter = async function ({ commit, state }, supply) {
 
 // Treasuries
 export const fetchTreasuries = async function ({ commit, state }) {
-  const rows = await this.$api.rpc.get_table_rows({
+  const result = await this.$api.rpc.get_table_rows({
     json: true,
     code: 'trailservice',
     scope: 'trailservice',
     table: 'treasuries',
     limit: state.treasuries.list.pagination.limit
   })
-  commit('addTreasuries', rows)
+
+  const voter = await this.$api.rpc.get_table_rows({
+    json: true,
+    code: 'trailservice',
+    scope: this.$api.accountName,
+    table: 'voters',
+    limit: 1000
+  })
+
+  for await (const treasury of result.rows) {
+    treasury.isRegistered = voter.rows.some(v => supplyToSymbol(v.liquid) === supplyToSymbol(treasury.max_supply))
+  }
+
+  commit('addTreasuries', result)
 }
 
 export const fetchTreasury = async function ({ commit }, treasury) {
@@ -233,7 +285,7 @@ export const fetchTreasury = async function ({ commit }, treasury) {
   commit('setTreasury', result.rows[0])
 }
 
-export const addTreasury = async function ({ commit, state }, { manager, maxSupply, access }) {
+export const addTreasury = async function ({ commit, state }, { manager, maxSupply, access, title, description }) {
   const deposit = state.fees.find(fee => fee.key === 'treasury').value
   const notification = {
     icon: 'fas fa-users',
@@ -269,6 +321,20 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
             max_supply: maxSupply,
             access
           }
+        },
+        {
+          account: 'trailservice',
+          name: 'edittrsinfo',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            treasury_symbol: supplyToAsset(maxSupply),
+            title,
+            description,
+            icon: null
+          }
         }
       ]
     }, {
@@ -277,6 +343,82 @@ export const addTreasury = async function ({ commit, state }, { manager, maxSupp
       expireSeconds: 30
     })
     commit('resetTreasuries')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.cause.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export const editTreasury = async function ({ commit }, { title, description, treasury }) {
+  const notification = {
+    icon: 'fas fa-edit',
+    title: 'notifications.trails.editTreasury',
+    content: `Treasury: ${title}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction({
+      actions: [
+        {
+          account: 'trailservice',
+          name: 'edittrsinfo',
+          authorization: [{
+            actor: this.$api.accountName,
+            permission: 'active'
+          }],
+          data: {
+            treasury_symbol: supplyToAsset(treasury.max_supply),
+            title,
+            description,
+            icon: null
+          }
+        }
+      ]
+    }, {
+      broadcast: true,
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
+    commit('updateTreasury', { title, description, treasury })
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.cause.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export const mint = async function ({ commit }, { to, quantity, memo, supply }) {
+  const notification = {
+    icon: 'fas fa-comment-dollar',
+    title: 'notifications.trails.mintTokens',
+    content: `Mint ${quantity} ${supplyToSymbol(supply)} to ${to}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction({
+      actions: [{
+        account: 'trailservice',
+        name: 'mint',
+        authorization: [{
+          actor: this.$api.accountName,
+          permission: 'active'
+        }],
+        data: {
+          to,
+          quantity: `${parseFloat(quantity).toFixed(supplyToDecimals(supply))} ${supplyToSymbol(supply)}`,
+          memo
+        }
+      }]
+    }, {
+      broadcast: true,
+      blocksBehind: 3,
+      expireSeconds: 30
+    })
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {

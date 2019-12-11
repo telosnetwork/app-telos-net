@@ -6,8 +6,10 @@ export default {
       continue: 'Continue',
       create: 'Create',
       logout: 'Logout',
+      mint: 'Mint',
       register: 'Register',
-      save: 'Save'
+      save: 'Save',
+      confirm: 'Confirm'
     },
     defaultTitle: 'Title'
   },
@@ -18,12 +20,20 @@ export default {
   },
   forms: {
     errors: {
-      accountFormat: 'The account must contain lowercase characters only and number from 1 to 5',
-      accountLength: 'The account must contain 12 characters',
+      accountFormat: 'The account can contain lowercase characters only, numbers from 1 to 5 or a dot (.)',
+      accountFormatBasic: 'The account must contain 12 lowercase characters only and number from 1 to 5',
+      accountLength: 'The account must contain at most 12 characters',
       accountNotAvailable: 'The account "{account}" already exists',
       accountNotExists: 'The account "{account}" does not exist',
       copyKey: 'Copy the key to a safe place',
-      required: 'This field is required'
+      dateFuture: 'The date must be in the future',
+      greaterOrEqualThan: 'The value must be greater than than or equal to {value}',
+      integer: 'Please type an integer',
+      phoneFormat: 'Please type a valid phone',
+      positiveInteger: 'The value must be greater than 0',
+      required: 'This field is required',
+      token: 'The field must contain between 2 and 6 characters',
+      tokenDecimals: 'The decimals must be between 2 and 9'
     },
     hints: {
       selectCountrie: 'Please select your country',
@@ -47,6 +57,8 @@ export default {
       addBallot: 'Create a ballot',
       addTreasury: 'Create a group',
       castVote: 'Cast a vote',
+      editTreasury: 'Edit a group',
+      mintTokens: 'Mint tokens',
       registerVoter: 'Register as a voter'
     },
     poc: {
@@ -73,9 +85,12 @@ export default {
         createAccountTitle: 'Create an Account',
         forms: {
           account: 'Account name',
+          accountHint: '12 characters, alphanumeric a-z, 1-5',
+          phoneCode: 'Code',
           smsNumber: 'Phone number',
           verificationCode: 'Verification code'
         },
+        keyCopyClipboard: 'Key copied to clipboard',
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
         verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
@@ -93,6 +108,7 @@ export default {
           maxSupply: 'Max supply',
           openedBallots: 'Opened ballots',
           supply: 'Supply',
+          registered: 'Registered',
           registerVoter: 'Register as a voter'
         },
         registerVoterDialog: {
@@ -141,15 +157,18 @@ export default {
       defaultMessageList: 'There are no messages yet',
       defaultContactList: 'There are no contacts yet',
       defaultAppList: 'There are no apps yet',
-      noAccountsFound: 'No accounts found'
+      noAccountsFound: 'No accounts found',
+      confirmActions: 'Do you want confirm this action?'
     },
     registerApp: {
       form: {
         urlBase: 'URL',
+        urlImage: 'Image URL',
         name: 'Name',
         appId: 'AppId',
         shortName: 'Short Name',
-        ownerAccount: 'Owner Account'
+        ownerAccount: 'Owner Account',
+        confirmDeleteApp: 'Do you want delete this app?'
       }
     },
     login: {

@@ -1,10 +1,10 @@
 <template lang="pug">
   q-card(:class="{ own: isOwn }")
-    q-item.q-pa-md(v-ripple, clickable,  @click='goToProfileDetail')
-        q-item-section(avatar)
+    q-item.q-pa-md(v-ripple, clickable)
+        q-item-section(avatar, clickable,  @click='goToProfileDetail')
             q-avatar(size="80px")
               S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.s3Identity')
-        q-item-section
+        q-item-section(clickable,  @click='goToProfileDetail')
             q-item-label {{contact.eosAccount}}
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
             q-item-label(caption='', lines='1') {{contact.email}}

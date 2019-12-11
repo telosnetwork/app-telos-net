@@ -1,16 +1,28 @@
 <script>
+import { mapGetters } from 'vuex'
 import AddVoterDialog from './add-voter-dialog'
+import MintTokenDialog from './mint-token-dialog'
+import TreasuryEditDialog from './treasury-edit-dialog'
 
 export default {
   name: 'treasury-card',
-  components: { AddVoterDialog },
+  components: {
+    AddVoterDialog,
+    MintTokenDialog,
+    TreasuryEditDialog
+  },
   props: {
     treasury: { type: Object, required: true }
   },
   data () {
     return {
-      show: false
+      show: false,
+      showMint: false,
+      showEdit: false
     }
+  },
+  computed: {
+    ...mapGetters('accounts', ['account'])
   }
 }
 </script>
@@ -21,15 +33,33 @@ div
     :show.sync="show"
     :supply="treasury.max_supply"
   )
+  mint-token-dialog(
+    :show.sync="showMint"
+    :supply="treasury.max_supply"
+  )
+  treasury-edit-dialog(
+    :show.sync="showEdit"
+    :treasury="treasury"
+  )
   q-card
     q-card-section.bg-primary.text-white
       .text-h6
         | {{ treasury.title || "Group" }}
         q-icon.q-ml-sm(
-          :name="`fas ${treasury.access === 'private' ? 'fa-lock' : 'fa-lock-open'}`"
+          :name="`fas ${treasury.access === 'private' ? 'fa-lock' : 'fa-globe'}`"
           size="12px"
         )
           q-tooltip {{ treasury.access }}
+        q-icon.q-ml-sm.cursor-pointer(
+          v-if="account === treasury.manager"
+          name="fas fa-comment-dollar"
+          @click="showMint = true"
+        )
+        q-icon.q-ml-sm.cursor-pointer(
+          v-if="account === treasury.manager"
+          name="fas fa-edit"
+          @click="showEdit = true"
+        )
       .text-right.text-italic {{ treasury.manager }}
     q-card-section.q-mt-lg
       p {{ treasury.description || "No desc" }}
@@ -40,6 +70,7 @@ div
     q-card-section.flex.justify-end
       div
         q-btn(
+          v-if="!treasury.isRegistered"
           icon="fas fa-user-plus"
           color="white"
           text-color="primary"
@@ -51,13 +82,26 @@ div
           @click="show = true"
         )
           q-tooltip {{ $t('pages.trails.treasuries.card.registerVoter') }}
-        q-chip(
+        q-btn.cursor-inherit(
+          v-else
+          icon="fas fa-user-check"
+          color="white"
+          text-color="primary"
+          dense
+          flat
+          size="xs"
+          :label="treasury.voters"
+        )
+          q-tooltip {{ $t('pages.trails.treasuries.card.registered') }}
+        q-btn(
           icon="fas fa-person-booth"
           color="white"
           text-color="primary"
           dense
-          size="sm"
+          flat
+          size="xs"
+          :label="treasury.open_ballots"
+          :to="`/trails/ballots?treasury=${treasury.symbol}`"
         )
-          | &nbsp; {{ treasury.open_ballots }}
           q-tooltip {{ $t('pages.trails.treasuries.card.openedBallots') }}
 </template>

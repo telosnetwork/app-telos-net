@@ -17,13 +17,19 @@ export default {
   async mounted () {
     this.resetTreasuries()
     await this.fetchFees()
+    this.$refs.infiniteScroll.reset()
+    this.$refs.infiniteScroll.poll()
   },
   methods: {
     ...mapActions('trails', ['fetchTreasuries', 'fetchFees']),
     ...mapMutations('trails', ['resetTreasuries']),
     async onLoad (index, done) {
-      await this.fetchTreasuries()
-      done()
+      if (!this.treasuriesLoaded) {
+        await this.fetchTreasuries()
+        done()
+      } else {
+        this.$refs.infiniteScroll.stop()
+      }
     }
   },
   computed: {
@@ -37,7 +43,7 @@ export default {
     treasury-form(:show.sync="show")
     .treasuries(ref="treasuriesRef")
       q-infinite-scroll(
-        :disable="treasuriesLoaded"
+        ref="infiniteScroll"
         @load="onLoad"
         :offset="250"
         :scroll-target="$refs.treasuriesRef"

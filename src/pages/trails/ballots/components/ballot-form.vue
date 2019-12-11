@@ -12,13 +12,29 @@ export default {
     return {
       form: {
         title: null,
-        category: null,
+        category: 'poll',
         description: null,
         treasurySymbol: null,
         votingMethod: '1token1vote',
+        maxOptions: 1,
+        minOptions: 1,
         initialOptions: [],
         endDate: null
       },
+      votingMethodOptions: [
+        { value: '1acct1vote', label: 'One vote per account' },
+        { value: '1tokennvote', label: 'All tokens to each vote' },
+        { value: '1token1vote', label: 'All tokens split to each vote' },
+        { value: '1tsquare1v', label: 'One token equals one square vote' },
+        { value: 'quadratic', label: 'Quadratic' }
+      ],
+      categoryOptions: [
+        { value: 'election', label: 'Election' },
+        { value: 'leaderboard', label: 'Leaderboard' },
+        { value: 'poll', label: 'Poll' },
+        { value: 'proposal', label: 'Proposal' },
+        { value: 'referendum', label: 'Referendum' }
+      ],
       submitting: false
     }
   },
@@ -57,6 +73,9 @@ export default {
         initialOptions: [],
         endDate: null
       }
+    },
+    addBallotOption (val, done) {
+      done(val.toLowerCase(), 'add-unique')
     }
   }
 }
@@ -81,10 +100,22 @@ q-dialog(
         label="Title"
         :rules="[rules.required]"
       )
-      q-input(
+      q-select(
         ref="category"
         v-model="form.category"
         label="Category"
+        :options="categoryOptions"
+        emit-value
+        map-options
+        :rules="[rules.required]"
+      )
+      q-select(
+        ref="votingMethod"
+        v-model="form.votingMethod"
+        label="Voting method"
+        :options="votingMethodOptions"
+        emit-value
+        map-options
         :rules="[rules.required]"
       )
       q-input(
@@ -110,14 +141,29 @@ q-dialog(
         multiple
         hide-dropdown-icon
         input-debounce="0"
-        new-value-mode="add-unique"
+        @new-value="addBallotOption"
         :rules="[rules.required]"
       )
+      .row
+        q-input.col-6(
+          type="number"
+          ref="minOptions"
+          v-model="form.minOptions"
+          label="Min options"
+          :rules="[rules.required, rules.integer, rules.positiveInteger]"
+        )
+        q-input.col-6(
+          type="number"
+          ref="maxOptions"
+          v-model="form.maxOptions"
+          label="Max options"
+          :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
+        )
       q-input(
         ref="endDate"
         v-model="form.endDate"
         label="End date"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.dateFuture(Date.now())]"
       )
         template(v-slot:append)
           q-icon.cursor-pointer(name="event")

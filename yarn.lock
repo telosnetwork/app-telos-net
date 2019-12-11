@@ -1567,10 +1567,10 @@
     query-string "^6.5.0"
     web3-provider-engine "^15.0.0"
 
-"@smontero/ppp-client-api@^0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.28.tgz#3aa4d0f6e3c659e2a054153774826c3e3059e162"
-  integrity sha512-OSqI29Bnwrp/E8isJ+pUplLPQauur/hDWC0eXwx53Q6/3tM45n6MorpWwzxA0aMkZnmjCGo5X+pXpQnoI/nXbw==
+"@smontero/ppp-client-api@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.30.tgz#fbd5b2a22325ce9632248d2117865be591808ff5"
+  integrity sha512-MGex/1VmrkBkS6nUrGjHIgCvFOofcag10Sdiwj0QjsvZ59lF02rubyoKouNSFk3NAyFDgBUnpdheN63p8P5eRQ==
   dependencies:
     "@babel/runtime" "^7.6.3"
     "@smontero/ppp-common" "0.0.6"
@@ -1578,15 +1578,15 @@
     get-random-values "^1.2.0"
     mime "^2.4.4"
 
+"@smontero/ppp-common@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.10.tgz#926957e864f4da1cc674e39d6bcecd61002165fc"
+  integrity sha512-GPvOKxya35JDoICw8in00uwlnXUsfkv8JKB0U16NmFVVw8wW7VVtyo7D148XAtPLEMRyCf0kog9mMqU3Xhewow==
+
 "@smontero/ppp-common@0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.6.tgz#e05462aea482ac6a4cbdf050bcfc70b017b33649"
   integrity sha512-Ksl1XaytBCQcNdZc31+kxv2pJU3S4+0x5dAViS+E0+Ceix5XX8RFGBOYt08rv/IrxeYfS2UCXFDc4ShCNnVAJw==
-
-"@smontero/ppp-common@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.9.tgz#f6b4c899b2de86267d6692aa8465719ad30c2dde"
-  integrity sha512-toEFUYmVEAyWgVjpEHwt0DKkJBjYkE33EDiqi0bJKTwL3txzzHXuc29xwQMbdzBGGUMFbli0VnUdxZXMMhrK8g==
 
 "@smontero/ual-eosio-reference-authenticator@^0.1.7":
   version "0.1.7"
@@ -5919,6 +5919,11 @@ globule@^1.0.0:
     glob "~7.1.1"
     lodash "~4.17.10"
     minimatch "~3.0.2"
+
+google-libphonenumber@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.6.tgz#3d725b48ff44706b80246e77f95f2c2fdc6fd729"
+  integrity sha512-6QCQAaKJlSd/1dUqvdQf7zzfb3uiZHsG8yhCfOdCVRfMuPZ/VDIEB47y5SYwjPQJPs7ebfW5jj6PeobB9JJ4JA==
 
 got@^7.0.0:
   version "7.1.0"
@@ -12178,6 +12183,11 @@ vuex@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
   integrity sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
+
+vuex@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.2.tgz#a2863f4005aa73f2587e55c3fadf3f01f69c7d4d"
+  integrity sha512-ha3jNLJqNhhrAemDXcmMJMKf1Zu4sybMPr9KxJIuOpVcsDQlTBYLLladav2U+g1AvdYDG5Gs0xBTb0M5pXXYFQ==
 
 watchpack@^1.6.0:
   version "1.6.0"

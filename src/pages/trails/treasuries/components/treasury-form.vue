@@ -13,7 +13,12 @@ export default {
       form: {
         manager: null,
         maxSupply: null,
-        access: null
+        maxSupplyValue: null,
+        maxSupplyToken: null,
+        maxSupplyDecimals: null,
+        access: null,
+        title: null,
+        description: null
       },
       submitting: false
     }
@@ -38,8 +43,28 @@ export default {
       this.form = {
         manager: null,
         maxSupply: null,
-        access: null
+        access: null,
+        title: null,
+        description: null
       }
+    },
+    setMaxSupply () {
+      if (this.form.maxSupplyDecimals && parseInt(this.form.maxSupplyDecimals) > 0) {
+        this.form.maxSupply = `${this.form.maxSupplyValue || 0}.${''.padStart(parseInt(this.form.maxSupplyDecimals), '0')} ${this.form.maxSupplyToken}`
+      } else {
+        this.form.maxSupply = `${this.form.maxSupplyValue || 0} ${this.form.maxSupplyToken}`
+      }
+    }
+  },
+  watch: {
+    'form.maxSupplyValue': function () {
+      this.setMaxSupply()
+    },
+    'form.maxSupplyToken': function () {
+      this.setMaxSupply()
+    },
+    'form.maxSupplyDecimals': function () {
+      this.setMaxSupply()
     }
   }
 }
@@ -62,18 +87,61 @@ q-dialog(
         ref="manager"
         v-model="form.manager"
         label="Manager"
-        :rules="[rules.required, rules.accountFormat, rules.accountLength]"
+        maxlength="12"
+        :rules="[rules.required, rules.accountFormat, rules.accountLength, rules.accountExists]"
+        lazy-rules
+        :debounce="200"
+        @blur="form.manager = (form.manager || '').toLowerCase()"
+      )
+      .row
+        q-input.col-4(
+          ref="maxSupplyValue"
+          v-model="form.maxSupplyValue"
+          label="Max supply"
+          type="number"
+          :rules="[rules.required, rules.isInteger, rules.positiveInteger]"
+          lazy-rules
+        )
+        q-input.col-4(
+          ref="maxSupplyToken"
+          v-model="form.maxSupplyToken"
+          label="Token"
+          maxlength="6"
+          :rules="[rules.required, rules.isToken]"
+          lazy-rules
+          @keyup="form.maxSupplyToken = (form.maxSupplyToken || '').toUpperCase()"
+        )
+        q-input.col-4(
+          ref="maxSupplyDecimals"
+          v-model="form.maxSupplyDecimals"
+          label="Decimals"
+          type="number"
+          :rules="[rules.required, rules.isInteger, rules.isTokenDecimals]"
+          lazy-rules
+        )
+      q-input(
+        ref="title"
+        v-model="form.title"
+        label="Title"
+        maxlength="50"
+        :rules="[rules.required]"
+        lazy-rules
       )
       q-input(
-        v-model="form.maxSupply"
-        label="Max supply"
+        ref="description"
+        v-model="form.description"
+        label="Description"
+        type="textarea"
+        maxlength="250"
         :rules="[rules.required]"
+        lazy-rules
       )
       q-select(
         v-model="form.access"
         label="Access"
         :options=["public", "private", "invite"]
         :rules="[rules.required]"
+        lazy-rules
       )
     q-card-section(v-if="treasuryFees")
       strong.text-red.fees There is a deposit fee of {{ treasuryFees.value }}

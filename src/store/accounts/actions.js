@@ -88,7 +88,7 @@ export const isAccountFree = async function (context, accountName) {
 export const sendOTP = async function ({ commit }, form) {
   try {
     const response = await this.$axios.post('/v1/registrations', {
-      smsNumber: form.smsNumber,
+      smsNumber: form.internationalPhone,
       telosAccount: form.account
     })
     if (response) {
@@ -104,16 +104,21 @@ export const sendOTP = async function ({ commit }, form) {
 
 export const verifyOTP = async function ({ commit, state }, { password, publicKey }) {
   try {
-    const response = await this.$axios.post('/v1/accounts', {
+    await this.$axios.post('/v1/accounts', {
       smsOtp: password,
-      smsNumber: state.signUpForm.smsNumber,
+      smsNumber: state.signUpForm.internationalPhone,
       telosAccount: state.signUpForm.account,
       ownerKey: publicKey,
       activeKey: publicKey
     })
-    return !!response
+    return {
+      success: true
+    }
   } catch (e) {
-    return false
+    return {
+      success: false,
+      error: e.message
+    }
   }
 }
 
