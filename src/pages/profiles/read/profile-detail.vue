@@ -30,14 +30,14 @@ main.column.items-center.back(v-if="this.Profile")
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='flag')
             q-item-section
-              q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.countryCode) }}
+              q-item-label {{ $t('pages.signUp.form.timeZone') }}
+              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.timeZone) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
             q-item-section
-              q-item-label {{ $t('pages.signUp.form.hobbies') }}
-              q-item-label(caption) {{ this.Profile.publicData.hobbies.join(', ') }}
+              q-item-label {{ $t('pages.signUp.form.tags') }}
+              q-item-label(caption) {{ this.Profile.publicData.tags.join(', ') }}
           q-item.q-mx-md(v-if='owner && this.Profile.emailInfo.exists')
               q-item-section(top, thumbnail)
                 q-icon(color='primary', name='email')
@@ -100,7 +100,7 @@ export default {
       } else return this.$store.state.profiles.selectedProfile
     },
     fullName () {
-      return `${this.Profile.publicData.firstName} ${this.Profile.publicData.lastName}`
+      return this.Profile.publicData.name
     },
     verifySMSUrl () {
       return `/profiles/myProfile/verify/${CommMethods.SMS.value}`

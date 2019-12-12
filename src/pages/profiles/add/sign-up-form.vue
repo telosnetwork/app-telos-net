@@ -5,11 +5,14 @@
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
-      q-input(filled, v-model='presentationSanatized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      p.text-weight-thin {{$t('pages.signUp.form.presentation')}}
       q-editor(v-model="presentation" min-height="5rem")
-      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-      .row.justify-center
+      q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      //- q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      .row.justify-center.q-mt-sm
+        p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
+      .row.justify-center.q-mb-md
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
       .row.q-col-gutter-x-xs.q-col-gutter-y-lg
         .col-xs-12.col-md-3
@@ -33,11 +36,10 @@
         filled,
         v-model='country',
         use-input, input-debounce='0',
-        :label="$t('pages.signUp.form.country')",
+        :label="$t('pages.signUp.form.timeZone')",
         :options='optionsCountriesFiltered',
         @filter='filterCountries',
         behavior='dialog',
-        :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]",
         option-value="code",
         option-label="label",
         emit-value,
@@ -47,7 +49,7 @@
           q-item
             q-item-section.text-grey {{ $t('lists.empty.countries') }}
       q-select(
-        :label="$t('pages.signUp.form.hobbies')",
+        :label="$t('pages.signUp.form.tags')",
         :hint="$t('forms.hints.pressToAddHobbie')",
         filled,
         v-model='hobbies',
@@ -110,8 +112,7 @@ export default {
     return {
       imgKey: '',
       identity: '',
-      firstName: '',
-      lastName: '',
+      name: '',
       smsNumber: '',
       email: '',
       methodComm: 'EMAIL',
@@ -163,12 +164,12 @@ export default {
       }
       return countries
     },
-    presentationSanatized () {
-      let sanatized = this.presentation
-      sanatized = sanatized.replace(/script/gi, '')
-      sanatized = sanatized.replace(/<a/gi, '')
-      sanatized = sanatized.replace(/href/gi, '')
-      return sanatized
+    presentationSanitized () {
+      let sanitized = this.presentation
+      sanitized = sanitized.replace(/script/gi, '')
+      sanitized = sanitized.replace(/<a/gi, '')
+      sanitized = sanitized.replace(/href/gi, '')
+      return sanitized
     }
   },
   watch: {
@@ -180,11 +181,10 @@ export default {
     this.showIsLoading(true)
     const response = await this.getProfile()
     if (response !== undefined) {
-      this.firstName = response.publicData.firstName
-      this.lastName = response.publicData.lastName
+      this.name = response.publicData.name
       this.presentation = response.publicData.bio
-      this.country = response.publicData.countryCode
-      this.hobbies = response.publicData.hobbies
+      this.country = response.publicData.timeZone
+      this.hobbies = response.publicData.tags
       this.imgKey = response.publicData.profileImage
       this.identity = response.publicData.s3Identity
       this.methodComm = response.commPref
@@ -210,9 +210,9 @@ export default {
     async getImg (blob) {
       const profileApi = PPP.profileApi()
       const authApi = PPP.authApi()
-      const key = await profileApi.uploadAvatar(blob)
+      const key = await profileApi.uploadImage(blob)
       const userInfo = await authApi.userInfo()
-      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+      const urlr = await profileApi.getImageUrl(key, userInfo.id)
       this.url = urlr
       this.imgKey = key
       this.identity = userInfo.id
@@ -231,14 +231,13 @@ export default {
         [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `${this.countryCodeTel}${this.smsNumber}`,
         [RootFields.COMM_PREF]: this.methodComm,
         publicData: {
-          [PublicFields.FIRST_NAME]: this.firstName,
-          [PublicFields.LAST_NAME]: this.lastName,
-          [PublicFields.COUNTRY_CODE]: this.country,
-          [PublicFields.PROFILE_IMAGE]: this.imgKey,
+          [PublicFields.NAME]: this.name,
+          [PublicFields.TIME_ZONE]: this.country,
+          [PublicFields.AVATAR_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
-          [PublicFields.HOBBIES]: this.hobbies,
-          [PublicFields.BIO]: this.presentationSanatized,
-          'customFields': this.customFields
+          [PublicFields.TAGS]: this.hobbies,
+          [PublicFields.BIO]: this.presentationSanitized,
+          [PublicFields.CUSTOM_FIELDS]: this.customFields
         }
       }
       try {

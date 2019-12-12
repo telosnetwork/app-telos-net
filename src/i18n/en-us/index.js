@@ -133,6 +133,7 @@ export default {
     signUp: {
       form: {
         presentation: 'Salutation (Mr./Mrs.)',
+        name: 'Name',
         firstName: 'First Name',
         lastName: 'Last Name',
         preferMethodComm: 'Preferred method of communication',
@@ -140,8 +141,8 @@ export default {
         email: 'Email',
         currentSms: 'Current SMS Number',
         currentEmail: 'Current Email',
-        country: 'Country',
-        hobbies: 'Hobbies',
+        timeZone: 'Time Zone',
+        tags: 'Tags',
         btnSave: 'Save',
         newCustomFieldName: 'Write the name of new custom field',
         editCustomFieldName: 'Write the new field name',
