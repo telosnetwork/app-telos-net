@@ -1,6 +1,6 @@
 <template lang='pug'>
 .row.justify-center.items-center
-  .col-xs-8.q-gutter-y-md.q-pa-md
+  .col-xs-11.col-md-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
@@ -10,20 +10,21 @@
       q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      .row.q-col-gutter-x-xs
-        .col-2
+      .row.q-col-gutter-x-xs.q-col-gutter-y-lg
+        .col-xs-12.col-md-3
           q-select(
+              filled
+              v-if="phoneOptions.length > 0",
               v-model="countryCodeTel"
               :options="phoneOptions"
+              option-value="dialCode"
               :option-label="(option) => `${option.name} (${option.dialCode})`"
-              :display-value="countryCodeTel && countryCodeTel.dialCode"
               :label="$t('pages.accounts.add.forms.phoneCode')"
+              emit-value
               map-options
-              lazy-rules
-              filled
             )
         .col
-          q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+          q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(
         v-if="countries.length > 0",
@@ -123,7 +124,7 @@ export default {
       newFieldName: '',
       indexEditField: 0,
       url: '',
-      countryCodeTel: '',
+      countryCodeTel: null,
       phoneOptions: []
     }
   },
@@ -209,9 +210,11 @@ export default {
         .then((v) => this.getImg(v))
         .catch(e => console.log(e))
 
+      console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
+
       const mData = {
         [RootFields.EMAIL]: this.email,
-        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
+        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `${this.countryCodeTel}${this.smsNumber}`,
         [RootFields.COMM_PREF]: this.methodComm,
         publicData: {
           [PublicFields.FIRST_NAME]: this.firstName,
