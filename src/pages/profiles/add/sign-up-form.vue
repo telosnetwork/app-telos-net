@@ -20,6 +20,7 @@
               option-value="dialCode"
               :option-label="(option) => `${option.name} (${option.dialCode})`"
               :label="$t('pages.accounts.add.forms.phoneCode')"
+              :rules='[validationCodeSMS]'
               emit-value
               map-options
             )
@@ -162,6 +163,11 @@ export default {
       return countries
     }
   },
+  watch: {
+    smsNumber (newValue, oldValue) {
+      // console.log(newValue, oldValue)
+    }
+  },
   beforeMount: async function () {
     this.showIsLoading(true)
     const response = await this.getProfile()
@@ -210,7 +216,7 @@ export default {
         .then((v) => this.getImg(v))
         .catch(e => console.log(e))
 
-      console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
+      // console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
 
       const mData = {
         [RootFields.EMAIL]: this.email,
@@ -275,6 +281,12 @@ export default {
           )
         }
       }
+    },
+
+    validationCodeSMS () {
+      if (this.smsNumber !== '' && this.countryCodeTel === null) {
+        return this.$t('forms.errors.required')
+      } else return true
     },
 
     validationEMAIL () {
