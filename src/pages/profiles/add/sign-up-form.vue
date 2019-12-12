@@ -5,7 +5,8 @@
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
-      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-input(filled, v-model='presentationSanatized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-editor(v-model="presentation" min-height="5rem")
       q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center
@@ -161,6 +162,13 @@ export default {
         countries.push({ code: country, label: this.countriesLang[country] })
       }
       return countries
+    },
+    presentationSanatized () {
+      let sanatized = this.presentation
+      sanatized = sanatized.replace(/script/gi, '')
+      sanatized = sanatized.replace(/<a/gi, '')
+      sanatized = sanatized.replace(/href/gi, '')
+      return sanatized
     }
   },
   watch: {
@@ -229,7 +237,7 @@ export default {
           [PublicFields.PROFILE_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
           [PublicFields.HOBBIES]: this.hobbies,
-          [PublicFields.BIO]: this.presentation,
+          [PublicFields.BIO]: this.presentationSanatized,
           'customFields': this.customFields
         }
       }
@@ -326,7 +334,7 @@ export default {
     }
   }
 }
-</script>
+</Script>
 
 <style scoped lang='sass'>
 .S3Img

@@ -24,7 +24,8 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='short_text')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.presentation') }}
-              q-item-label(caption) {{ this.Profile.publicData.bio }}
+              //- q-item-label(caption) {{ this.Profile.publicData.bio }}
+              q-item-label(caption, v-html='this.Profile.publicData.bio')
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='flag')

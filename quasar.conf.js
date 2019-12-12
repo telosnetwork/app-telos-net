@@ -66,6 +66,7 @@ module.exports = function (ctx) {
         'QDate',
         'QDialog',
         'QDrawer',
+        'QEditor',
         'QExpansionItem',
         'QFab',
         'QFabAction',
