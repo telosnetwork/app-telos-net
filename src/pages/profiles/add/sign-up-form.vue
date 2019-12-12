@@ -10,7 +10,20 @@
       q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      .row.q-col-gutter-x-xs
+        .col-2
+          q-select(
+              v-model="countryCodeTel"
+              :options="phoneOptions"
+              :option-label="(option) => `${option.name} (${option.dialCode})`"
+              :display-value="countryCodeTel && countryCodeTel.dialCode"
+              :label="$t('pages.accounts.add.forms.phoneCode')"
+              map-options
+              lazy-rules
+              filled
+            )
+        .col
+          q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(
         v-if="countries.length > 0",
@@ -81,6 +94,7 @@ import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import PPP from '@smontero/ppp-client-api'
 import { countriesLang } from '~/mixins/countries'
+import { countriesPhoneCode } from '~/mixins/countries-phone-code'
 
 export default {
   name: 'sign-up-form',
@@ -88,7 +102,7 @@ export default {
     S3Image,
     EditImage
   },
-  mixins: [countriesLang],
+  mixins: [countriesLang, countriesPhoneCode],
   data () {
     return {
       imgKey: '',
@@ -108,7 +122,9 @@ export default {
       editingCustomField: false,
       newFieldName: '',
       indexEditField: 0,
-      url: ''
+      url: '',
+      countryCodeTel: '',
+      phoneOptions: []
     }
   },
   computed: {
@@ -163,6 +179,7 @@ export default {
   },
   mounted () {
     this.optionsCountriesFiltered = this.countries
+    this.phoneOptions = this.countriesPhoneCode
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
