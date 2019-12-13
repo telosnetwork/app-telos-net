@@ -132,7 +132,7 @@ export default {
     },
     signUp: {
       form: {
-        presentation: 'Salutation (Mr./Mrs.)',
+        presentation: 'Bio',
         name: 'Name',
         firstName: 'First Name',
         lastName: 'Last Name',
