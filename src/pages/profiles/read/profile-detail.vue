@@ -37,7 +37,7 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='games')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.tags') }}
-              q-item-label(caption) {{ this.Profile.publicData.tags.join(', ') }}
+              q-item-label(caption) {{ tags }}
           q-item.q-mx-md(v-if='owner && this.Profile.emailInfo.exists')
               q-item-section(top, thumbnail)
                 q-icon(color='primary', name='email')
@@ -107,6 +107,11 @@ export default {
     },
     verifyEmailUrl () {
       return `/profiles/myProfile/verify/${CommMethods.EMAIL.value}`
+    },
+    tags () {
+      if (this.Profile.publicData.tags) {
+        return this.Profile.publicData.tags.join(', ')
+      } else return ''
     }
   },
   beforeCreate () {
