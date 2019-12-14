@@ -4,7 +4,7 @@ main.column.items-center.back(v-if="this.Profile")
       q-card-section
         .column.items-center
           q-avatar.col(size='200px')
-              S3Img(:img-key='this.Profile.publicData.profileImage', :identity='this.Profile.publicData.s3Identity' )
+              S3Img(:img-key='this.Profile.publicData.avatarImage', :identity='this.Profile.publicData.s3Identity' )
       q-card-section
         .row.justify-center.q-gutter-x-md
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     goToChat () {
-      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, profileImage: this.Profile.publicData.profileImage, s3Identity: this.Profile.publicData.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, avatarImage: this.Profile.publicData.avatarImage, s3Identity: this.Profile.publicData.s3Identity })
       this.$router.push({ name: 'chat' })
     }
   }

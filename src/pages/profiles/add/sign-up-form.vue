@@ -52,7 +52,7 @@
         :label="$t('pages.signUp.form.tags')",
         :hint="$t('forms.hints.pressToAddHobbie')",
         filled,
-        v-model='hobbies',
+        v-model='tags',
         use-input,
         use-chips,
         multiple,
@@ -119,7 +119,7 @@ export default {
       paymentsOptions: [],
       country: '',
       optionsCountriesFiltered: [],
-      hobbies: [],
+      tags: [],
       presentation: '',
       customFields: [],
       addingNewField: false,
@@ -184,8 +184,8 @@ export default {
       this.name = response.publicData.name
       this.presentation = response.publicData.bio
       this.country = response.publicData.timeZone
-      this.hobbies = response.publicData.tags
-      this.imgKey = response.publicData.profileImage
+      this.tags = response.publicData.tags
+      this.imgKey = response.publicData.avatarImage
       this.identity = response.publicData.s3Identity
       this.methodComm = response.commPref
       this.customFields = response.publicData.customFields ? response.publicData.customFields : []
@@ -201,7 +201,7 @@ export default {
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
-      } else if (this.hobbies.length === 0) {
+      } else if (this.tags.length === 0) {
         this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
@@ -235,7 +235,7 @@ export default {
           [PublicFields.TIME_ZONE]: this.country,
           [PublicFields.AVATAR_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
-          [PublicFields.TAGS]: this.hobbies,
+          [PublicFields.TAGS]: this.tags,
           [PublicFields.BIO]: this.presentationSanitized,
           [PublicFields.CUSTOM_FIELDS]: this.customFields
         }
@@ -253,8 +253,6 @@ export default {
       }
     },
     onReset () {
-      this.firstName = null
-      this.lastName = null
       this.name = null
       this.age = null
       this.smsNumber = null

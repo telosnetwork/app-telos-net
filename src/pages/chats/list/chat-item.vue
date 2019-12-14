@@ -3,7 +3,7 @@
         q-item-section(side)
             q-avatar(rounded, size='48px')
                 //- img(src='https://cdn.quasar.dev/img/avatar.png')
-                S3Img(:img-key='Chat.counterParty.profileImage', :identity='Chat.counterParty.s3Identity' )
+                S3Img(:img-key='Chat.counterParty.avatarImage', :identity='Chat.counterParty.s3Identity' )
                 //- q-badge(floating, color='teal') new
         q-item-section
             q-item-label {{ Chat.counterPartyAccount }}
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     goToChat () {
-      this.$store.commit('messages/setActiveChat', { activeChat: this.Chat.counterPartyAccount, profileImage: this.Chat.counterParty.profileImage, s3Identity: this.Chat.counterParty.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Chat.counterPartyAccount, avatarImage: this.Chat.counterParty.avatarImage, s3Identity: this.Chat.counterParty.s3Identity })
       this.$router.push({ name: 'chat' })
     }
   }

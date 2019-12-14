@@ -2,7 +2,7 @@
   main
     q-chip.headerContent
       q-avatar.avatarHeader
-        S3Img(:img-key='this.activeChat.profileImage', :identity='this.activeChat.s3Identity' )
+        S3Img(:img-key='this.activeChat.avatarImage', :identity='this.activeChat.s3Identity' )
       strong {{ this.activeChat.activeChat }}
     .q-pa-md.infiniteScroll(ref='scrollTargetRef')
       q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll', id='infiniteScroll')
