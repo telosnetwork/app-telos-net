@@ -8,7 +8,7 @@
             q-item-label {{contact.eosAccount}}
             q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
             q-item-label(caption='', lines='1') {{contact.email}}
-            q-item-label(caption, lines='2') {{codeToNameCountry(contact.publicData.countryCode)}}
+            q-item-label(caption, lines='2', v-if="contact.publicData.timeZone") {{getTimeZoneText(contact.publicData.timeZone)}}
         q-item-section(side, v-if="!isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
             q-btn.side-btn(icon='chat',size="1.1rem", round, color='green' @click='goToChat')
         q-item-section(side, v-if="isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
@@ -19,14 +19,15 @@
 
 <script>
 import S3Img from '~/components/s3-image'
-import { countriesLang } from '~/mixins/countries'
+// import { countriesLang } from '~/mixins/countries'
+import { timeZones } from '~/mixins/time-zones'
 export default {
   name: 'contact-item',
   props: {
     contact: Object
   },
   components: { S3Img },
-  mixins: [countriesLang],
+  mixins: [timeZones],
   computed: {
     isOwn () {
       if (this.$store.state.profiles.myProfile.eosAccount === this.contact.eosAccount) {

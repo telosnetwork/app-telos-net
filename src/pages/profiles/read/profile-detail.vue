@@ -31,7 +31,8 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='flag')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.timeZone') }}
-              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.timeZone) }}
+              //- q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.timeZone) }}
+              q-item-label(caption, v-if='this.Profile.publicData.timeZone') {{ getTimeZoneText(this.Profile.publicData.timeZone) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
@@ -87,11 +88,12 @@ main.column.items-center.back(v-if="this.Profile")
 <script>
 import { CommMethods } from '@smontero/ppp-common'
 import S3Img from '~/components/s3-image.vue'
-import { countriesLang } from '~/mixins/countries'
+// import { countriesLang } from '~/mixins/countries'
+import { timeZones } from '~/mixins/time-zones'
 export default {
   name: 'profile-detail',
   components: { S3Img },
-  mixins: [countriesLang],
+  mixins: [timeZones],
   props: { owner: Boolean },
   computed: {
     Profile () {

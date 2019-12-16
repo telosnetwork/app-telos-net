@@ -1,7 +1,7 @@
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
 export const timeZones = {
   computed: {
-    timeZones () {
+    timeZoneOptions () {
       return [
         {
           value: 'Dateline Standard Time',
@@ -1413,6 +1413,16 @@ export const timeZones = {
           ]
         }
       ]
+    }
+  },
+  methods: {
+    getTimeZoneText (_value) {
+      const timeZone = this.timeZoneOptions.filter(
+        v => v.value.indexOf(_value) > -1
+        // v => console.log('Value', v)
+      )
+
+      return timeZone[0].text
     }
   }
 }
