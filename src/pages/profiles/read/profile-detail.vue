@@ -140,7 +140,7 @@ export default {
   min-height: 100vh
 
 .back
-  background: rgba(204,255,229,.4)
+  background: rgba(255,255,255,.4)
   height: auto
 
 .fab-edit
