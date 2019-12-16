@@ -42,7 +42,7 @@ export default {
   },
   menu: {
     trails: 'Voting',
-    trailsBallots: 'Ballots',
+    trailsBallots: 'Decide',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
@@ -106,7 +106,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openedBallots: 'Opened ballots',
+          openedBallots: 'Opened decisions',
           supply: 'Supply',
           registered: 'Registered',
           registerVoter: 'Register as a voter'

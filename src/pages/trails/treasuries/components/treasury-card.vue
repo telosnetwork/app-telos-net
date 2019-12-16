@@ -67,41 +67,28 @@ div
       strong {{ $t('pages.trails.treasuries.card.supply') }}: {{ treasury.supply }}
       br
       strong {{ $t('pages.trails.treasuries.card.maxSupply') }}: {{ treasury.max_supply }}
-    q-card-section.flex.justify-end
-      div
-        q-btn(
+    q-card-section.flex.justify-between
+        q-btn.q-mr-sm(
           v-if="!treasury.isRegistered"
           icon="fas fa-user-plus"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.voters"
+          color="primary"
+          size="sm"
+          :label="`${$t('pages.trails.treasuries.card.registerVoter')} ${treasury.voters} voters`"
           :disabled="treasury.access === 'private'"
           @click="show = true"
         )
-          q-tooltip {{ $t('pages.trails.treasuries.card.registerVoter') }}
         q-btn.cursor-inherit(
           v-else
           icon="fas fa-user-check"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.voters"
+          color="primary"
+          size="sm"
+          :label="`${$t('pages.trails.treasuries.card.registered')} ${treasury.voters} voters`"
         )
-          q-tooltip {{ $t('pages.trails.treasuries.card.registered') }}
         q-btn(
           icon="fas fa-person-booth"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.open_ballots"
+          color="primary"
+          size="sm"
+          :label="`${$t('pages.trails.treasuries.card.openedBallots')} ${treasury.open_ballots}`"
           :to="`/trails/ballots?treasury=${treasury.symbol}`"
         )
-          q-tooltip {{ $t('pages.trails.treasuries.card.openedBallots') }}
 </template>
