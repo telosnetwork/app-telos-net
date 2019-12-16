@@ -32,7 +32,7 @@ main.column.items-center.back(v-if="this.Profile")
             q-item-section
               q-item-label {{ $t('pages.signUp.form.timeZone') }}
               //- q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.timeZone) }}
-              q-item-label(caption, v-if='this.Profile.publicData.timeZone') {{ getTimeZoneText(this.Profile.publicData.timeZone) }}
+              q-item-label(caption, v-if='this.Profile.publicData.timeZone && this.Profile.publicData.timeZone != undefined') {{ getTimeZoneText(this.Profile.publicData.timeZone) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
