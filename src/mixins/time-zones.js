@@ -1422,7 +1422,7 @@ export const timeZones = {
         // v => console.log('Value', v)
       )
 
-      return timeZone[0].text
+      return timeZone === undefined ? '' : timeZone[0].text
     }
   }
 }
