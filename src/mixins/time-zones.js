@@ -1421,8 +1421,7 @@ export const timeZones = {
         v => v.value.indexOf(_value) > -1
         // v => console.log('Value', v)
       )
-
-      return timeZone === undefined ? '' : timeZone[0].text
+      return (timeZone === undefined || timeZone.length === 0) ? '' : timeZone[0].text
     }
   }
 }

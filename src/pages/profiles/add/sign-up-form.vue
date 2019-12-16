@@ -203,11 +203,12 @@ export default {
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
-      } else if (this.hobbies.length === 0) {
-        this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
       }
+      // else if (this.hobbies.length === 0) {
+      //   this.showErrorMsg('You must write at least one hobby')
+      // }
     },
     async getImg (blob) {
       const profileApi = PPP.profileApi()
