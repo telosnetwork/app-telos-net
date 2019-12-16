@@ -7,80 +7,64 @@ export default {
 <template lang="pug">
   q-scroll-area.fit
     q-list
-      q-expansion-item(
-        :content-inset-level="0.5"
-        expand-separator
-        icon="fas fa-comments"
-        :label="$t('menu.trails')"
-        default-opened
+      q-item(
+        to="/profiles/myProfile"
+        clickable
+        v-ripple
       )
-        q-list
-          q-item(
-            to="/trails/treasuries"
-            clickable
-            v-ripple
-          )
-            q-item-section(avatar)
-              q-icon(name="fas fa-users")
-            q-item-section {{ $t('menu.trailsTreasuries') }}
-          q-item(
-            to="/trails/ballots"
-            clickable
-            v-ripple
-          )
-            q-item-section(avatar)
-              q-icon(name="fas fa-vote-yea")
-            q-item-section {{ $t('menu.trailsBallots') }}
-      q-expansion-item(
-        :content-inset-level="0.5"
-        expand-separator
-        icon="fas fa-id-card"
-        :label="$t('menu.profiles')"
-        default-opened
+        q-item-section(avatar)
+          q-icon(name="fas fa-user")
+        q-item-section {{ $t('menu.myProfile') }}
+      q-item(
+        to="/profiles/chat"
+        clickable
+        v-ripple
       )
-        q-list
-          q-item(
-            to="/profiles/myProfile"
-            clickable
-            v-ripple
-          )
-            q-item-section(avatar)
-              q-icon(name="fas fa-user")
-            q-item-section {{ $t('menu.myProfile') }}
-          q-item(
-            to="/profiles/contacts"
-            clickable
-            v-ripple
-          )
-            q-item-section(avatar)
-              q-icon(name="fas fa-users")
-            q-item-section {{ $t('menu.contacts') }}
-          q-item(
-            to="/profiles/chat"
-            clickable
-            v-ripple
-          )
-            q-item-section(avatar)
-              q-icon(name="fas fa-comment-dots")
-            q-item-section {{ $t('menu.chats') }}
-          q-item(
-            to="/profiles/registerApp"
-            exact
-            clickable
-            v-ripple
-           )
-            q-item-section(avatar)
-              q-icon(name="fas fa-plus-square")
-            q-item-section {{ $t('menu.registerApp') }}
-          q-item(
-            to="/profiles/appList"
-            exact
-            clickable
-            v-ripple
-           )
-            q-item-section(avatar)
-              q-icon(name="fas fa-list-alt")
-            q-item-section {{ $t('menu.appList') }}
+        q-item-section(avatar)
+          q-icon(name="fas fa-comment-dots")
+        q-item-section {{ $t('menu.chats') }}
+      q-item(
+        to="/profiles/contacts"
+        clickable
+        v-ripple
+      )
+        q-item-section(avatar)
+          q-icon(name="fas fa-users")
+        q-item-section {{ $t('menu.contacts') }}
+      q-item(
+        to="/trails/treasuries"
+        clickable
+        v-ripple
+      )
+        q-item-section(avatar)
+          q-icon(name="fas fa-users")
+        q-item-section {{ $t('menu.trailsTreasuries') }}
+      q-item(
+        to="/trails/ballots"
+        clickable
+        v-ripple
+      )
+        q-item-section(avatar)
+          q-icon(name="fas fa-vote-yea")
+        q-item-section {{ $t('menu.trailsBallots') }}
+      q-item(
+        to="/profiles/registerApp"
+        exact
+        clickable
+        v-ripple
+       )
+        q-item-section(avatar)
+          q-icon(name="fas fa-plus-square")
+        q-item-section {{ $t('menu.registerApp') }}
+      q-item(
+        to="/profiles/appList"
+        exact
+        clickable
+        v-ripple
+       )
+        q-item-section(avatar)
+          q-icon(name="fas fa-list-alt")
+        q-item-section {{ $t('menu.appList') }}
 </template>
 
 <style lang="stylus">

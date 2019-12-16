@@ -49,7 +49,8 @@ export default {
           icon="fas fa-bars"
           aria-label="Menu"
         )
-        q-toolbar-title Telos Net
+        q-toolbar-title.flex.items-center
+          img.logo(src="statics/telos-logo-white.svg")
         q-btn(
           dense
           flat
@@ -90,6 +91,9 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.logo
+  max-height: 30px
+  max-width: 100px
 .notification-badge
   font-size: 10px
   padding: 2px 3px

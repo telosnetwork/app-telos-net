@@ -13,17 +13,16 @@ export default {
 </script>
 
 <template lang="pug">
-q-btn(
-  :label="account"
-  flat
-  no-caps
-)
-  q-menu
-    q-list(dense)
-      q-item(
-        @click="logout"
-        clickable
-        v-close-popup
-      )
-        q-item-section {{ $t('common.buttons.logout') }}
+div
+  q-btn(
+    to="/profiles/myProfile"
+    :label="account"
+    flat
+    no-caps
+  )
+  q-btn(
+    :label="$t('common.buttons.logout')"
+    @click="logout"
+    color="secondary"
+  )
 </template>

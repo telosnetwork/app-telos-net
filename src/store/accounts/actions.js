@@ -28,9 +28,11 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$api = users[0]
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
+      const defaultReturnUrl = localStorage.getItem('returning') ? '/profiles/chat' : '/profiles/myProfile'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
-      this.$router.push({ path: returnUrl || '/trails/treasuries' })
+      localStorage.setItem('returning', true)
+      this.$router.push({ path: returnUrl || defaultReturnUrl })
     }
   } catch (e) {
     const error = (authenticator.getError() && authenticator.getError().message) || e.message || e.reason
