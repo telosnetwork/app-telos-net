@@ -6,9 +6,10 @@
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
-      p.text-weight-thin {{$t('pages.signUp.form.presentation')}}
-      q-editor(v-model="presentation" min-height="5rem")
       q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      .small-margin
+        p.text-weight-thin.small-margin {{$t('pages.signUp.form.presentation')}}
+        q-editor(v-model="presentation" min-height="5rem")
       //- q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center.q-mt-sm
         p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
@@ -342,4 +343,6 @@ export default {
   border-radius: 100px;
 .r
  border-radius: 100px;
+.small-margin
+  margin: 0px;
 </style>
