@@ -41,8 +41,8 @@
         :options='optionsCountriesFiltered',
         @filter='filterCountries',
         behavior='dialog',
-        option-value="code",
-        option-label="label",
+        option-value="value",
+        option-label="text",
         emit-value,
         map-options
       )
