@@ -37,7 +37,7 @@ export default {
     },
     hints: {
       selectCountrie: 'Please select your country',
-      pressToAddHobbie: 'Press enter to add a hobby'
+      pressToAddHobbie: 'Press enter to add a tag'
     }
   },
   menu: {

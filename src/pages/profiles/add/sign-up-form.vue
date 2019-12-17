@@ -6,9 +6,10 @@
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
-      p.text-weight-thin {{$t('pages.signUp.form.presentation')}}
-      q-editor(v-model="presentation" min-height="5rem")
       q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      .small-margin
+        p.text-weight-thin.small-margin {{$t('pages.signUp.form.presentation')}}
+        q-editor(v-model="presentation" min-height="5rem")
       //- q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .row.justify-center.q-mt-sm
         p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
@@ -98,8 +99,8 @@ import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import PPP from '@smontero/ppp-client-api'
-import { countriesLang } from '~/mixins/countries'
 import { countriesPhoneCode } from '~/mixins/countries-phone-code'
+import { timeZones } from '~/mixins/time-zones'
 
 export default {
   name: 'sign-up-form',
@@ -107,7 +108,7 @@ export default {
     S3Image,
     EditImage
   },
-  mixins: [countriesLang, countriesPhoneCode],
+  mixins: [countriesPhoneCode, timeZones],
   data () {
     return {
       imgKey: '',
@@ -159,9 +160,6 @@ export default {
     },
     countries () {
       const countries = []
-      for (const country in this.countriesLang) {
-        countries.push({ code: country, label: this.countriesLang[country] })
-      }
       return countries
     },
     presentationSanitized () {
@@ -193,7 +191,7 @@ export default {
     this.showIsLoading(false)
   },
   mounted () {
-    this.optionsCountriesFiltered = this.countries
+    this.optionsCountriesFiltered = this.timeZoneOptions
     this.phoneOptions = this.countriesPhoneCode
   },
   methods: {
@@ -201,8 +199,6 @@ export default {
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
-      } else if (this.tags.length === 0) {
-        this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
       }
@@ -264,15 +260,16 @@ export default {
     filterCountries (val, update) {
       if (val === '') {
         update(() => {
-          this.optionsCountriesFiltered = this.countries
+          this.optionsCountriesFiltered = this.timeZoneOptions
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.optionsCountriesFiltered = this.countries.filter(
-          v => v.label.toLowerCase().indexOf(needle) > -1
+        this.optionsCountriesFiltered = this.timeZoneOptions.filter(
+          v => v.text.toLowerCase().indexOf(needle) > -1
+          // v => console.log('Value', v)
         )
       })
     },
@@ -340,4 +337,6 @@ export default {
   border-radius: 100px;
 .r
  border-radius: 100px;
+.small-margin
+  margin: 0px;
 </style>
