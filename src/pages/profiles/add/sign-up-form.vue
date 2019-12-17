@@ -33,7 +33,7 @@
           q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(
-        v-if="countries.length > 0",
+        v-if="timeZoneOptions.length > 0",
         filled,
         v-model='country',
         use-input, input-debounce='0',
