@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'ballot-list-item',
@@ -11,6 +11,9 @@ export default {
       voting: false,
       votes: []
     }
+  },
+  computed: {
+    ...mapGetters('accounts', ['isAuthenticated'])
   },
   methods: {
     ...mapActions('trails', ['castVote']),
@@ -56,7 +59,7 @@ q-item
       | {{ $t('pages.trails.ballots.ends') }}: {{ new Date(ballot.end_time).toLocaleDateString() }}
   q-item-section(side)
     q-btn(
-      v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)"
+      v-if="isAuthenticated && ballot.status !== 'cancelled' && isBallotOpened(ballot)"
       :label="$t('pages.trails.ballots.castVote')"
       color="primary"
       :loading="voting"

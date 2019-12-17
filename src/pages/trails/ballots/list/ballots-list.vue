@@ -48,6 +48,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['ballots', 'ballotsLoaded', 'treasuriesOptions'])
   },
   watch: {
@@ -123,6 +124,7 @@ q-page.q-pa-lg
             size="40px"
           )
   q-page-sticky(
+    v-if="isAuthenticated"
     position="bottom-right"
     :offset="[18, 18]"
   )

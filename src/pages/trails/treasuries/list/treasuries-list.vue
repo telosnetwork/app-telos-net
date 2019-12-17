@@ -33,6 +33,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['treasuries', 'treasuriesLoaded'])
   }
 }
@@ -52,6 +53,7 @@ export default {
           .col-xs-12.col-sm-6(v-for="treasury in treasuries")
             treasury-card(:treasury="treasury")
     q-page-sticky(
+      v-if="isAuthenticated"
       position="bottom-right"
       :offset="[18, 18]"
     )

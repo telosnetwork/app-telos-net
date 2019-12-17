@@ -35,6 +35,7 @@
     "axios": "^0.18.1",
     "date-diff": "^0.2.1",
     "dotenv": "^8.1.0",
+    "eosjs": "^20.0.0",
     "eosjs-ecc": "^4.0.4",
     "google-libphonenumber": "^3.2.6",
     "i18n-iso-countries": "^4.3.1",

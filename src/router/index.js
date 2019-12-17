@@ -27,7 +27,7 @@ export default function ({ store }) {
 
   Router.beforeEach(async (to, from, next) => {
     // Verify registered users
-    if (to.matched.some(record => !record.meta.layout)) {
+    if (to.matched.some(record => !record.meta.guest)) {
       if (store.getters['accounts/isAuthenticated']) {
         if (to.matched.some(record => record.meta.needBackendLogin)) {
           if (!await PPP.authApi().hasValidSession()) {

@@ -1,18 +1,14 @@
 <script>
 import { mapGetters } from 'vuex'
-// import { utils } from './mixins/utils'
-
-// Vue.mixin(utils)
 
 export default {
   name: 'App',
-  // mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),
     ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg']),
     layout () {
-      return `layout-${this.$route.meta.layout || 'auth'}`
+      return `layout-${this.$route.meta.layout || 'main'}`
     }
   },
   watch: {

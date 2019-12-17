@@ -13,10 +13,8 @@ module.exports = function (ctx) {
       'layouts',
       'axios',
       'i18n',
-      {
-        server: false,
-        path: 'ual'
-      },
+      { path: 'ual', server: false },
+      { path: 'api', server: false },
       'ppp',
       'mixins'
     ],
