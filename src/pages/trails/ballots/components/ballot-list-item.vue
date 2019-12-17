@@ -48,7 +48,8 @@ q-item
     strong {{ ballot.treasury.title || ballot.treasury_symbol }}
     router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") By {{ ballot.publisher }}
   q-item-section
-    q-item-label(overline) {{ ballot.title || "Default title" }}
+    q-item-label(overline)
+      router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.title || "Default title" }}
     q-item-label(caption)
       | {{ $t('pages.trails.ballots.starts') }}: {{ ballot.begin_time }}
       br
