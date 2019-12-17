@@ -8,8 +8,7 @@ const getAuthenticator = function (ual, wallet = null) {
     idx
   }
 }
-// export const login = async function ({ commit, dispatch }, idx) {
-// export const login = async function ({ commit, dispatch }, { idx, account }) {
+
 export const login = async function ({ commit, dispatch }, { idx, account, returnUrl }) {
   const authenticator = this.$ual.authenticators[idx]
   try {
@@ -25,7 +24,8 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
     }
     const users = await authenticator.login(account)
     if (users.length) {
-      this.$api = users[0]
+      this.$ualUser = users[0]
+      this.$type = 'ual'
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
       const defaultReturnUrl = localStorage.getItem('returning') ? '/profiles/chat' : '/profiles/myProfile'
@@ -45,7 +45,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
 
 export const loginToBackend = async function ({ commit }) {
   try {
-    PPP.setActiveUser(this.$api)
+    PPP.setActiveUser(this.$ualUser)
     const authApi = PPP.authApi()
     await authApi.signIn()
     await this.dispatch('profiles/getProfile', { root: true })

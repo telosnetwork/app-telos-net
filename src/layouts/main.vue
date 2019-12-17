@@ -1,14 +1,16 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import LeftMenuAuthenticated from '~/components/layout/left-menu-authenticated'
+import LeftMenu from '~/components/layout/left-menu'
 import RightMenuAuthenticated from '~/components/layout/right-menu-authenticated'
+import RightMenuGuest from '~/components/layout/right-menu-guest'
 import RightMenuNotifications from '~/components/layout/right-menu-notifications'
 
 export default {
   name: 'layout-auth',
   components: {
-    LeftMenuAuthenticated,
+    LeftMenu,
     RightMenuAuthenticated,
+    RightMenuGuest,
     RightMenuNotifications
   },
   data () {
@@ -52,6 +54,7 @@ export default {
         q-toolbar-title.flex.items-center
           img.logo(src="statics/telos-logo-white.svg")
         q-btn(
+          v-if="isAuthenticated"
           dense
           flat
           round
@@ -71,7 +74,8 @@ export default {
             :label="errorCount"
             floating
           )
-        right-menu-authenticated
+        right-menu-authenticated(v-if="isAuthenticated")
+        right-menu-guest(v-if="!isAuthenticated")
     q-drawer(
       v-model="right"
       side="right"
@@ -85,7 +89,7 @@ export default {
       side="left"
       bordered
     )
-      left-menu-authenticated
+      left-menu
     q-page-container
       router-view
 </template>

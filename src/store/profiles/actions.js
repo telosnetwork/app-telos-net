@@ -1,7 +1,7 @@
 import PPP from '@smontero/ppp-client-api'
 
 export const signUp = async function ({ state }, mData) {
-  PPP.setActiveUser(this.$api)
+  PPP.setActiveUser(this.$ualUser)
   const profileApi = PPP.profileApi()
   return profileApi.register(mData)
 }

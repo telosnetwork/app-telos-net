@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['account'])
+    ...mapGetters('accounts', ['account', 'isAuthenticated'])
   }
 }
 </script>
@@ -68,27 +68,27 @@ div
       br
       strong {{ $t('pages.trails.treasuries.card.maxSupply') }}: {{ treasury.max_supply }}
     q-card-section.flex.justify-between
-        q-btn.q-mr-sm(
-          v-if="!treasury.isRegistered"
-          icon="fas fa-user-plus"
-          color="primary"
-          size="sm"
-          :label="`${$t('pages.trails.treasuries.card.registerVoter')} ${treasury.voters} voters`"
-          :disabled="treasury.access === 'private'"
-          @click="show = true"
-        )
-        q-btn.cursor-inherit(
-          v-else
-          icon="fas fa-user-check"
-          color="primary"
-          size="sm"
-          :label="`${$t('pages.trails.treasuries.card.registered')} ${treasury.voters} voters`"
-        )
-        q-btn(
-          icon="fas fa-person-booth"
-          color="primary"
-          size="sm"
-          :label="`${$t('pages.trails.treasuries.card.openedBallots')} ${treasury.open_ballots}`"
-          :to="`/trails/ballots?treasury=${treasury.symbol}`"
-        )
+      q-btn(
+        icon="fas fa-person-booth"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.openedBallots')} ${treasury.open_ballots}`"
+        :to="`/trails/ballots?treasury=${treasury.symbol}`"
+      )
+      q-btn(
+        v-if="isAuthenticated && !treasury.isRegistered"
+        icon="fas fa-user-plus"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.registerVoter')} ${treasury.voters} voters`"
+        :disabled="treasury.access === 'private'"
+        @click="show = true"
+      )
+      q-btn.cursor-inherit(
+        v-if="isAuthenticated && treasury.isRegistered"
+        icon="fas fa-user-check"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.registered')} ${treasury.voters} voters`"
+      )
 </template>
