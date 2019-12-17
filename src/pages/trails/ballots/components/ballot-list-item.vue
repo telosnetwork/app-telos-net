@@ -51,9 +51,9 @@ q-item
     q-item-label(overline)
       router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.title || "Default title" }}
     q-item-label(caption)
-      | {{ $t('pages.trails.ballots.starts') }}: {{ ballot.begin_time }}
+      | {{ $t('pages.trails.ballots.starts') }}: {{ new Date(ballot.begin_time).toLocaleDateString() }}
       br
-      | {{ $t('pages.trails.ballots.ends') }}: {{ ballot.end_time }}
+      | {{ $t('pages.trails.ballots.ends') }}: {{ new Date(ballot.end_time).toLocaleDateString() }}
   q-item-section(side)
     q-btn(
       v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)"
