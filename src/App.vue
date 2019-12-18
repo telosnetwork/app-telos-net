@@ -1,5 +1,6 @@
 <script>
 import { mapGetters } from 'vuex'
+import appIcons from '~/utils/app-icons'
 
 export default {
   name: 'App',
@@ -30,6 +31,14 @@ export default {
         this.$q.loading.show()
       } else {
         this.$q.loading.hide()
+      }
+    }
+  },
+  created () {
+    this.$q.iconMapFn = (iconName) => {
+      const icon = appIcons[iconName]
+      if (icon !== void 0) {
+        return { icon }
       }
     }
   }
