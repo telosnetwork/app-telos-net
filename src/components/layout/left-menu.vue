@@ -19,7 +19,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="fas fa-user")
+          q-icon(name="app:my-profile")
         q-item-section {{ $t('menu.myProfile') }}
       q-item(
         v-if="isAuthenticated"
@@ -28,7 +28,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="fas fa-comment-dots")
+          q-icon(name="app:chats")
         q-item-section {{ $t('menu.chats') }}
       q-item(
         v-if="isAuthenticated"
@@ -37,7 +37,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="fas fa-users")
+          q-icon(name="app:find-contacts")
         q-item-section {{ $t('menu.contacts') }}
       q-item(
         to="/trails/treasuries"
@@ -45,7 +45,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="fas fa-users")
+          q-icon(name="app:groups")
         q-item-section {{ $t('menu.trailsTreasuries') }}
       q-item(
         to="/trails/ballots"
@@ -53,7 +53,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="fas fa-vote-yea")
+          q-icon(name="app:decide")
         q-item-section {{ $t('menu.trailsBallots') }}
       q-item(
         v-if="isAuthenticated"
