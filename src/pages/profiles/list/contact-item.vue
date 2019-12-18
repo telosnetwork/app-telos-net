@@ -3,12 +3,12 @@
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar, clickable,  @click='goToProfileDetail')
             q-avatar(size="80px")
-              S3Img(v-if="contact.publicData.profileImage !== null", :img-key='contact.publicData.profileImage', :identity='contact.publicData.s3Identity')
+              S3Img(v-if="contact.publicData.avatarImage !== null", :img-key='contact.publicData.avatarImage', :identity='contact.publicData.s3Identity')
         q-item-section(clickable,  @click='goToProfileDetail')
             q-item-label {{contact.eosAccount}}
-            q-item-label(caption='', lines='1') {{contact.publicData.firstName}} {{contact.publicData.lastName}}
+            q-item-label(caption='', lines='1') {{contact.publicData.name}}
             q-item-label(caption='', lines='1') {{contact.email}}
-            q-item-label(caption, lines='2') {{codeToNameCountry(contact.publicData.countryCode)}}
+            q-item-label(caption, lines='2', v-if="contact.publicData.timeZone") {{getTimeZoneText(contact.publicData.timeZone)}}
         q-item-section(side, v-if="!isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
             q-btn.side-btn(icon='chat',size="1.1rem", round, color='green' @click='goToChat')
         q-item-section(side, v-if="isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
@@ -19,14 +19,14 @@
 
 <script>
 import S3Img from '~/components/s3-image'
-import { countriesLang } from '~/mixins/countries'
+import { timeZones } from '~/mixins/time-zones'
 export default {
   name: 'contact-item',
   props: {
     contact: Object
   },
   components: { S3Img },
-  mixins: [countriesLang],
+  mixins: [timeZones],
   computed: {
     isOwn () {
       if (this.$store.state.profiles.myProfile.eosAccount === this.contact.eosAccount) {
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     goToChat () {
-      this.$store.commit('messages/setActiveChat', { activeChat: this.contact.eosAccount, profileImage: this.contact.publicData.profileImage, s3Identity: this.contact.publicData.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.contact.eosAccount, avatarImage: this.contact.publicData.avatarImage, s3Identity: this.contact.publicData.s3Identity })
       this.$router.push({ name: 'chat' })
     },
     goToProfileDetail () {

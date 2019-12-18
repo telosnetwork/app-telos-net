@@ -15,38 +15,32 @@ export const toggleLock = async function ({ commit }, { lock, safeName, accountN
       accountProp = 'unlocking_account'
       notification.title = 'notifications.poc.unlockSafe'
     }
-    const transaction = await this.$api.signTransaction({
-      actions: [{
-        account: 'safe.poc.tbs',
-        name: actionName,
-        authorization: [{
-          actor: accountName,
-          permission: 'active'
-        }],
-        data: {
-          safe_name: safeName,
-          [accountProp]: accountName
-        }
-      }]
-    }, {
-      broadcast: true,
-      blocksBehind: 3,
-      expireSeconds: 30
-    })
+    const actions = [{
+      account: 'safe.poc.tbs',
+      name: actionName,
+      authorization: [{
+        actor: accountName,
+        permission: 'active'
+      }],
+      data: {
+        safe_name: safeName,
+        [accountProp]: accountName
+      }
+    }]
+    const transaction = await this.$api.signTransaction(actions)
     commit('resetSafes')
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.cause.message
+    notification.error = e.message
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
 }
 
 export const fetchSafes = async function ({ commit, state }) {
-  const rows = await this.$api.rpc.get_table_rows({
-    json: true,
+  const rows = await this.$api.getTableRows({
     code: 'safe.poc.tbs',
     scope: 'safe.poc.tbs',
     table: 'safes',

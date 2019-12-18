@@ -33,6 +33,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['treasuries', 'treasuriesLoaded'])
   }
 }
@@ -49,9 +50,10 @@ export default {
         :scroll-target="$refs.treasuriesRef"
       )
         .row.q-col-gutter-md
-          .col-xs-12.col-sm-6.col-md-4(v-for="treasury in treasuries")
+          .col-xs-12.col-sm-6(v-for="treasury in treasuries")
             treasury-card(:treasury="treasury")
     q-page-sticky(
+      v-if="isAuthenticated"
       position="bottom-right"
       :offset="[18, 18]"
     )

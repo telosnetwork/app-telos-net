@@ -4,7 +4,7 @@ main.column.items-center.back(v-if="this.Profile")
       q-card-section
         .column.items-center
           q-avatar.col(size='200px')
-              S3Img(:img-key='this.Profile.publicData.profileImage', :identity='this.Profile.publicData.s3Identity' )
+              S3Img(:img-key='this.Profile.publicData.avatarImage', :identity='this.Profile.publicData.s3Identity' )
       q-card-section
         .row.justify-center.q-gutter-x-md
           p.text-h4 {{ ` ${this.Profile.eosAccount}` }}
@@ -24,19 +24,21 @@ main.column.items-center.back(v-if="this.Profile")
               q-icon(color='primary', name='short_text')
             q-item-section
               q-item-label {{ $t('pages.signUp.form.presentation') }}
-              q-item-label(caption) {{ this.Profile.publicData.bio }}
+              //- q-item-label(caption) {{ this.Profile.publicData.bio }}
+              q-item-label(caption, v-html='this.Profile.publicData.bio')
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='flag')
             q-item-section
-              q-item-label {{ $t('pages.signUp.form.country') }}
-              q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.countryCode) }}
+              q-item-label {{ $t('pages.signUp.form.timeZone') }}
+              //- q-item-label(caption) {{ codeToNameCountry(this.Profile.publicData.timeZone) }}
+              q-item-label(caption, v-if='this.Profile.publicData.timeZone && this.Profile.publicData.timeZone != undefined') {{ getTimeZoneText(this.Profile.publicData.timeZone) }}
           q-item.q-mx-md
             q-item-section(top, thumbnail)
               q-icon(color='primary', name='games')
             q-item-section
-              q-item-label {{ $t('pages.signUp.form.hobbies') }}
-              q-item-label(caption) {{ this.Profile.publicData.hobbies.join(', ') }}
+              q-item-label {{ $t('pages.signUp.form.tags') }}
+              q-item-label(caption) {{ tags }}
           q-item.q-mx-md(v-if='owner && this.Profile.emailInfo.exists')
               q-item-section(top, thumbnail)
                 q-icon(color='primary', name='email')
@@ -86,11 +88,12 @@ main.column.items-center.back(v-if="this.Profile")
 <script>
 import { CommMethods } from '@smontero/ppp-common'
 import S3Img from '~/components/s3-image.vue'
-import { countriesLang } from '~/mixins/countries'
+// import { countriesLang } from '~/mixins/countries'
+import { timeZones } from '~/mixins/time-zones'
 export default {
   name: 'profile-detail',
   components: { S3Img },
-  mixins: [countriesLang],
+  mixins: [timeZones],
   props: { owner: Boolean },
   computed: {
     Profile () {
@@ -99,13 +102,18 @@ export default {
       } else return this.$store.state.profiles.selectedProfile
     },
     fullName () {
-      return `${this.Profile.publicData.firstName} ${this.Profile.publicData.lastName}`
+      return this.Profile.publicData.name
     },
     verifySMSUrl () {
       return `/profiles/myProfile/verify/${CommMethods.SMS.value}`
     },
     verifyEmailUrl () {
       return `/profiles/myProfile/verify/${CommMethods.EMAIL.value}`
+    },
+    tags () {
+      if (this.Profile.publicData.tags) {
+        return this.Profile.publicData.tags.join(', ')
+      } else return ''
     }
   },
   beforeCreate () {
@@ -118,7 +126,7 @@ export default {
   },
   methods: {
     goToChat () {
-      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, profileImage: this.Profile.publicData.profileImage, s3Identity: this.Profile.publicData.s3Identity })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, avatarImage: this.Profile.publicData.avatarImage, s3Identity: this.Profile.publicData.s3Identity })
       this.$router.push({ name: 'chat' })
     }
   }
@@ -132,7 +140,7 @@ export default {
   min-height: 100vh
 
 .back
-  background: rgba(204,255,229,.4)
+  background: rgba(255,255,255,.4)
   height: auto
 
 .fab-edit

@@ -37,12 +37,12 @@ export default {
     },
     hints: {
       selectCountrie: 'Please select your country',
-      pressToAddHobbie: 'Press enter to add a hobby'
+      pressToAddHobbie: 'Press enter to add a tag'
     }
   },
   menu: {
     trails: 'Voting',
-    trailsBallots: 'Ballots',
+    trailsBallots: 'Decide',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
@@ -106,7 +106,7 @@ export default {
       treasuries: {
         card: {
           maxSupply: 'Max supply',
-          openedBallots: 'Opened ballots',
+          openedBallots: 'Opened decisions',
           supply: 'Supply',
           registered: 'Registered',
           registerVoter: 'Register as a voter'
@@ -132,7 +132,8 @@ export default {
     },
     signUp: {
       form: {
-        presentation: 'Salutation (Mr./Mrs.)',
+        presentation: 'Bio',
+        name: 'Name',
         firstName: 'First Name',
         lastName: 'Last Name',
         preferMethodComm: 'Preferred method of communication',
@@ -140,8 +141,8 @@ export default {
         email: 'Email',
         currentSms: 'Current SMS Number',
         currentEmail: 'Current Email',
-        country: 'Country',
-        hobbies: 'Hobbies',
+        timeZone: 'Time Zone',
+        tags: 'Tags',
         btnSave: 'Save',
         newCustomFieldName: 'Write the name of new custom field',
         editCustomFieldName: 'Write the new field name',

@@ -1,18 +1,15 @@
 <script>
 import { mapGetters } from 'vuex'
-// import { utils } from './mixins/utils'
-
-// Vue.mixin(utils)
+import appIcons from '~/utils/app-icons'
 
 export default {
   name: 'App',
-  // mixins: [utils],
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
     ...mapGetters('profiles', ['isPPPLoading']),
     ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg']),
     layout () {
-      return `layout-${this.$route.meta.layout || 'auth'}`
+      return `layout-${this.$route.meta.layout || 'main'}`
     }
   },
   watch: {
@@ -34,6 +31,14 @@ export default {
         this.$q.loading.show()
       } else {
         this.$q.loading.hide()
+      }
+    }
+  },
+  created () {
+    this.$q.iconMapFn = (iconName) => {
+      const icon = appIcons[iconName]
+      if (icon !== void 0) {
+        return { icon }
       }
     }
   }

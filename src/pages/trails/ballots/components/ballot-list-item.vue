@@ -1,5 +1,5 @@
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'ballot-list-item',
@@ -11,6 +11,9 @@ export default {
       voting: false,
       votes: []
     }
+  },
+  computed: {
+    ...mapGetters('accounts', ['isAuthenticated'])
   },
   methods: {
     ...mapActions('trails', ['castVote']),
@@ -48,14 +51,15 @@ q-item
     strong {{ ballot.treasury.title || ballot.treasury_symbol }}
     router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") By {{ ballot.publisher }}
   q-item-section
-    q-item-label(overline) {{ ballot.title || "Default title" }}
+    q-item-label(overline)
+      router-link.link(:to="`/trails/ballots/${ballot.ballot_name}`") {{ ballot.title || "Default title" }}
     q-item-label(caption)
-      | {{ $t('pages.trails.ballots.starts') }}: {{ ballot.begin_time }}
+      | {{ $t('pages.trails.ballots.starts') }}: {{ new Date(ballot.begin_time).toLocaleDateString() }}
       br
-      | {{ $t('pages.trails.ballots.ends') }}: {{ ballot.end_time }}
+      | {{ $t('pages.trails.ballots.ends') }}: {{ new Date(ballot.end_time).toLocaleDateString() }}
   q-item-section(side)
     q-btn(
-      v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)"
+      v-if="isAuthenticated && ballot.status !== 'cancelled' && isBallotOpened(ballot)"
       :label="$t('pages.trails.ballots.castVote')"
       color="primary"
       :loading="voting"

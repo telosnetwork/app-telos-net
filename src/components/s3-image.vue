@@ -35,7 +35,7 @@ export default {
     async updateUrl () {
       this.url = ''
       if (this.imgKey && this.identity) {
-        await PPP.profileApi().getAvatarUrl(this.imgKey, this.identity).then((rUrl) => {
+        await PPP.profileApi().getImageUrl(this.imgKey, this.identity).then((rUrl) => {
           this.url = rUrl
         })
       }

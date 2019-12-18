@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['account'])
+    ...mapGetters('accounts', ['account', 'isAuthenticated'])
   }
 }
 </script>
@@ -67,41 +67,28 @@ div
       strong {{ $t('pages.trails.treasuries.card.supply') }}: {{ treasury.supply }}
       br
       strong {{ $t('pages.trails.treasuries.card.maxSupply') }}: {{ treasury.max_supply }}
-    q-card-section.flex.justify-end
-      div
-        q-btn(
-          v-if="!treasury.isRegistered"
-          icon="fas fa-user-plus"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.voters"
-          :disabled="treasury.access === 'private'"
-          @click="show = true"
-        )
-          q-tooltip {{ $t('pages.trails.treasuries.card.registerVoter') }}
-        q-btn.cursor-inherit(
-          v-else
-          icon="fas fa-user-check"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.voters"
-        )
-          q-tooltip {{ $t('pages.trails.treasuries.card.registered') }}
-        q-btn(
-          icon="fas fa-person-booth"
-          color="white"
-          text-color="primary"
-          dense
-          flat
-          size="xs"
-          :label="treasury.open_ballots"
-          :to="`/trails/ballots?treasury=${treasury.symbol}`"
-        )
-          q-tooltip {{ $t('pages.trails.treasuries.card.openedBallots') }}
+    q-card-section.flex.justify-between
+      q-btn(
+        icon="fas fa-person-booth"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.openedBallots')} ${treasury.open_ballots}`"
+        :to="`/trails/ballots?treasury=${treasury.symbol}`"
+      )
+      q-btn(
+        v-if="isAuthenticated && !treasury.isRegistered"
+        icon="fas fa-user-plus"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.registerVoter')} ${treasury.voters} voters`"
+        :disabled="treasury.access === 'private'"
+        @click="show = true"
+      )
+      q-btn.cursor-inherit(
+        v-if="isAuthenticated && treasury.isRegistered"
+        icon="fas fa-user-check"
+        color="primary"
+        size="sm"
+        :label="`${$t('pages.trails.treasuries.card.registered')} ${treasury.voters} voters`"
+      )
 </template>

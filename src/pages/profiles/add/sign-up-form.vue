@@ -1,29 +1,48 @@
 <template lang='pug'>
 .row.justify-center.items-center
-  .col-xs-8.q-gutter-y-md.q-pa-md
+  .col-xs-11.col-md-8.q-gutter-y-md.q-pa-md
     .row.justify-center
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
       edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
-      q-input(filled, v-model='presentation', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
-      q-input(filled, v-model='firstName', :label="$t('pages.signUp.form.firstName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-      q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-      .row.justify-center
+      //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      .small-margin
+        p.text-weight-thin.small-margin {{$t('pages.signUp.form.presentation')}}
+        q-editor(v-model="presentation" min-height="5rem")
+      //- q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      .row.justify-center.q-mt-sm
+        p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
+      .row.justify-center.q-mb-md
         q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='+## (###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      .row.q-col-gutter-x-xs.q-col-gutter-y-lg
+        .col-xs-12.col-md-3
+          q-select(
+              filled
+              v-if="phoneOptions.length > 0",
+              v-model="countryCodeTel"
+              :options="phoneOptions"
+              option-value="dialCode"
+              :option-label="(option) => `${option.name} (${option.dialCode})`"
+              :label="$t('pages.accounts.add.forms.phoneCode')"
+              :rules='[validationCodeSMS]'
+              emit-value
+              map-options
+            )
+        .col
+          q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
       q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
       q-select(
-        v-if="countries.length > 0",
+        v-if="timeZoneOptions.length > 0",
         filled,
         v-model='country',
         use-input, input-debounce='0',
-        :label="$t('pages.signUp.form.country')",
+        :label="$t('pages.signUp.form.timeZone')",
         :options='optionsCountriesFiltered',
         @filter='filterCountries',
         behavior='dialog',
-        :rules="[ val => val && val.length > 0 || $t('forms.hints.selectCountrie') ]",
-        option-value="code",
-        option-label="label",
+        option-value="value",
+        option-label="text",
         emit-value,
         map-options
       )
@@ -31,10 +50,10 @@
           q-item
             q-item-section.text-grey {{ $t('lists.empty.countries') }}
       q-select(
-        :label="$t('pages.signUp.form.hobbies')",
+        :label="$t('pages.signUp.form.tags')",
         :hint="$t('forms.hints.pressToAddHobbie')",
         filled,
-        v-model='hobbies',
+        v-model='tags',
         use-input,
         use-chips,
         multiple,
@@ -80,7 +99,8 @@ import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
 import EditImage from '~/pages/profiles/add/edit-image'
 import PPP from '@smontero/ppp-client-api'
-import { countriesLang } from '~/mixins/countries'
+import { countriesPhoneCode } from '~/mixins/countries-phone-code'
+import { timeZones } from '~/mixins/time-zones'
 
 export default {
   name: 'sign-up-form',
@@ -88,27 +108,28 @@ export default {
     S3Image,
     EditImage
   },
-  mixins: [countriesLang],
+  mixins: [countriesPhoneCode, timeZones],
   data () {
     return {
       imgKey: '',
       identity: '',
-      firstName: '',
-      lastName: '',
+      name: '',
       smsNumber: '',
       email: '',
       methodComm: 'EMAIL',
       paymentsOptions: [],
       country: '',
       optionsCountriesFiltered: [],
-      hobbies: [],
+      tags: [],
       presentation: '',
       customFields: [],
       addingNewField: false,
       editingCustomField: false,
       newFieldName: '',
       indexEditField: 0,
-      url: ''
+      url: '',
+      countryCodeTel: null,
+      phoneOptions: []
     }
   },
   computed: {
@@ -139,22 +160,30 @@ export default {
     },
     countries () {
       const countries = []
-      for (const country in this.countriesLang) {
-        countries.push({ code: country, label: this.countriesLang[country] })
-      }
       return countries
+    },
+    presentationSanitized () {
+      let sanitized = this.presentation
+      sanitized = sanitized.replace(/script/gi, '')
+      sanitized = sanitized.replace(/<a/gi, '')
+      sanitized = sanitized.replace(/href/gi, '')
+      return sanitized
+    }
+  },
+  watch: {
+    smsNumber (newValue, oldValue) {
+      // console.log(newValue, oldValue)
     }
   },
   beforeMount: async function () {
     this.showIsLoading(true)
     const response = await this.getProfile()
     if (response !== undefined) {
-      this.firstName = response.publicData.firstName
-      this.lastName = response.publicData.lastName
+      this.name = response.publicData.name
       this.presentation = response.publicData.bio
-      this.country = response.publicData.countryCode
-      this.hobbies = response.publicData.hobbies
-      this.imgKey = response.publicData.profileImage
+      this.country = response.publicData.timeZone
+      this.tags = response.publicData.tags
+      this.imgKey = response.publicData.avatarImage
       this.identity = response.publicData.s3Identity
       this.methodComm = response.commPref
       this.customFields = response.publicData.customFields ? response.publicData.customFields : []
@@ -162,15 +191,14 @@ export default {
     this.showIsLoading(false)
   },
   mounted () {
-    this.optionsCountriesFiltered = this.countries
+    this.optionsCountriesFiltered = this.timeZoneOptions
+    this.phoneOptions = this.countriesPhoneCode
   },
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
     onSubmit () {
       if (this.methodComm === null) {
         this.showErrorMsg('You must choose one prefer method communication')
-      } else if (this.hobbies.length === 0) {
-        this.showErrorMsg('You must write at least one hobby')
       } else {
         this.doSignup()
       }
@@ -178,9 +206,9 @@ export default {
     async getImg (blob) {
       const profileApi = PPP.profileApi()
       const authApi = PPP.authApi()
-      const key = await profileApi.uploadAvatar(blob)
+      const key = await profileApi.uploadImage(blob)
       const userInfo = await authApi.userInfo()
-      const urlr = await profileApi.getAvatarUrl(key, userInfo.id)
+      const urlr = await profileApi.getImageUrl(key, userInfo.id)
       this.url = urlr
       this.imgKey = key
       this.identity = userInfo.id
@@ -192,19 +220,20 @@ export default {
         .then((v) => this.getImg(v))
         .catch(e => console.log(e))
 
+      // console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
+
       const mData = {
         [RootFields.EMAIL]: this.email,
-        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `+${this.smsNumber}`,
+        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `${this.countryCodeTel}${this.smsNumber}`,
         [RootFields.COMM_PREF]: this.methodComm,
         publicData: {
-          [PublicFields.FIRST_NAME]: this.firstName,
-          [PublicFields.LAST_NAME]: this.lastName,
-          [PublicFields.COUNTRY_CODE]: this.country,
-          [PublicFields.PROFILE_IMAGE]: this.imgKey,
+          [PublicFields.NAME]: this.name,
+          [PublicFields.TIME_ZONE]: this.country,
+          [PublicFields.AVATAR_IMAGE]: this.imgKey,
           [PublicFields.S3_IDENTITY]: this.identity,
-          [PublicFields.HOBBIES]: this.hobbies,
-          [PublicFields.BIO]: this.presentation,
-          'customFields': this.customFields
+          [PublicFields.TAGS]: this.tags,
+          [PublicFields.BIO]: this.presentationSanitized,
+          [PublicFields.CUSTOM_FIELDS]: this.customFields
         }
       }
       try {
@@ -220,8 +249,6 @@ export default {
       }
     },
     onReset () {
-      this.firstName = null
-      this.lastName = null
       this.name = null
       this.age = null
       this.smsNumber = null
@@ -233,15 +260,16 @@ export default {
     filterCountries (val, update) {
       if (val === '') {
         update(() => {
-          this.optionsCountriesFiltered = this.countries
+          this.optionsCountriesFiltered = this.timeZoneOptions
         })
         return
       }
 
       update(() => {
         const needle = val.toLowerCase()
-        this.optionsCountriesFiltered = this.countries.filter(
-          v => v.label.toLowerCase().indexOf(needle) > -1
+        this.optionsCountriesFiltered = this.timeZoneOptions.filter(
+          v => v.text.toLowerCase().indexOf(needle) > -1
+          // v => console.log('Value', v)
         )
       })
     },
@@ -255,6 +283,12 @@ export default {
           )
         }
       }
+    },
+
+    validationCodeSMS () {
+      if (this.smsNumber !== '' && this.countryCodeTel === null) {
+        return this.$t('forms.errors.required')
+      } else return true
     },
 
     validationEMAIL () {
@@ -294,7 +328,7 @@ export default {
     }
   }
 }
-</script>
+</Script>
 
 <style scoped lang='sass'>
 .S3Img
@@ -303,4 +337,6 @@ export default {
   border-radius: 100px;
 .r
  border-radius: 100px;
+.small-margin
+  margin: 0px;
 </style>

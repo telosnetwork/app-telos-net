@@ -27,7 +27,7 @@ export default {
     ...mapGetters('trails', ['treasuryFees'])
   },
   methods: {
-    ...mapActions('trails', ['addTreasury']),
+    ...mapActions('trails', ['addTreasury', 'fetchTreasuries']),
     async onAddTreasury () {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
@@ -37,6 +37,7 @@ export default {
       if (success) {
         this.$emit('update:show', false)
         this.resetTreasury()
+        await this.fetchTreasuries()
       }
     },
     resetTreasury () {

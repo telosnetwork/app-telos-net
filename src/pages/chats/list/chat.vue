@@ -2,7 +2,7 @@
   main
     q-chip.headerContent
       q-avatar.avatarHeader
-        S3Img(:img-key='this.activeChat.profileImage', :identity='this.activeChat.s3Identity' )
+        S3Img(:img-key='this.activeChat.avatarImage', :identity='this.activeChat.s3Identity' )
       strong {{ this.activeChat.activeChat }}
     .q-pa-md.infiniteScroll(ref='scrollTargetRef')
       q-infinite-scroll(@load='onLoad', reverse='', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll', id='infiniteScroll')
@@ -32,7 +32,7 @@ export default {
   mixins: [utils],
   data () {
     return {
-      message: null,
+      message: '',
       limit: 10,
       sendingMessage: false,
       isFirst: true
@@ -71,6 +71,7 @@ export default {
     async sendMessageToChat (v) {
       var container = this.$refs.infiniteScroll.$el
       const messageInput = this.$refs.messageInput.$el
+      if (this.message === '') return
       if (!this.sendingMessage) {
         this.sendingMessage = true
         container.parentNode.scrollTop = container.clientHeight
@@ -83,7 +84,7 @@ export default {
           this.showErrorMsg(error.message)
           messageInput.focus()
         })
-        this.message = null
+        this.message = ''
         messageInput.focus()
         // this.message = null
       }

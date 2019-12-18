@@ -56,6 +56,12 @@ export default {
         this.icon = ''
         this.appId = ''
       }
+    },
+    url: function () {
+      this.url = this.url.replace(' ', '')
+    },
+    icon: function () {
+      this.icon = this.icon.replace(' ', '')
     }
   },
   computed: {
