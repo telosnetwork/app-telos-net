@@ -183,6 +183,15 @@ export default {
     testnetDevelopers: {
       title: 'Get a testnet account or testnet TLOS'
     },
+    claim: {
+      claimCheck: {
+        title: 'Check if your account has been claimed',
+        checkButton: 'Check account'
+      },
+      removeMe: {
+        title: 'Claim your account by removing it from the unclaimed account list'
+      }
+    },
     poc: {
       smartsafe: {
         title: 'SmartSafe POC',
