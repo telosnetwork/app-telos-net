@@ -184,6 +184,7 @@ export default {
       title: 'Get a testnet account or testnet TLOS'
     },
     claim: {
+      claimAccount: 'Claim account',
       claimCheck: {
         title: 'Check if your account has been claimed',
         checkButton: 'Check account'

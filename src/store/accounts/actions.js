@@ -173,7 +173,7 @@ export const claimAccount = async function ({ commit }, accountName) {
   }]
   const notification = {
     icon: 'fas fa-shopping-bag',
-    title: 'Claim account',
+    title: 'claim.claimAccount',
     content: `Claim account ${accountName}`
   }
   try {
