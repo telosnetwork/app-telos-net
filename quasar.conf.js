@@ -125,7 +125,8 @@ module.exports = function (ctx) {
         PPP_ENV: process.env.PPP_ENV,
         WEBSERVICES_URL: process.env.WEBSERVICES_URL,
         WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY,
-        BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER
+        BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER,
+        GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS
       },
       scopeHoisting: true,
       vueRouterMode: 'history',
