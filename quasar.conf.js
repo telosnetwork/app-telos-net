@@ -16,7 +16,8 @@ module.exports = function (ctx) {
       { path: 'ual', server: false },
       { path: 'api', server: false },
       'ppp',
-      'mixins'
+      'mixins',
+      'ga'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
