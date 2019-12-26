@@ -15,6 +15,10 @@ const routes = [
   { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'guest', title: 'pages.testnetRotation.title', guest: true } },
   { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title', guest: true } },
 
+  // Claim
+  { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },
+  { path: '/claim/claimAccount', component: () => import('pages/accounts/claim/remove-me.vue'), meta: { title: 'pages.claim.removeMe.title' } },
+
   // POC
   { path: '/poc/smartsafe', component: () => import('pages/poc/smartsafe/safe-list.vue'), meta: { title: 'pages.poc.smartSafe.title' } },
 

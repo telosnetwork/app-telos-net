@@ -19,6 +19,7 @@ build_dev:
     BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
     PPP_ENV: '"test"'
     WEBSERVICES_URL: '"https://api-dev.telos.net"'
+    GOOGLE_ANALYTICS: '"UA-154600181-3"'
   cache:
     paths:
       - node_modules/
@@ -54,6 +55,7 @@ build_prod:
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
     PPP_ENV: '"prod"'
     WEBSERVICES_URL: '"https://api.telos.net"'
+    GOOGLE_ANALYTICS: '"UA-154600181-2"'
   cache:
     paths:
       - node_modules/

@@ -132,3 +132,58 @@ export const fetchAvailableAccounts = async function ({ commit }, idx) {
   const accounts = map.has(chainId) ? map.get(chainId) : []
   commit('setAvailableAccounts', accounts)
 }
+
+export const isAccountClaimed = async function ({ commit }, accountName) {
+  const unstake = await this.$api.getTableRows({
+    code: 'tlosrecovery',
+    scope: 'tlosrecovery',
+    table: 'unstake',
+    limit: 1,
+    lower_bound: accountName,
+    upper_bound: accountName
+  })
+
+  if (unstake.rows.length) {
+    return 'unstake'
+  }
+
+  const recover = await this.$api.getTableRows({
+    code: 'tlosrecovery',
+    scope: 'tlosrecovery',
+    table: 'recover',
+    limit: 1,
+    lower_bound: accountName,
+    upper_bound: accountName
+  })
+
+  if (recover.rows.length) {
+    return 'recover'
+  }
+
+  return 'claimed'
+}
+
+export const claimAccount = async function ({ commit }, accountName) {
+  const removeMeAction = [{
+    account: 'tlosrecovery',
+    name: 'removeme',
+    data: {
+      account_name: accountName
+    }
+  }]
+  const notification = {
+    icon: 'fas fa-shopping-bag',
+    title: 'claim.claimAccount',
+    content: `Claim account ${accountName}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction(removeMeAction)
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
