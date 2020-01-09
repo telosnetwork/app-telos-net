@@ -27,12 +27,12 @@
         input-debounce='0',
         new-value-mode='add-unique',
       )
-      q-input(v-model="keySecret", readonly, filled :type="isHide ? 'password' : 'text'" hint="Password with toggle")
+      q-input(v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
         template(v-slot:append)
           q-icon(
-                :name="isHide ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isHide = !isHide")
+              :name="isHide ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isHide = !isHide")
       div
         q-btn(label='Submit', type='submit', color='primary')
     q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.STANDALONE_APP")
@@ -66,7 +66,7 @@ export default {
       iconLoaded: false,
       tags: [],
       isHide: true,
-      keySecret: 'This is the key secret'
+      keySecret: 'HJG54ASF5648S564YT'
     }
   },
   watch: {
@@ -91,6 +91,19 @@ export default {
     },
     appTypes () {
       return AppTypes
+    },
+    keySecretComputed () {
+      let value = this.keySecret
+      if (this.isHide) {
+        const valueArray = Array.from(value)
+        const originValue = value
+        value = ''
+        for (var i = 1; i <= valueArray.length - 8; i++) {
+          value += '*'
+        }
+        value += originValue.substr(valueArray.length - 8, 8)
+      }
+      return value
     }
   },
   mounted () {
