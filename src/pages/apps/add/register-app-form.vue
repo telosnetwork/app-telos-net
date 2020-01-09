@@ -15,6 +15,24 @@
       q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
       q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
       q-input(filled, v-model='shortName', readonly, :label="$t('pages.registerApp.form.shortName')")
+      q-select(
+        :label="$t('pages.signUp.form.tags')",
+        :hint="$t('forms.hints.pressToAddHobbie')",
+        filled,
+        v-model='tags',
+        use-input,
+        use-chips,
+        multiple,
+        hide-dropdown-icon,
+        input-debounce='0',
+        new-value-mode='add-unique',
+      )
+      q-input(v-model="keySecret", readonly, filled :type="isHide ? 'password' : 'text'" hint="Password with toggle")
+        template(v-slot:append)
+          q-icon(
+                :name="isHide ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isHide = !isHide")
       div
         q-btn(label='Submit', type='submit', color='primary')
     q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.STANDALONE_APP")
@@ -45,7 +63,10 @@ export default {
       name: '',
       appType: '',
       editing: false,
-      iconLoaded: false
+      iconLoaded: false,
+      tags: [],
+      isHide: true,
+      keySecret: 'This is the key secret'
     }
   },
   watch: {
