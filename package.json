@@ -25,8 +25,8 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@smontero/keycatjs": "^0.9.4",
-    "@smontero/ppp-client-api": "^0.0.32",
-    "@smontero/ppp-common": "^0.0.14",
+    "@smontero/ppp-client-api": "0.0.37",
+    "@smontero/ppp-common": "0.0.17",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.7",
     "@smontero/ual-keycat": "^1.0.21",
     "@smontero/ual-lynx": "^0.2.3",

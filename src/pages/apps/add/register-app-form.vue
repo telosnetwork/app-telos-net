@@ -9,7 +9,7 @@
               .text-white.text-caption.text-center Cannot load image
     .row.justify-center
       q-radio(v-model='appType', :disable="editing", :val='appTypes.WEB_APP', :label='appTypes.WEB_APP')
-      q-radio(v-model='appType', :disable="editing", :val='appTypes.STANDALONE_APP', :label='appTypes.STANDALONE_APP')
+      q-radio(v-model='appType', :disable="editing", :val='appTypes.STANDALONE_APP', :label='appTypes.NON_WEB_APP')
     q-form.q-col-gutter-y-md.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.WEB_APP")
       q-input(filled, v-model='url', :label="$t('pages.registerApp.form.urlBase')", :hint="$t('pages.registerApp.form.urlBase')" :rules='[ validationURL ]')
       q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
@@ -19,7 +19,7 @@
         :label="$t('pages.signUp.form.tags')",
         :hint="$t('forms.hints.pressToAddHobbie')",
         filled,
-        v-model='tags',
+        v-model='redirectionURL',
         use-input,
         use-chips,
         multiple,
@@ -33,6 +33,13 @@
               :name="isHide ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
               @click="isHide = !isHide")
+      .row
+        q-toggle(
+          :label='isPrivateApp'
+          v-model="isPrivate"
+          checked-icon="lock"
+          color="primary"
+          unchecked-icon="public")
       div
         q-btn(label='Submit', type='submit', color='primary')
     q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.STANDALONE_APP")
@@ -64,9 +71,10 @@ export default {
       appType: '',
       editing: false,
       iconLoaded: false,
-      tags: [],
+      redirectionURL: [],
       isHide: true,
-      keySecret: 'HJG54ASF5648S564YT'
+      keySecret: 'HJG54ASF5648S564YT',
+      isPrivate: false
     }
   },
   watch: {
@@ -104,6 +112,9 @@ export default {
         value += originValue.substr(valueArray.length - 8, 8)
       }
       return value
+    },
+    isPrivateApp () {
+      return this.isPrivate ? 'My App is Private' : 'My App is Public'
     }
   },
   mounted () {
@@ -148,7 +159,9 @@ export default {
           response = await this.registerApp({
             baseUrl: this.url,
             appId: this.appId,
-            type: this.appType
+            type: this.appType,
+            oauthRedirectUrls: this.redirectionURL,
+            isPrivate: this.isPrivate
           })
         } else if (this.appType === this.appTypes.STANDALONE_APP) {
           console.log(this.shortName)
@@ -157,7 +170,9 @@ export default {
             name: this.name,
             icon: this.icon,
             type: this.appType,
-            appId: this.appId
+            appId: this.appId,
+            oauthRedirectUrls: this.redirectionURL,
+            isPrivate: this.isPrivate
           })
         }
 
