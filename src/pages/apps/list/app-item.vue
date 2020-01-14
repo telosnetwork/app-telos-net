@@ -16,17 +16,13 @@ main
            span.text-weight-medium {{$t('pages.registerApp.form.name')}} {{': '}}
            span.text-grey-8 {{App.name}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('pages.registerApp.form.ownerAccount')}} {{': '}}
-           span.text-grey-8 {{App.ownerAccount}}
-          q-item-label(lines='1')
-           span.text-weight-medium {{$t('pages.general.domain')}} {{': '}}
-           span.text-grey-8 {{App.domain}}
+           span.text-weight-medium {{$t('pages.registerApp.form.appType')}} {{': '}}
+           span.text-grey-8 {{App.type}}
           q-item-label(lines='1')
            span.text-weight-medium {{$t('pages.registerApp.form.appId')}} {{': '}}
            span.text-grey-8 {{App.appId}}
           q-item-label(lines='1')
-           span.text-weight-medium {{$t('pages.registerApp.form.shortName')}} {{': '}}
-           span.text-grey-8 {{App.shortname}}
+           span.text-grey-8 {{ isPrivateComputed }}
         q-item-section(side)
           q-btn.side-btn(icon='delete',size="1.1rem", round, color='red', @click="showConfirm = true")
 </template>
@@ -43,6 +39,11 @@ export default {
   data () {
     return {
       showConfirm: false
+    }
+  },
+  computed: {
+    isPrivateComputed () {
+      return (this.App.isPrivate) ? this.$t('pages.general.private') : this.$t('pages.general.public')
     }
   },
   methods: {

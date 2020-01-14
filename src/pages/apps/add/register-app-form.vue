@@ -30,7 +30,7 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input(v-if="!editing || selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
@@ -65,7 +65,7 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input(v-if="!editing || selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
@@ -105,7 +105,7 @@ export default {
       redirectionURL: [],
       redirectionValid: true,
       isHide: true,
-      keySecret: 'HJG54ASF5648S564YT',
+      keySecret: '',
       isPrivate: false
     }
   },
@@ -133,6 +133,8 @@ export default {
       return AppTypes
     },
     keySecretComputed () {
+      console.log('KEY SECRET', this.keySecret)
+      if (this.keySecret === undefined || this.keySecret === null) return ''
       let value = this.keySecret
       if (this.isHide) {
         const valueArray = Array.from(value)
@@ -159,12 +161,22 @@ export default {
         this.ownerAccount = this.selectedApp.ownerAccount
         this.appId = this.selectedApp.appId
         this.icon = this.selectedApp.icon
+        this.redirectionURL = this.selectedApp.oauthRedirectUrls
+        this.isPrivate = this.selectedApp.isPrivate
+        if (this.selectedApp.secret) {
+          this.keySecret = this.selectedApp.secret
+        }
       } else if (this.selectedApp.type === this.appTypes.NON_WEB_APP) {
         this.shortName = this.selectedApp.shortname
         this.name = this.selectedApp.name
         this.ownerAccount = this.selectedApp.ownerAccount
         this.appId = this.selectedApp.appId
         this.icon = this.selectedApp.icon
+        this.redirectionURL = this.selectedApp.oauthRedirectUrls
+        this.isPrivate = this.selectedApp.isPrivate
+        if (this.selectedApp.secret) {
+          this.keySecret = this.selectedApp.secret
+        }
       }
     } else {
       this.appType = this.appTypes.WEB_APP

@@ -160,7 +160,9 @@ export default {
       defaultContactList: 'There are no contacts yet',
       defaultAppList: 'There are no apps yet',
       noAccountsFound: 'No accounts found',
-      confirmActions: 'Do you want confirm this action?'
+      confirmActions: 'Do you want confirm this action?',
+      private: 'Private',
+      public: 'Public'
     },
     registerApp: {
       form: {
@@ -171,8 +173,8 @@ export default {
         shortName: 'Short Name',
         ownerAccount: 'Owner Account',
         confirmDeleteApp: 'Do you want delete this app?',
-        urlRedirection: 'URL Redirection'
-
+        urlRedirection: 'URL Redirection',
+        appType: 'App Type'
       }
     },
     login: {
