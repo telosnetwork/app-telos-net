@@ -30,7 +30,7 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-if="!editing || selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
@@ -65,7 +65,7 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-if="!editing || selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
