@@ -8,7 +8,7 @@ export const registerApp = async function ({ commit }, params = {}) {
   try {
     if (type === AppTypes.WEB_APP) {
       return profileApi.registerApp({ baseUrl, appId, type })
-    } else if (type === AppTypes.STANDALONE_APP) {
+    } else if (type === AppTypes.NON_WEB_APP) {
       return profileApi.registerApp({ baseUrl, appId, type, name, shortname, icon })
     }
   } catch (error) {

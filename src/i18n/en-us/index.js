@@ -37,7 +37,8 @@ export default {
     },
     hints: {
       selectCountrie: 'Please select your country',
-      pressToAddHobbie: 'Press enter to add a tag'
+      pressToAddHobbie: 'Press enter to add a tag',
+      pressToAddURL: 'Press enter to add a URL'
     }
   },
   menu: {
@@ -169,7 +170,9 @@ export default {
         appId: 'AppId',
         shortName: 'Short Name',
         ownerAccount: 'Owner Account',
-        confirmDeleteApp: 'Do you want delete this app?'
+        confirmDeleteApp: 'Do you want delete this app?',
+        urlRedirection: 'URL Redirection'
+
       }
     },
     login: {
