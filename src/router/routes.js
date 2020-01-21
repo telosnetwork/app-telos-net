@@ -1,7 +1,6 @@
 const routes = [
   { path: '/', component: () => import('pages/index.vue'), meta: { layout: 'empty', guest: true } },
   { path: '/login', component: () => import('pages/login/login.vue'), meta: { layout: 'guest', title: 'pages.login.title', guest: true } },
-  { path: '/loginSSO', component: () => import('pages/login/loginSSO.vue'), meta: { layout: 'guest', title: 'pages.login.title', guest: true } },
   { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty', guest: true } },
