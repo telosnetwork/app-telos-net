@@ -157,6 +157,7 @@ export default {
       this.appType = this.selectedApp.type
       if (this.selectedApp.type === this.appTypes.WEB_APP) {
         this.shortName = this.selectedApp.shortname
+        this.url = this.selectedApp.url
         this.name = this.selectedApp.name
         this.ownerAccount = this.selectedApp.ownerAccount
         this.appId = this.selectedApp.appId
