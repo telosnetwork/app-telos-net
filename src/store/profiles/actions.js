@@ -3,6 +3,7 @@ import PPP from '@smontero/ppp-client-api'
 export const signUp = async function ({ state }, mData) {
   PPP.setActiveUser(this.$ualUser)
   const profileApi = PPP.profileApi()
+  console.log('Logeado con ppp')
   return profileApi.register(mData)
 }
 
