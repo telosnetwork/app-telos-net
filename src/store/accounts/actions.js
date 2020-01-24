@@ -28,6 +28,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
+      PPP.setActiveUser(this.$ualUser)
       const defaultReturnUrl = localStorage.getItem('returning') ? '/profiles/chat' : '/profiles/myProfile'
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
@@ -45,7 +46,6 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
 
 export const loginToBackend = async function ({ commit }) {
   try {
-    PPP.setActiveUser(this.$ualUser)
     const authApi = PPP.authApi()
     await authApi.signIn()
     await this.dispatch('profiles/getProfile', { root: true })
