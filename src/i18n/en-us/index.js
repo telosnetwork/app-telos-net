@@ -37,7 +37,8 @@ export default {
     },
     hints: {
       selectCountrie: 'Please select your country',
-      pressToAddHobbie: 'Press enter to add a tag'
+      pressToAddHobbie: 'Press enter to add a tag',
+      pressToAddURL: 'Press enter to add a URL'
     }
   },
   menu: {
@@ -159,7 +160,9 @@ export default {
       defaultContactList: 'There are no contacts yet',
       defaultAppList: 'There are no apps yet',
       noAccountsFound: 'No accounts found',
-      confirmActions: 'Do you want confirm this action?'
+      confirmActions: 'Do you want confirm this action?',
+      private: 'Private',
+      public: 'Public'
     },
     registerApp: {
       form: {
@@ -169,7 +172,9 @@ export default {
         appId: 'AppId',
         shortName: 'Short Name',
         ownerAccount: 'Owner Account',
-        confirmDeleteApp: 'Do you want delete this app?'
+        confirmDeleteApp: 'Do you want delete this app?',
+        urlRedirection: 'URL Redirection',
+        appType: 'App Type'
       }
     },
     login: {

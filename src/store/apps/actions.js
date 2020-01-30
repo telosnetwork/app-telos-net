@@ -3,13 +3,13 @@ import { AppTypes } from '@smontero/ppp-common'
 
 export const registerApp = async function ({ commit }, params = {}) {
   const profileApi = PPP.profileApi()
-  const { baseUrl, appId = '', type, name, shortname, icon } = params
+  const { baseUrl, appId = '', type, name, shortname, icon, oauthRedirectUrls, isPrivate } = params
   console.log(shortname)
   try {
     if (type === AppTypes.WEB_APP) {
-      return profileApi.registerApp({ baseUrl, appId, type })
-    } else if (type === AppTypes.STANDALONE_APP) {
-      return profileApi.registerApp({ baseUrl, appId, type, name, shortname, icon })
+      return profileApi.registerApp({ baseUrl, appId, type, oauthRedirectUrls, isPrivate })
+    } else if (type === AppTypes.NON_WEB_APP) {
+      return profileApi.registerApp({ baseUrl, appId, type, name, shortname, icon, oauthRedirectUrls, isPrivate })
     }
   } catch (error) {
     console.log('Error', error)

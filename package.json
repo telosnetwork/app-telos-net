@@ -26,7 +26,7 @@
     "@quasar/extras": "^1.0.0",
     "@smontero/keycatjs": "^0.9.4",
     "@smontero/ppp-client-api": "^0.0.42",
-    "@smontero/ppp-common": "^0.0.14",
+    "@smontero/ppp-common": "^0.0.22",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.7",
     "@smontero/ual-keycat": "^1.0.21",
     "@smontero/ual-lynx": "^0.2.3",

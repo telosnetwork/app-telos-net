@@ -1583,10 +1583,10 @@
   resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.19.tgz#a85bdf7e45309d7dbe74b060b86520ff62c1fc82"
   integrity sha512-deVh4czMPkDTvrgqOHjh/MtfeYNvlhqAWmhUngPJFmS2OS4IMhN3Ewr8RAmsOymXTG7Ur2/Wry9+1raIMmEt4Q==
 
-"@smontero/ppp-common@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.14.tgz#b2616ad09c706f45323b84fbba905027ef45224d"
-  integrity sha512-R++T8cxcnBR7aL7q4S+e7WaqPm5P7RyycUiLdDd/tB9reFSXhM9hcHqqM2gxJ+aSVB/bR/2xE0mZS+y7OMLxFQ==
+"@smontero/ppp-common@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.22.tgz#15365564c03daa570fc6aaefbf50ca8209281c9e"
+  integrity sha512-oisvF+cgXhZ4OkUQPqHd/6IqxTSojRVh3yPDYGRMzahpih2MlAo4MD806yXAVQlaUEP2Kf5jAKsXf+7c0dGt2Q==
 
 "@smontero/ual-eosio-reference-authenticator@^0.1.7":
   version "0.1.7"

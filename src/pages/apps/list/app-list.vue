@@ -1,5 +1,4 @@
 <template lang="pug">
- main
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
     q-infinite-scroll(@load='onLoad', :offset='250', :scroll-target='$refs.scrollTargetRef', ref='infiniteScroll')
       template(slot='loading')
@@ -63,7 +62,7 @@ export default {
 <style scoped lang='sass'>
 .infiniteScroll
   width: 100%
-  height: calc(100vh - 200px)
+  height: calc(90vh)
   max-width: 100%
 
   /* background-color: burlywood;
