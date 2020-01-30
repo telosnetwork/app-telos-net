@@ -1567,21 +1567,21 @@
     query-string "^6.5.0"
     web3-provider-engine "^15.0.0"
 
-"@smontero/ppp-client-api@^0.0.32":
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.32.tgz#7317bd97d22d597a66d7c101cb68bc84c9f4762c"
-  integrity sha512-klRURXUt3c30K4JAOU85KGwcK0DttO639Ds4bui8Pw225X/odRQHTQpXwj8cxWHQRdsxKAKmz5lK6jV+8WqlMw==
+"@smontero/ppp-client-api@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-client-api/-/ppp-client-api-0.0.42.tgz#4ff6945c1f00641674b56839962a12b391e0403c"
+  integrity sha512-sUNyQzI2ausglfn6idZd5XPieUMg0RoRq4DKwhNDdfIDjzzGHPVoPc6GhCVXweJXc+08QY/rj7wvnsWjOBdTmw==
   dependencies:
     "@babel/runtime" "^7.6.3"
-    "@smontero/ppp-common" "0.0.6"
+    "@smontero/ppp-common" "0.0.19"
     aws-amplify "^1.1.40"
     get-random-values "^1.2.0"
     mime "^2.4.4"
 
-"@smontero/ppp-common@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.6.tgz#e05462aea482ac6a4cbdf050bcfc70b017b33649"
-  integrity sha512-Ksl1XaytBCQcNdZc31+kxv2pJU3S4+0x5dAViS+E0+Ceix5XX8RFGBOYt08rv/IrxeYfS2UCXFDc4ShCNnVAJw==
+"@smontero/ppp-common@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.19.tgz#a85bdf7e45309d7dbe74b060b86520ff62c1fc82"
+  integrity sha512-deVh4czMPkDTvrgqOHjh/MtfeYNvlhqAWmhUngPJFmS2OS4IMhN3Ewr8RAmsOymXTG7Ur2/Wry9+1raIMmEt4Q==
 
 "@smontero/ppp-common@^0.0.14":
   version "0.0.14"
