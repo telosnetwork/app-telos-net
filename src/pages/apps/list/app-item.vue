@@ -25,10 +25,18 @@ main
            span.text-grey-8 {{ isPrivateComputed }}
         q-item-section(side)
           q-btn.side-btn(icon='delete',size="1.1rem", round, color='red', @click="showConfirm = true")
+          q-toggle(
+            label='OAuth'
+            v-model="oauthAppStatus_.dislpay"
+            checked-icon="lock"
+            color="primary"
+            unchecked-icon="public")
 </template>
 
 <script>
+// oauthAppStatus
 import ConfirmDialog from '~/components/confirm-dialog'
+import { OauthAppStatus } from '@smontero/ppp-common'
 import { mapActions } from 'vuex'
 export default {
   name: 'app-item',
@@ -36,14 +44,27 @@ export default {
     App: { type: Object, required: true }
   },
   components: { ConfirmDialog },
+  mounted () {
+    this.oauthAppStatus_.value = this.App.oauthAppStatus
+    this.calculateOauthAppStatus()
+  },
   data () {
     return {
-      showConfirm: false
+      showConfirm: false,
+      oauthAppStatus_: {
+        value: '',
+        dislpay: ''
+      }
     }
   },
   computed: {
     isPrivateComputed () {
       return (this.App.isPrivate) ? this.$t('pages.general.private') : this.$t('pages.general.public')
+    }
+  },
+  watch: {
+    'oauthAppStatus_.dislpay' (newValue) {
+      this.oauthAppStatus_.value = (newValue) ? OauthAppStatus.ENABLED : OauthAppStatus.DISABLED_BY_APP
     }
   },
   methods: {
@@ -66,6 +87,22 @@ export default {
     },
     cancelDelete () {
       alert('Canceled')
+    },
+    calculateOauthAppStatus () {
+      switch (this.oauthAppStatus_.value) {
+        case OauthAppStatus.ENABLED:
+          this.oauthAppStatus_.dislpay = true
+          break
+        case OauthAppStatus.DISABLED_BY_APP:
+          this.oauthAppStatus_.dislpay = false
+          break
+        case OauthAppStatus.DISABLED_BY_SERVER:
+          this.oauthAppStatus_.dislpay = false
+          break
+        default:
+          this.oauthAppStatus_.dislpay = false
+          break
+      }
     }
   }
 }
