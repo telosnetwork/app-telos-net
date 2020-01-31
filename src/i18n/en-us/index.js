@@ -174,7 +174,8 @@ export default {
         ownerAccount: 'Owner Account',
         confirmDeleteApp: 'Do you want delete this app?',
         urlRedirection: 'URL Redirection',
-        appType: 'App Type'
+        appType: 'App Type',
+        revokeAccess: 'Revoke access'
       }
     },
     login: {

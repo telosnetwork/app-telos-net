@@ -1,4 +1,5 @@
 export default () => ({
   appList: undefined,
-  selectedApp: undefined
+  selectedApp: undefined,
+  authorizedAppList: undefined
 })
