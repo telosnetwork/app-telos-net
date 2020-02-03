@@ -5,7 +5,7 @@ main
     @Confirmed="revokeAccessToApp",
   )
     template(v-slot:body)
-      .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
+      .text-h6 {{ $t('pages.registerApp.form.confirmRevokeAccessApp') }}
   q-card
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
@@ -75,7 +75,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('apps', ['deleteApp']),
+    ...mapActions('apps', ['deleteApp', 'revokeAccessOauth']),
     goToAppDetail () {
       // this.$store.commit('apps/setSelectedApp', this.App)
       // this.$router.push({ name: 'registerApp' })
@@ -83,7 +83,7 @@ export default {
     async revokeAccessToApp () {
       this.showIsLoading(true)
       try {
-        await this.deleteApp({ appId: this.App.appId })
+        await this.revokeAccessOauth({ appId: this.App.appId })
         this.showSuccessMsg('Revoked')
         this.showIsLoading(false)
         this.$emit('Revoked', true)

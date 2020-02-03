@@ -9,7 +9,7 @@
           p.text-weight-thin {{ $t('pages.general.defaultAppList') }}
       .caption.q-py-sm(v-for='(app, index) in authorizedAppList', :key='index')
         .row.justify-center
-          .col-xs-10.col-sm-8.col-md-6
+          .col-xs-11.col-sm-10
             q-list(bordered)
               AuthorizedAppItem(:AuthorizedApp="app", @Revoked="onAppRevoked")
 </template>
@@ -36,7 +36,7 @@ export default {
     this.clearAuthorizedAppList()
   },
   methods: {
-    ...mapActions('apps', ['clearAuthorizedAppList', 'getAuthorizedApps']),
+    ...mapActions('apps', ['clearAuthorizedApps', 'getAuthorizedApps']),
     async onLoad (index, done) {
       this.isLoading = true
       await this.getAuthorizedApps()
@@ -51,9 +51,11 @@ export default {
       v.preventDefault()
     },
     onAppRevoked () {
-      this.clearMyAppList()
+      console.log('Refrescando lista')
+      this.clearAuthorizedApps()
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()
+      console.log('Se refresco')
     }
   }
 }
