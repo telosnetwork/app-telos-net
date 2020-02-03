@@ -173,6 +173,8 @@ export default {
         shortName: 'Short Name',
         ownerAccount: 'Owner Account',
         confirmDeleteApp: 'Do you want delete this app?',
+        confirmEnableApp: 'Do you want enable the OAuth of this app?',
+        confirmDisableApp: 'Do you want disable the OAuth of this app?',
         urlRedirection: 'URL Redirection',
         appType: 'App Type',
         revokeAccess: 'Revoke access'

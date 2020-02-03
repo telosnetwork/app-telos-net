@@ -1,17 +1,22 @@
 <template lang="pug">
 main
+  //- Confirm to delete
   confirm-dialog(
     :show.sync="showConfirm",
     @Confirmed="deleteMyApp",
   )
     template(v-slot:body)
       .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
+  //- Confirm to update
   confirm-dialog(
     :show.sync="showConfirmUpdate",
     @Confirmed="updateOauthStatus",
+    @Canceled="cancelUpdateOauthStatus",
   )
     template(v-slot:body)
-      .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
+      .text-h6(v-if="oauthAppStatus_.display") {{ $t('pages.registerApp.form.confirmEnableApp') }}
+      .text-h6(v-if="!oauthAppStatus_.display") {{ $t('pages.registerApp.form.confirmDisableApp') }}
+  //- Card of content
   q-card
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
@@ -103,11 +108,15 @@ export default {
         await this.updateMyAppOauthStatus({ appId: this.App.appId, oauthSatus: this.oauthAppStatus_.dislpay })
         this.showSuccessMsg('Oauth Updated')
         this.showIsLoading(false)
-        // this.$emit('Deleted', true)
+        this.$emit('Deleted', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)
       }
+    },
+    cancelUpdateOauthStatus () {
+      this.mounted = false
+      this.oauthAppStatus_.dislpay = !this.oauthAppStatus_.value
     },
     cancelDelete () {
       alert('Canceled')
