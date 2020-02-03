@@ -5,13 +5,13 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="!isLoading && myAppList.length === 0")
+        .row.justify-center.q-my-md(v-show="!isLoading && authorizedAppList.length === 0")
           p.text-weight-thin {{ $t('pages.general.defaultAppList') }}
-      .caption.q-py-sm(v-for='(app, index) in myAppList', :key='index')
+      .caption.q-py-sm(v-for='(app, index) in authorizedAppList', :key='index')
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6
             q-list(bordered)
-              AuthorizedAppItem(:App="app", @Deleted="onAppDeleted")
+              AuthorizedAppItem(:AuthorizedApp="app", @Deleted="onAppDeleted")
 </template>
 
 <script>
@@ -28,18 +28,17 @@ export default {
     }
   },
   computed: {
-    myAppList () {
-      return this.$store.state.apps.appList
+    authorizedAppList () {
+      return this.$store.state.apps.authorizedAppList
     }
   },
   beforeDestroy: function () {
-    this.clearMyAppList()
+    this.clearAuthorizedAppList()
   },
   methods: {
-    ...mapActions('apps', ['getMyApps', 'clearMyAppList', 'getAuthorizedApps']),
+    ...mapActions('apps', ['clearAuthorizedAppList', 'getAuthorizedApps']),
     async onLoad (index, done) {
       this.isLoading = true
-      await this.getMyApps()
       await this.getAuthorizedApps()
       this.isLoading = false
       this.$refs.infiniteScroll.stop()

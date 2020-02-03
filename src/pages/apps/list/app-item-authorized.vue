@@ -25,6 +25,13 @@ main
            span.text-grey-8 {{ isPrivateComputed }}
         q-item-section(side)
           q-btn(color="red", :label="$t('pages.registerApp.form.revokeAccess')")
+    q-expansion-item(
+        caption="Scopes"
+        v-for='(scope, index) in Scopes', :key='index'
+    )
+      q-item-section.q-px-md
+        //- span.text-weight-medium {{$t('pages.registerApp.form.appId')}} {{': '}}
+        span.text-grey-8 - {{scope}}
 </template>
 
 <script>
@@ -35,7 +42,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'authorized-app-item',
   props: {
-    App: { type: Object, required: true }
+    AuthorizedApp: { type: Object, required: true }
   },
   components: { ConfirmDialog },
   mounted () {
@@ -54,6 +61,12 @@ export default {
   computed: {
     isPrivateComputed () {
       return (this.App.isPrivate) ? this.$t('pages.general.private') : this.$t('pages.general.public')
+    },
+    App () {
+      return this.AuthorizedApp.app
+    },
+    Scopes () {
+      return this.AuthorizedApp.scopes
     }
   },
   watch: {
@@ -64,8 +77,8 @@ export default {
   methods: {
     ...mapActions('apps', ['deleteApp']),
     goToAppDetail () {
-      this.$store.commit('apps/setSelectedApp', this.App)
-      this.$router.push({ name: 'registerApp' })
+      // this.$store.commit('apps/setSelectedApp', this.App)
+      // this.$router.push({ name: 'registerApp' })
     },
     async deleteMyApp () {
       this.showIsLoading(true)
