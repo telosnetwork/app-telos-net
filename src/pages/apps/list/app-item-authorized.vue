@@ -2,7 +2,7 @@
 main
   confirm-dialog(
     :show.sync="showConfirm",
-    @Confirmed="deleteMyApp",
+    @Confirmed="revokeAccessToApp",
   )
     template(v-slot:body)
       .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
@@ -24,7 +24,7 @@ main
           q-item-label(lines='1')
            span.text-grey-8 {{ isPrivateComputed }}
         q-item-section(side)
-          q-btn(color="red", :label="$t('pages.registerApp.form.revokeAccess')")
+          q-btn(color="red", :label="$t('pages.registerApp.form.revokeAccess')" @click="showConfirm = true")
     q-expansion-item(
         caption="Scopes"
         v-for='(scope, index) in Scopes', :key='index'
@@ -80,13 +80,13 @@ export default {
       // this.$store.commit('apps/setSelectedApp', this.App)
       // this.$router.push({ name: 'registerApp' })
     },
-    async deleteMyApp () {
+    async revokeAccessToApp () {
       this.showIsLoading(true)
       try {
         await this.deleteApp({ appId: this.App.appId })
-        this.showSuccessMsg('Deleted')
+        this.showSuccessMsg('Revoked')
         this.showIsLoading(false)
-        this.$emit('Deleted', true)
+        this.$emit('Revoked', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)

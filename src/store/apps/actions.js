@@ -58,3 +58,23 @@ export const getAuthorizedApps = async function ({ commit }, params = {}) {
 export const clearAuthorizedApps = function ({ commit }) {
   commit('clearAuthorizedAppList')
 }
+
+export const updateMyAppOauthStatus = async function ({ commit }, params = {}) {
+  const oauthApi = PPP.oauthApi()
+  const { appId, oauthSatus } = params
+  try {
+    return oauthApi.updateAppOauthStatus(appId, oauthSatus)
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const revokeAccessOauth = async function ({ commit }, params = {}) {
+  const oauthApi = PPP.oauthApi()
+  const { appId } = params
+  try {
+    return oauthApi.revokeAccess(appId)
+  } catch (error) {
+    console.log('Error', error)
+  }
+}

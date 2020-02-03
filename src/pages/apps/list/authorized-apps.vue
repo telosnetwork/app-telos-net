@@ -11,7 +11,7 @@
         .row.justify-center
           .col-xs-10.col-sm-8.col-md-6
             q-list(bordered)
-              AuthorizedAppItem(:AuthorizedApp="app", @Deleted="onAppDeleted")
+              AuthorizedAppItem(:AuthorizedApp="app", @Revoked="onAppRevoked")
 </template>
 
 <script>
@@ -50,7 +50,7 @@ export default {
       this.$refs.infiniteScroll.resume()
       v.preventDefault()
     },
-    onAppDeleted () {
+    onAppRevoked () {
       this.clearMyAppList()
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()

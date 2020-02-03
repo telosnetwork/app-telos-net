@@ -6,6 +6,12 @@ main
   )
     template(v-slot:body)
       .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
+  confirm-dialog(
+    :show.sync="showConfirmUpdate",
+    @Confirmed="updateOauthStatus",
+  )
+    template(v-slot:body)
+      .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
   q-card
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
@@ -51,10 +57,12 @@ export default {
   data () {
     return {
       showConfirm: false,
+      showConfirmUpdate: false,
       oauthAppStatus_: {
         value: '',
         dislpay: ''
-      }
+      },
+      mounted: false
     }
   },
   computed: {
@@ -65,10 +73,14 @@ export default {
   watch: {
     'oauthAppStatus_.dislpay' (newValue) {
       this.oauthAppStatus_.value = (newValue) ? OauthAppStatus.ENABLED : OauthAppStatus.DISABLED_BY_APP
+    },
+    'oauthAppStatus_.value' (newValue) {
+      if (this.mounted && this.oauthAppStatus_.value !== '') this.showConfirmUpdate = true
+      if (!this.mounted) this.mounted = true
     }
   },
   methods: {
-    ...mapActions('apps', ['deleteApp']),
+    ...mapActions('apps', ['updateMyAppOauthStatus', 'deleteApp']),
     goToAppDetail () {
       this.$store.commit('apps/setSelectedApp', this.App)
       this.$router.push({ name: 'registerApp' })
@@ -80,6 +92,18 @@ export default {
         this.showSuccessMsg('Deleted')
         this.showIsLoading(false)
         this.$emit('Deleted', true)
+      } catch (e) {
+        this.showIsLoading(false)
+        this.showErrorMsg(e.message)
+      }
+    },
+    async updateOauthStatus () {
+      this.showIsLoading(true)
+      try {
+        await this.updateMyAppOauthStatus({ appId: this.App.appId, oauthSatus: this.oauthAppStatus_.dislpay })
+        this.showSuccessMsg('Oauth Updated')
+        this.showIsLoading(false)
+        // this.$emit('Deleted', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)
