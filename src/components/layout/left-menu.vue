@@ -75,6 +75,16 @@ export default {
         q-item-section(avatar)
           q-icon(name="fas fa-list-alt")
         q-item-section {{ $t('menu.appList') }}
+      q-item(
+        v-if="isAuthenticated"
+        to="/profiles/authorizedApps"
+        exact
+        clickable
+        v-ripple
+       )
+        q-item-section(avatar)
+          q-icon(name="fas fa-list-alt")
+        q-item-section {{ $t('menu.authorizedApps') }}
 </template>
 
 <style lang="stylus">
