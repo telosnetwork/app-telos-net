@@ -108,7 +108,6 @@ export default {
         await this.updateMyAppOauthStatus({ appId: this.App.appId, oauthSatus: this.oauthAppStatus_.dislpay })
         this.showSuccessMsg('Oauth Updated')
         this.showIsLoading(false)
-        this.$emit('Deleted', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)
@@ -116,7 +115,11 @@ export default {
     },
     cancelUpdateOauthStatus () {
       this.mounted = false
-      this.oauthAppStatus_.dislpay = !this.oauthAppStatus_.value
+      if (this.oauthAppStatus_.dislpay) {
+        this.oauthAppStatus_.dislpay = false
+      } else {
+        this.oauthAppStatus_.dislpay = true
+      }
     },
     cancelDelete () {
       alert('Canceled')
