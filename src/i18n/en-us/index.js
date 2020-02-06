@@ -179,7 +179,8 @@ export default {
         confirmRevokeAccessApp: 'Do you want revoke OAuth access of this app?',
         urlRedirection: 'URL Redirection',
         appType: 'App Type',
-        revokeAccess: 'Revoke access'
+        revokeAccess: 'Revoke access',
+        secret: 'Secret'
       }
     },
     login: {

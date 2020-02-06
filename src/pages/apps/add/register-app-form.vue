@@ -13,7 +13,6 @@
     q-form.q-col-gutter-y-md.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.WEB_APP")
       q-input(filled, v-model='url', :label="$t('pages.registerApp.form.urlBase')", :hint="$t('pages.registerApp.form.urlBase')" :rules='[ validationURL ]')
       q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
-      q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
       q-input(filled, v-model='shortName', readonly, :label="$t('pages.registerApp.form.shortName')")
       q-select(
         :label="$t('pages.registerApp.form.urlRedirection')",
@@ -30,7 +29,8 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input(v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", :label="$t('pages.registerApp.form.secret')", readonly, :type="isHide ? 'text' : 'text'")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
@@ -49,7 +49,6 @@
       q-input.q-mt-md(filled, ref="inputImage" , v-model='icon', :label="$t('pages.registerApp.form.urlImage')", :hint="$t('pages.registerApp.form.urlImage')", :rules="[ value => iconLoaded !== false || 'Cannot load image', rules.required ]")
       q-input.q-mt-md(filled, v-model='name', :label="$t('pages.registerApp.form.name')", :rules='[ rules.required ]')
       q-input(filled, v-model='shortName', :label="$t('pages.registerApp.form.shortName')", :rules='[ rules.required ]')
-      q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
       q-select(
         :label="$t('pages.registerApp.form.urlRedirection')",
         :hint="$t('forms.hints.pressToAddURL')",
@@ -65,7 +64,8 @@
       )
       .row.justify-center
         p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
-      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, filled :type="isHide ? 'text' : 'text'" hint="Password with toggle")
+      q-input( v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, :label="$t('pages.registerApp.form.secret')", :type="isHide ? 'text' : 'text'")
         template(v-slot:append)
           q-icon(
               :name="isHide ? 'visibility_off' : 'visibility'"
