@@ -15,6 +15,7 @@
       q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
       q-input(filled, v-model='shortName', readonly, :label="$t('pages.registerApp.form.shortName')")
       q-select(
+        ref="selectURL"
         :label="$t('pages.registerApp.form.urlRedirection')",
         :hint="$t('forms.hints.pressToAddURL')",
         filled,
@@ -24,6 +25,7 @@
         multiple,
         hide-dropdown-icon,
         input-debounce='0',
+        @blur="onBlurURL",
         new-value-mode='add-unique',
         @new-value="validateRedirectionURL"
       )
@@ -133,7 +135,6 @@ export default {
       return AppTypes
     },
     keySecretComputed () {
-      console.log('KEY SECRET', this.keySecret)
       if (this.keySecret === undefined || this.keySecret === null) return ''
       let value = this.keySecret
       if (this.isHide) {
@@ -152,6 +153,7 @@ export default {
     }
   },
   mounted () {
+    console.log('Refs', this.$refs)
     if (this.selectedApp !== undefined) {
       this.editing = true
       this.appType = this.selectedApp.type
@@ -188,6 +190,10 @@ export default {
   },
   methods: {
     ...mapActions('apps', ['registerApp']),
+    onBlurURL (e) {
+      alert('Blur listened')
+      console.log('Refs', e)
+    },
     successLoadIcon () {
       this.iconLoaded = true
       this.$refs.inputImage.resetValidation()
@@ -222,7 +228,6 @@ export default {
           console.log('AFTER REGISTER APP', this.shortName)
         }
 
-        console.log('form', response)
         const { shortname, name, ownerAccount, appId, icon } = response
 
         this.shortName = shortname
@@ -252,7 +257,6 @@ export default {
     },
     validateRedirectionURL (val, done) {
       // specific logic to eventually call done(...) -- or not
-      console.log('Validando redirecciones', val)
       var regex = new RegExp(CustomRegex.URL)
 
       if (val.match(regex) || val === '') {
