@@ -37,11 +37,20 @@ main
         q-item-section(side)
           q-btn.side-btn(icon='delete',size="1.1rem", round, color='red', @click="showConfirm = true")
           q-toggle(
+            v-if="oauthAppStatus_.status"
             label='OAuth'
             v-model="oauthAppStatus_.dislpay"
             checked-icon="lock"
             color="primary"
             unchecked-icon="public")
+          q-toggle(
+            v-if="!oauthAppStatus_.status"
+            disabled
+            label='OAuth'
+            checked-icon="lock"
+            color="primary"
+            unchecked-icon="public")
+              q-tooltip {{ oauthAppStatus_.value }}
 </template>
 
 <script>
@@ -65,7 +74,8 @@ export default {
       showConfirmUpdate: false,
       oauthAppStatus_: {
         value: '',
-        dislpay: ''
+        dislpay: '',
+        status: true
       },
       mounted: false
     }
@@ -134,6 +144,7 @@ export default {
           break
         case OauthAppStatus.DISABLED_BY_SERVER:
           this.oauthAppStatus_.dislpay = false
+          this.oauthAppStatus_.status = false
           break
         default:
           this.oauthAppStatus_.dislpay = false

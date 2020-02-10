@@ -33,7 +33,7 @@ export default {
     }
   },
   beforeDestroy: function () {
-    this.clearAuthorizedAppList()
+    this.clearAuthorizedApps()
   },
   methods: {
     ...mapActions('apps', ['clearAuthorizedApps', 'getAuthorizedApps']),
