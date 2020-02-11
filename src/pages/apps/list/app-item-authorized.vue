@@ -30,8 +30,8 @@ main
         v-for='(scope, index) in Scopes', :key='index'
     )
       q-item-section.q-px-md
-        //- span.text-weight-medium {{$t('pages.registerApp.form.appId')}} {{': '}}
-        span.text-grey-8 - {{scope}}
+        span.text-weight-medium - {{scope.name}} ({{scope.scope}})
+        span.text-grey-8.q-ml-sm {{scope.desc}}
 </template>
 
 <script>
