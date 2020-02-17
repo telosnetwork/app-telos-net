@@ -51,7 +51,8 @@ export default {
     chats: 'Chats',
     registerApp: 'Register App',
     appList: 'Apps',
-    authorizedApps: 'Authorized apps'
+    authorizedApps: 'Authorized apps',
+    developer: 'Developer'
   },
   notifications: {
     title: 'Transactions',
