@@ -41,7 +41,11 @@ export default {
       this.votes = []
     },
     isBallotOpened () {
-      return new Date(this.ballot.end_time).getTime() > Date.now() && new Date(this.ballot.begin_time).getTime() < Date.now()
+      let endTime = new Date(this.ballot.end_time).getTime()
+      let isOlder = endTime > Date.now()
+      let startTime = new Date(this.ballot.begin_time).getTime()
+      let isStarted = startTime > Date.now()
+      return isOlder && isStarted
     },
     getBallotStatusColor (status) {
       switch (status) {
