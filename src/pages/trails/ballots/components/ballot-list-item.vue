@@ -24,12 +24,27 @@ export default {
     },
     isBallotOpened (ballot) {
       let endTime = new Date(ballot.end_time).getTime()
-      let isOlder = endTime > Date.now()
+      let notExpired = endTime > Date.now()
+      // console.log('not expired', notExpired)
       let startTime = new Date(ballot.begin_time).getTime()
-      let isStarted = startTime > Date.now()
-      return isOlder && isStarted
+      // console.log('get starttime', startTime)
+      let isStarted = startTime < Date.now()
+      // console.log('has begun', isStarted)
+      // console.log('is ballot opened', notExpired && isStarted)
+      return notExpired && isStarted
+    },
+    votingHasBegun (ballot) {
+      // console.log('get end time', new Date(ballot.end_time).getTime())
+      let startTime = new Date(ballot.begin_time).getTime()
+      let isStarted = startTime < Date.now()
+      return isStarted
+    },
+    getStartTime (ballot) {
+      // console.log('getStartTime', new Date(ballot.begin_time).getTime())
+      return new Date(ballot.begin_time).getTime()
     },
     getEndTime (ballot) {
+      // console.log('getEndTime', new Date(ballot.end_time).getTime())
       return new Date(ballot.end_time).getTime()
     },
     displayWinner (ballot) {
@@ -60,9 +75,9 @@ export default {
 <template lang="pug">
 div.col-auto
   //- (v-if="ballot.total_voters > 0")
-  q-card(@click="$router.push(`/trails/ballots/${ballot.ballot_name}`)" :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'poll-ended'").my-card.poll-item.cursor-pointer
+  q-card(:class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'poll-ended'").my-card.poll-item
     template(v-if="ballot.category === 'poll'")
-      img(src="statics/app-icons/poll-w.png")
+      img(src="statics/app-icons/poll-w.png").poll-image
       div.grey-bar.absolute-top
         div.col-auto.absolute-bottom-right.q-pr-sm
           span.text-caption.text-grey-9.text-weight-medium {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }} {{ ballot.total_raw_weight.split(' ')[1]  }}
@@ -72,7 +87,7 @@ div.col-auto
           img(src="statics/app-icons/poll-icon.svg").poll-icon
         span Poll
     template(v-else-if="ballot.category === 'referendum'")
-      img(src="statics/app-icons/referendum-w.png")
+      img(src="statics/app-icons/referendum-w.png").poll-image
       div.grey-bar.absolute-top
         div.col-auto.absolute-bottom-right.q-pr-sm
           span.text-caption.text-grey-9.text-weight-medium {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }} {{ ballot.total_raw_weight.split(' ')[1]  }}
@@ -82,7 +97,7 @@ div.col-auto
           img(src="statics/app-icons/referendum-icon.svg").poll-icon
         span Referendum
     template(v-else-if="ballot.category === 'proposal'")
-      img(src="statics/app-icons/proposal-w.png")
+      img(src="statics/app-icons/proposal-w.png").poll-image
       div.grey-bar.absolute-top
         div.col-auto.absolute-bottom-right.q-pr-sm
           span.text-caption.text-grey-9.text-weight-medium {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }} {{ ballot.total_raw_weight.split(' ')[1]  }}
@@ -92,7 +107,7 @@ div.col-auto
           img(src="statics/app-icons/proposal-icon.svg").poll-icon
         span Proposal
     template(v-else-if="ballot.category === 'election'")
-      img(src="statics/app-icons/election-w.png")
+      img(src="statics/app-icons/election-w.png").poll-image
       div.grey-bar.absolute-top
         div.col-auto.absolute-bottom-right.q-pr-sm
           span.text-caption.text-grey-9.text-weight-medium {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }} {{ ballot.total_raw_weight.split(' ')[1]  }}
@@ -102,7 +117,7 @@ div.col-auto
           img(src="statics/app-icons/election-icon.svg").poll-icon
         span Election
     template(v-else-if="ballot.category === 'leaderboard'")
-      img(src="statics/app-icons/leaderboard-w.png")
+      img(src="statics/app-icons/leaderboard-w.png").poll-image
       div.grey-bar.absolute-top
         div.col-auto.absolute-bottom-right.q-pr-sm
           span.text-caption.text-grey-9.text-weight-medium {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }} {{ ballot.total_raw_weight.split(' ')[1]  }}
@@ -112,17 +127,21 @@ div.col-auto
           img(src="statics/app-icons/leaderboard-icon.svg").poll-icon
         span Leaderboard
 
-    div(:class="ballot.status === 'closed' || ballot.status === 'cancelled' ? 'text-grey-7' : 'link'").left-tag.left-tag-left
+    div(:class="ballot.status === 'closed' || ballot.status === 'cancelled' ? 'text-grey-7' : 'link'").left-tag.left-tag-left.cursor-default
       template(v-if="ballot.status === 'voting' && isBallotOpened(ballot)")
         cite Time Remaining
-        countdown(v-if="ballot.status === 'voting' && isBallotOpened(ballot)" :endtime="getEndTime(ballot)")
+        countdown(:endtime="getEndTime(ballot)")
+
+      template(v-else-if="ballot.status === 'voting' && !votingHasBegun(ballot)")
+        cite Voting Begins in
+        countdown(:endtime="getStartTime(ballot)")
 
       template(v-else)
         cite Status
         span(v-if="ballot.status === 'setup'") SETUP
         span(v-else) ENDED
 
-    q-card-section(@click="log('ballot', ballot)").q-pb-none
+    q-card-section(@click="$router.push(`/trails/ballots/${ballot.ballot_name}`)").q-pb-none.cursor-pointer
       div.text-section.row
         span.link.text-subtitle2.text-weight-bolder.ellipsis {{ ballot.title || "Untitled Ballot" }}
          //- div.text-subtitle2 by {{ ballot.publisher }}
@@ -132,7 +151,7 @@ div.col-auto
       //- q-linear-progress(size="25px" :value="Number(ballot.options[0].value.split(' ')[0]) / Number(ballot.options[1].value.split(' ')[0])" color="green" track-color="red")
       //- q-linear-progress(v-if="ballot.options.length === 2 && ballot.total_voters > 0" size="10px" :value="Number(ballot.options[1].value.split(' ')[0]) / Number(ballot.options[0].value.split(' ')[0])" color="teal" track-color="primary").q-my-sm
       //- div.voting-section.row.justify-between
-      div
+      div(@click="log('ballot', ballot); getEndTime(ballot); isBallotOpened(ballot)")
         q-scroll-area(horizontal style="height: 40px;").rounded-borders.row.justify-end
           div.row.no-wrap.q-mb-sm
             q-chip(v-for="(option, index) in ballot.options" :key="index" dense outline :color="displayWinner(ballot) ? displayWinner(ballot) === ballot.options[index].key ? 'green' : 'red' : ''" :icon="displayWinner(ballot) === ballot.options[index].key ? 'done' : ''").capitalize {{ `${ballot.options[index].key}: ` }}
@@ -191,12 +210,14 @@ div.col-auto
 </template>
 
 <style lang="sass" scoped>
-.poll-ended
+.poll-ended .text-section, .poll-ended .voting-section, .poll-ended img.poll-image
   opacity: .4 !important;
   outline: 0 !important;
+
 .link
   color: #0481d8;
-  cursor: pointer;
+.cursor-default
+  cursor: default;
 .capitalize
   text-transform: capitalize
 .text-section
