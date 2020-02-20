@@ -42,10 +42,14 @@ export default {
     },
     isBallotOpened () {
       let endTime = new Date(this.ballot.end_time).getTime()
-      let isOlder = endTime > Date.now()
+      let notExpired = endTime > Date.now()
+      // console.log('not expired', notExpired)
       let startTime = new Date(this.ballot.begin_time).getTime()
-      let isStarted = startTime > Date.now()
-      return isOlder && isStarted
+      // console.log('get starttime', startTime)
+      let isStarted = startTime < Date.now()
+      // console.log('has begun', isStarted)
+      // console.log('is ballot opened', notExpired && isStarted)
+      return notExpired && isStarted
     },
     getBallotStatusColor (status) {
       switch (status) {
