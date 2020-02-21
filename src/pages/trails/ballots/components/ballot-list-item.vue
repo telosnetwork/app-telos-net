@@ -75,7 +75,7 @@ export default {
 <template lang="pug">
 div.col-auto
   //- (v-if="ballot.total_voters > 0")
-  q-card(:class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'poll-ended'").my-card.poll-item
+  q-card(:class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'poll-ended'").poll-item
     template(v-if="ballot.category === 'poll'")
       img(src="statics/app-icons/poll-w.png").poll-image
       div.grey-bar.absolute-top
