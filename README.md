@@ -7,6 +7,9 @@ TODO desc
 yarn
 ```
 
+## Create a .env file in the root directory
+Use the format found in the .env.example file and replace the values with real data.
+
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
 quasar dev

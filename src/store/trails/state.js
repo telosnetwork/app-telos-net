@@ -4,7 +4,7 @@ export default () => ({
       data: [],
       loaded: false,
       pagination: {
-        limit: 100
+        limit: 50
       }
     },
     view: {

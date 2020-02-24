@@ -11,13 +11,13 @@ export default {
       show: false,
       voting: false,
       treasury: null,
-      statuses: [],
+      statuses: ['voting'],
       statusOptions: [
-        { value: 'setup', label: 'Setup' },
-        { value: 'voting', label: 'Voting' },
+        { value: 'voting', label: 'Active' }, // abstracting "Voting" to "Active" for better UX and clarity
         { value: 'closed', label: 'Closed' },
         { value: 'cancelled', label: 'Cancelled' },
-        { value: 'archived', label: 'Archived' }
+        { value: 'archived', label: 'Archived' },
+        { value: 'setup', label: 'Setup' }
       ]
     }
   },
@@ -111,10 +111,10 @@ q-page.q-pa-lg
       :offset="250"
       :scroll-target="$refs.ballotsRef"
     )
-      q-list(bordered)
+      div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
         ballot-list-item(
-          v-for="ballot in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
-          :key="ballot.ballot_name"
+          v-for="(ballot, index) in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
+          :key="index"
           :ballot="ballot"
         )
       template(v-slot:loading)
