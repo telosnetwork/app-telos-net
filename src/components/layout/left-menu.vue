@@ -57,39 +57,43 @@ export default {
         q-item-section {{ $t('menu.trailsBallots') }}
 
       q-expansion-item(
-        :label="$t('menu.developer')"
-        icon="build"
+        :label="$t('menu.advanced')"
+        icon="fas fa-sliders-h"
       )
         q-item.q-ml-md(
-          v-if="isAuthenticated"
-          to="/profiles/registerApp"
-          exact
-          clickable
-          v-ripple
+            v-if="isAuthenticated"
+            to="/profiles/authorizedApps"
+            exact
+            clickable
+            v-ripple
         )
-          q-item-section(avatar)
-            q-icon(name="fas fa-plus-square")
-          q-item-section {{ $t('menu.registerApp') }}
-        q-item.q-ml-md(
-          v-if="isAuthenticated"
-          to="/profiles/appList"
-          exact
-          clickable
-          v-ripple
+            q-item-section(avatar)
+              q-icon(name="fas fa-user-shield")
+            q-item-section {{ $t('menu.authorizedApps') }}
+        q-expansion-item.q-ml-md(
+          :label="$t('menu.developer')"
+          icon="build"
         )
-          q-item-section(avatar)
-            q-icon(name="fas fa-list-alt")
-          q-item-section {{ $t('menu.appList') }}
-        q-item.q-ml-md(
-          v-if="isAuthenticated"
-          to="/profiles/authorizedApps"
-          exact
-          clickable
-          v-ripple
-        )
-          q-item-section(avatar)
-            q-icon(name="fas fa-list-alt")
-          q-item-section {{ $t('menu.authorizedApps') }}
+          q-item.q-ml-md(
+            v-if="isAuthenticated"
+            to="/profiles/registerApp"
+            exact
+            clickable
+            v-ripple
+          )
+            q-item-section(avatar)
+              q-icon(name="fas fa-plus-square")
+            q-item-section {{ $t('menu.registerApp') }}
+          q-item.q-ml-md(
+            v-if="isAuthenticated"
+            to="/profiles/appList"
+            exact
+            clickable
+            v-ripple
+          )
+            q-item-section(avatar)
+              q-icon(name="fas fa-list-alt")
+            q-item-section {{ $t('menu.appList') }}
 </template>
 
 <style lang="stylus">

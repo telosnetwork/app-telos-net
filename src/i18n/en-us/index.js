@@ -50,9 +50,10 @@ export default {
     myProfile: 'My profile',
     chats: 'Chats',
     registerApp: 'Register App',
-    appList: 'Apps',
+    appList: 'My Apps',
     authorizedApps: 'Authorized apps',
-    developer: 'Developer'
+    developer: 'Developer',
+    advanced: 'Advanced'
   },
   notifications: {
     title: 'Transactions',

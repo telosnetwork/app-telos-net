@@ -93,7 +93,7 @@ export default {
       @mouseout="miniState = true"
       mini-to-overlay
 
-      :width="200"
+      :width="250"
       :breakpoint="500"
       bordered
       content-class="bg-grey-3"
