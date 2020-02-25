@@ -1588,10 +1588,10 @@
   resolved "https://registry.yarnpkg.com/@smontero/ppp-common/-/ppp-common-0.0.22.tgz#15365564c03daa570fc6aaefbf50ca8209281c9e"
   integrity sha512-oisvF+cgXhZ4OkUQPqHd/6IqxTSojRVh3yPDYGRMzahpih2MlAo4MD806yXAVQlaUEP2Kf5jAKsXf+7c0dGt2Q==
 
-"@smontero/ual-eosio-reference-authenticator@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@smontero/ual-eosio-reference-authenticator/-/ual-eosio-reference-authenticator-0.1.7.tgz#9d4a0ccfbd7ba5259f9254cea29dc2929e43ad94"
-  integrity sha512-Vl7MmNge4XM45Xzu/0fcNAdIM9B7VpW2yBHUOu9iwdJ8WlYVvjWM1BeaJLDg6IyojskJy+/bj1o53+WZ0LzwDA==
+"@smontero/ual-eosio-reference-authenticator@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@smontero/ual-eosio-reference-authenticator/-/ual-eosio-reference-authenticator-0.1.22.tgz#abf5af6e1b4e6047b879617be18a5aa801f6a2dd"
+  integrity sha512-SQetpJUjp667n7Owuj+tri/DudhkDmMZROdl3Xp8ZOcj06yH8xRdqixkLbAil6Vv44h6kA9Z+G5mBok1qaOvqw==
   dependencies:
     bs58 "4.0.1"
     eosjs "20.0.0"
