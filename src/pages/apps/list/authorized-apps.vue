@@ -5,21 +5,21 @@
         .row.justify-center.q-my-md
           q-spinner(color='primary', name='dots', size='40px')
       template(slot='default')
-        .row.justify-center.q-my-md(v-show="!isLoading && myAppList.length === 0")
+        .row.justify-center.q-my-md(v-show="!isLoading && authorizedAppList.length === 0")
           p.text-weight-thin {{ $t('pages.general.defaultAppList') }}
-      .caption.q-py-sm(v-for='(app, index) in myAppList', :key='index')
+      .caption.q-py-sm(v-for='(app, index) in authorizedAppList', :key='index')
         .row.justify-center
-          .col-xs-10.col-sm-8.col-md-6
+          .col-xs-11.col-sm-10
             q-list(bordered)
-              AppItem(:App="app", @Deleted="onAppDeleted")
+              AuthorizedAppItem(:AuthorizedApp="app", @Revoked="onAppRevoked")
 </template>
 
 <script>
-import AppItem from '~/pages/apps/list/app-item.vue'
+import AuthorizedAppItem from '~/pages/apps/list/app-item-authorized'
 import { mapActions } from 'vuex'
 export default {
   name: 'app-list',
-  components: { AppItem },
+  components: { AuthorizedAppItem },
   data () {
     return {
       search: null,
@@ -28,18 +28,18 @@ export default {
     }
   },
   computed: {
-    myAppList () {
-      return this.$store.state.apps.appList
+    authorizedAppList () {
+      return this.$store.state.apps.authorizedAppList
     }
   },
   beforeDestroy: function () {
-    this.clearMyAppList()
+    this.clearAuthorizedApps()
   },
   methods: {
-    ...mapActions('apps', ['getMyApps', 'clearMyAppList']),
+    ...mapActions('apps', ['clearAuthorizedApps', 'getAuthorizedApps']),
     async onLoad (index, done) {
       this.isLoading = true
-      await this.getMyApps()
+      await this.getAuthorizedApps()
       this.isLoading = false
       this.$refs.infiniteScroll.stop()
     },
@@ -50,10 +50,12 @@ export default {
       this.$refs.infiniteScroll.resume()
       v.preventDefault()
     },
-    onAppDeleted () {
-      this.clearMyAppList()
+    onAppRevoked () {
+      console.log('Refrescando lista')
+      this.clearAuthorizedApps()
       this.$refs.infiniteScroll.reset()
       this.$refs.infiniteScroll.resume()
+      console.log('Se refresco')
     }
   }
 }

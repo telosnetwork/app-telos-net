@@ -9,19 +9,77 @@
               .text-white.text-caption.text-center Cannot load image
     .row.justify-center
       q-radio(v-model='appType', :disable="editing", :val='appTypes.WEB_APP', :label='appTypes.WEB_APP')
-      q-radio(v-model='appType', :disable="editing", :val='appTypes.STANDALONE_APP', :label='appTypes.STANDALONE_APP')
+      q-radio(v-model='appType', :disable="editing", :val='appTypes.NON_WEB_APP', :label='appTypes.NON_WEB_APP')
     q-form.q-col-gutter-y-md.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.WEB_APP")
       q-input(filled, v-model='url', :label="$t('pages.registerApp.form.urlBase')", :hint="$t('pages.registerApp.form.urlBase')" :rules='[ validationURL ]')
       q-input(filled, v-model='name', readonly, :label="$t('pages.registerApp.form.name')")
-      q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
       q-input(filled, v-model='shortName', readonly, :label="$t('pages.registerApp.form.shortName')")
+      q-select(
+        ref="selectURL"
+        :label="$t('pages.registerApp.form.urlRedirection')",
+        :hint="$t('forms.hints.pressToAddURL')",
+        filled,
+        v-model='redirectionURL',
+        use-input,
+        use-chips,
+        multiple,
+        hide-dropdown-icon,
+        input-debounce='0',
+        @blur="onBlurURL",
+        new-value-mode='add-unique',
+        @new-value="validateRedirectionURL"
+      )
+      .row.justify-center
+        p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
+      q-input(v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", :label="$t('pages.registerApp.form.secret')", readonly, :type="isHide ? 'text' : 'text'")
+        template(v-slot:append)
+          q-icon(
+              :name="isHide ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isHide = !isHide")
+      .row
+        q-toggle(
+          :label='isPrivateApp'
+          v-model="isPrivate"
+          checked-icon="lock"
+          color="primary"
+          unchecked-icon="public")
       div
         q-btn(label='Submit', type='submit', color='primary')
-    q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.STANDALONE_APP")
+    q-form.q-col-gutter-y-xs.q-mt-xs(@submit='onSubmit',v-if="appType==appTypes.NON_WEB_APP")
       q-input.q-mt-md(filled, ref="inputImage" , v-model='icon', :label="$t('pages.registerApp.form.urlImage')", :hint="$t('pages.registerApp.form.urlImage')", :rules="[ value => iconLoaded !== false || 'Cannot load image', rules.required ]")
       q-input.q-mt-md(filled, v-model='name', :label="$t('pages.registerApp.form.name')", :rules='[ rules.required ]')
       q-input(filled, v-model='shortName', :label="$t('pages.registerApp.form.shortName')", :rules='[ rules.required ]')
-      q-input(filled, v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-select(
+        :label="$t('pages.registerApp.form.urlRedirection')",
+        :hint="$t('forms.hints.pressToAddURL')",
+        filled,
+        v-model='redirectionURL',
+        use-input,
+        use-chips,
+        multiple,
+        hide-dropdown-icon,
+        input-debounce='0',
+        new-value-mode='add-unique',
+        @new-value="validateRedirectionURL"
+      )
+      .row.justify-center
+        p.text-caption.errorURL(v-if="!redirectionValid") Please write a valid url
+      q-input( v-model='appId', readonly, :label="$t('pages.registerApp.form.appId')")
+      q-input(v-if="selectedApp && editing && selectedApp.secret", v-model="keySecretComputed", readonly, :label="$t('pages.registerApp.form.secret')", :type="isHide ? 'text' : 'text'")
+        template(v-slot:append)
+          q-icon(
+              :name="isHide ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isHide = !isHide")
+      .row
+        q-toggle(
+          :label='isPrivateApp'
+          v-model="isPrivate"
+          checked-icon="lock"
+          color="primary"
+          unchecked-icon="public")
       div.q-mt-md
         q-btn(label='Submit', type='submit', color='primary')
 </template>
@@ -45,7 +103,12 @@ export default {
       name: '',
       appType: '',
       editing: false,
-      iconLoaded: false
+      iconLoaded: false,
+      redirectionURL: [],
+      redirectionValid: true,
+      isHide: true,
+      keySecret: '',
+      isPrivate: false
     }
   },
   watch: {
@@ -70,24 +133,53 @@ export default {
     },
     appTypes () {
       return AppTypes
+    },
+    keySecretComputed () {
+      if (this.keySecret === undefined || this.keySecret === null) return ''
+      let value = this.keySecret
+      if (this.isHide) {
+        const valueArray = Array.from(value)
+        const originValue = value
+        value = ''
+        for (var i = 1; i <= valueArray.length - 8; i++) {
+          value += '*'
+        }
+        value += originValue.substr(valueArray.length - 8, 8)
+      }
+      return value
+    },
+    isPrivateApp () {
+      return this.isPrivate ? 'My App is Private' : 'My App is Public'
     }
   },
   mounted () {
+    console.log('Refs', this.$refs)
     if (this.selectedApp !== undefined) {
       this.editing = true
       this.appType = this.selectedApp.type
       if (this.selectedApp.type === this.appTypes.WEB_APP) {
         this.shortName = this.selectedApp.shortname
+        this.url = this.selectedApp.url
         this.name = this.selectedApp.name
         this.ownerAccount = this.selectedApp.ownerAccount
         this.appId = this.selectedApp.appId
         this.icon = this.selectedApp.icon
-      } else if (this.selectedApp.type === this.appTypes.STANDALONE_APP) {
+        this.redirectionURL = this.selectedApp.oauthRedirectUrls
+        this.isPrivate = this.selectedApp.isPrivate
+        if (this.selectedApp.secret) {
+          this.keySecret = this.selectedApp.secret
+        }
+      } else if (this.selectedApp.type === this.appTypes.NON_WEB_APP) {
         this.shortName = this.selectedApp.shortname
         this.name = this.selectedApp.name
         this.ownerAccount = this.selectedApp.ownerAccount
         this.appId = this.selectedApp.appId
         this.icon = this.selectedApp.icon
+        this.redirectionURL = this.selectedApp.oauthRedirectUrls
+        this.isPrivate = this.selectedApp.isPrivate
+        if (this.selectedApp.secret) {
+          this.keySecret = this.selectedApp.secret
+        }
       }
     } else {
       this.appType = this.appTypes.WEB_APP
@@ -98,6 +190,10 @@ export default {
   },
   methods: {
     ...mapActions('apps', ['registerApp']),
+    onBlurURL (e) {
+      alert('Blur listened')
+      console.log('Refs', e)
+    },
     successLoadIcon () {
       this.iconLoaded = true
       this.$refs.inputImage.resetValidation()
@@ -114,22 +210,26 @@ export default {
           response = await this.registerApp({
             baseUrl: this.url,
             appId: this.appId,
-            type: this.appType
+            type: this.appType,
+            oauthRedirectUrls: this.redirectionURL,
+            isPrivate: this.isPrivate
           })
-        } else if (this.appType === this.appTypes.STANDALONE_APP) {
-          console.log(this.shortName)
+        } else if (this.appType === this.appTypes.NON_WEB_APP) {
+          console.log('NON WEB APP TYPE', this.shortName)
           response = await this.registerApp({
             shortname: this.shortName,
             name: this.name,
             icon: this.icon,
             type: this.appType,
-            appId: this.appId
+            appId: this.appId,
+            oauthRedirectUrls: this.redirectionURL,
+            isPrivate: this.isPrivate
           })
+          console.log('AFTER REGISTER APP', this.shortName)
         }
 
         const { shortname, name, ownerAccount, appId, icon } = response
 
-        console.log('form', response)
         this.shortName = shortname
         this.name = name
         this.ownerAccount = ownerAccount
@@ -154,6 +254,25 @@ export default {
       } else {
         return 'URL not valid'
       }
+    },
+    validateRedirectionURL (val, done) {
+      // specific logic to eventually call done(...) -- or not
+      var regex = new RegExp(CustomRegex.URL)
+
+      if (val.match(regex) || val === '') {
+        this.redirectionValid = true
+        done(val)
+      } else {
+        this.redirectionValid = false
+      }
+
+      // done callback has two optional parameters:
+      //  - the value to be added
+      //  - the behavior (same values of new-value-mode prop,
+      //    and when it is specified it overrides that prop –
+      //    if it is used); default behavior (if not using
+      //    new-value-mode) is to add the value even if it would
+      //    be a duplicate
     }
     // validationEMAIL () {
     //   var regex = new RegExp(CustomRegex.EMAIL)
@@ -181,4 +300,6 @@ export default {
   max-width: 100px
   border: solid 0.01px
   border-color: black
+.errorURL
+  color: red
 </style>

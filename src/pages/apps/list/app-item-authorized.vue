@@ -1,22 +1,11 @@
 <template lang="pug">
 main
-  //- Confirm to delete
   confirm-dialog(
     :show.sync="showConfirm",
-    @Confirmed="deleteMyApp",
+    @Confirmed="revokeAccessToApp",
   )
     template(v-slot:body)
-      .text-h6 {{ $t('pages.registerApp.form.confirmDeleteApp') }}
-  //- Confirm to update
-  confirm-dialog(
-    :show.sync="showConfirmUpdate",
-    @Confirmed="updateOauthStatus",
-    @Canceled="cancelUpdateOauthStatus",
-  )
-    template(v-slot:body)
-      .text-h6(v-if="oauthAppStatus_.display") {{ $t('pages.registerApp.form.confirmEnableApp') }}
-      .text-h6(v-if="!oauthAppStatus_.display") {{ $t('pages.registerApp.form.confirmDisableApp') }}
-  //- Card of content
+      .text-h6 {{ $t('pages.registerApp.form.confirmRevokeAccessApp') }}
   q-card
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar)
@@ -35,22 +24,14 @@ main
           q-item-label(lines='1')
            span.text-grey-8 {{ isPrivateComputed }}
         q-item-section(side)
-          q-btn.side-btn(icon='delete',size="1.1rem", round, color='red', @click="showConfirm = true")
-          q-toggle(
-            v-if="oauthAppStatus_.status"
-            label='OAuth'
-            v-model="oauthAppStatus_.dislpay"
-            checked-icon="lock"
-            color="primary"
-            unchecked-icon="public")
-          q-toggle(
-            v-if="!oauthAppStatus_.status"
-            disabled
-            label='OAuth'
-            checked-icon="lock"
-            color="primary"
-            unchecked-icon="public")
-              q-tooltip {{ oauthAppStatus_.value }}
+          q-btn(color="red", :label="$t('pages.registerApp.form.revokeAccess')" @click="showConfirm = true")
+    q-expansion-item(
+        caption="Scopes"
+        v-for='(scope, index) in Scopes', :key='index'
+    )
+      q-item-section.q-px-md
+        span.text-weight-medium - {{scope.name}} ({{scope.scope}})
+        span.text-grey-8.q-ml-sm {{scope.desc}}
 </template>
 
 <script>
@@ -59,9 +40,9 @@ import ConfirmDialog from '~/components/confirm-dialog'
 import { OauthAppStatus } from '@smontero/ppp-common'
 import { mapActions } from 'vuex'
 export default {
-  name: 'app-item',
+  name: 'authorized-app-item',
   props: {
-    App: { type: Object, required: true }
+    AuthorizedApp: { type: Object, required: true }
   },
   components: { ConfirmDialog },
   mounted () {
@@ -71,64 +52,44 @@ export default {
   data () {
     return {
       showConfirm: false,
-      showConfirmUpdate: false,
       oauthAppStatus_: {
         value: '',
-        dislpay: '',
-        status: true
-      },
-      mounted: false
+        dislpay: ''
+      }
     }
   },
   computed: {
     isPrivateComputed () {
       return (this.App.isPrivate) ? this.$t('pages.general.private') : this.$t('pages.general.public')
+    },
+    App () {
+      return this.AuthorizedApp.app
+    },
+    Scopes () {
+      return this.AuthorizedApp.scopes
     }
   },
   watch: {
     'oauthAppStatus_.dislpay' (newValue) {
       this.oauthAppStatus_.value = (newValue) ? OauthAppStatus.ENABLED : OauthAppStatus.DISABLED_BY_APP
-    },
-    'oauthAppStatus_.value' (newValue) {
-      if (this.mounted && this.oauthAppStatus_.value !== '') this.showConfirmUpdate = true
-      if (!this.mounted) this.mounted = true
     }
   },
   methods: {
-    ...mapActions('apps', ['updateMyAppOauthStatus', 'deleteApp']),
+    ...mapActions('apps', ['deleteApp', 'revokeAccessOauth']),
     goToAppDetail () {
-      this.$store.commit('apps/setSelectedApp', this.App)
-      this.$router.push({ name: 'registerApp' })
+      // this.$store.commit('apps/setSelectedApp', this.App)
+      // this.$router.push({ name: 'registerApp' })
     },
-    async deleteMyApp () {
+    async revokeAccessToApp () {
       this.showIsLoading(true)
       try {
-        await this.deleteApp({ appId: this.App.appId })
-        this.showSuccessMsg('Deleted')
+        await this.revokeAccessOauth({ appId: this.App.appId })
+        this.showSuccessMsg('Revoked')
         this.showIsLoading(false)
-        this.$emit('Deleted', true)
+        this.$emit('Revoked', true)
       } catch (e) {
         this.showIsLoading(false)
         this.showErrorMsg(e.message)
-      }
-    },
-    async updateOauthStatus () {
-      this.showIsLoading(true)
-      try {
-        await this.updateMyAppOauthStatus({ appId: this.App.appId, oauthSatus: this.oauthAppStatus_.dislpay })
-        this.showSuccessMsg('Oauth Updated')
-        this.showIsLoading(false)
-      } catch (e) {
-        this.showIsLoading(false)
-        this.showErrorMsg(e.message)
-      }
-    },
-    cancelUpdateOauthStatus () {
-      this.mounted = false
-      if (this.oauthAppStatus_.dislpay) {
-        this.oauthAppStatus_.dislpay = false
-      } else {
-        this.oauthAppStatus_.dislpay = true
       }
     },
     cancelDelete () {
@@ -144,7 +105,6 @@ export default {
           break
         case OauthAppStatus.DISABLED_BY_SERVER:
           this.oauthAppStatus_.dislpay = false
-          this.oauthAppStatus_.status = false
           break
         default:
           this.oauthAppStatus_.dislpay = false

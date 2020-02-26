@@ -37,7 +37,8 @@ export default {
     },
     hints: {
       selectCountrie: 'Please select your country',
-      pressToAddHobbie: 'Press enter to add a tag'
+      pressToAddHobbie: 'Press enter to add a tag',
+      pressToAddURL: 'Press enter to add a URL'
     }
   },
   menu: {
@@ -49,7 +50,10 @@ export default {
     myProfile: 'My profile',
     chats: 'Chats',
     registerApp: 'Register App',
-    appList: 'Apps'
+    appList: 'My Apps',
+    authorizedApps: 'Authorized apps',
+    developer: 'Developer',
+    advanced: 'Advanced'
   },
   notifications: {
     title: 'Transactions',
@@ -159,7 +163,9 @@ export default {
       defaultContactList: 'There are no contacts yet',
       defaultAppList: 'There are no apps yet',
       noAccountsFound: 'No accounts found',
-      confirmActions: 'Do you want confirm this action?'
+      confirmActions: 'Do you want confirm this action?',
+      private: 'Private',
+      public: 'Public'
     },
     registerApp: {
       form: {
@@ -169,7 +175,14 @@ export default {
         appId: 'AppId',
         shortName: 'Short Name',
         ownerAccount: 'Owner Account',
-        confirmDeleteApp: 'Do you want delete this app?'
+        confirmDeleteApp: 'Do you want delete this app?',
+        confirmEnableApp: 'Do you want enable the OAuth of this app?',
+        confirmDisableApp: 'Do you want disable the OAuth of this app?',
+        confirmRevokeAccessApp: 'Do you want revoke OAuth access of this app?',
+        urlRedirection: 'URL Redirection',
+        appType: 'App Type',
+        revokeAccess: 'Revoke access',
+        secret: 'Secret'
       }
     },
     login: {

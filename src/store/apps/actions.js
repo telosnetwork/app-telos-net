@@ -3,13 +3,13 @@ import { AppTypes } from '@smontero/ppp-common'
 
 export const registerApp = async function ({ commit }, params = {}) {
   const profileApi = PPP.profileApi()
-  const { baseUrl, appId = '', type, name, shortname, icon } = params
+  const { baseUrl, appId = '', type, name, shortname, icon, oauthRedirectUrls, isPrivate } = params
   console.log(shortname)
   try {
     if (type === AppTypes.WEB_APP) {
-      return profileApi.registerApp({ baseUrl, appId, type })
-    } else if (type === AppTypes.STANDALONE_APP) {
-      return profileApi.registerApp({ baseUrl, appId, type, name, shortname, icon })
+      return profileApi.registerApp({ baseUrl, appId, type, oauthRedirectUrls, isPrivate })
+    } else if (type === AppTypes.NON_WEB_APP) {
+      return profileApi.registerApp({ baseUrl, appId, type, name, shortname, icon, oauthRedirectUrls, isPrivate })
     }
   } catch (error) {
     console.log('Error', error)
@@ -40,4 +40,41 @@ export const getMyApps = async function ({ commit }, params = {}) {
 
 export const clearMyAppList = function ({ commit }) {
   commit('clearMyAppList')
+}
+
+export const getAuthorizedApps = async function ({ commit }, params = {}) {
+  const oauthApi = PPP.oauthApi()
+  // const { search, limit, lastEvaluatedKey, clean } = params
+  try {
+    await oauthApi.getAuthorizedApps().then(response => {
+      console.log('authorized', response)
+      commit('setAuthorizedAppList', response)
+    })
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const clearAuthorizedApps = function ({ commit }) {
+  commit('clearAuthorizedAppList')
+}
+
+export const updateMyAppOauthStatus = async function ({ commit }, params = {}) {
+  const oauthApi = PPP.oauthApi()
+  const { appId, oauthSatus } = params
+  try {
+    return oauthApi.updateAppOauthStatus(appId, oauthSatus)
+  } catch (error) {
+    console.log('Error', error)
+  }
+}
+
+export const revokeAccessOauth = async function ({ commit }, params = {}) {
+  const oauthApi = PPP.oauthApi()
+  const { appId } = params
+  try {
+    return oauthApi.revokeAccess(appId)
+  } catch (error) {
+    console.log('Error', error)
+  }
 }
