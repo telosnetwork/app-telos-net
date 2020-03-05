@@ -11,6 +11,7 @@ export default {
     return {
       show: false,
       showBallot: false,
+      timeAtMount: undefined,
       openedBallot: {},
       voting: false,
       treasury: null,
@@ -25,6 +26,7 @@ export default {
     }
   },
   async mounted () {
+    this.timeAtMount = Date.now()
     if (this.$route.params.id) {
       this.showBallot = true
     }
@@ -59,7 +61,8 @@ export default {
         return
       }
       console.log('opening ballot', ballot)
-      this.$router.push(`/trails/ballots/${ballot.ballot_name}/${Date.now()}`)
+      this.timeAtMount = Date.now()
+      this.$router.push(`/trails/ballots/${ballot.ballot_name}/${this.timeAtMount}`)
       // the timestamp prevents scroll glitches on the infinite list
     },
     isBallotOpened (ballot) {
@@ -125,6 +128,14 @@ export default {
 <template lang="pug">
 q-page.q-pa-lg
   ballot-form(:show.sync="show")
+  .row.col-12.banner.justify-center.items-center.q-mb-md.border-white.q-card--bordered.relative-position
+    div.row.justify-center.items-center.q-my-md.text-center
+      img(src="/statics/app-icons/vote.svg" style="width: 40px")
+      img(src="/statics/telos-logo-white.svg" style="width: 85px").on-right
+      span.text-h4.text-white ,
+      span.on-right.text-h4.text-white your vote matters
+    div.banner-grey-bar.absolute-bottom
+
   .row.flex.justify-end
     q-select.q-mb-lg.q-mr-sm(
       v-model="statuses"
@@ -155,6 +166,7 @@ q-page.q-pa-lg
       emit-value
       map-options
     )
+
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       ref="infiniteScroll"
@@ -192,7 +204,7 @@ q-page.q-pa-lg
       color="accent"
       @click="show = true"
     )
-  q-dialog(full-width v-model="showBallot" :key="$route.params.id + Date.now()" transition-show="slide-up" transition-hide="slide-down").full-width
+  q-dialog(full-width v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down").full-width
     //- div(style="width: 80vw").bg-white
       //- p test
     ballot-view(
@@ -207,4 +219,10 @@ q-page.q-pa-lg
 <style lang="sass" scoped>
 .link
   text-decoration: none
+.banner
+  background: #571aff99;
+.banner .banner-grey-bar
+  background-color: #0000001a;
+  height: 46%;
+  width: 100%;
 </style>

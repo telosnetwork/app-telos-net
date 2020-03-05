@@ -101,7 +101,7 @@ export default {
 
 <template lang="pug">
 
-.row.bg-white.justify-between
+.row.bg-white.justify-between(style="max-width: 1200px !important;")
   template(v-if="!loading && ballot")
     .col-xs-12.col-sm
       q-card.full-width(
@@ -119,11 +119,14 @@ export default {
           ballot-chip(:type="ballot.category" color="#9793fa").absolute-top-right.gt-xs
 
         q-separator
-        q-card-section.relative
-          div.q-pb-md {{ ballotDescription }}
+        q-card-section(:style="{ height: getIPFShash || ballot.ballot_name === 'what.blockcha' ? 'auto' : 'calc(100% - 105px)' }")
+          div(:class="getIPFShash || ballot.ballot_name === 'what.blockcha' ? `q-pb-md` : `q-pb-xl q-mb-lg`") {{ ballotDescription }}
           div(v-if="ballot.content").q-pb-md {{ ballot.content }}
           embed(v-if="getIPFShash" :src="`https://api.ipfsbrowser.com/ipfs/get.php?hash=${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
           embed(v-else-if="ballot.ballot_name === 'what.blockcha'" :src="`https://api.ipfsbrowser.com/ipfs/get.php?hash=QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
+          div(v-else).text-center.absolute-bottom
+            img(src="/statics/app-icons/no-pdf.svg" style="width: 60px;")
+            p(style="color: #a1c1ff").text-caption No PDF found
 
     .col-xs.col-sm-auto(style="min-width: 240px;")
       q-card(
@@ -132,7 +135,7 @@ export default {
         square
         bordered
       ).poll-item.full-height
-        q-card-section.relative.dashed-bottom
+        q-card-section.dashed-bottom
           q-btn(icon="close" flat v-close-popup).absolute-top-right.gt-xs
           ballot-chip(:type="ballot.category" color="#9793fa").absolute-top-right.lt-sm
 
