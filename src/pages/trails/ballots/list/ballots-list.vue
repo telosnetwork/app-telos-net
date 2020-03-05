@@ -2,13 +2,16 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import BallotForm from '../components/ballot-form'
 import BallotListItem from '../components/ballot-list-item'
+import BallotView from '../view/ballot-view'
 
 export default {
   name: 'ballots-list',
-  components: { BallotForm, BallotListItem },
+  components: { BallotForm, BallotListItem, BallotView },
   data () {
     return {
       show: false,
+      showBallot: false,
+      openedBallot: {},
       voting: false,
       treasury: null,
       statuses: ['voting'],
@@ -22,6 +25,9 @@ export default {
     }
   },
   async mounted () {
+    if (this.$route.params.id) {
+      this.showBallot = true
+    }
     if (this.$route.query) {
       this.treasury = this.$route.query.treasury
     }
@@ -45,6 +51,45 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
+    },
+    openBallot (ballot) {
+      if (this.showBallot) {
+        console.log('closing ballot', ballot)
+        this.showBallot = false
+        return
+      }
+      console.log('opening ballot', ballot)
+      this.$router.push(`/trails/ballots/${ballot.ballot_name}/${Date.now()}`)
+      // the timestamp prevents scroll glitches on the infinite list
+    },
+    isBallotOpened (ballot) {
+      let endTime = new Date(ballot.end_time).getTime()
+      let notExpired = endTime > Date.now()
+      let startTime = new Date(ballot.begin_time).getTime()
+      let isStarted = startTime < Date.now()
+      return notExpired && isStarted
+    },
+    displayWinner (ballot) {
+      if (!ballot.total_voters) return false
+      let winnerValue = -1
+      let winner
+      ballot.options.forEach(option => {
+        if (parseFloat(option.value) > winnerValue) {
+          winner = option.key
+        }
+      })
+      return winner
+    },
+    votingHasBegun (ballot) {
+      let startTime = new Date(ballot.begin_time).getTime()
+      let isStarted = startTime < Date.now()
+      return isStarted
+    },
+    getStartTime (ballot) {
+      return new Date(ballot.begin_time).getTime()
+    },
+    getEndTime (ballot) {
+      return new Date(ballot.end_time).getTime()
     }
   },
   computed: {
@@ -52,6 +97,13 @@ export default {
     ...mapGetters('trails', ['ballots', 'ballotsLoaded', 'treasuriesOptions'])
   },
   watch: {
+    '$route' (to, from) {
+      if (to.params.id !== undefined) {
+        this.showBallot = true
+      } else {
+        this.showBallot = false
+      }
+    },
     treasury: function (val, old) {
       if (val !== old) {
         this.resetBallots()
@@ -113,9 +165,15 @@ q-page.q-pa-lg
     )
       div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
         ballot-list-item(
+          @click.native="openBallot(ballot)"
           v-for="(ballot, index) in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
           :key="index"
           :ballot="ballot"
+          :displayWinner="displayWinner"
+          :isBallotOpened="isBallotOpened(ballot)"
+          :votingHasBegun="votingHasBegun(ballot)"
+          :getStartTime="getStartTime(ballot)"
+          :getEndTime="getEndTime(ballot)"
         )
       template(v-slot:loading)
         .row.justify-center.q-my-md
@@ -133,7 +191,18 @@ q-page.q-pa-lg
       icon="fas fa-plus"
       color="accent"
       @click="show = true"
-      )
+    )
+  q-dialog(full-width v-model="showBallot" :key="$route.params.id + Date.now()" transition-show="slide-up" transition-hide="slide-down").full-width
+    //- div(style="width: 80vw").bg-white
+      //- p test
+    ballot-view(
+      :isBallotOpened="isBallotOpened"
+      :displayWinner="displayWinner"
+      :votingHasBegun="votingHasBegun"
+      :getStartTime="getStartTime"
+      :getEndTime="getEndTime"
+    )
+      //- q-btn(v-close-popup color="secondary").float-right Close
 </template>
 <style lang="sass" scoped>
 .link

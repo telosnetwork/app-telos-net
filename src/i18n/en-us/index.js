@@ -103,7 +103,7 @@ export default {
     },
     trails: {
       ballots: {
-        castVote: 'Cast vote',
+        vote: 'Vote',
         ends: 'Ends',
         starts: 'Starts'
       },
