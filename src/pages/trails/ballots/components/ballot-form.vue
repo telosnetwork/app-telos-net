@@ -14,6 +14,7 @@ export default {
         title: null,
         category: 'poll',
         description: null,
+        IPFS: null,
         treasurySymbol: null,
         votingMethod: '1token1vote',
         maxOptions: 1,
@@ -56,6 +57,7 @@ export default {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
       this.submitting = true
+      if (this.form.IPFS && this.form.IPFS !== null && this.form.IPFS.trim() !== '') this.form.description = `${this.form.description} ${this.form.IPFS}`
       const success = await this.addBallot(this.form)
       this.submitting = false
       if (success) {
@@ -124,6 +126,15 @@ q-dialog(
         label="Description"
         type="textarea"
         :rules="[rules.required]"
+      )
+      q-input(
+        class="q-mb-md"
+        ref="ipfs"
+        v-model="form.IPFS"
+        label="Include a PDF File (IPFS)"
+        placeholder="QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme"
+        hint="Upload a pdf to https://permanentupload.com/ and paste the hash here to include it in your ballot. Only PDF files will work!"
+        :rules="[rules.isValidIPFShash]"
       )
       q-select(
         ref="treasurySymbol"

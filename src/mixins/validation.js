@@ -1,4 +1,5 @@
 import { mapActions } from 'vuex'
+const regex = new RegExp(/Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/, 'm') // ipfs hash detection, detects CIDv0 46 character strings starting with 'Qm'
 
 export const validation = {
   data () {
@@ -15,6 +16,7 @@ export const validation = {
         isToken: val => (val.length >= 2 && val.length <= 6) || this.$t('forms.errors.token'),
         isTokenDecimals: val => (parseInt(val) >= 0 && parseInt(val) <= 9) || this.$t('forms.errors.tokenDecimals'),
         positiveInteger: val => parseInt(val) > 0 || this.$t('forms.errors.positiveInteger'),
+        isValidIPFShash: val => val.match(regex) || 'Invalid IPFS HASH format',
         required: val => !!val || this.$t('forms.errors.required')
       }
     }

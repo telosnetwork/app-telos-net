@@ -6,6 +6,7 @@ import { Lynx } from '@smontero/ual-lynx'
 import { Scatter } from 'ual-scatter'
 import { Sqrl } from '@smontero/ual-sqrl'
 import { TokenPocket } from '@smontero/ual-token-pocket'
+import { Anchor } from 'ual-anchor'
 
 export default async ({ Vue, store }) => {
   const mainChain = {
@@ -23,7 +24,8 @@ export default async ({ Vue, store }) => {
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
-    new TokenPocket([mainChain])
+    new TokenPocket([mainChain]),
+    new Anchor([mainChain], { appName: process.env.APP_NAME })
   ]
 
   const ual = new UAL([mainChain], 'tet-ual', authenticators)

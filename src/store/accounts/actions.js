@@ -61,7 +61,11 @@ export const loginToBackend = async function ({ commit }) {
 export const logout = async function ({ commit }) {
   await PPP.authApi().signOut()
   const { authenticator } = getAuthenticator(this.$ual)
-  authenticator && authenticator.logout()
+  try {
+    authenticator && await authenticator.logout()
+  } catch (error) {
+    console.log('Authenticator logout error', error)
+  }
   commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   localStorage.removeItem('autoLogin')
