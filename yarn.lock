@@ -1651,26 +1651,12 @@
   dependencies:
     "@types/babel-types" "*"
 
-"@types/bn.js@*":
-  version "4.11.6"
-  resolved "https://registry.yarnpkg.com/@types/bn.js/-/bn.js-4.11.6.tgz#c306c70d9358aaea33cd4eda092a742b9505967c"
-  integrity sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/bn.js@^4.11.3":
   version "4.11.5"
   resolved "https://registry.yarnpkg.com/@types/bn.js/-/bn.js-4.11.5.tgz#40e36197433f78f807524ec623afcf0169ac81dc"
   integrity sha512-AEAZcIZga0JgVMHNtl1CprA/hXX7/wPt79AgR4XqaDt7jyj3QWYw6LPoOiznPtugDmlubUnAahMs2PFxGcQrng==
   dependencies:
     "@types/node" "*"
-
-"@types/elliptic@6.4.10":
-  version "6.4.10"
-  resolved "https://registry.yarnpkg.com/@types/elliptic/-/elliptic-6.4.10.tgz#352078ebc911484e30fc0d1eca3e3c865bf0e8f8"
-  integrity sha512-9h+Bw+aNiLzcq9DGstHccNxSsJ5iNId7mzruid7+kwm7F1IGvb4rBOOPo3+twt9ZPhI3y+JJ2m1UfgU8cOEJuQ==
-  dependencies:
-    "@types/bn.js" "*"
 
 "@types/events@*":
   version "3.0.0"
@@ -2013,26 +1999,26 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
-anchor-link-browser-transport@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/anchor-link-browser-transport/-/anchor-link-browser-transport-0.1.1.tgz#0642363fc8e52289402672353d6a8b6d9b3f9e47"
-  integrity sha512-g2NRABLGgSEu2ELfkZsFKZ/zDLe3SLGETyCccISwoH7F7IXe0ZMVh631McGW+Co+HSZ1azJ5CNjFvphciGgcuw==
+anchor-link-browser-transport@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/anchor-link-browser-transport/-/anchor-link-browser-transport-1.0.1.tgz#f1a79ce87c605bfb0734055324b08fa1a50a2d49"
+  integrity sha512-Vj0MTncMAoB2blEAe6bLeW2ov/66vjDjdy61hnuMquSTE9zfPjbrTE/BefWAbwdwzh6GiIBNxPxNzbtssWHayA==
   dependencies:
     qrcode "^1.4.4"
 
-anchor-link@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/anchor-link/-/anchor-link-0.2.1.tgz#9210a4c78f84e6d077d84c22325c5dd291690dd3"
-  integrity sha512-cuXu8vaGFe8QNsyCphmkNuUS9EqvpmxiSdPRlVmkWff11S+fmqFnGlw/Nf8Mm7zDMHwKaAdjeWUI2wWwbYCU7w==
+anchor-link@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/anchor-link/-/anchor-link-1.0.1.tgz#a66412af1f2d8631a987bc39bbe75805b6414bcf"
+  integrity sha512-FEc0NGMGFJF4MOgsA3XooTGGnE73XHY5Mdnpso8WJPaHK0Kas6nk5xHYthD/ddmVXMk2zFXkrPTwQ1crvqUwrQ==
   dependencies:
-    eosio-signing-request "^1.0.2"
+    eosio-signing-request "^1.1.1"
     eosjs "^20.0.0"
     eosjs-ecc "^4.0.7"
     fetch-ponyfill "^6.1.0"
+    isomorphic-ws "^4.0.1"
     pako "^1.0.10"
-    qrcode-terminal "^0.12.0"
-    uuid "^3.3.3"
-    ws "^7.2.1"
+    uuid "^7.0.3"
+    ws "^7.2.3"
 
 ansi-colors@^3.0.0:
   version "3.2.4"
@@ -4480,19 +4466,6 @@ elementtree@0.1.7, elementtree@^0.1.7:
   dependencies:
     sax "1.1.4"
 
-elliptic@6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.0.tgz#2b8ed4c891b7de3200e14412a5b8248c7af505ca"
-  integrity sha512-eFOJTMyCYb7xtE/caJ6JJu+bhi67WCYNbkGSknu20pmM8Ke/bqOfdnZWxyoGN26JgfxTbXrsCkEw4KheCT/KGg==
-  dependencies:
-    bn.js "^4.4.0"
-    brorand "^1.0.1"
-    hash.js "^1.0.0"
-    hmac-drbg "^1.0.0"
-    inherits "^2.0.1"
-    minimalistic-assert "^1.0.0"
-    minimalistic-crypto-utils "^1.0.0"
-
 elliptic@6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
@@ -4572,10 +4545,10 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.0.tgz#68d6084cab1b079767540d80e56a39b423e4abf4"
   integrity sha512-D9f7V0JSRwIxlRI2mjMqufDrRDnx8p+eEOz7aUM9SuvF8gsBzra0/6tbjl1m8eQHrZlYj6PxqE00hZ1SAIKPLw==
 
-eosio-signing-request@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/eosio-signing-request/-/eosio-signing-request-1.0.2.tgz#89b7f9e55a3f812614842858976a4dc0dd617723"
-  integrity sha512-es7iSWcGF2T8/iqo8oAKBv5yIDnr5AGpGs3z+PcRb74Oh3RKbKbD3ibejnIO/PU99T0SyYmROwPG0w+EJWWAGw==
+eosio-signing-request@^1.1.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/eosio-signing-request/-/eosio-signing-request-1.1.2.tgz#846bbc71cc271edbab993e26d1d6c6cce2f6ebca"
+  integrity sha512-/trIwR20u24E58Y/AnAXiNyV5swHXZ+GeRgnQ403gMjAC0gkd7EmRl/dXYiRlhyPIj5uu0p5rEfASX2jCOe//Q==
   dependencies:
     eosjs "^20.0.0"
     fast-sha256 "^1.1.1"
@@ -4594,7 +4567,7 @@ eosjs-ecc@4.0.4:
     ecurve "^1.0.5"
     randombytes "^2.0.5"
 
-eosjs-ecc@^4.0.4, eosjs-ecc@^4.0.7:
+eosjs-ecc@4.0.7, eosjs-ecc@^4.0.4, eosjs-ecc@^4.0.7:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eosjs-ecc/-/eosjs-ecc-4.0.7.tgz#f5246da3b84839fcc237204768ef6e5ea56cc814"
   integrity sha512-uuqhqnrDy9XTpKfkhiZqRDUTCCI9oWBalVK5IosL7kpYwA9I3lm68INYFLyWsHpF2xwHqPql8MrMYJ3zfOn5Qg==
@@ -4658,14 +4631,13 @@ eosjs@20.0.0, eosjs@^20.0.0, eosjs@^20.0.0-56c14a9.0:
     eosjs-ecc "4.0.4"
     text-encoding "0.7.0"
 
-eosjs@21.0.1-rc1:
-  version "21.0.1-rc1"
-  resolved "https://registry.yarnpkg.com/eosjs/-/eosjs-21.0.1-rc1.tgz#671f38bf04cfa0786ef9fef4cab10aa5ca049cde"
-  integrity sha512-/6vnDdgtTO8WdL2v1psFEyMSeUOQZ3gtWkxP8SSKHp1XYla2fTbPJjHW5cM7pvGhExikL2VcAEsDKKgKo1kVLA==
+eosjs@^20.0.3:
+  version "20.0.3"
+  resolved "https://registry.yarnpkg.com/eosjs/-/eosjs-20.0.3.tgz#f3ac1fa119b76dd07bf2825ad27342f6502a533b"
+  integrity sha512-h0WSxsDo7AHz5IzpbQDrzyT/CYmbBDtFiiolTdtGd2FdKXEa6LDER4WbNp4qxCY7kD65KeG3knkGmOOFGbPJxw==
   dependencies:
-    "@types/elliptic" "6.4.10"
     babel-runtime "6.26.0"
-    elliptic "6.5.0"
+    eosjs-ecc "4.0.7"
     text-encoding "0.7.0"
 
 errno@^0.1.3, errno@~0.1.1, errno@~0.1.7:
@@ -10039,11 +10011,6 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qrcode-terminal@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz#bb5b699ef7f9f0505092a3748be4464fe71b5819"
-  integrity sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ==
-
 qrcode@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.4.4.tgz#f0c43568a7e7510a55efc3b88d9602f71963ea83"
@@ -11921,16 +11888,16 @@ u2f-api@0.2.7:
   resolved "https://registry.yarnpkg.com/u2f-api/-/u2f-api-0.2.7.tgz#17bf196b242f6bf72353d9858e6a7566cc192720"
   integrity sha512-fqLNg8vpvLOD5J/z4B6wpPg4Lvowz1nJ9xdHcCzdUPKcFE/qNCceV2gNZxSJd5vhAZemHr/K/hbzVA0zxB5mkg==
 
-ual-anchor@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/ual-anchor/-/ual-anchor-0.1.1.tgz#cfd936264a665b603a0b1391e8572caa135e12c0"
-  integrity sha512-TXKI3GCmr2wzG4Rgw4WV3IB3vdJ4QaCtO5vidzCLVOI6nUKIHo5MH7ZwcKnMXKzaaKmj/g9aL1VHHFl31c+lew==
+ual-anchor@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ual-anchor/-/ual-anchor-0.3.0.tgz#09cf2fb08f47ffc7a92c22e27f64c547709c8240"
+  integrity sha512-gLZ1IJoH3CwwENp6kAC2S/UqIlM9PoUl02Na8iKLBh38Gz41116jFO+r4FNvIVOzOVYs70yfutafYaM2bTQnLA==
   dependencies:
-    anchor-link "^0.2.1"
-    anchor-link-browser-transport "^0.1.1"
+    anchor-link "^1.0.0"
+    anchor-link-browser-transport "^1.0.0"
     elliptic "6.5.2"
-    eosjs "21.0.1-rc1"
-    universal-authenticator-library "0.1.4"
+    eosjs "^20.0.3"
+    universal-authenticator-library "0.2.0"
 
 ual-ledger@^0.1.3:
   version "0.1.3"
@@ -12058,6 +12025,11 @@ universal-authenticator-library@0.1.4, universal-authenticator-library@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/universal-authenticator-library/-/universal-authenticator-library-0.1.4.tgz#e3f31d743780077184475089a8a9b57300316161"
   integrity sha512-1nU8W7yAc+ZQ+MlJA1gGKnGylSNyyaA2wC4Zy1RqtJo+asDYcNTc4gAySYp19TYhfdF0WwQXeve7SVuodbMHJA==
+
+universal-authenticator-library@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/universal-authenticator-library/-/universal-authenticator-library-0.2.0.tgz#6b609e5a3d6c8c2ad209ccc9f06f4bb6be4bc807"
+  integrity sha512-uukf31lXIB/nRaiO/Z1Aag48ZLWtiX3kd05XIz6QWwjuQbprLOzgesGgMeVxQNTCgTDHGxwtE/mzkZ+5R1x8qw==
 
 universalify@^0.1.0:
   version "0.1.2"
@@ -12215,10 +12187,10 @@ uuid@^3.0.1, uuid@^3.2.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
-uuid@^3.3.3:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
-  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+uuid@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
+  integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
@@ -12821,10 +12793,10 @@ ws@^6.0.0, ws@^6.1.0, ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
-  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
+ws@^7.2.3:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.3.tgz#a5411e1fb04d5ed0efee76d26d5c46d830c39b46"
+  integrity sha512-HTDl9G9hbkNDk98naoR/cHDws7+EyYMOdL1BmjsZXRUjf7d+MficC4B7HLUPlSiho0vg+CWKrGIt/VJBd1xunQ==
 
 xhr@^2.0.1, xhr@^2.2.0:
   version "2.5.0"
