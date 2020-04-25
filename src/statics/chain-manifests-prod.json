@@ -21,6 +21,10 @@
                         "action": ""
                     },
                     {
+                        "contract": "telos.decide",
+                        "action": ""
+                    },
+                    {
                         "contract": "safe.poc.tbs",
                         "action": ""
                     }
