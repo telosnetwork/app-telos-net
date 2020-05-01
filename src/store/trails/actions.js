@@ -3,8 +3,8 @@ import { supplyToAsset, supplyToDecimals, supplyToSymbol } from '../../utils/ass
 // Fees
 export const fetchFees = async function ({ commit }) {
   const result = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'config',
     limit: 1
   })
@@ -15,8 +15,8 @@ export const fetchFees = async function ({ commit }) {
 // Ballots
 export const fetchBallots = async function ({ commit, state }, query) {
   const result = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'ballots',
     limit: state.ballots.list.pagination.limit,
     index_position: query.index || 0,
@@ -27,8 +27,8 @@ export const fetchBallots = async function ({ commit, state }, query) {
 
   for await (const ballot of result.rows) {
     const treasury = await this.$api.getTableRows({
-      code: 'trailservice',
-      scope: 'trailservice',
+      code: 'telos.decide',
+      scope: 'telos.decide',
       table: 'treasuries',
       limit: 1,
       lower_bound: supplyToSymbol(ballot.treasury_symbol),
@@ -44,8 +44,8 @@ export const fetchBallots = async function ({ commit, state }, query) {
 
 export const fetchBallot = async function ({ commit }, ballot) {
   const result = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'ballots',
     limit: 1,
     lower_bound: ballot,
@@ -53,8 +53,8 @@ export const fetchBallot = async function ({ commit }, ballot) {
   })
 
   const treasury = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'treasuries',
     limit: 1,
     lower_bound: supplyToSymbol(result.rows[0].treasury_symbol),
@@ -82,13 +82,13 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         name: 'transfer',
         data: {
           from: rootState.accounts.account,
-          to: 'trailservice',
+          to: 'telos.decide',
           quantity: deposit,
           memo: 'fees-deposit'
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'newballot',
         data: {
           ballot_name: ballotName,
@@ -100,7 +100,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'editdetails',
         data: {
           ballot_name: ballotName,
@@ -110,7 +110,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'editminmax',
         data: {
           ballot_name: ballotName,
@@ -119,7 +119,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'openvoting',
         data: {
           ballot_name: ballotName,
@@ -148,7 +148,7 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
 
   try {
     const actions = [{
-      account: 'trailservice',
+      account: 'telos.decide',
       name: 'castvote',
       data: {
         voter: rootState.accounts.account,
@@ -178,7 +178,7 @@ export const registerVoter = async function ({ commit, state, rootState }, suppl
 
   try {
     const actions = [{
-      account: 'trailservice',
+      account: 'telos.decide',
       name: 'regvoter',
       data: {
         voter: rootState.accounts.account,
@@ -203,14 +203,14 @@ export const registerVoter = async function ({ commit, state, rootState }, suppl
 // Treasuries
 export const fetchTreasuries = async function ({ commit, state, rootState }) {
   const result = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'treasuries',
     limit: state.treasuries.list.pagination.limit
   })
 
   const voter = await this.$api.getTableRows({
-    code: 'trailservice',
+    code: 'telos.decide',
     scope: rootState.accounts.account,
     table: 'voters',
     limit: 1000
@@ -225,8 +225,8 @@ export const fetchTreasuries = async function ({ commit, state, rootState }) {
 
 export const fetchTreasury = async function ({ commit }, treasury) {
   const result = await this.$api.getTableRows({
-    code: 'trailservice',
-    scope: 'trailservice',
+    code: 'telos.decide',
+    scope: 'telos.decide',
     table: 'treasuries',
     limit: 1,
     lower_bound: treasury,
@@ -249,13 +249,13 @@ export const addTreasury = async function ({ commit, state, rootState }, { manag
         name: 'transfer',
         data: {
           from: rootState.accounts.account,
-          to: 'trailservice',
+          to: 'telos.decide',
           quantity: deposit,
           memo: 'fees-deposit'
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'newtreasury',
         data: {
           manager,
@@ -264,7 +264,7 @@ export const addTreasury = async function ({ commit, state, rootState }, { manag
         }
       },
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'edittrsinfo',
         data: {
           treasury_symbol: supplyToAsset(maxSupply),
@@ -295,7 +295,7 @@ export const editTreasury = async function ({ commit }, { title, description, tr
   try {
     const actions = [
       {
-        account: 'trailservice',
+        account: 'telos.decide',
         name: 'edittrsinfo',
         data: {
           treasury_symbol: supplyToAsset(treasury.max_supply),
@@ -325,7 +325,7 @@ export const mint = async function ({ commit }, { to, quantity, memo, supply }) 
   }
   try {
     const actions = [{
-      account: 'trailservice',
+      account: 'telos.decide',
       name: 'mint',
       data: {
         to,
