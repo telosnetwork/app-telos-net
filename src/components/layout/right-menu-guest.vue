@@ -1,13 +1,20 @@
 <script>
 export default {
-  name: 'right-menu-guest'
+  name: 'right-menu-guest',
+  methods: {
+    loginClick () {
+      this.$router.push({
+        path: '/login/', query: { returnUrl: this.$route.path }
+      })
+    }
+  }
 }
 </script>
 
 <template lang="pug">
 div
   q-btn.q-mr-sm(
-    to="/login"
+    @click='loginClick'
     :label="$t('pages.index.buttons.login')"
     color="accent"
     text-color="black"
@@ -20,6 +27,4 @@ div
   )
 </template>
 
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>
