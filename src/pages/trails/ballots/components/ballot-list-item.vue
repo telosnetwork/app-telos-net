@@ -95,7 +95,7 @@ div.col-auto
     q-card-section().q-pb-none.cursor-pointer
       div.text-section.row
         span.link.text-subtitle2.text-weight-bolder.ellipsis {{ ballot.title || "Untitled Ballot" }}
-        div.ellipsis-3-lines {{ ballot.description + ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }}
+        div.ellipsis-3-lines {{ ballot.description || "No description" }}
 
     q-card-section.voting-section.bg-grey-1
 
@@ -103,8 +103,8 @@ div.col-auto
         q-scroll-area(horizontal style="height: 40px;").rounded-borders.row.justify-end
           div.row.no-wrap.q-mb-sm
             q-chip(v-for="(option, index) in ballot.options" :key="index" dense outline :color="displayWinner(ballot) ? displayWinner(ballot) === ballot.options[index].key ? 'green' : 'red' : ''" :icon="displayWinner(ballot) === ballot.options[index].key ? 'done' : ''").capitalize {{ `${ballot.options[index].key}: ` }}
-              span(v-if="ballot.total_voters > 0").q-pl-xs {{ Number(ballot.options[index].value.split(' ')[0]) / Number(ballot.total_raw_weight.split(' ')[0]) * 100 }}%
-              span(v-else).q-pl-xs 0%
+              span(v-if="ballot.total_voters > 0").q-pl-xs {{ (Number(ballot.options[index].value.split(' ')[0]) / Number(ballot.total_raw_weight.split(' ')[0]) * 100).toFixed(2) }}%
+              span(v-else).q-pl-xs 0.00%
 </template>
 
 <style lang="sass">

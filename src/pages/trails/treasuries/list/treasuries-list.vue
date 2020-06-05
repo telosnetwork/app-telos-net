@@ -19,14 +19,18 @@ export default {
     await this.fetchFees()
     this.$refs.infiniteScroll.reset()
     this.$refs.infiniteScroll.poll()
+    await this.maybeLoadTreasuries()
   },
   methods: {
     ...mapActions('trails', ['fetchTreasuries', 'fetchFees']),
     ...mapMutations('trails', ['resetTreasuries']),
     async onLoad (index, done) {
+      await this.maybeLoadTreasuries()
+      done()
+    },
+    async maybeLoadTreasuries () {
       if (!this.treasuriesLoaded) {
         await this.fetchTreasuries()
-        done()
       } else {
         this.$refs.infiniteScroll.stop()
       }

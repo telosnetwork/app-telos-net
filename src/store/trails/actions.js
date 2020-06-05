@@ -25,17 +25,24 @@ export const fetchBallots = async function ({ commit, state }, query) {
     upper_bound: query.upper
   })
 
-  for await (const ballot of result.rows) {
-    const treasury = await this.$api.getTableRows({
-      code: 'telos.decide',
-      scope: 'telos.decide',
-      table: 'treasuries',
-      limit: 1,
-      lower_bound: supplyToSymbol(ballot.treasury_symbol),
-      upper_bound: supplyToSymbol(ballot.treasury_symbol)
-    })
+  let treasuries = {}
 
-    ballot.treasury = treasury.rows[0]
+  for await (const ballot of result.rows) {
+    let supply = supplyToSymbol(ballot.treasury_symbol)
+
+    if (!treasuries.hasOwnProperty(supply)) {
+      const treasury = await this.$api.getTableRows({
+        code: 'telos.decide',
+        scope: 'telos.decide',
+        table: 'treasuries',
+        limit: 1,
+        lower_bound: supply,
+        upper_bound: supply
+      })
+      treasuries[supply] = treasury.rows[0]
+    }
+
+    ballot.treasury = treasuries[supply]
   }
   result.more = false // temp fix to stop an infinite loop of requests if one treasury goes over the 100 limit
   // console.log('addBallots results', result)
