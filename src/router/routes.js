@@ -5,14 +5,14 @@ const routes = [
   { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty', guest: true } },
   // Trails
-  { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: true } },
-  { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: true } },
+  { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
   // Trails
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
   // Testnet
-  { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'guest', title: 'pages.testnetRotation.title', guest: true } },
-  { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title', guest: true } },
+  { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'guest', title: 'pages.testnetRotation.title', guest: false } },
+  { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title', guest: false } },
 
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },
