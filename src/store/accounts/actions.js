@@ -85,10 +85,10 @@ export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
 export const isAccountFree = async function (context, accountName) {
   try {
     await this.$axios.get(`/v1/accounts/${accountName}`)
-    return false
+    return true
   } catch (e) {
     // Catch the 404 error if the account doesn't exist
-    return true
+    return false
   }
 }
 
