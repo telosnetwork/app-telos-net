@@ -8,9 +8,17 @@ export const http = axios.create({
   }
 })
 
+function getErrorMessage (error) {
+  if (error.response.data.hasOwnProperty('message')) {
+    return error.response.data.message
+  }
+
+  return error.response.data
+}
+
 http.interceptors.response.use(
   response => response.data || {},
-  error => throw new Error(error.response.data.message || null)
+  error => throw new Error(getErrorMessage(error))
 )
 
 export default ({ Vue, store }) => {
