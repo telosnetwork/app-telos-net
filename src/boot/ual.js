@@ -1,6 +1,6 @@
 import { UAL } from 'universal-authenticator-library'
 import { EOSIOAuth } from '@smontero/ual-eosio-reference-authenticator'
-import { KeycatAuthenticator } from '@smontero/ual-keycat'
+import { KeycatAuthenticator } from '@telosnetwork/ual-telos-keycat'
 import { Ledger } from 'ual-ledger'
 import { Lynx } from '@smontero/ual-lynx'
 import { Scatter } from 'ual-scatter'
@@ -17,10 +17,13 @@ export default async ({ Vue, store }) => {
       port: process.env.NETWORK_PORT
     }]
   }
+
+  const keycatMainChain = Object.assign({ origin: process.env.KEYCAT_ORIGIN }, mainChain)
+
   const authenticators = [
     new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' }),
     new Sqrl([mainChain], { appName: process.env.APP_NAME }),
-    new KeycatAuthenticator([mainChain]),
+    new KeycatAuthenticator([keycatMainChain]),
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
