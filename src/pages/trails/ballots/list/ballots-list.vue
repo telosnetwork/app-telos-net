@@ -11,6 +11,7 @@ export default {
     return {
       show: false,
       showBallot: false,
+      statusChange: false,
       timeAtMount: undefined,
       openedBallot: {},
       voting: false,
@@ -27,6 +28,7 @@ export default {
   },
   async mounted () {
     this.timeAtMount = Date.now()
+    this.statusChange = false
     if (this.$route.params.id) {
       this.showBallot = true
     }
@@ -34,13 +36,14 @@ export default {
       this.treasury = this.$route.query.treasury
     }
     this.resetBallots()
+
     await this.fetchFees()
     this.$refs.infiniteScroll.reset()
     this.$refs.infiniteScroll.poll()
   },
   methods: {
-    ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote', 'fetchTreasuries']),
-    ...mapMutations('trails', ['resetBallots']),
+    ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote', 'fetchTreasuries', 'fetchBallotsByStatus']),
+    ...mapMutations('trails', ['resetBallots', 'stopAddBallots']),
     async onLoad (index, done) {
       if (!this.ballotsLoaded) {
         const filter = {
@@ -49,6 +52,7 @@ export default {
           upper: this.treasury || (this.$route.query && this.$route.query.treasury)
         }
         await this.fetchBallots(filter)
+
         done()
       } else {
         this.$refs.infiniteScroll.stop()
@@ -108,6 +112,11 @@ export default {
       }
     },
     treasury: function (val, old) {
+      if (val !== old) {
+        this.resetBallots()
+      }
+    },
+    statuses: function (val, old) {
       if (val !== old) {
         this.resetBallots()
       }
