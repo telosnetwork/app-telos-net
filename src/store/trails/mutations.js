@@ -18,6 +18,17 @@ export const addBallots = (state, { rows, more }) => {
   state.ballots.list.loaded = !more
 }
 
+export const setBallots = (state, { rows, more }) => {
+  if (rows) {
+    state.ballots.list.data = rows
+  }
+  state.ballots.list.loaded = !more
+}
+
+export const stopAddBallots = (state) => {
+  state.ballots.list.loaded = true
+}
+
 export const setBallot = (state, ballot) => {
   state.ballots.view.ballot = ballot
 }
