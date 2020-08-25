@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { PublicFields, RootFields } from '@smontero/ppp-common'
+// import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
@@ -220,22 +220,12 @@ export default {
         .then((v) => this.getImg(v))
         .catch(e => console.log(e))
 
-      // console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
-
       const mData = {
-        [RootFields.EMAIL]: this.email,
-        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `${this.countryCodeTel}${this.smsNumber}`,
-        [RootFields.COMM_PREF]: this.methodComm,
-        publicData: {
-          [PublicFields.NAME]: this.name,
-          [PublicFields.TIME_ZONE]: this.country,
-          [PublicFields.AVATAR_IMAGE]: this.imgKey,
-          [PublicFields.S3_IDENTITY]: this.identity,
-          [PublicFields.TAGS]: this.tags,
-          [PublicFields.BIO]: this.presentationSanitized,
-          [PublicFields.CUSTOM_FIELDS]: this.customFields
-        }
+        display_name: this.name,
+        bio: this.presentationSanitized,
+        avatar: ''
       }
+
       try {
         this.showIsLoading(true)
         await this.signUp(mData)

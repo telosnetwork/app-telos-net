@@ -1,10 +1,24 @@
 import PPP from '@smontero/ppp-client-api'
 
-export const signUp = async function ({ state }, mData) {
-  PPP.setActiveUser(this.$ualUser)
-  const profileApi = PPP.profileApi()
-  console.log('Logeado con ppp')
-  return profileApi.register(mData)
+export const signUp = async function ({ commit }, mData) {
+  const newProfileAction = [{
+    account: 'profiles',
+    name: 'newprofile',
+    data: {
+      account: this.$ualUser.accountName,
+      ...mData
+    }
+  }]
+
+  let transaction = null
+
+  try {
+    transaction = await this.$api.signTransaction(newProfileAction)
+  } catch (e) {
+    console.log(e)
+  }
+
+  return transaction
 }
 
 export const searchProfiles = async function ({ commit }, options = {}) {
