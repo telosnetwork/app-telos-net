@@ -39,10 +39,21 @@ export const clearProfilesList = function ({ commit }, options = {}) {
 }
 
 export const getProfile = async function ({ commit }) {
-  const profileApi = PPP.profileApi()
   try {
-    const profile = await profileApi.getProfile()
+    const profileResult = await this.$api.getTableRows({
+      code: 'profiles',
+      scope: 'profiles',
+      table: 'profiles',
+      limit: 1,
+      index_position: 1,
+      key_type: 'i64',
+      lower_bound: this.$ualUser.accountName,
+      upper_bound: this.$ualUser.accountName
+    })
+
+    const profile = profileResult.rows[0]
     commit('setProfile', profile)
+
     return profile
   } catch (error) {
     commit('general/setErrorMsg', error.message || error, { root: true })
