@@ -1,99 +1,100 @@
 <template lang='pug'>
 .row.justify-center.items-center
   .col-xs-11.col-md-8.q-gutter-y-md.q-pa-md
-    .row.justify-center
+    //- .row.justify-center
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
-      edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
+      //- edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
       //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
+      q-input(filled, v-model='avatar', :label="$t('pages.signUp.form.avatar')")
       q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .small-margin
         p.text-weight-thin.small-margin {{$t('pages.signUp.form.presentation')}}
         q-editor(v-model="presentation" min-height="5rem")
       //- q-input(filled, v-model='lastName', :label="$t('pages.signUp.form.lastName')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-      .row.justify-center.q-mt-sm
-        p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
-      .row.justify-center.q-mb-md
-        q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
-      .row.q-col-gutter-x-xs.q-col-gutter-y-lg
-        .col-xs-12.col-md-3
-          q-select(
-              filled
-              v-if="phoneOptions.length > 0",
-              v-model="countryCodeTel"
-              :options="phoneOptions"
-              option-value="dialCode"
-              :option-label="(option) => `${option.name} (${option.dialCode})`"
-              :label="$t('pages.accounts.add.forms.phoneCode')"
-              :rules='[validationCodeSMS]'
-              emit-value
-              map-options
-            )
-        .col
-          q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
-      q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
-      q-select(
-        v-if="timeZoneOptions.length > 0",
-        filled,
-        v-model='country',
-        use-input, input-debounce='0',
-        :label="$t('pages.signUp.form.timeZone')",
-        :options='optionsCountriesFiltered',
-        @filter='filterCountries',
-        behavior='dialog',
-        option-value="value",
-        option-label="text",
-        emit-value,
-        map-options
-      )
-        template(v-slot:no-option)
-          q-item
-            q-item-section.text-grey {{ $t('lists.empty.countries') }}
-      q-select(
-        :label="$t('pages.signUp.form.tags')",
-        :hint="$t('forms.hints.pressToAddHobbie')",
-        filled,
-        v-model='tags',
-        use-input,
-        use-chips,
-        multiple,
-        hide-dropdown-icon,
-        input-debounce='0',
-        new-value-mode='add-unique',
-      )
-      div(v-for='(cField, index) in customFields', :key='index')
-        q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
-          template(v-slot:append)
-            q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
-            q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
-      .row
-        q-btn(:label="$t('pages.signUp.form.addCustomField')", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
+      //- .row.justify-center.q-mt-sm
+      //-   p.text-weight-thin {{$t('pages.signUp.form.preferMethodComm')}}
+      //- .row.justify-center.q-mb-md
+      //-   q-option-group.items-center(:options='commMeth', :label="$t('pages.signUp.form.preferMethodComm')", type='radio', v-model='methodComm', inline)
+      //- .row.q-col-gutter-x-xs.q-col-gutter-y-lg
+      //-   .col-xs-12.col-md-3
+      //-     q-select(
+      //-         filled
+      //-         v-if="phoneOptions.length > 0",
+      //-         v-model="countryCodeTel"
+      //-         :options="phoneOptions"
+      //-         option-value="dialCode"
+      //-         :option-label="(option) => `${option.name} (${option.dialCode})`"
+      //-         :label="$t('pages.accounts.add.forms.phoneCode')"
+      //-         :rules='[validationCodeSMS]'
+      //-         emit-value
+      //-         map-options
+      //-       )
+      //-   .col
+      //-     q-input(filled, v-model='smsNumber', :label="$t('pages.signUp.form.sms')", :hint='smsHint', mask='(###) ### - ####', unmasked-value, lazy-rules, :rules='[validationSMS]')
+      //- q-input(filled, v-model='email', :label="$t('pages.signUp.form.email')", :hint='emailHint', type='email', lazy-rules, :rules='[validationEMAIL]')
+      //- q-select(
+      //-   v-if="timeZoneOptions.length > 0",
+      //-   filled,
+      //-   v-model='country',
+      //-   use-input, input-debounce='0',
+      //-   :label="$t('pages.signUp.form.timeZone')",
+      //-   :options='optionsCountriesFiltered',
+      //-   @filter='filterCountries',
+      //-   behavior='dialog',
+      //-   option-value="value",
+      //-   option-label="text",
+      //-   emit-value,
+      //-   map-options
+      //- )
+      //-   template(v-slot:no-option)
+      //-     q-item
+      //-       q-item-section.text-grey {{ $t('lists.empty.countries') }}
+      //- q-select(
+      //-   :label="$t('pages.signUp.form.tags')",
+      //-   :hint="$t('forms.hints.pressToAddHobbie')",
+      //-   filled,
+      //-   v-model='tags',
+      //-   use-input,
+      //-   use-chips,
+      //-   multiple,
+      //-   hide-dropdown-icon,
+      //-   input-debounce='0',
+      //-   new-value-mode='add-unique',
+      //- )
+      //- div(v-for='(cField, index) in customFields', :key='index')
+      //-   q-input(filled, v-model='customFields[index].value', :label="customFields[index].label", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      //-     template(v-slot:append)
+      //-       q-btn(round, dense, flat, icon='edit', color='green', @click='openEditCustomField(index)')
+      //-       q-btn(round, dense, flat, icon='delete', color='red', @click='deleteCustomField(index)')
+      //- .row
+      //-   q-btn(:label="$t('pages.signUp.form.addCustomField')", type='button', color='green', size='14px', flat, rounded, @click="openCustomFieldModal")
       q-btn(:label="$t('pages.signUp.form.btnSave')", type='submit', color='primary')
-      q-dialog(v-model='addingNewField', persistent, @hide='editingCustomField = false')
-        q-card(v-if="!editingCustomField")
-          q-card-section
-            .text-h6
-              | {{ $t('pages.signUp.form.newCustomFieldName') }}
-          q-card-section
-            q-input(dense, v-model="newFieldName", autofocus)
-          q-card-section
-            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
-            q-btn(flat, :label="$t('pages.signUp.form.addCustomField')", v-close-popup, @click='addCustomField')
-        q-card(v-if="editingCustomField")
-          q-card-section
-            .text-h6
-              | {{ $t('pages.signUp.form.editCustomFieldName') }}
-          q-card-section
-            q-input(dense, v-model="newFieldName", autofocus)
-          q-card-section
-            q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
-            q-btn(flat, :label="$t('common.buttons.save')", v-close-popup, @click='editCustomFieldName')
+      //- q-dialog(v-model='addingNewField', persistent, @hide='editingCustomField = false')
+      //-   q-card(v-if="!editingCustomField")
+      //-     q-card-section
+      //-       .text-h6
+      //-         | {{ $t('pages.signUp.form.newCustomFieldName') }}
+      //-     q-card-section
+      //-       q-input(dense, v-model="newFieldName", autofocus)
+      //-     q-card-section
+      //-       q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+      //-       q-btn(flat, :label="$t('pages.signUp.form.addCustomField')", v-close-popup, @click='addCustomField')
+      //-   q-card(v-if="editingCustomField")
+      //-     q-card-section
+      //-       .text-h6
+      //-         | {{ $t('pages.signUp.form.editCustomFieldName') }}
+      //-     q-card-section
+      //-       q-input(dense, v-model="newFieldName", autofocus)
+      //-     q-card-section
+      //-       q-btn(flat, :label="$t('common.buttons.cancel')", v-close-popup)
+      //-       q-btn(flat, :label="$t('common.buttons.save')", v-close-popup, @click='editCustomFieldName')
 
       //- q-btn.q-ml-sm(label='Reset', type='reset', color='primary', flat)
 </template>
 
 <script>
-import { PublicFields, RootFields } from '@smontero/ppp-common'
+// import { PublicFields, RootFields } from '@smontero/ppp-common'
 import CommMethods from '@smontero/ppp-common/dist/const/CommMethods'
 import { mapActions } from 'vuex'
 import S3Image from '~/components/s3-image'
@@ -113,6 +114,7 @@ export default {
     return {
       imgKey: '',
       identity: '',
+      avatar: '',
       name: '',
       smsNumber: '',
       email: '',
@@ -145,18 +147,20 @@ export default {
       return this.$store.state.profiles.myProfile
     },
     smsHint () {
-      if (this.myProfile !== undefined) {
-        if (this.myProfile.smsInfo.exists === true) {
-          return `${this.$t('pages.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
-        } else return 'SMS'
-      } else return this.$t('pages.signUp.form.currentSms')
+      // if (this.myProfile !== undefined) {
+      //   if (this.myProfile.smsInfo.exists === true) {
+      //     return `${this.$t('pages.signUp.form.currentSms')} : ${this.myProfile.smsInfo.mask}`
+      //   } else return 'SMS'
+      // } else return this.$t('pages.signUp.form.currentSms')
+      return ''
     },
     emailHint () {
-      if (this.myProfile !== undefined) {
-        if (this.myProfile.emailInfo.exists === true) {
-          return `${this.$t('pages.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
-        } else return this.$t('pages.signUp.form.currentEmail')
-      } else return this.$t('pages.signUp.form.currentEmail')
+      // if (this.myProfile !== undefined) {
+      //   if (this.myProfile.emailInfo.exists === true) {
+      //     return `${this.$t('pages.signUp.form.currentEmail')} : ${this.myProfile.emailInfo.mask}`
+      //   } else return this.$t('pages.signUp.form.currentEmail')
+      // } else return this.$t('pages.signUp.form.currentEmail')
+      return ''
     },
     countries () {
       const countries = []
@@ -179,14 +183,15 @@ export default {
     this.showIsLoading(true)
     const response = await this.getProfile()
     if (response !== undefined) {
-      this.name = response.publicData.name
-      this.presentation = response.publicData.bio
-      this.country = response.publicData.timeZone
-      this.tags = response.publicData.tags
-      this.imgKey = response.publicData.avatarImage
-      this.identity = response.publicData.s3Identity
-      this.methodComm = response.commPref
-      this.customFields = response.publicData.customFields ? response.publicData.customFields : []
+      this.avatar = response.avatar
+      this.name = response.display_name
+      this.presentation = response.bio
+      this.country = ''
+      this.tags = ''
+      this.imgKey = response.avatar
+      this.identity = ''
+      this.methodComm = ''
+      this.customFields = null
     }
     this.showIsLoading(false)
   },
@@ -197,11 +202,7 @@ export default {
   methods: {
     ...mapActions('profiles', ['signUp', 'searchProfiles', 'getProfile']),
     onSubmit () {
-      if (this.methodComm === null) {
-        this.showErrorMsg('You must choose one prefer method communication')
-      } else {
-        this.doSignup()
-      }
+      this.doSignup()
     },
     async getImg (blob) {
       const profileApi = PPP.profileApi()
@@ -216,26 +217,16 @@ export default {
     },
     async doSignup () {
       this.showIsLoading(true)
-      await this.$refs.mEditImage.getBlob()
-        .then((v) => this.getImg(v))
-        .catch(e => console.log(e))
-
-      // console.log('New number', `${this.countryCodeTel}${this.smsNumber}`)
+      // await this.$refs.mEditImage.getBlob()
+      //   .then((v) => this.getImg(v))
+      //   .catch(e => console.log(e))
 
       const mData = {
-        [RootFields.EMAIL]: this.email,
-        [RootFields.SMS_NUMBER]: this.smsNumber === '' ? this.smsNumber : `${this.countryCodeTel}${this.smsNumber}`,
-        [RootFields.COMM_PREF]: this.methodComm,
-        publicData: {
-          [PublicFields.NAME]: this.name,
-          [PublicFields.TIME_ZONE]: this.country,
-          [PublicFields.AVATAR_IMAGE]: this.imgKey,
-          [PublicFields.S3_IDENTITY]: this.identity,
-          [PublicFields.TAGS]: this.tags,
-          [PublicFields.BIO]: this.presentationSanitized,
-          [PublicFields.CUSTOM_FIELDS]: this.customFields
-        }
+        display_name: this.name,
+        bio: this.presentationSanitized,
+        avatar: this.avatar
       }
+
       try {
         this.showIsLoading(true)
         await this.signUp(mData)
@@ -249,6 +240,7 @@ export default {
       }
     },
     onReset () {
+      this.avatar = null
       this.name = null
       this.age = null
       this.smsNumber = null

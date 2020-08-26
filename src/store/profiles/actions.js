@@ -1,10 +1,24 @@
 import PPP from '@smontero/ppp-client-api'
 
-export const signUp = async function ({ state }, mData) {
-  PPP.setActiveUser(this.$ualUser)
-  const profileApi = PPP.profileApi()
-  console.log('Logeado con ppp')
-  return profileApi.register(mData)
+export const signUp = async function ({ commit }, mData) {
+  const newProfileAction = [{
+    account: 'profiles',
+    name: 'newprofile',
+    data: {
+      account: this.$ualUser.accountName,
+      ...mData
+    }
+  }]
+
+  let transaction = null
+
+  try {
+    transaction = await this.$api.signTransaction(newProfileAction)
+  } catch (e) {
+    console.log(e)
+  }
+
+  return transaction
 }
 
 export const searchProfiles = async function ({ commit }, options = {}) {
@@ -25,10 +39,21 @@ export const clearProfilesList = function ({ commit }, options = {}) {
 }
 
 export const getProfile = async function ({ commit }) {
-  const profileApi = PPP.profileApi()
   try {
-    const profile = await profileApi.getProfile()
+    const profileResult = await this.$api.getTableRows({
+      code: 'profiles',
+      scope: 'profiles',
+      table: 'profiles',
+      limit: 1,
+      index_position: 1,
+      key_type: 'i64',
+      lower_bound: this.$ualUser.accountName,
+      upper_bound: this.$ualUser.accountName
+    })
+
+    const profile = profileResult.rows[0]
     commit('setProfile', profile)
+
     return profile
   } catch (error) {
     commit('general/setErrorMsg', error.message || error, { root: true })

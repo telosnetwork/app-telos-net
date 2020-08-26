@@ -136,6 +136,7 @@ export default {
     },
     signUp: {
       form: {
+        avatar: 'Avatar',
         presentation: 'Bio',
         name: 'Name',
         firstName: 'First Name',
