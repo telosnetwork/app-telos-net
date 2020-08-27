@@ -93,6 +93,7 @@ import { CommMethods } from '@smontero/ppp-common'
 import S3Img from '~/components/s3-image.vue'
 // import { countriesLang } from '~/mixins/countries'
 import { timeZones } from '~/mixins/time-zones'
+import { mapActions } from 'vuex'
 export default {
   name: 'profile-detail',
   components: { S3Img },
@@ -119,7 +120,14 @@ export default {
       } else return ''
     }
   },
-  beforeCreate () {
+  async beforeMount () {
+    try {
+      this.showIsLoading(true)
+      await this.getProfile()
+    } catch (e) {
+      console.log(e)
+    }
+    this.showIsLoading(false)
     if (!this.$store.getters['profiles/isRegistered']) {
       this.$router.push({ name: 'userRegister' })
     }
@@ -128,6 +136,7 @@ export default {
     // this.$store.commit('profiles/setSelectedProfile', [])
   },
   methods: {
+    ...mapActions('profiles', ['getProfile']),
     goToChat () {
       // this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, avatarImage: this.Profile.publicData.avatarImage, s3Identity: this.Profile.publicData.s3Identity })
       // this.$router.push({ name: 'chat' })
