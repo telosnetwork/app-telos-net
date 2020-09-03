@@ -19,12 +19,10 @@ export default async ({ Vue, store }) => {
     }]
   }
 
-  const keycatMainChain = Object.assign({ origin: process.env.KEYCAT_ORIGIN }, mainChain)
-
   const authenticators = [
     new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' }),
     new Sqrl([mainChain], { appName: process.env.APP_NAME }),
-    new KeycatAuthenticator([keycatMainChain]),
+    new KeycatAuthenticator([mainChain]),
     new Ledger([mainChain]),
     new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
