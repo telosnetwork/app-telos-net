@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import PPP from '@smontero/ppp-client-api'
+// import PPP from '@smontero/ppp-client-api'
 
 import routes from './routes'
 import Croppa from 'vue-croppa'
@@ -25,6 +25,7 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  /*
   Router.beforeEach(async (to, from, next) => {
     // Verify registered users
     if (to.matched.some(record => !record.meta.guest)) {
@@ -53,6 +54,7 @@ export default function ({ store }) {
       next()
     }
   })
+  */
 
   return Router
 }

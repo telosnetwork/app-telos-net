@@ -123,7 +123,7 @@ export default {
     index: {
       buttons: {
         createAccount: 'Create account',
-        login: 'Login with Telos'
+        login: 'Login'
       },
       router: {
         chat: 'Chat',

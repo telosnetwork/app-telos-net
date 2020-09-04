@@ -43,6 +43,8 @@ export default {
 q-page.flex.flex-center
   q-card
     q-card-section
+      div.center.text-h4 Testnet faucet
+    q-card-section
       q-input.q-mb-lg(
         ref="account_name"
         v-model="form.account_name"
