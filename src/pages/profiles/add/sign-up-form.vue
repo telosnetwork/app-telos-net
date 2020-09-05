@@ -5,9 +5,11 @@
       //- s3-image.S3Img(:img-key='imgKey', :identity='identity')
       //- edit-image(:img-key='imgKey', :identity='identity', ref="mEditImage")
     q-form.q-gutter-y-md(@submit='onSubmit', @reset='onReset')
+      div.text-h4.q-pl-md {{ headerText }}
       //- q-input(filled, v-model='presentationSanitized', :label="$t('pages.signUp.form.presentation')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]", autogrow)
       q-input(filled, v-model='avatar', :label="$t('pages.signUp.form.avatar')")
       q-input(filled, v-model='name', :label="$t('pages.signUp.form.name')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
+      q-input(filled, v-model='status', :label="$t('pages.signUp.form.status')", lazy-rules, :rules="[ val => val && val.length > 0 || $t('forms.errors.required')]")
       .small-margin
         p.text-weight-thin.small-margin {{$t('pages.signUp.form.presentation')}}
         q-editor(v-model="presentation" min-height="5rem")
@@ -116,6 +118,7 @@ export default {
       identity: '',
       avatar: '',
       name: '',
+      status: '',
       smsNumber: '',
       email: '',
       methodComm: 'EMAIL',
@@ -142,6 +145,9 @@ export default {
         commMeth.push({ label: CommMethods[comm].display, value: CommMethods[comm].value, color: color })
       }
       return commMeth
+    },
+    headerText () {
+      return this.myProfile ? 'Edit your profile' : 'Setup your profile'
     },
     myProfile () {
       return this.$store.state.profiles.myProfile
@@ -186,6 +192,7 @@ export default {
       this.avatar = response.avatar
       this.name = response.display_name
       this.presentation = response.bio
+      this.status = response.status
       this.country = ''
       this.tags = ''
       this.imgKey = response.avatar
@@ -224,7 +231,8 @@ export default {
       const mData = {
         display_name: this.name,
         bio: this.presentationSanitized,
-        avatar: this.avatar
+        avatar: this.avatar,
+        status: this.status
       }
 
       try {

@@ -139,6 +139,7 @@ export default {
         avatar: 'Avatar',
         presentation: 'Bio',
         name: 'Name',
+        status: 'Status',
         firstName: 'First Name',
         lastName: 'Last Name',
         preferMethodComm: 'Preferred method of communication',

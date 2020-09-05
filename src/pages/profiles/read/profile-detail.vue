@@ -3,15 +3,13 @@ main.column.items-center.back(v-if="this.Profile")
     q-card.my-card
       q-card-section
         .column.items-center
-          q-avatar.col(size='200px')
-            q-img(
-              :src='this.Profile.avatar ? this.Profile.avatar : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"'
-            )
-              //- S3Img(:img-key='this.Profile.avatar', :identity='this.Profile.publicData.s3Identity' )
+          gravatar(size='200px' :avatar='this.Profile.avatar' :account='this.Profile.account_name')
       q-card-section
         .row.justify-center.q-gutter-x-md
           p.text-h4 {{ ` ${this.Profile.account_name}` }}
-          q-btn.side-btn(v-if='!owner', icon='chat',size="0.8rem", round, color='green' @click='goToChat')
+        .row.justify-center.q-gutter-x-md
+          p.text-h6 {{ ` ${this.Profile.status}` }}
+          //- q-btn.side-btn(v-if='!owner', icon='chat',size="0.8rem", round, color='green' @click='goToChat')
 
       //- q-separator(spaced, inset)
       q-card-section.q-mx-md
@@ -89,36 +87,44 @@ main.column.items-center.back(v-if="this.Profile")
 </template>
 
 <script>
-import { CommMethods } from '@smontero/ppp-common'
-import S3Img from '~/components/s3-image.vue'
+// import { CommMethods } from '@smontero/ppp-common'
+// import S3Img from '~/components/s3-image.vue'
 // import { countriesLang } from '~/mixins/countries'
-import { timeZones } from '~/mixins/time-zones'
 import { mapActions } from 'vuex'
+import gravatar from '../gravatar'
 export default {
   name: 'profile-detail',
-  components: { S3Img },
-  mixins: [timeZones],
   props: { owner: Boolean },
+  components: {
+    gravatar
+  },
   computed: {
     Profile () {
       if (this.owner) {
         return this.$store.state.profiles.myProfile
       } else return this.$store.state.profiles.selectedProfile
     },
+    missingProfile () {
+      return this.owner && !this.$store.state.profiles.myProfile
+    },
     fullName () {
       return this.Profile.display_name
-    },
+    }
+    /*
     verifySMSUrl () {
       return `/profiles/myProfile/verify/${CommMethods.SMS.value}`
     },
     verifyEmailUrl () {
       return `/profiles/myProfile/verify/${CommMethods.EMAIL.value}`
     },
+    */
+    /*
     tags () {
       if (this.Profile.publicData.tags) {
         return this.Profile.publicData.tags.join(', ')
       } else return ''
     }
+    */
   },
   async beforeMount () {
     try {
@@ -128,19 +134,26 @@ export default {
       console.log(e)
     }
     this.showIsLoading(false)
+    if (this.missingProfile) {
+      this.$router.push({ name: 'userRegister' })
+    }
+    /*
     if (!this.$store.getters['profiles/isRegistered']) {
       this.$router.push({ name: 'userRegister' })
     }
+    */
   },
   beforeDestroy: function () {
-    // this.$store.commit('profiles/setSelectedProfile', [])
+    this.$store.commit('profiles/setSelectedProfile', [])
   },
   methods: {
-    ...mapActions('profiles', ['getProfile']),
+    ...mapActions('profiles', ['getProfile'])
+    /*
     goToChat () {
-      // this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, avatarImage: this.Profile.publicData.avatarImage, s3Identity: this.Profile.publicData.s3Identity })
-      // this.$router.push({ name: 'chat' })
+      this.$store.commit('messages/setActiveChat', { activeChat: this.Profile.eosAccount, avatarImage: this.Profile.publicData.avatarImage, s3Identity: this.Profile.publicData.s3Identity })
+      this.$router.push({ name: 'chat' })
     }
+    */
   }
 }
 </script>

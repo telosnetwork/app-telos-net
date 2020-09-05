@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Gravatar from 'vue-gravatar'
 
 import accounts from './accounts'
 import profiles from './profiles'
@@ -13,6 +14,7 @@ import poc from './poc'
 import general from './general'
 
 Vue.use(Vuex)
+Vue.component('v-gravatar', Gravatar)
 
 /*
  * If not building with SSR mode, you can

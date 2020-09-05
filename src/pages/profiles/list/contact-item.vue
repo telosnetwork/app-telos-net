@@ -2,36 +2,34 @@
   q-card(:class="{ own: isOwn }")
     q-item.q-pa-md(v-ripple, clickable)
         q-item-section(avatar, clickable,  @click='goToProfileDetail')
-            q-avatar(size="80px")
-              S3Img(v-if="contact.publicData.avatarImage !== null", :img-key='contact.publicData.avatarImage', :identity='contact.publicData.s3Identity')
+            gravatar(size="80px" :avatar='contact.avatar' :account='contact.account_name')
         q-item-section(clickable,  @click='goToProfileDetail')
-            q-item-label {{contact.eosAccount}}
-            q-item-label(caption='', lines='1') {{contact.publicData.name}}
-            q-item-label(caption='', lines='1') {{contact.email}}
-            q-item-label(caption, lines='2', v-if="contact.publicData.timeZone") {{getTimeZoneText(contact.publicData.timeZone)}}
-        q-item-section(side, v-if="!isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
-            q-btn.side-btn(icon='chat',size="1.1rem", round, color='green' @click='goToChat')
-        q-item-section(side, v-if="isOwn && contact.publicData.isVerified && contact.publicData.isVerified !== 0")
-            q-btn.side-btn(icon='edit',size="1.1rem", round, color='green' @click='goToEditOwnProfile')
-        q-item-section(side, v-if="!contact.publicData.isVerified || contact.publicData.isVerified === 0")
-            q-item-label(caption='', lines='1') Is not verified
+            q-item-label {{contact.account_name}}
+            q-item-label(caption='', lines='1') {{contact.display_name}}
+            q-item-label(caption='', lines='1' v-html='`Bio: ${contact.bio}`') Bio: {{contact.bio}}
+            q-item-label(caption='', lines='1') Status: {{contact.status}}
 </template>
 
 <script>
-import S3Img from '~/components/s3-image'
-import { timeZones } from '~/mixins/time-zones'
+// import S3Img from '~/components/s3-image'
+import gravatar from '../gravatar'
+import md5 from 'md5'
 export default {
   name: 'contact-item',
+  components: {
+    gravatar
+  },
   props: {
     contact: Object
   },
-  components: { S3Img },
-  mixins: [timeZones],
   computed: {
     isOwn () {
-      if (this.$store.state.profiles.myProfile.eosAccount === this.contact.eosAccount) {
+      if (this.$store.state.profiles.myProfile && (this.$store.state.profiles.myProfile.account_name === this.contact.account_name)) {
         return true
       } else return false
+    },
+    accountHash () {
+      return md5(this.contact.account_name)
     }
   },
   methods: {
