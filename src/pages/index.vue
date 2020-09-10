@@ -11,25 +11,25 @@ export default {
       cards: [
         {
           title: '<b>Manage</b> Profile',
-          img: '../statics/app-icons/my-profile.png',
+          img: '../statics/app-icons/user-circle.svg',
           description: 'Manage your identity.  Buy, stake, send tokens and discover apps.',
           route: '/profiles/myProfile'
         },
         {
           title: 'Find <b>Contacts</b>',
-          img: '../statics/app-icons/my-profile.png',
+          img: '../statics/app-icons/search.svg',
           description: 'Find and view Telos account profiles.  Add to favorites and send TLOS (Coming soon).',
           route: '/profiles/contacts'
         },
         {
           title: 'Join <b>Groups</b>',
-          img: '../statics/app-icons/my-profile.png',
+          img: '../statics/app-icons/users.svg',
           description: 'Register to vote in Telos Governance and other Decide groups.  Create your own.',
           route: '/trails/treasuries'
         },
         {
           title: '<b>Decide</b> Together',
-          img: '../statics/app-icons/my-profile.png',
+          img: '../statics/app-icons/bar-chart.svg',
           description: 'Vote on Works, Amend and other eco-system ballots.',
           route: '/trails/ballots'
         }

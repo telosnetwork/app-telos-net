@@ -71,7 +71,9 @@ export const logout = async function ({ commit }) {
   commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   localStorage.removeItem('autoLogin')
-  this.$router.push({ path: '/' })
+  if (this.$router.path !== '/') {
+    this.$router.push({ path: '/' })
+  }
 }
 
 export const autoLogin = async function ({ dispatch, commit }, returnUrl) {
