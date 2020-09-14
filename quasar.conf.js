@@ -100,7 +100,8 @@ module.exports = function (ctx) {
         'QToggle',
         'QToolbar',
         'QToolbarTitle',
-        'QTooltip'
+        'QTooltip',
+        'QUploader'
       ],
 
       directives: [
@@ -128,7 +129,8 @@ module.exports = function (ctx) {
         WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY,
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER,
         GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
-        TELOS_ORIGIN: process.env.TELOS_ORIGIN
+        TELOS_ORIGIN: process.env.TELOS_ORIGIN,
+        IMGUR_CLIENT_ID: process.env.IMGUR_CLIENT_ID
       },
       scopeHoisting: true,
       vueRouterMode: 'history',

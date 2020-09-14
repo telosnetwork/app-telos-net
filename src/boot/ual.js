@@ -2,10 +2,8 @@ import { UAL } from 'universal-authenticator-library'
 import { EOSIOAuth } from '@smontero/ual-eosio-reference-authenticator'
 import { KeycatAuthenticator } from '@telosnetwork/ual-telos-keycat'
 import { Ledger } from 'ual-ledger'
-import { Lynx } from '@smontero/ual-lynx'
 import { Scatter } from 'ual-scatter'
 import { Sqrl } from '@smontero/ual-sqrl'
-import { TokenPocket } from '@smontero/ual-token-pocket'
 import { Anchor } from 'ual-anchor'
 
 export default async ({ Vue, store }) => {
@@ -20,14 +18,12 @@ export default async ({ Vue, store }) => {
   }
 
   const authenticators = [
-    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' }),
-    new Sqrl([mainChain], { appName: process.env.APP_NAME }),
     new KeycatAuthenticator([mainChain]),
+    new Anchor([mainChain], { appName: process.env.APP_NAME }),
+    new Sqrl([mainChain], { appName: process.env.APP_NAME }),
     new Ledger([mainChain]),
-    new Lynx([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
-    new TokenPocket([mainChain]),
-    new Anchor([mainChain], { appName: process.env.APP_NAME })
+    new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' })
   ]
 
   const ual = new UAL([mainChain], 'tet-ual', authenticators)

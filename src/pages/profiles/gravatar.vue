@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     accountHash () {
-      return md5(this.account)
+      return md5(this.account || '')
     }
   }
 }
