@@ -3,6 +3,7 @@ import { mapActions, mapGetters } from 'vuex'
 import BallotStatus from '../components/ballot-status'
 import BallotChip from '../components/ballot-chip'
 const regex = new RegExp(/Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/, 'm') // ipfs hash detection, detects CIDv0 46 character strings starting with 'Qm'
+const regexWithUrl = new RegExp(/https?\:\/\/.*Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/, 'm') // ipfs hash detection, detects CIDv0 46 character strings starting with 'Qm'
 
 export default {
   name: 'ballot-view',
@@ -61,18 +62,26 @@ export default {
     },
     ballotDescription () {
       if (this.getIPFShash) {
-        return this.ballot.description.replace(regex, '')
-      } else {
-        return this.ballot.description
+        return this.ballot.description.replace(regexWithUrl, '').replace(regex, '')
       }
+
+      return this.ballot.description
+    },
+    ballotContent () {
+      if (this.ballot.content.match(regex)) {
+        return this.ballot.content.replace(regexWithUrl, '').replace(regex, '')
+      }
+
+      return this.ballot.content
     },
     getIPFShash () {
       if (this.ballot.description.match(regex)) {
         const r = regex.exec(this.ballot.description)[0]
-        // console.log('found IPFS HASH!', r)
+        return r
+      } else if (this.ballot.content.match(regex)) {
+        const r = regex.exec(this.ballot.content)[0]
         return r
       } else {
-        // console.log('no hash found')
         return false
       }
       // https://api.ipfsbrowser.com/ipfs/get.php?hash=QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme
@@ -119,11 +128,10 @@ export default {
           ballot-chip(:type="ballot.category" color="#9793fa").absolute-top-right.gt-xs
 
         q-separator
-        q-card-section(:style="{ height: getIPFShash || ballot.ballot_name === 'what.blockcha' ? 'auto' : 'calc(100% - 105px)' }")
-          div(:class="getIPFShash || ballot.ballot_name === 'what.blockcha' ? `q-pb-md` : `q-pb-xl q-mb-lg`") {{ ballotDescription }}
-          div(v-if="ballot.content").q-pb-md {{ ballot.content }}
+        q-card-section(:style="{ height: getIPFShash ? 'auto' : 'calc(100% - 105px)' }")
+          div(:class="getIPFShash ? `q-pb-md` : `q-pb-xl q-mb-lg`") {{ ballotDescription }}
+          div(v-if="ballotContent").q-pb-md {{ ballotContent }}
           embed(v-if="getIPFShash" :src="`https://api.ipfsbrowser.com/ipfs/get.php?hash=${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
-          embed(v-else-if="ballot.ballot_name === 'what.blockcha'" :src="`https://api.ipfsbrowser.com/ipfs/get.php?hash=QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
           div(v-else).text-center.absolute-bottom
             img(src="/statics/app-icons/no-pdf.svg" style="width: 60px;")
             p(style="color: #a1c1ff").text-caption No PDF found
