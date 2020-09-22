@@ -12,24 +12,32 @@ export default {
         {
           title: '<b>Manage</b> Profile',
           img: '../statics/app-icons/user-circle.svg',
+          icon: 'account_circle',
+          color: 'primary',
           description: 'Manage your identity.  Buy, stake, send tokens and discover apps.',
           route: '/profiles/myProfile'
         },
         {
           title: 'Find <b>Contacts</b>',
           img: '../statics/app-icons/search.svg',
+          icon: 'perm_contact_calendar',
+          color: 'positive',
           description: 'Find and view Telos account profiles.  Add to favorites and send TLOS (Coming soon).',
           route: '/profiles/contacts'
         },
         {
           title: 'Join <b>Groups</b>',
           img: '../statics/app-icons/users.svg',
+          icon: 'group_work',
+          color: 'accent',
           description: 'Register to vote in Telos Governance and other Decide groups.  Create your own.',
           route: '/trails/treasuries'
         },
         {
           title: '<b>Decide</b> Together',
           img: '../statics/app-icons/bar-chart.svg',
+          icon: 'how_to_vote',
+          color: 'negative',
           description: 'Vote on Works, Amend and other eco-system ballots.',
           route: '/trails/ballots'
         }
@@ -44,15 +52,17 @@ export default {
     <div class="card-container q-pa-md row items-start">
       <div v-for="card in cards" v-bind:key="card.title" class="landing-card" @click="goTo(card.route)">
         <div class="row">
-          <div class="col-8">
+          <div class="col-7">
             <div v-html="card.title" class="card-title q-pa-md text-h4"></div>
-            <div class="card-description q-pa-md text-h6">{{ card.description }}</div>
           </div>
           <div class="col-4">
-              <q-avatar color="primary" text-color="white" class="card-avatar q-pa-md">
-                <q-img class="card-img" :src="card.img"></q-img>
+              <q-avatar :color="card.color" text-color="white" class="card-avatar q-pa-md" font-size="70px" size="90px" :icon="card.icon">
+                <q-img v-if="!card.icon" class="card-img" :src="card.img"></q-img>
               </q-avatar>
           </div>
+        </div>
+        <div class="row">
+              <div class="card-description q-pa-md text-h6">{{ card.description }}</div>
         </div>
       </div>
     </div>
@@ -80,8 +90,8 @@ export default {
   text-align: right
 
 .card-avatar
-  width: 100%
-  height: auto
+  //width: 100%
+  //height: auto
 
 .card-img
   width: 100%
