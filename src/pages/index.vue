@@ -55,8 +55,8 @@ export default {
           <div class="col-7">
             <div v-html="card.title" class="card-title q-pa-md text-h4"></div>
           </div>
-          <div class="col-4">
-              <q-avatar :color="card.color" text-color="white" class="card-avatar q-pa-md" font-size="70px" size="90px" :icon="card.icon">
+          <div class="col-4 q-pa-md">
+              <q-avatar :color="card.color" text-color="white" class="card-avatar" font-size="70px" size="90px" :icon="card.icon">
                 <q-img v-if="!card.icon" class="card-img" :src="card.img"></q-img>
               </q-avatar>
           </div>

@@ -4,8 +4,6 @@ import Gravatar from 'vue-gravatar'
 
 import accounts from './accounts'
 import profiles from './profiles'
-import messages from './messages'
-import apps from './apps'
 import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
@@ -26,8 +24,6 @@ export default function (/* { ssrContext } */) {
     modules: {
       accounts,
       profiles,
-      messages,
-      apps,
       notifications,
       poc,
       testnet,
