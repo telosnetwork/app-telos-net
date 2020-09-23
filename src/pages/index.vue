@@ -52,8 +52,12 @@ export default {
     <div class="card-container q-pa-md row items-start">
       <div v-for="card in cards" v-bind:key="card.title" class="landing-card" @click="goTo(card.route)">
         <div class="row">
-          <div class="col-7">
+          <div class="col-1">
+          </div>
+          <div class="col-6">
             <div v-html="card.title" class="card-title q-pa-md text-h4"></div>
+          </div>
+          <div class="col-1">
           </div>
           <div class="col-4 q-pa-md">
               <q-avatar :color="card.color" text-color="white" class="card-avatar" font-size="70px" size="90px" :icon="card.icon">
@@ -62,7 +66,7 @@ export default {
           </div>
         </div>
         <div class="row">
-              <div class="card-description q-pa-md text-h6">{{ card.description }}</div>
+              <div class="card-description q-pa-md text-h6" style="text-align: center">{{ card.description }}</div>
         </div>
       </div>
     </div>
@@ -81,6 +85,10 @@ export default {
   border-radius: 25px
   border: 2px solid $primary
   margin: 10px
+  cursor: pointer
+  &:hover
+    box-shadow: $shadow-5
+    //border: 2px solid $positive
 
 .card-title
   text-align: left
