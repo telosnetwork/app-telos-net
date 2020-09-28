@@ -4,9 +4,14 @@ const routes = [
   { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty', guest: true } },
+
+  // Works
+  { path: '/works/proposals', component: () => import('pages/works/proposals.vue'), meta: { guest: false } },
+
   // Trails
   { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
   { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
+
   // Trails
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
