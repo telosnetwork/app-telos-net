@@ -1,4 +1,4 @@
-import PPP from '@smontero/ppp-client-api'
+// import PPP from '@smontero/ppp-client-api'
 
 const getAuthenticator = function (ual, wallet = null) {
   wallet = wallet || localStorage.getItem('autoLogin')
@@ -28,7 +28,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       this.$type = 'ual'
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
-      PPP.setActiveUser(this.$ualUser)
+      // PPP.setActiveUser(this.$ualUser)
       const defaultReturnUrl = localStorage.getItem('returning') ? '/trails/ballots' : '/profiles/myProfile'
       // console.log('LOGIN defaultReturnUrl:', defaultReturnUrl)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
@@ -45,6 +45,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
   }
 }
 
+/*
 export const loginToBackend = async function ({ commit }) {
   try {
     const authApi = PPP.authApi()
@@ -57,9 +58,10 @@ export const loginToBackend = async function ({ commit }) {
     return false
   }
 }
+*/
 
 export const logout = async function ({ commit }) {
-  await PPP.authApi().signOut()
+  // await PPP.authApi().signOut()
   const { authenticator } = getAuthenticator(this.$ual)
   try {
     authenticator && await authenticator.logout()
@@ -69,7 +71,9 @@ export const logout = async function ({ commit }) {
   commit('profiles/setProfile', undefined, { root: true })
   commit('setAccount')
   localStorage.removeItem('autoLogin')
-  this.$router.push({ path: '/' })
+  if (this.$router.path !== '/') {
+    this.$router.push({ path: '/' })
+  }
 }
 
 export const autoLogin = async function ({ dispatch, commit }, returnUrl) {

@@ -4,15 +4,20 @@ const routes = [
   { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty', guest: true } },
+
+  // Works
+  { path: '/works/proposals', component: () => import('pages/works/proposals.vue'), meta: { guest: false } },
+
   // Trails
   { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
   { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
+
   // Trails
   { path: '/transfers/add', component: () => import('pages/transfers/add/send-tokens.vue') },
 
   // Testnet
-  { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'guest', title: 'pages.testnetRotation.title', guest: true } },
-  { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'guest', title: 'pages.testnetDevelopers.title', guest: true } },
+  { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'empty', title: 'pages.testnetRotation.title', guest: true } },
+  { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'empty', title: 'pages.testnetDevelopers.title', guest: true } },
 
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },
@@ -21,17 +26,10 @@ const routes = [
   // POC
   { path: '/poc/smartsafe', component: () => import('pages/poc/smartsafe/safe-list.vue'), meta: { title: 'pages.poc.smartSafe.title' } },
 
-  // PPP
-  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: true }, name: 'userRegister' },
-  { path: '/profiles/myProfile/verify/:type', component: () => import('pages/profiles/add/verify-user.vue'), meta: { needBackendLogin: true }, name: 'verifyComm' },
-  { path: '/profiles/chat/messages', component: () => import('pages/chats/list/chat.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'chat' },
-  { path: '/profiles/chat', component: () => import('pages/chats/list/chat-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
-  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
-  { path: '/profiles/registerApp', component: () => import('pages/apps/add/register-app.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'registerApp' },
-  { path: '/profiles/appList', component: () => import('pages/apps/list/app-list.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
-  { path: '/profiles/authorizedApps', component: () => import('pages/apps/list/authorized-apps.vue'), meta: { needVerifyComm: true, needBackendLogin: true } },
-  { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), meta: { needBackendLogin: true }, name: 'myProfile' },
-  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true, needBackendLogin: true }, name: 'profileDetail' },
+  { path: '/profiles/myProfile/add', component: () => import('pages/profiles/add/sign-up.vue'), meta: { needBackendLogin: false }, name: 'userRegister' },
+  { path: '/profiles/contacts', component: () => import('pages/profiles/list/contact-list.vue'), meta: { needVerifyComm: true, needBackendLogin: false } },
+  { path: '/profiles/myProfile', component: () => import('pages/profiles/read/my-profile.vue'), meta: { needBackendLogin: false }, name: 'myProfile' },
+  { path: '/profiles/contacts/profileDetail', component: () => import('pages/profiles/read/profile-detail.vue'), meta: { needVerifyComm: true, needBackendLogin: false }, name: 'profileDetail' },
   { path: '/profiles/add/profileLogin', component: () => import('pages/profiles/read/profile-login.vue'), name: 'profileLogin' }
 ]
 

@@ -22,8 +22,8 @@ main
 
 <script>
 import 'vue-croppa/dist/vue-croppa.css'
-import PPP from '@smontero/ppp-client-api'
-// import croppa from 'vue-croppa'
+// import PPP from '@smontero/ppp-client-api'
+import croppa from 'vue-croppa'
 
 export default {
   name: 'edit-image',
@@ -34,7 +34,7 @@ export default {
   data: function () {
     return {
       url: '',
-      croppa: {},
+      croppa: croppa,
       loadingFile: false,
       mImgKey: '',
       mIdentity: '',
@@ -85,6 +85,7 @@ export default {
     async updateUrl () {
       this.url = ''
       if (this.imgKey && this.identity) {
+        /*
         await PPP.profileApi().getImageUrl(this.imgKey, this.identity).then((rUrl) => {
           this.url = rUrl
           // this.$emit('Change', rUrl)
@@ -95,6 +96,7 @@ export default {
           this.url = image
           this.croppa.refresh()
         })
+        */
       }
     },
     onInit () {

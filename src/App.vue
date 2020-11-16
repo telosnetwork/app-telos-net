@@ -6,7 +6,6 @@ export default {
   name: 'App',
   computed: {
     ...mapGetters('accounts', ['isAutoLoading']),
-    ...mapGetters('profiles', ['isPPPLoading']),
     ...mapGetters('general', ['isLoading', 'errorMsg', 'successMsg']),
     layout () {
       return `layout-${this.$route.meta.layout || 'main'}`
@@ -49,6 +48,6 @@ export default {
   .q-app
     component(:is="layout")
       router-view
-    q-inner-loading(:showing="isAutoLoading || isPPPLoading")
+    q-inner-loading(:showing="isAutoLoading")
       q-spinner(size="3em")
 </template>

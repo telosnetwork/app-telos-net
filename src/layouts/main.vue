@@ -32,6 +32,9 @@ export default {
         this.unmarkRead()
       }
       this.right = !this.right
+    },
+    toLanding () {
+      this.$router.push({ path: '/' })
     }
   },
   async mounted () {
@@ -53,7 +56,7 @@ export default {
           aria-label="Menu"
         )
         q-toolbar-title.flex.items-center
-          img.logo(src="statics/telos-logo-white.svg")
+          img.logo(@click="toLanding" src="statics/telos-logo-white.svg")
         q-btn(
           v-if="isAuthenticated"
           dense
@@ -75,8 +78,8 @@ export default {
             :label="errorCount"
             floating
           )
-        right-menu-authenticated(v-if="isAuthenticated")
-        right-menu-guest(v-if="!isAuthenticated")
+        right-menu-authenticated(landing-page=false v-if="isAuthenticated")
+        right-menu-guest(landing-page=false v-if="!isAuthenticated")
     q-drawer(
       v-model="right"
       side="right"

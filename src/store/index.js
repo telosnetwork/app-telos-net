@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Gravatar from 'vue-gravatar'
 
 import accounts from './accounts'
 import profiles from './profiles'
-import messages from './messages'
-import apps from './apps'
+import works from './works'
 import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
@@ -13,6 +13,7 @@ import poc from './poc'
 import general from './general'
 
 Vue.use(Vuex)
+Vue.component('v-gravatar', Gravatar)
 
 /*
  * If not building with SSR mode, you can
@@ -24,8 +25,7 @@ export default function (/* { ssrContext } */) {
     modules: {
       accounts,
       profiles,
-      messages,
-      apps,
+      works,
       notifications,
       poc,
       testnet,

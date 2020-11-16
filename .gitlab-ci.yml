@@ -17,9 +17,9 @@ build_dev:
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
-    PPP_ENV: '"test"'
     WEBSERVICES_URL: '"https://api-dev.telos.net"'
     GOOGLE_ANALYTICS: '"UA-154600181-3"'
+    IMGUR_CLIENT_ID: '"b6f46df9d1da9d9"'
   cache:
     paths:
       - node_modules/
@@ -53,9 +53,9 @@ build_prod:
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos.bloks.io"'
-    PPP_ENV: '"prod"'
     WEBSERVICES_URL: '"https://api.telos.net"'
     GOOGLE_ANALYTICS: '"UA-154600181-2"'
+    IMGUR_CLIENT_ID: '"b6f46df9d1da9d9"'
   cache:
     paths:
       - node_modules/

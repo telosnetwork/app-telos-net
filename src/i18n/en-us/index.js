@@ -123,7 +123,7 @@ export default {
     index: {
       buttons: {
         createAccount: 'Create account',
-        login: 'Login with Telos'
+        login: 'Login'
       },
       router: {
         chat: 'Chat',
@@ -136,8 +136,10 @@ export default {
     },
     signUp: {
       form: {
+        avatar: 'Avatar URL',
         presentation: 'Bio',
         name: 'Name',
+        status: 'Status',
         firstName: 'First Name',
         lastName: 'Last Name',
         preferMethodComm: 'Preferred method of communication',

@@ -1,6 +1,9 @@
 <script>
 export default {
   name: 'right-menu-guest',
+  props: {
+    landingPage: Boolean
+  },
   methods: {
     loginClick () {
       this.$router.push({
@@ -14,16 +17,20 @@ export default {
 <template lang="pug">
 div
   q-btn.q-mr-sm(
+    to="/accounts/add"
+    rounded
+    outline
+    :label="$t('pages.index.buttons.createAccount')"
+    :text-color="landingPage ? 'black' : 'white'"
+    :color="landingPage ? 'black' : 'white'"
+  )
+  q-btn.q-mr-sm(
     @click='loginClick'
     :label="$t('pages.index.buttons.login')"
-    color="accent"
-    text-color="black"
+    :color="landingPage ? 'primary' : 'secondary'"
+    :text-color="landingPage ? 'white' : 'primary'"
     rounded
-  )
-  q-btn(
-    to="/accounts/add"
-    :label="$t('pages.index.buttons.createAccount')"
-    color="secondary"
+    unelevated
   )
 </template>
 

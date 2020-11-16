@@ -5,8 +5,10 @@ export const setFees = (state, config) => {
 }
 
 export const resetBallots = (state) => {
+  console.log(`resetballots called`)
   state.ballots.list.data = []
   state.ballots.list.loaded = false
+  console.log(`ballots reset`)
 }
 
 export const addBallots = (state, { rows, more }) => {

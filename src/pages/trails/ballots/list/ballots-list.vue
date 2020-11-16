@@ -27,6 +27,7 @@ export default {
     }
   },
   async mounted () {
+    console.log(`mounted`)
     this.timeAtMount = Date.now()
     this.statusChange = false
     if (this.$route.params.id) {
@@ -37,6 +38,7 @@ export default {
     }
     this.resetBallots()
 
+    console.log(`after reset ballots`)
     await this.fetchFees()
     this.$refs.infiniteScroll.reset()
     this.$refs.infiniteScroll.poll()
@@ -105,6 +107,7 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      console.log(`watching $route`)
       if (to.params.id !== undefined) {
         this.showBallot = true
       } else {
@@ -112,11 +115,13 @@ export default {
       }
     },
     treasury: function (val, old) {
+      console.log(`watching treasury`)
       if (val !== old) {
         this.resetBallots()
       }
     },
     statuses: function (val, old) {
+      console.log(`watching statuses`)
       if (val !== old) {
         this.resetBallots()
       }
@@ -124,6 +129,7 @@ export default {
     treasuriesOptions: {
       immediate: true,
       handler: async function (val) {
+        console.log(`watching treasuriesOptions`)
         if (!val.length) {
           // TODO past 100 groups we need to switch to autocomplete search
           await this.fetchTreasuries()
