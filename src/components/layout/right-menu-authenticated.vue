@@ -28,7 +28,7 @@ div
     :label="$t('common.buttons.logout')"
     @click="logout"
     :color="landingPage ? 'primary' : 'secondary'"
-    :text-color="landingPage ? 'white' : 'white'"
+    :text-color="landingPage ? 'white' : 'primary'"
     rounded
     unelevated
   )
