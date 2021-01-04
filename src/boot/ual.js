@@ -22,7 +22,7 @@ export default async ({ Vue, store }) => {
     new KeycatAuthenticator([mainChain]),
     new Anchor([mainChain], { appName: process.env.APP_NAME }),
     new Sqrl([mainChain], { appName: process.env.APP_NAME }),
-    new Wombat([mainChain]),
+    new Wombat([mainChain], { appName: process.env.APP_NAME }),
     new Ledger([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
     new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' })
