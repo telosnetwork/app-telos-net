@@ -13,7 +13,7 @@ build_dev:
     APP_NAME: '"Telos Test Net"'
     NETWORK_BLOCKCHAIN: '"eos"'
     NETWORK_CHAIN_ID: '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
-    NETWORK_HOST: '"testnet.eos.miami"'
+    NETWORK_HOST: '"testnet.telos.caleos.io"'
     NETWORK_PORT: '443'
     NETWORK_PROTOCOL: '"https"'
     BLOCKCHAIN_EXPLORER: '"https://telos-test.bloks.io"'
