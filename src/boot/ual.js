@@ -5,6 +5,7 @@ import { Ledger } from 'ual-ledger'
 import { Scatter } from 'ual-scatter'
 import { Sqrl } from '@smontero/ual-sqrl'
 import { Anchor } from 'ual-anchor'
+import { Wombat } from 'ual-wombat'
 
 export default async ({ Vue, store }) => {
   const mainChain = {
@@ -21,6 +22,7 @@ export default async ({ Vue, store }) => {
     new KeycatAuthenticator([mainChain]),
     new Anchor([mainChain], { appName: process.env.APP_NAME }),
     new Sqrl([mainChain], { appName: process.env.APP_NAME }),
+    new Wombat([mainChain]),
     new Ledger([mainChain]),
     new Scatter([mainChain], { appName: process.env.APP_NAME }),
     new EOSIOAuth([mainChain], { appName: process.env.APP_NAME, protocol: 'eosio' })
