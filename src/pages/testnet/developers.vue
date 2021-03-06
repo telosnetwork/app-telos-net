@@ -16,10 +16,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions('testnet', ['faucet', 'account']),
+    ...mapActions('testnet', ['faucet', 'evmFaucet', 'account']),
     async onFaucet () {
       this.submitting = true
       const result = await this.faucet(this.form.send_to)
+      if (result) {
+        this.transactionId = result.transactionId
+        console.log(result)
+      }
+      this.submitting = false
+    },
+    async onEvmFaucet () {
+      this.submitting = true
+      const result = await this.evmFaucet(this.form.send_to_evm)
       if (result) {
         this.transactionId = result.transactionId
         console.log(result)
@@ -81,7 +90,7 @@ q-page.flex.flex-center
         ref="send_to"
         v-model="form.send_to"
         color="accent"
-        label="Send to"
+        label="Send to Telos account"
         outlined
         maxlength="12"
       )
@@ -92,6 +101,24 @@ q-page.flex.flex-center
         unelevated
         :loading="submitting"
         @click="onFaucet"
+      )
+
+    q-card-section
+      q-input.q-mb-lg(
+        ref="send_to_evm"
+        v-model="form.send_to_evm"
+        color="accent"
+        label="Send to EVM address"
+        :rules="[ val => /^0x[a-fA-F0-9]{40}$/.test(val) || 'Please provide a valid EVM address with 0x prefix']"
+        outlined
+      )
+      q-btn.full-width(
+        color="primary"
+        label="Send testnet EVM TLOS"
+        size="lg"
+        unelevated
+        :loading="submitting"
+        @click="onEvmFaucet"
       )
 
     q-card-section(v-if="transactionId")
