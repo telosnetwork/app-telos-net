@@ -16,6 +16,15 @@ export const faucet = async function (context, accountName) {
   }
 }
 
+export const evmFaucet = async function (conntext, evmAddress) {
+  try {
+    const response = await this.$axios.get(`/v1/testnet/evmFaucet/${evmAddress}`)
+    return response
+  } catch (e) {
+    return 'Failed to call API'
+  }
+}
+
 export const account = async function (context, form) {
   try {
     const response = await this.$axios.post(`/v1/testnet/account`, {
