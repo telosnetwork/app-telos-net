@@ -21,8 +21,8 @@ div
     rounded
     outline
     :label="$t('pages.index.buttons.createAccount')"
-    :text-color="landingPage ? 'black' : 'white'"
-    :color="landingPage ? 'black' : 'white'"
+    :text-color="landingPage ? 'black' : 'blue'"
+    :color="landingPage ? 'black' : 'blue'"
   )
   q-btn.q-mr-sm(
     @click='loginClick'
