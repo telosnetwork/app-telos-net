@@ -28,12 +28,12 @@ export default {
       this.error = null
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      const { success, error } = await this.verifyOTP(this.form)
-      if (success) {
-        this.$router.push({ path: '/accounts/add/congratulations' })
-      } else {
-        this.error = error
-      }
+      // const { success, error } = await this.verifyOTP(this.form)
+      // if (success) {
+      this.$router.push({ path: '/accounts/add/congratulations' })
+      // } else {
+      //  this.error = error
+      // }
       this.submitting = false
     }
   },
@@ -94,6 +94,7 @@ export default {
             v-model="copy"
             label="I have copied my keys somewhere safe"
           )
+      //-
         q-card-section
           q-input(
             ref="password"

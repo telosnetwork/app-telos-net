@@ -132,6 +132,26 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
   }
 }
 
+export const createAccount = async function ({ state }, { account, recaptchaResponse, publicKey }) {
+  try {
+    console.log(account)
+    await this.$axios.post('/v1/recaptchaCreate', {
+      recaptchaResponse: recaptchaResponse,
+      accountName: account,
+      ownerKey: publicKey,
+      activeKey: publicKey
+    })
+    return {
+      success: true
+    }
+  } catch (e) {
+    return {
+      success: false,
+      error: e.message
+    }
+  }
+}
+
 export const fetchAvailableAccounts = async function ({ commit }, idx) {
   commit('resetAvailableAccounts')
   const chainId = process.env.NETWORK_CHAIN_ID
