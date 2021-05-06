@@ -3,18 +3,10 @@
 
 export default {
   name: 'left-menu-authenticated',
-  data () {
-    return {
-      isAuthenticated: true
-    }
-  },
   methods: {
     closeMenu: function () { this.$emit('close') },
     goToHomePage: function () { this.$emit('goToHomePage') }
   }
-  // computed: {
-  //   ...mapGetters('accounts', ['isAuthenticated'])
-  // }
 }
 </script>
 
@@ -38,7 +30,7 @@ export default {
         switch-indicator
         class="text-grey text-teal"
         active-color="grey-9"
-        indicator-color='indigo-14'
+        indicator-color='secondary'
       )
       q-route-tab.aline-left.q-my-lg(
         name="Contacts"

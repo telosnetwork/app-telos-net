@@ -67,7 +67,7 @@ export default {
 
 <style lang="sass" scoped>
 .q-layout
-  width: 1366px
+  max-width: 1366px
   margin: 0 auto
   padding: 0 93px
 @media (max-width: 890px)

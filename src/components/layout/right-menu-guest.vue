@@ -28,7 +28,7 @@ div
     @click='loginClick'
     :label="$t('pages.index.buttons.login')"
     :color="landingPage ? 'primary' : 'secondary'"
-    :text-color="landingPage ? 'white' : 'primary'"
+    :text-color="landingPage ? 'white' : 'white'"
     rounded
     unelevated
   )
