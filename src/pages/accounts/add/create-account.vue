@@ -21,18 +21,17 @@ export default {
       generating: false,
       error: null,
       submitting: false,
-      keys: false,
       copy: false
     }
   },
-  async mounted () {
+  async created () {
     this.generating = true
     const keyPairs = await generateKeys()
     this.form.privateKey = keyPairs.privateKey
     this.form.publicKey = keyPairs.publicKey
-    this.keys = true
     this.generating = false
-
+  },
+  mounted () {
     let recaptchaScript = document.createElement('script')
     recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit')
     document.head.appendChild(recaptchaScript)
@@ -79,7 +78,10 @@ export default {
 <template lang="pug">
   .flex.column.send-otp
     .col-9
-      q-card.q-mb-lg(flat)
+      q-card.q-mb-lg(
+        flat
+        v-show="!generating"
+      )
         q-card-section
           h2 {{ $t('pages.accounts.add.createAccountTitle') }}
           q-input.q-mb-lg(
@@ -95,12 +97,9 @@ export default {
             :debounce="200"
             @blur="form.account = (form.account || '').toLowerCase()"
           )
-          .text-red(v-if="error && !keys") {{ error }}
-        q-card-section(v-if="keys")
+        q-card-section
           .text-red {{ $t('pages.accounts.add.saveKeys') }}
-          div(v-if="generating")
-            | {{ $t('pages.accounts.add.verifyAccountGeneratingKey') }}
-          div(v-else)
+          div
             q-input(
               ref="publicKey"
               v-model="form.publicKey"
@@ -133,19 +132,17 @@ export default {
                   size="sm"
                   @click="() => { copyToClipboard(form.privateKey); setSuccessMsg($t('pages.accounts.add.keyCopyClipboard'))}"
                 )
-          q-card-section
             q-checkbox(
               v-model="copy"
               label="I have copied my keys somewhere safe"
             )
-          q-card-section
-              vue-recaptcha(
-                ref='recaptcha'
-                :sitekey="'6Ld-_eIZAAAAAF6JsrFudo_uQjRL4eqPAZE40I3o'"
-                @verify="onVerify"
-                @expired="onExpire"
-              )
-          .text-red(v-if="error && keys") {{ error }}
+          vue-recaptcha(
+            ref='recaptcha'
+            :sitekey="'6Ld-_eIZAAAAAF6JsrFudo_uQjRL4eqPAZE40I3o'"
+            @verify="onVerify"
+            @expired="onExpire"
+          )
+          .text-red(v-if="error && !generating") {{ error }}
           .col-3
             .hint {{ $t('pages.accounts.add.verifyAccountHint') }}
             q-btn.full-width(
@@ -168,6 +165,11 @@ export default {
     font-size: 24px
     text-align: center
     font-weight: 600
+  .test
+    width: 960px
+    position: relative
+    margin: 0 auto
+    line-height: 1.4em
   .warning
     color: red
     font-size: 12px
