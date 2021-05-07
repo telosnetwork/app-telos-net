@@ -1,8 +1,10 @@
 <script>
 // import { mapGetters } from 'vuex'
+import Btn from './btn'
 
 export default {
   name: 'welcome-card',
+  components: { Btn },
   data () {
     return {
       account: 'aleksey'
@@ -32,22 +34,20 @@ export default {
         span.q-pt-none.text-weight-bold {{ $t('pages.trails.ballots.welcomeCard.textBold') }}
         span.q-pt-none {{ $t('pages.trails.ballots.welcomeCard.textEnd') }}
     q-card-actions.btn-wrapper
-      q-btn.q-mr-sm(
-        @click="addToLocalStorage()"
-        :label="$t('pages.trails.ballots.welcomeCard.btnLabel')"
-        no-caps
-        color='secondary'
-        text-color='white'
+      btn(
+        :labelText="$t('pages.trails.ballots.welcomeCard.btnLabel')"
+        primary
+        btnWidth=94
+        @clickBtn="addToLocalStorage()",
+        fontSize=16
       )
 </template>
 
 <style lang="sass" scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
   .welcome-card
     width: 100%
     height: 292px
     padding: 32px
-    font-family: "Poppins", sans-serif
     border-radius: 12px;
   .title-wrapper
     margin: 32px 0 0 0
@@ -77,6 +77,4 @@ export default {
     width: 120px
     top: 134px
     right: 24px
-  .q-btn
-    border-radius: 6px
 </style>
