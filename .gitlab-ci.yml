@@ -3,7 +3,7 @@ stages:
   - deploy
 
 build_dev:  
-  image: node:latest
+  image: node:15-buster
   stage: build  
   only:
     - dev
