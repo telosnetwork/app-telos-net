@@ -3,10 +3,11 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import BallotForm from '../components/ballot-form'
 import BallotListItem from '../components/ballot-list-item'
 import BallotView from '../view/ballot-view'
+import WelcomeCard from '../../../../components/welcome-card'
 
 export default {
   name: 'ballots-list',
-  components: { BallotForm, BallotListItem, BallotView },
+  components: { BallotForm, BallotListItem, BallotView, WelcomeCard },
   data () {
     return {
       show: false,
@@ -99,6 +100,9 @@ export default {
     },
     getEndTime (ballot) {
       return new Date(ballot.end_time).getTime()
+    },
+    isNewUser () {
+      return localStorage.isNewUser
     }
   },
   computed: {
@@ -141,7 +145,8 @@ export default {
 </script>
 
 <template lang="pug">
-q-page.q-pa-lg
+q-page
+  welcome-card(v-if="!isNewUser()")
   ballot-form(:show.sync="show")
   .row.col-12.banner.justify-center.items-center.q-mb-md.border-white.q-card--bordered.relative-position
     div.row.justify-center.items-center.q-my-md.text-center

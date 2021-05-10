@@ -110,7 +110,7 @@ export default {
 
 <template lang="pug">
 
-.row.bg-white.justify-between(style="max-width: 1200px !important;")
+.row.bg-white.justify-between()
   template(v-if="!loading && ballot")
     .col-xs-12.col-sm
       q-card.full-width(

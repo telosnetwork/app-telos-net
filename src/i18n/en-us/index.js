@@ -105,7 +105,14 @@ export default {
       ballots: {
         vote: 'Vote',
         ends: 'Ends',
-        starts: 'Starts'
+        starts: 'Starts',
+        welcomeCard: {
+          title: 'Hi, ',
+          textBeginning: 'Welcome to the ',
+          textBold: 'Telos Ballots',
+          textEnd: '. This is the place where you can influence the development of the Telos blockchain. Your voice matters!',
+          btnLabel: 'OK, got it'
+        }
       },
       treasuries: {
         card: {

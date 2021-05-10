@@ -13,7 +13,7 @@ export default {
   q-tabs(
       no-caps
       class="text-grey text-teal"
-      indicator-color='indigo-14'
+      indicator-color='secondary'
       active-color="grey-9"
     )
     q-route-tab.q-mx-sm(
