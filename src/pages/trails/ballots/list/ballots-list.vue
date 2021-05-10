@@ -101,9 +101,8 @@ export default {
     getEndTime (ballot) {
       return new Date(ballot.end_time).getTime()
     },
-    getLocalStorage () {
-      console.log('check cookie')
-      return localStorage.isNotNewUser
+    isNewUser () {
+      return localStorage.isNewUser
     }
   },
   computed: {
@@ -146,8 +145,8 @@ export default {
 </script>
 
 <template lang="pug">
-q-page.q-pa-lg
-  welcome-card(v-if="!getLocalStorage()")
+q-page
+  welcome-card(v-if="!isNewUser()")
   ballot-form(:show.sync="show")
   .row.col-12.banner.justify-center.items-center.q-mb-md.border-white.q-card--bordered.relative-position
     div.row.justify-center.items-center.q-my-md.text-center
