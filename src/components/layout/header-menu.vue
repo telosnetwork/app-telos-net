@@ -13,7 +13,7 @@ export default {
   q-tabs(
       no-caps
       class="text-grey text-teal"
-      indicator-color='secondary'
+      indicator-color='primary'
       active-color="grey-9"
     )
     q-route-tab.q-mx-sm(
@@ -36,11 +36,9 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
   .q-tabs
     height: 100%
     margin: 0 16px
-    font-family: "Poppins", sans-serif
     font-size: 16px
     font-weight: 600
   .custom-separator
@@ -48,7 +46,11 @@ export default {
     height: 4px
     background: rgba(0, 9, 26, 0.1)
     border-radius: 2px
-  @media (max-width: 820px)
+  @media (max-width: 735px)
     .q-tabs
       display: none
+  @media (max-width: 890px)
+    .q-tabs
+      margin: 0
+      font-size: 14px
 </style>

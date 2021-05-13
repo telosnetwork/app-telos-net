@@ -112,7 +112,7 @@ module.exports = function (ctx) {
       ],
 
       // Quasar plugins
-      plugins: ['Notify', 'Loading']
+      plugins: ['Notify', 'Loading', 'BottomSheet']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
