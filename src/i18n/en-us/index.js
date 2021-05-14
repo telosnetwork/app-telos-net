@@ -9,7 +9,8 @@ export default {
       mint: 'Mint',
       register: 'Register',
       save: 'Save',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      editProfile: 'Edit profile'
     },
     defaultTitle: 'Title'
   },

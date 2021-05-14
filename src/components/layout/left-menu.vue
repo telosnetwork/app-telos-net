@@ -1,6 +1,4 @@
 <script>
-// import { mapGetters } from 'vuex'
-
 export default {
   name: 'left-menu-authenticated',
   methods: {
@@ -30,7 +28,7 @@ export default {
         switch-indicator
         class="text-grey text-teal"
         active-color="grey-9"
-        indicator-color='secondary'
+        indicator-color='primary'
       )
       q-route-tab.aline-left.q-my-lg(
         name="Contacts"
@@ -71,4 +69,6 @@ export default {
     margin: 16px 0 0 24px
   .wrapper
     margin: 34px 0 0 28px
+  .img
+    cursor: pointer
 </style>
