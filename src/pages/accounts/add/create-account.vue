@@ -105,6 +105,9 @@ export default {
               v-model="form.publicKey"
               label="Public Key"
               :rules="[() => copy || $t('forms.errors.copyKey')]"
+              type="textarea"
+              readonly=true
+              autogrow
               lazy-rules
               @click="$refs['publicKey'].select()"
             )
@@ -121,6 +124,9 @@ export default {
               v-model="form.privateKey"
               label="Private Key"
               :rules="[() => copy || $t('forms.errors.copyKey')]"
+              readonly=true
+              type="textarea"
+              autogrow
               lazy-rules
               @click="$refs['privateKey'].select()"
             )
@@ -132,6 +138,7 @@ export default {
                   size="sm"
                   @click="() => { copyToClipboard(form.privateKey); setSuccessMsg($t('pages.accounts.add.keyCopyClipboard'))}"
                 )
+          q-card-section
             q-checkbox(
               v-model="copy"
               label="I have copied my keys somewhere safe"
@@ -158,18 +165,13 @@ export default {
 <style lang="sass" scoped>
 .send-otp
   width: 100%
-  max-width: 500px
+  max-width: 550px
   margin: 0 auto
   h2
     color: $primary
     font-size: 24px
     text-align: center
     font-weight: 600
-  .test
-    width: 960px
-    position: relative
-    margin: 0 auto
-    line-height: 1.4em
   .warning
     color: red
     font-size: 12px
