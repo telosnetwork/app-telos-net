@@ -39,7 +39,7 @@ build_dev:
     expire_in: 1 hour
 
 build_prod:  
-  image: node:latest
+  image: node:15-buster
   stage: build  
   only:
     - master
