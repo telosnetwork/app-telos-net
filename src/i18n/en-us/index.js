@@ -200,6 +200,9 @@ export default {
     testnetDevelopers: {
       title: 'Get a testnet account or testnet TLOS'
     },
+    tokens: {
+      title: 'Token management'
+    },
     claim: {
       claimAccount: 'Claim account',
       claimCheck: {

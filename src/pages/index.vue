@@ -40,6 +40,14 @@ export default {
           color: 'negative',
           description: 'Vote on Works, Amend and other eco-system ballots.',
           route: '/trails/ballots'
+        },
+        {
+          title: 'Manage <b>Tokens</b>',
+          img: '../statics/app-icons/bar-chart.svg',
+          icon: 'savings',
+          color: 'primary',
+          description: 'Create, issue and discover tokens',
+          route: '/tokens'
         }
       ]
     }

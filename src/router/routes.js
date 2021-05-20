@@ -20,6 +20,9 @@ const routes = [
   { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'empty', title: 'pages.testnetRotation.title', guest: true } },
   { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'empty', title: 'pages.testnetDevelopers.title', guest: true } },
 
+  // Tokens
+  { path: '/tokens', component: () => import('pages/tokens/tokens.vue'), meta: { layout: 'empty', title: 'pages.tokens.title', guest: true } },
+
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },
   // { path: '/claim/claimAccount', component: () => import('pages/accounts/claim/remove-me.vue'), meta: { title: 'pages.claim.removeMe.title' } },
