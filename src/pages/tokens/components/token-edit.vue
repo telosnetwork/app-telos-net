@@ -271,11 +271,6 @@ export default {
       'retireTokens',
       'transferTokens'
     ]),
-    clearDialogValues () {
-      debugger
-      this.amountToIssue = null
-      this.issueMemo = null
-    },
     canIssue () {
       return this.stat && this.getUnissued() > 0
     },
