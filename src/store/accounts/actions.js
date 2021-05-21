@@ -29,7 +29,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
       // PPP.setActiveUser(this.$ualUser)
-      const defaultReturnUrl = localStorage.getItem('returning') ? '/trails/ballots' : '/profiles/myProfile'
+      const defaultReturnUrl = localStorage.getItem('returning') ? '/' : '/profiles/myProfile'
       // console.log('LOGIN defaultReturnUrl:', defaultReturnUrl)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)

@@ -12904,7 +12904,7 @@ universal-authenticator-library@0.1.0:
   resolved "https://registry.yarnpkg.com/universal-authenticator-library/-/universal-authenticator-library-0.1.0.tgz#187e6a85f43e75d4d76b66c228c9e4b59770d4af"
   integrity sha512-45nl80BWf+9WA8vTMXunMicZmHPm4wWdxNnSlL65cCP4OjA1ra4IuH+T7+Ko3P6IfXSfS9+VNCuXai3fip+taA==
 
-universal-authenticator-library@0.1.4, universal-authenticator-library@^0.1.4:
+universal-authenticator-library@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/universal-authenticator-library/-/universal-authenticator-library-0.1.4.tgz#e3f31d743780077184475089a8a9b57300316161"
   integrity sha512-1nU8W7yAc+ZQ+MlJA1gGKnGylSNyyaA2wC4Zy1RqtJo+asDYcNTc4gAySYp19TYhfdF0WwQXeve7SVuodbMHJA==

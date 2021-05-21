@@ -1,10 +1,17 @@
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'right-menu-guest',
   props: {
     landingPage: Boolean
   },
+  mounted () {
+    this.$router.onReady(() => {
+      this.autoLogin(this.$route.fullPath)
+    })
+  },
   methods: {
+    ...mapActions('accounts', ['autoLogin']),
     loginClick () {
       this.$router.push({
         path: '/login/', query: { returnUrl: this.$route.path }
