@@ -266,7 +266,7 @@ export default {
     ...mapActions('tokens', [
       'setMeta',
       'loadTokens',
-      'createToken',
+      'doCreateToken',
       'issueTokens',
       'retireTokens',
       'transferTokens'
@@ -275,12 +275,16 @@ export default {
       return this.stat && this.getUnissued() > 0
     },
     getUnissued () {
+      if (!this.stat) return
+
       return (
         parseFloat(this.stat.max_supply.split(' ')[0]) -
         parseFloat(this.stat.supply.split(' ')[0])
       )
     },
     hasBalance () {
+      if (!this.balance) return false
+
       return parseFloat(this.balance.split(' ')[0]) > 0
     },
     getBalanceNumber () {
@@ -336,9 +340,12 @@ export default {
       this.loadTokens()
     },
     async submitCreate () {
-      await this.createToken({
+      await this.doCreateToken({
         ...this.token,
-        create_price: this.config.create_price
+        logoSm: this.token.logo_sm,
+        logoLg: this.token.logo_lg,
+        maxSupply: this.token.supply,
+        createPrice: this.config.create_price
       })
       this.loadTokens()
     },

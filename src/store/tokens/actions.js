@@ -32,11 +32,12 @@ export async function loadConfig ({ commit }) {
   commit('setConfig', response.rows[0])
 }
 
-export async function createToken ({ commit }, { symbol, name, logoSm, logoLg, maxSupply, decimals, createPrice }) {
+export async function doCreateToken ({ commit }, { symbol, name, logoSm, logoLg, maxSupply, decimals, createPrice }) {
+  debugger
   const notification = {
     icon: 'fas fa-info',
-    title: 'notifications.tokens.setmeta',
-    content: `Set token info for ${name} (${symbol})`
+    title: 'notifications.tokens.create',
+    content: `Create token ${name} (${symbol})`
   }
   try {
     const actions = [
@@ -72,7 +73,7 @@ export async function createToken ({ commit }, { symbol, name, logoSm, logoLg, m
         }
       }
     ]
-    const transaction = await this.$store.$api.signTransaction(actions)
+    const transaction = await this.$api.signTransaction(actions)
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
