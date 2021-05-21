@@ -116,7 +116,7 @@ export async function issueTokens ({ commit }, { symbol, decimals, contractAccou
   let quantity = `${parseFloat(amount).toFixed(decimals)} ${symbol}`
   const notification = {
     icon: 'fas fa-info',
-    title: 'notifications.tokens.setmeta',
+    title: 'notifications.tokens.issue',
     content: `Issue ${quantity}`
   }
   try {
@@ -126,6 +126,64 @@ export async function issueTokens ({ commit }, { symbol, decimals, contractAccou
         name: 'issue',
         data: {
           to: this.$ualUser.accountName,
+          quantity,
+          memo
+        }
+      }
+    ])
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export async function retireTokens ({ commit }, { symbol, decimals, contractAccount, amount, memo }) {
+  let quantity = `${parseFloat(amount).toFixed(decimals)} ${symbol}`
+  const notification = {
+    icon: 'fas fa-info',
+    title: 'notifications.tokens.retire',
+    content: `Retire ${quantity}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction([
+      {
+        account: contractAccount,
+        name: 'retire',
+        data: {
+          quantity,
+          memo
+        }
+      }
+    ])
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export async function transferTokens ({ commit }, { symbol, decimals, contractAccount, amount, memo, to }) {
+  let quantity = `${parseFloat(amount).toFixed(decimals)} ${symbol}`
+  const notification = {
+    icon: 'fas fa-info',
+    title: 'notifications.tokens.transfer',
+    content: `Transfer ${quantity}`
+  }
+  try {
+    const transaction = await this.$api.signTransaction([
+      {
+        account: contractAccount,
+        name: 'transfer',
+        data: {
+          from: this.$ualUser.accountName,
+          to,
           quantity,
           memo
         }

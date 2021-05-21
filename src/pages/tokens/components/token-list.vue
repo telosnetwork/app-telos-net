@@ -3,6 +3,7 @@
     <token-detail v-bind="mapSelectedToDetails"></token-detail>
     <q-table
       title="Tokens"
+      :pagination.sync="pagination"
       :data="tokens"
       :columns="columns"
       row-key="name"
@@ -41,6 +42,9 @@ export default {
   },
   data () {
     return {
+      pagination: {
+        rowsPerPage: 20
+      },
       selectedToken: null,
       columns: [
         {
