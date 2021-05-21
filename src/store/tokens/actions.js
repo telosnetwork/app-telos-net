@@ -33,7 +33,6 @@ export async function loadConfig ({ commit }) {
 }
 
 export async function doCreateToken ({ commit }, { symbol, name, logoSm, logoLg, maxSupply, decimals, createPrice }) {
-  debugger
   const notification = {
     icon: 'fas fa-info',
     title: 'notifications.tokens.create',
