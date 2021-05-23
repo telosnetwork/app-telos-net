@@ -19,7 +19,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="app:my-profile")
+          q-icon(name="account_circle")
         q-item-section {{ $t('menu.myProfile') }}
       q-item(
         to="/profiles/contacts"
@@ -27,7 +27,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="app:find-contacts")
+          q-icon(name="perm_contact_calendar")
         q-item-section {{ $t('menu.contacts') }}
       q-item(
         to="/trails/treasuries"
@@ -35,7 +35,7 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="app:groups")
+          q-icon(name="group_work")
         q-item-section {{ $t('menu.trailsTreasuries') }}
       q-item(
         to="/trails/ballots"
@@ -43,8 +43,16 @@ export default {
         v-ripple
       )
         q-item-section(avatar)
-          q-icon(name="app:decide")
+          q-icon(name="how_to_vote")
         q-item-section {{ $t('menu.trailsBallots') }}
+      q-item(
+        to="/tokens"
+        clickable
+        v-ripple
+      )
+        q-item-section(avatar)
+          q-icon(name="savings")
+        q-item-section {{ $t('menu.tokens') }}
 </template>
 
 <style lang="stylus">

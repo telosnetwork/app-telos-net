@@ -44,6 +44,7 @@ export default {
   menu: {
     trails: 'Voting',
     trailsBallots: 'Decide',
+    tokens: 'Tokens',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
@@ -57,6 +58,13 @@ export default {
   },
   notifications: {
     title: 'Transactions',
+    tokens: {
+      setmeta: 'Set token info',
+      issue: 'Issue tokens',
+      retire: 'Retire tokens',
+      create: 'Create a token',
+      transfer: 'Transfer tokens'
+    },
     trails: {
       addBallot: 'Create a ballot',
       addTreasury: 'Create a group',
@@ -199,6 +207,9 @@ export default {
     },
     testnetDevelopers: {
       title: 'Get a testnet account or testnet TLOS'
+    },
+    tokens: {
+      title: 'Token management'
     },
     claim: {
       claimAccount: 'Claim account',
