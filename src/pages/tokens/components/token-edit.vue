@@ -1,9 +1,29 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md">
-    <q-card>
-      <div class="text-h6">
+    <q-card style="max-width: 600px">
+      <div class="q-pa-lg text-h4">
         {{ editingToken ? "Edit your token's info" : "Create a new token" }}
       </div>
+      <q-card-section>
+        <div class="q-pa-md" v-html="getTermsHtml">
+          <q-field
+            ref="toggle"
+            :value="acceptedTerms"
+            :rules="[checkTerms]"
+            borderless
+            dense
+          >
+            <template v-slot:control>
+              <q-checkbox
+                v-model="acceptedTerms"
+                color="green"
+                label="Please acknowledge these terms"
+              >
+              </q-checkbox>
+            </template>
+          </q-field>
+        </div>
+      </q-card-section>
       <q-card-section>
         <q-input v-model="token.name" label="Token name"></q-input>
         <q-input
@@ -237,6 +257,7 @@ export default {
       },
       balance: null,
       stat: null,
+      acceptedTerms: false,
       transferDialog: false,
       issueDialog: false,
       retireDialog: false,
@@ -251,7 +272,18 @@ export default {
   },
   computed: {
     ...mapState('tokens', ['createToken', 'editingToken', 'config']),
-    ...mapGetters('accounts', ['account'])
+    ...mapGetters('accounts', ['account']),
+    getTermsHtml () {
+      return `Terms:
+            ${!this.editingToken
+    ? `There will be a fee of <strong>${this.config.create_price}</strong> to create a new token.  `
+    : ''}
+          If this token is found to be misleading, scamming or attempting to
+          present itself as another existing token then it will be removed from the token registry (the token itself will remain untouched).
+          <br>
+          <br>
+          <strong>We reserve the right to delist tokens for any reason.</strong>`
+    }
   },
   mounted () {
     this.setToken()
@@ -271,6 +303,9 @@ export default {
       'retireTokens',
       'transferTokens'
     ]),
+    checkTerms (val) {
+      return val || 'You must accept the terms'
+    },
     canIssue () {
       return this.stat && this.getUnissued() > 0
     },
@@ -291,6 +326,10 @@ export default {
       return this.hasBalance() ? parseFloat(this.balance.split(' ')[0]) : 0.0
     },
     async submit () {
+      if (!this.acceptedTerms) {
+        this.$refs.toggle.validate()
+        return
+      }
       if (this.createToken) {
         this.submitCreate()
       } else {
@@ -340,6 +379,13 @@ export default {
       this.loadTokens()
     },
     async submitCreate () {
+      if (!this.token.supply || (isNaN(this.token.decimals) || this.token.decimals < 0) || !this.token.name || !this.token.symbol) {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Please fill out all the token fields'
+        })
+        return
+      }
       await this.doCreateToken({
         ...this.token,
         logoSm: this.token.logo_sm,

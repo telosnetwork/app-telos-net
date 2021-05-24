@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import RequestAccount from './components/request-account'
 
 export default {
@@ -16,6 +16,7 @@ export default {
     ...mapGetters('accounts', ['loading'])
   },
   methods: {
+    ...mapActions('accounts', ['login']),
     async onLogin (idx) {
       this.idx = idx
       await this.login({ idx: this.idx, returnUrl: this.$route.query.returnUrl })
