@@ -160,6 +160,7 @@ div
       &.logout-btn
         color: var(--q-color-warning) !important
   .collapsed-menu
+    display: none
     margin-left: 20px
   .dialog-wrapper
     max-width: 400px
@@ -183,16 +184,15 @@ div
     border: 1px solid var(--q-color-negative)
     border-radius: 6px !important
   .dialog-btn
+    border-radius: 0 !important
+    border-bottom: 1px solid var(--q-color-negative)
     &:first-child
       border-radius: 6px 6px 0 0
       border-bottom: 1px solid var(--q-color-negative)
-    &:nth-child(2)
+    &:last-child
       border-radius: 0 0 6px 6px
   .q-dialog__inner--bottom > div
     width: 100% !important
-  @media (min-width: 736px)
-    .collapsed-menu
-      display: none
   @media (max-width: 970px)
     .menu
       font-size: 14px !important

@@ -41,7 +41,7 @@ export default {
           :labelText="$t('pages.trails.ballots.welcomeCard.btnLabel')"
           primary
           btnWidth='94'
-          @clickBtn="addToLocalStorage()",
+          @clickBtn="addToLocalStorage()"
           fontSize='16'
         )
 </template>
@@ -54,7 +54,7 @@ export default {
     height: 292px
     padding: 32px
     margin: 40px 0
-    border-radius: 12px;
+    border-radius: 12px
   .title-wrapper
     margin: 32px 0 0 0
     padding: 0
@@ -62,7 +62,7 @@ export default {
     font-weight: 600
     font-size: 32px
     line-height: 32px
-    letter-spacing: -0.015em;
+    letter-spacing: -0.015em
   .title-img
     width: 32px
     height: 32px
@@ -115,6 +115,7 @@ export default {
       height: 465px
       padding: 250px 0 0 0
       margin: 0
+      border-radius: 0
     .title-wrapper
       margin: 0 12px 0 12px
     .card-text

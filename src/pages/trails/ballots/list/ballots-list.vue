@@ -4,10 +4,11 @@ import BallotForm from '../components/ballot-form'
 import BallotListItem from '../components/ballot-list-item'
 import BallotView from '../view/ballot-view'
 import WelcomeCard from '../../../../components/welcome-card'
+import ActionBar from '../../../../components/action-bar'
 
 export default {
   name: 'ballots-list',
-  components: { BallotForm, BallotListItem, BallotView, WelcomeCard },
+  components: { BallotForm, BallotListItem, BallotView, WelcomeCard, ActionBar },
   data () {
     return {
       show: false,
@@ -18,6 +19,7 @@ export default {
       voting: false,
       treasury: null,
       statuses: ['voting'],
+      categories: [],
       statusOptions: [
         { value: 'voting', label: 'Active' }, // abstracting "Voting" to "Active" for better UX and clarity
         { value: 'closed', label: 'Closed' },
@@ -103,6 +105,20 @@ export default {
     },
     isNewUser () {
       return localStorage.isNewUser
+    },
+    updateTreasury (newTreasury) {
+      this.treasury = newTreasury
+    },
+    updateStatuses (newStatuses) {
+      console.log(newStatuses)
+      this.statuses = newStatuses
+    },
+    updateCategories (newCategories) {
+      this.categories = newCategories
+    },
+    filterBallots (ballots) {
+      const ballotFiltered = ballots.filter(b => this.statuses.length === 0 || this.statuses.includes(b.status))
+      return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
     }
   },
   computed: {
@@ -117,28 +133,6 @@ export default {
       } else {
         this.showBallot = false
       }
-    },
-    treasury: function (val, old) {
-      console.log(`watching treasury`)
-      if (val !== old) {
-        this.resetBallots()
-      }
-    },
-    statuses: function (val, old) {
-      console.log(`watching statuses`)
-      if (val !== old) {
-        this.resetBallots()
-      }
-    },
-    treasuriesOptions: {
-      immediate: true,
-      handler: async function (val) {
-        console.log(`watching treasuriesOptions`)
-        if (!val.length) {
-          // TODO past 100 groups we need to switch to autocomplete search
-          await this.fetchTreasuries()
-        }
-      }
     }
   }
 }
@@ -147,15 +141,12 @@ export default {
 <template lang="pug">
 q-page
   welcome-card(v-if="!isNewUser()")
+  action-bar(
+    @update-treasury="updateTreasury"
+    @update-statuses="updateStatuses"
+    @update-categories="updateCategories"
+    :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
-  .row.col-12.banner.justify-center.items-center.q-mb-md.border-white.q-card--bordered.relative-position
-    div.row.justify-center.items-center.q-my-md.text-center
-      img(src="/statics/app-icons/vote.svg" style="width: 40px")
-      img(src="/statics/telos-logo-white.svg" style="width: 85px").on-right
-      span.text-h4.text-white ,
-      span.on-right.text-h4.text-white your vote matters
-    div.banner-grey-bar.absolute-bottom
-
   .row.flex.justify-end
     q-select.q-mb-lg.q-mr-sm(
       v-model="statuses"
@@ -198,7 +189,7 @@ q-page
       div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
+          v-for="(ballot, index) in filterBallots(ballots)"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"

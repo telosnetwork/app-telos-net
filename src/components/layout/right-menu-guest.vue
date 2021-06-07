@@ -43,8 +43,4 @@ div.btns-wrapper.row.justify-between
     .create-btn,
     .login-btn
       font-size: 14px !important
-    .create-btn
-      width: auto !important
-    .login-btn
-      width: auto !important
 </style>
