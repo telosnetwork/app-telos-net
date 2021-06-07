@@ -198,7 +198,7 @@ div
       font-size: 14px !important
   @media (max-width: 735px)
     .collapsed-menu
-      display: 'block'
+      display: block
     .menu
       display: none
 </style>
