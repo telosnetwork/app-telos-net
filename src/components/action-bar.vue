@@ -28,16 +28,18 @@ export default {
         { label: 'Poll', value: 'poll' },
         { label: 'Proposal', value: 'proposal' }
       ],
-      statusGroup: [ 'voting' ],
+      statusGroup: [ 'active' ],
       statusOptions: [
-        { label: 'Active', value: 'voting' },
+        { label: 'Active', value: 'active' },
+        { value: 'not_started', label: 'Not started' },
+        { label: 'Expired', value: 'expired' },
         { label: 'Closed', value: 'closed' },
         { label: 'Cancelled', value: 'cancelled' },
         { label: 'Archived', value: 'archived' },
         { label: 'Setup', value: 'setup' }
       ],
       submitTypesResult: [],
-      submitStatusesResult: [ 'voting' ],
+      submitStatusesResult: [ 'active' ],
       treasuryBar: null
     }
   },
