@@ -191,12 +191,12 @@ export default {
     div.column.bar-filter-menu-320-wrapper
       div.bar-filter-menu-320.column
         div.menu-320-title-wrapper.row.items-center
-          div.menu-320-title() Filter
+          div.menu-320-title {{ $t('pages.trails.ballots.actionBar.filterTitle') }}
           q-icon.filter-icon(name="filter_list")
         div.dialog-btn-wrapper.column
           div(v-if="submitTypesResult.length === 0")
             q-btn.dialog-btn.filter-type-btn-320(
-              label="Type"
+              :label="$t('pages.trails.ballots.actionBar.typeFilter')"
               icon-right="fas fa-chevron-down"
               @click="toggleMenu('isTypeDialogOpen')"
               color="dark"
@@ -212,7 +212,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Type
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.typeFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -232,15 +232,21 @@ export default {
                     )
                     div.menu-form-btns-wrapper.row.justify-between
                       btn.create-btn(
-                        labelText="Discard"
+                        :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitTypesResult', 'typeGroup')"
                         btnWidth='142'
                         fontSize='15'
                       )
-                      btn(btnWidth='142' fontSize='16' labelText="Apply" primary type="submit")
+                      btn(
+                        :labelText="$t('pages.trails.ballots.actionBar.btnApply')"
+                        primary
+                        type="submit"
+                        btnWidth='142'
+                        fontSize='15'
+                      )
           div.flex.no-wrap(v-else)
             q-btn.bar-filter-btn.left-btn.left-btn-320(
-              :label="getFilterBtnLabel('Type', 'submitTypesResult', 'typeOptions')"
+              :label="getFilterBtnLabel($t('pages.trails.ballots.actionBar.typeFilter'), 'submitTypesResult', 'typeOptions')"
               @click="toggleMenu('isTypeDialogOpen')"
               color="dark"
               no-caps
@@ -252,7 +258,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Type
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.typeFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -272,12 +278,18 @@ export default {
                     )
                     div.menu-form-btns-wrapper.row.justify-between
                       btn.create-btn(
-                        labelText="Discard"
+                        :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitTypesResult', 'typeGroup')"
                         btnWidth='142'
                         fontSize='15'
                       )
-                      btn(btnWidth='142' fontSize='16' labelText="Apply " primary type="submit")
+                      btn(
+                        :labelText="$t('pages.trails.ballots.actionBar.btnApply')"
+                        primary
+                        type="submit"
+                        btnWidth='142'
+                        fontSize='15'
+                      )
             q-btn.bar-filter-btn.right-btn.right-btn-320(
               @click="clearFilter('submitTypesResult', 'isTypeMenuOpen')"
               icon="close"
@@ -285,7 +297,7 @@ export default {
             )
           div(v-if="submitStatusesResult.length === 0")
             q-btn.dialog-btn.filter-type-btn-320(
-              label="Status"
+              :label="$t('pages.trails.ballots.actionBar.statusFilter')"
               icon-right="fas fa-chevron-down"
               @click="toggleMenu('isStatusDialogOpen')"
               color="dark"
@@ -301,7 +313,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Status
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.statusFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -321,15 +333,21 @@ export default {
                     )
                     div.menu-form-btns-wrapper.row.justify-between
                       btn.create-btn(
-                        labelText="Discard"
+                        :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitStatusesResult', 'statusGroup')"
                         btnWidth='142'
                         fontSize='15'
                       )
-                      btn(btnWidth='142' fontSize='16' labelText="Apply" primary type="submit")
+                      btn(
+                        :labelText="$t('pages.trails.ballots.actionBar.btnApply')"
+                        primary
+                        type="submit"
+                        btnWidth='142'
+                        fontSize='15'
+                      )
           div.flex.no-wrap(v-else)
             q-btn.bar-filter-btn.left-btn.left-btn-320(
-              :label="getFilterBtnLabel('Status', 'submitStatusesResult', 'statusOptions')"
+              :label="getFilterBtnLabel($t('pages.trails.ballots.actionBar.statusFilter'), 'submitStatusesResult', 'statusOptions')"
               @click="toggleMenu('isStatusDialogOpen')"
               color="dark"
               no-caps
@@ -341,7 +359,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Status
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.statusFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -361,12 +379,18 @@ export default {
                     )
                     div.menu-form-btns-wrapper.row.justify-between
                       btn.create-btn(
-                        labelText="Discard"
+                        :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitStatusesResult', 'statusGroup')"
                         btnWidth='142'
                         fontSize='15'
                       )
-                      btn(btnWidth='161' fontSize='16' labelText="Confirm" primary type="submit")
+                      btn(
+                        :labelText="$t('pages.trails.ballots.actionBar.btnApply')"
+                        primary
+                        type="submit"
+                        btnWidth='142'
+                        fontSize='15'
+                      )
             q-btn.bar-filter-btn.right-btn.right-btn-320(
               @click="clearFilter('submitStatusesResult', 'isStatusDialogOpen')"
               icon="close"
@@ -374,7 +398,7 @@ export default {
             )
           div(v-if="!treasuryBar")
             q-btn.dialog-btn.filter-type-btn-320(
-              label="Group"
+              :label="$t('pages.trails.ballots.actionBar.groupFilter')"
               icon-right="fas fa-chevron-down"
               @click="toggleMenu('isGroupDialogOpen')"
               color="dark"
@@ -390,7 +414,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Group
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.groupFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -419,7 +443,7 @@ export default {
               div.column.dialog-wrapper
                 div.flex.justify-between.dialog-title
                   div.flex.items-center
-                    div.user-name Group
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.groupFilter') }}
                   q-btn.close-btn(
                     flat
                     dense
@@ -441,12 +465,18 @@ export default {
             )
         btn.discard-all-btn(
           v-if="isFiltersApplied()"
-          labelText="Discard all filters"
+          :labelText="$t('pages.trails.ballots.actionBar.btnDiscardAll')"
           @clickBtn="discardAllFilter()"
           fontSize='15'
         )
       div.btn-320-wrapper.row.items-center.scroll-anim
-        btn.create-poll-btn.btn-320(btnWidth='155' fontSize='16' iconRight labelText="Create a poll" primary)
+        btn.create-poll-btn.btn-320(
+          iconRight
+          :labelText="$t('pages.trails.ballots.actionBar.btnCreatePoll')"
+          primary
+          btnWidth='155'
+          fontSize='16'
+        )
     div.bar-wrapper.row.items-center(:class="{'menu-visible': isFilterMenu320Open}")
       div.bar-linear-gradient-left
       div.bar-linear-gradient-right
@@ -465,7 +495,7 @@ export default {
         div.row.bar-filter-btns-wrapper
           q-btn.bar-filter-btn(
             v-if="submitTypesResult.length === 0"
-            label="Type"
+            :label="$t('pages.trails.ballots.actionBar.typeFilter')"
             :class="{'menu-open': isTypeMenuOpen}"
             :icon-right="isTypeMenuOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
             color="dark"
@@ -487,10 +517,16 @@ export default {
                   color="primary"
                   type="checkbox"
                 )
-                btn(btnWidth='142' fontSize='16' labelText="Confirm" primary type="submit")
+                btn(
+                  :labelText="$t('pages.trails.ballots.actionBar.btnConfirm')"
+                  primary
+                  type="submit"
+                  btnWidth='142'
+                  fontSize='16'
+                )
           div(v-else)
             q-btn.bar-filter-btn.left-btn(
-              :label="getFilterBtnLabel('Type', 'submitTypesResult', 'typeOptions')"
+              :label="getFilterBtnLabel($t('pages.trails.ballots.actionBar.typeFilter'), 'submitTypesResult', 'typeOptions')"
               color="dark"
               no-caps
             )
@@ -509,7 +545,13 @@ export default {
                     color="primary"
                     type="checkbox"
                   )
-                  btn(btnWidth='161' fontSize='16' labelText="Confirm" primary type="submit")
+                  btn(
+                    :labelText="$t('pages.trails.ballots.actionBar.btnConfirm')"
+                    primary
+                    type="submit"
+                    btnWidth='161'
+                    fontSize='16'
+                  )
             q-btn.bar-filter-btn.right-btn(
               @click="clearFilter('submitTypesResult', 'isTypeMenuOpen')"
               icon="close"
@@ -517,7 +559,7 @@ export default {
             )
           q-btn.bar-filter-btn(
             v-if="submitStatusesResult.length === 0"
-            label="Status"
+            :label="$t('pages.trails.ballots.actionBar.statusFilter')"
             :class="{'menu-open': isStatusMenuOpen}"
             :icon-right="isStatusMenuOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
             color="dark"
@@ -539,10 +581,16 @@ export default {
                   color="primary"
                   type="checkbox"
                 )
-                btn(btnWidth='161' fontSize='16' labelText="Confirm" primary type="submit")
+                btn(
+                  :labelText="$t('pages.trails.ballots.actionBar.btnConfirm')"
+                  primary
+                  type="submit"
+                  btnWidth='161'
+                  fontSize='16'
+                )
           div(v-else)
             q-btn.bar-filter-btn.left-btn(
-              :label="getFilterBtnLabel('Status', 'submitStatusesResult', 'statusOptions')"
+              :label="getFilterBtnLabel($t('pages.trails.ballots.actionBar.statusFilter'), 'submitStatusesResult', 'statusOptions')"
               color="dark"
               no-caps
             )
@@ -561,7 +609,13 @@ export default {
                     color="primary"
                     type="checkbox"
                   )
-                  btn(btnWidth='161' fontSize='16' labelText="Confirm" primary type="submit")
+                  btn(
+                    :labelText="$t('pages.trails.ballots.actionBar.btnConfirm')"
+                    primary
+                    type="submit"
+                    btnWidth='161'
+                    fontSize='16'
+                  )
             q-btn.bar-filter-btn.right-btn(
               @click="clearFilter('submitStatusesResult', 'isStatusMenuOpen')"
               icon="close"
@@ -569,7 +623,7 @@ export default {
             )
           q-btn.bar-filter-btn(
             v-if="!treasuryBar"
-            label="Group"
+            :label="$t('pages.trails.ballots.actionBar.groupFilter')"
             :class="{'menu-open': isGroupMenuOpen}"
             :icon-right="isGroupMenuOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
             color="dark"
@@ -610,7 +664,7 @@ export default {
               color="dark"
             )
       q-btn.bar-filter-btn-320(
-        label="Filter"
+        :label="$t('pages.trails.ballots.actionBar.filterTitle')"
         icon-right="filter_list"
         @click="handleFilterBtnClick()"
         color="dark"
@@ -620,7 +674,12 @@ export default {
       div.separator-320
       div.right-bar-section.col-grow.row.items-center.justify-end
         q-separator.bar-separator-vertical(vertical inset)
-        btn.create-poll-btn(btnWidth='155' fontSize='16' iconRight labelText="Create a poll" primary)
+        btn.create-poll-btn(
+          :labelText="$t('pages.trails.ballots.actionBar.btnCreatePoll')"
+          iconRight
+          primary
+          btnWidth='155'
+          fontSize='16')
 </template>
 <style lang="sass">
   .bar-wrapper
