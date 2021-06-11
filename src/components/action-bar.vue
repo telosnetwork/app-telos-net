@@ -670,15 +670,33 @@ export default {
   .bar-filter-btns-wrapper
     gap: 16px
   .bar-filter-btn
-    padding: 0 12px
+    height: 40px
     font-size: 16px
+    & .q-btn__wrapper
+      padding: 0 12px
+    & .q-btn__wrapper::before
+      border: 1px solid var(--q-color-negative)
+    & .q-icon
+      margin-top: 4px
+    & .on-right
+      margin-left: 16px
   .bar-filter-menu-form
     padding: 12px
   .left-btn
+    height: 40px
+    padding: 0
     margin-right: 1px
     border-radius: 6px 0 0 6px
+    & .q-btn__wrapper::before
+      border: none
   .right-btn
+    height: 40px
+    width: 40px
+    padding: 0
     border-radius: 0 6px 6px 0
+    font-size: 12px
+    & .q-btn__wrapper::before
+      border: none
   .bar-filter-btn-320
     display: none
     margin-left: 12px
@@ -736,10 +754,13 @@ export default {
   .q-scrollarea
     height: 200px
   .left-btn-320
+    height: 40px
     width: -webkit-fill-available
     border-radius: none
   .right-btn-320
-    width: 48px
+    height: 40px
+    width: 40px
+    font-size: 12px
     border-radius: none
   .dialog-form
     padding: 0
