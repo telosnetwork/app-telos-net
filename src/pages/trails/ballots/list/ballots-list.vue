@@ -16,9 +16,11 @@ export default {
       openedBallot: {},
       voting: false,
       treasury: null,
-      statuses: ['voting'],
+      statuses: ['active'],
       statusOptions: [
-        { value: 'voting', label: 'Active' }, // abstracting "Voting" to "Active" for better UX and clarity
+        { value: 'active', label: 'Active' },
+        { value: 'expired', label: 'Expired' },
+        { value: 'not started', label: 'Not started' },
         { value: 'closed', label: 'Closed' },
         { value: 'cancelled', label: 'Cancelled' },
         { value: 'archived', label: 'Archived' },
@@ -99,6 +101,23 @@ export default {
     },
     getEndTime (ballot) {
       return new Date(ballot.end_time).getTime()
+    },
+    filterBallots (ballots) {
+      const ballotFiltered = ballots.filter(b => {
+        if (this.statuses.length === 0) {
+          return true
+        } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || b.status === 'voting'
+        } else if (this.statuses.includes('active')) {
+          return this.statuses.includes(b.status) || this.isBallotOpened(b)
+        } else if (this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b))
+        } else if (this.statuses.includes('not started')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b))
+        }
+        return this.statuses.includes(b.status)
+      })
+      return ballotFiltered
     }
   },
   computed: {
@@ -193,7 +212,7 @@ q-page.q-pa-lg
       div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in ballots.filter(b => statuses.length === 0 || statuses.includes(b.status))"
+          v-for="(ballot, index) in filterBallots(ballots)"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"
