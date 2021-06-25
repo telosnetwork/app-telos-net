@@ -18,15 +18,8 @@ export default {
       openedBallot: {},
       voting: false,
       treasury: null,
-      statuses: ['voting'],
+      statuses: ['active'],
       categories: [],
-      statusOptions: [
-        { value: 'voting', label: 'Active' }, // abstracting "Voting" to "Active" for better UX and clarity
-        { value: 'closed', label: 'Closed' },
-        { value: 'cancelled', label: 'Cancelled' },
-        { value: 'archived', label: 'Archived' },
-        { value: 'setup', label: 'Setup' }
-      ],
       isBallotListRowDirection: true,
       currentPage: 1,
       limit: 12,
@@ -115,14 +108,26 @@ export default {
       this.treasury = newTreasury
     },
     updateStatuses (newStatuses) {
-      console.log(newStatuses)
       this.statuses = newStatuses
     },
     updateCategories (newCategories) {
       this.categories = newCategories
     },
     filterBallots (ballots) {
-      const ballotFiltered = ballots.filter(b => this.statuses.length === 0 || this.statuses.includes(b.status))
+      const ballotFiltered = ballots.filter(b => {
+        if (this.statuses.length === 0) {
+          return true
+        } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || b.status === 'voting'
+        } else if (this.statuses.includes('active')) {
+          return this.statuses.includes(b.status) || this.isBallotOpened(b)
+        } else if (this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b))
+        } else if (this.statuses.includes('not started')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b))
+        }
+        return this.statuses.includes(b.status)
+      })
       return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
     },
     changeDirection (isBallotListRowDirection) {
@@ -160,7 +165,6 @@ q-page
     @change-diraction="changeDirection"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
-
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       ref="infiniteScroll"
