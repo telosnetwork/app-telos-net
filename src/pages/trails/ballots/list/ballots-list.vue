@@ -18,15 +18,8 @@ export default {
       openedBallot: {},
       voting: false,
       treasury: null,
-      statuses: ['voting'],
-      categories: [],
-      statusOptions: [
-        { value: 'voting', label: 'Active' }, // abstracting "Voting" to "Active" for better UX and clarity
-        { value: 'closed', label: 'Closed' },
-        { value: 'cancelled', label: 'Cancelled' },
-        { value: 'archived', label: 'Archived' },
-        { value: 'setup', label: 'Setup' }
-      ]
+      statuses: ['active'],
+      categories: []
     }
   },
   async mounted () {
@@ -110,14 +103,26 @@ export default {
       this.treasury = newTreasury
     },
     updateStatuses (newStatuses) {
-      console.log(newStatuses)
       this.statuses = newStatuses
     },
     updateCategories (newCategories) {
       this.categories = newCategories
     },
     filterBallots (ballots) {
-      const ballotFiltered = ballots.filter(b => this.statuses.length === 0 || this.statuses.includes(b.status))
+      const ballotFiltered = ballots.filter(b => {
+        if (this.statuses.length === 0) {
+          return true
+        } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || b.status === 'voting'
+        } else if (this.statuses.includes('active')) {
+          return this.statuses.includes(b.status) || this.isBallotOpened(b)
+        } else if (this.statuses.includes('expired')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b))
+        } else if (this.statuses.includes('not started')) {
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b))
+        }
+        return this.statuses.includes(b.status)
+      })
       return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
     }
   },
@@ -147,37 +152,6 @@ q-page
     @update-categories="updateCategories"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
-  .row.flex.justify-end
-    q-select.q-mb-lg.q-mr-sm(
-      v-model="statuses"
-      :options="statusOptions"
-      label="Status"
-      multiple
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
-      template(v-slot:option="scope")
-        q-item(
-          v-bind="scope.itemProps"
-          v-on="scope.itemEvents"
-        )
-          q-item-section(side)
-            q-checkbox(
-              v-model="statuses"
-              :val="scope.opt.value"
-            )
-          q-item-section
-            q-item-label(v-html="scope.opt.label")
-    q-select.q-mb-lg(
-      v-model="treasury"
-      :options="treasuriesOptions"
-      label="Group filter"
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
-
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       ref="infiniteScroll"
