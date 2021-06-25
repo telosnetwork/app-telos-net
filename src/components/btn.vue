@@ -8,7 +8,8 @@ export default {
     iconRight: Boolean,
     fontSize: String,
     to: String,
-    type: String
+    type: String,
+    hoverBlue: Boolean
   },
   methods: {
     clickBtn: function () { this.$emit('clickBtn') }
@@ -18,7 +19,7 @@ export default {
 
 <template lang="pug">
   q-btn.custom-btn(
-    :class="primary ? undefined : 'border-btn'"
+    :class="`${primary ? undefined : 'border-btn'} ${hoverBlue ? 'hover-blue' : undefined}`"
     :to="to ? to : undefined"
     :style="{'width': `${btnWidth}px`, 'font-size': `${fontSize}px`}"
     @click="clickBtn"
@@ -39,4 +40,9 @@ export default {
     color: $dark
   .custom-btn > .q-btn__wrapper
     padding: 0
+  .hover-blue
+    & > .q-btn__wrapper:hover
+      background: var(--q-color-primary)
+    & > .q-btn__wrapper:hover > .q-btn__content
+      color: #fff
 </style>

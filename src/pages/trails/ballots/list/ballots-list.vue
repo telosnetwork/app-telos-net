@@ -26,7 +26,11 @@ export default {
         { value: 'cancelled', label: 'Cancelled' },
         { value: 'archived', label: 'Archived' },
         { value: 'setup', label: 'Setup' }
-      ]
+      ],
+      isBallotListRowDirection: true,
+      currentPage: 1,
+      limit: 12,
+      page: 1
     }
   },
   async mounted () {
@@ -62,6 +66,7 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
+      console.log(this.ballots)
     },
     openBallot (ballot) {
       if (this.showBallot) {
@@ -119,6 +124,13 @@ export default {
     filterBallots (ballots) {
       const ballotFiltered = ballots.filter(b => this.statuses.length === 0 || this.statuses.includes(b.status))
       return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
+    },
+    changeDirection (isBallotListRowDirection) {
+      this.isBallotListRowDirection = isBallotListRowDirection
+      console.log(this.isBallotListRowDirection)
+    },
+    getPage (ballots) {
+      return ballots.slice((this.page - 1) * this.limit, (this.page - 1) * this.limit + this.limit)
     }
   },
   computed: {
@@ -145,38 +157,9 @@ q-page
     @update-treasury="updateTreasury"
     @update-statuses="updateStatuses"
     @update-categories="updateCategories"
+    @change-diraction="changeDirection"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
-  .row.flex.justify-end
-    q-select.q-mb-lg.q-mr-sm(
-      v-model="statuses"
-      :options="statusOptions"
-      label="Status"
-      multiple
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
-      template(v-slot:option="scope")
-        q-item(
-          v-bind="scope.itemProps"
-          v-on="scope.itemEvents"
-        )
-          q-item-section(side)
-            q-checkbox(
-              v-model="statuses"
-              :val="scope.opt.value"
-            )
-          q-item-section
-            q-item-label(v-html="scope.opt.label")
-    q-select.q-mb-lg(
-      v-model="treasury"
-      :options="treasuriesOptions"
-      label="Group filter"
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
 
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
@@ -186,10 +169,10 @@ q-page
       :offset="250"
       :scroll-target="$refs.ballotsRef"
     )
-      div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
+      div(:class="isBallotListRowDirection ? 'row-direction' : 'column-direction'")
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in filterBallots(ballots)"
+          v-for="(ballot, index) in getPage(filterBallots(ballots))"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"
@@ -197,6 +180,20 @@ q-page
           :votingHasBegun="votingHasBegun(ballot)"
           :getStartTime="getStartTime(ballot)"
           :getEndTime="getEndTime(ballot)"
+        )
+      div.flex.flex-center.pagination-wrapper
+        q-pagination(
+          v-model="page"
+          :min="currentPage"
+          :max="Math.ceil(filterBallots(ballots).length / limit)"
+          :max-pages="6"
+          direction-links
+          boundary-links
+          icon-first="skip_previous"
+          icon-last="skip_next"
+          icon-prev="fast_rewind"
+          icon-next="fast_forward"
+          size="12px"
         )
       template(v-slot:loading)
         .row.justify-center.q-my-md
@@ -236,4 +233,17 @@ q-page
   background-color: #0000001a;
   height: 46%;
   width: 100%;
+.row-direction
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
+.column-direction
+  display: flex
+  flex-direction: column
+.pagination-wrapper
+  margin: 24px 0
+@media (max-width: 600px)
+  .pagination-wrapper
+    margin-bottom: 100px
+    font-size: 12px
 </style>

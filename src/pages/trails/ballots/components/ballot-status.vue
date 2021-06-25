@@ -15,17 +15,24 @@ export default {
 </script>
 
 <template lang="pug">
-div(:class="ballot.status === 'closed' || ballot.status === 'cancelled' ? 'text-grey-7' : 'link'").left-tag.left-tag-left.cursor-default
+div.left-tag.cursor-default
   template(v-if="ballot.status === 'voting' && isBallotOpened")
-    cite Time Remaining
+    div.status-frame-title Time left
     countdown(:endtime="getEndTime")
 
   template(v-else-if="ballot.status === 'voting' && !votingHasBegun")
-    cite Voting Begins in
+    div.status-frame-title Voting begins in
     countdown(:endtime="getStartTime")
 
   template(v-else)
-    cite Status
-    span(v-if="ballot.status === 'setup'") SETUP
-    span(v-else) ENDED
+    div.status-frame-title Status
+    span(v-if="ballot.status === 'setup'") Setup
+    span(v-else) Proposal ended
 </template>
+
+<style lang="sass">
+.status-frame-title
+  font-size: 12px
+  margin: 4px 0
+  opacity: .5
+</style>
