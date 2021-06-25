@@ -120,11 +120,11 @@ export default {
         } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
           return this.statuses.includes(b.status) || b.status === 'voting'
         } else if (this.statuses.includes('active')) {
-          return this.statuses.includes(b.status) || this.isBallotOpened(b)
+          return this.statuses.includes(b.status) || (this.isBallotOpened(b) && b.status === 'voting')
         } else if (this.statuses.includes('expired')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b))
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
         } else if (this.statuses.includes('not started')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b))
+          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
         }
         return this.statuses.includes(b.status)
       })
