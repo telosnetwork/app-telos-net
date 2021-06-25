@@ -59,7 +59,6 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
-      console.log(this.ballots)
     },
     openBallot (ballot) {
       if (this.showBallot) {
@@ -132,7 +131,6 @@ export default {
     },
     changeDirection (isBallotListRowDirection) {
       this.isBallotListRowDirection = isBallotListRowDirection
-      console.log(this.isBallotListRowDirection)
     },
     getPage (ballots) {
       return ballots.slice((this.page - 1) * this.limit, (this.page - 1) * this.limit + this.limit)

@@ -185,7 +185,6 @@ export default {
       }
     },
     isBallotListRowDirection: function (val, old) {
-      console.log(`watching direction`)
       if (val !== old) {
         this.$emit('change-diraction', this.isBallotListRowDirection)
       }
