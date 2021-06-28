@@ -13,7 +13,8 @@ export default {
     displayWinner: { type: Function, required: true },
     votingHasBegun: { type: Function, required: true },
     getStartTime: { type: Function, required: true },
-    getEndTime: { type: Function, required: true }
+    getEndTime: { type: Function, required: true },
+    getLoser: { type: Function, required: true }
   },
   data () {
     return {
@@ -55,10 +56,6 @@ export default {
       })
       // console.log('winner', winner)
       return this.ballot.options[winner]
-    },
-    getLoser () {
-      if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
-      return this.ballot.options.find(x => x.key !== this.getWinner.key)
     },
     ballotDescription () {
       if (this.getIPFShash) {

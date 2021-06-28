@@ -1,38 +1,50 @@
 <script>
 export default {
   name: 'ballot-chip',
-  props: ['type', 'color'],
+  props: ['type'],
   data () {
     return {}
+  },
+  methods: {
+    ucFirst (str) {
+      if (!str) return str
+
+      return str[0].toUpperCase() + str.slice(1)
+    }
   }
 }
 </script>
 
 <template lang="pug">
-  q-chip(square text-color="white" :class="`${type.toLowerCase()}-chip`").capitalize.no-margin.text-weight-bold.ballot-type
-    q-avatar
-      img(:src="`statics/app-icons/${type.toLowerCase()}-icon.svg`").poll-icon
-    span {{ type }}
+  q-chip(square text-color="white" :class="`${type}-chip`").capitalize.no-margin.text-weight-bold.ballot-type
+    div.poll-icon
+    span.type-text {{ ucFirst(type) }}
 </template>
 
 <style lang="sass">
-  .ballot-type.poll-chip
-    background-color: #9793fa;
-  .ballot-type.referendum-chip
-    background-color: #94d5fa;
-  .ballot-type.proposal-chip
-    background-color: #e293fa;
-  .ballot-type.election-chip
-    background-color: #93b8fa;
-  .ballot-type.leaderboard-chip
-    background-color: #fa93a2;
+  .ballot-type.poll-chip .poll-icon
+    background: #FFB010;
+  .ballot-type.referendum-chip .poll-icon
+    background: #F5898A;
+  .ballot-type.proposal-chip .poll-icon
+    background: #FA7238;
+  .ballot-type.election-chip .poll-icon
+    background: #71DA76;
+  .ballot-type.leaderboard-chip .poll-icon
+    background: #8A8EF5;
   .q-card .q-chip.ballot-type
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  .ballot-type .q-avatar img.poll-icon
-    width: 32px;
-    padding-left: 10px;
-    margin-right: 4px;
+    border-radius: 0px 0px 12px 0px;
+    background: #fff;
+  .poll-ended .q-chip.ballot-type
+    background: #F7F7F7
+  .ballot-type .poll-icon
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 10px;
+  .ballot-type .type-text
+    color: #000919
+    font-size: 12px
+  .ballot-type
+    top: 6px
 </style>

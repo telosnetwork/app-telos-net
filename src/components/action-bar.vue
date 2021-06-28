@@ -40,7 +40,8 @@ export default {
       ],
       submitTypesResult: [],
       submitStatusesResult: [ 'active' ],
-      treasuryBar: null
+      treasuryBar: null,
+      isBallotListRowDirection: true
     }
   },
   methods: {
@@ -181,6 +182,11 @@ export default {
           // TODO past 100 groups we need to switch to autocomplete search
           await this.fetchTreasuries()
         }
+      }
+    },
+    isBallotListRowDirection: function (val, old) {
+      if (val !== old) {
+        this.$emit('change-diraction', this.isBallotListRowDirection)
       }
     }
   }
@@ -481,14 +487,14 @@ export default {
       div.bar-linear-gradient-left
       div.bar-linear-gradient-right
       q-btn-toggle.bar-btns-toggle(
-        v-model="model"
+        v-model="isBallotListRowDirection"
         flat
         toggle-color="primary"
-        :options="[{value: 'one', slot: 'one'},{value: 'two', slot: 'two'}]"
+        :options="[{value: true, slot: 'row'},{value: false, slot: 'column'}]"
       )
-        template(v-slot:one)
+        template(v-slot:row)
           q-icon.bar-btn-toggle(name="eva-grid-outline")
-        template(v-slot:two)
+        template(v-slot:column)
           q-icon.bar-btn-toggle(name="fas fa-bars")
       div.bar-custom-separator
       div.bar-filters
@@ -682,9 +688,10 @@ export default {
           fontSize='16')
 </template>
 <style lang="sass">
+  .bar-filter-wrapper
+    margin-bottom: 8px
   .bar-wrapper
     position: relative
-    margin-bottom: 40px
     width: 100%
     height: 88px
     background: white

@@ -86,49 +86,15 @@ export default {
 
 <template lang="pug">
   div
-    div(v-show="statusType !== 'expired'")
-      div.day
-        span.number {{ days }}
-        div.format DD
-      div.hour
-        span.number {{ hours }}
-        div.format HH
-      div.min
-        span.number {{ minutes }}
-        div.format MM
-      div.sec
-        span.number {{ seconds }}
-        div.format SS
-    //- div.message {{ message }}
-    //- div(:class="statusType").status-tag {{ statusText }}
+    div(v-show="statusType !== 'expired'").row
+      span {{ days }}
+      span &nbspdays
+      span.opacity04 &nbsp:&nbsp
+      span {{ hours }}
+      span h
+      span.opacity04 &nbsp:&nbsp
+      span {{ minutes }}
+      span m
 </template>
 <style lang="sass" scoped>
-.timer
-  font-size: 20px;
-  color: #fff;
-  text-align: center;
-  margin-top: 50px;
-
-.day:not(:first-child), .hour:not(:first-child), .min:not(:first-child), .sec:not(:first-child)
-  margin-left: 4px;
-
-.day, .hour, .min, .sec
-  font-size: 14px;
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-
-  .format
-    font-weight: 400;
-    font-size: 8px;
-    opacity: 0.8;
-    width: 30px;
-
-  .number
-    background: rgba(233, 228, 228, 0.53);
-    // padding: 0 5px;
-    border-radius: 5px;
-    display: inline-block;
-    width: 30px;
-    text-align: center;
 </style>
