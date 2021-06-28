@@ -134,6 +134,10 @@ export default {
     },
     getPage (ballots) {
       return ballots.slice((this.page - 1) * this.limit, (this.page - 1) * this.limit + this.limit)
+    },
+    getLoser () {
+      if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
+      return this.ballot.options.find(x => x.key !== this.getWinner.key)
     }
   },
   computed: {
@@ -182,6 +186,7 @@ q-page
           :votingHasBegun="votingHasBegun(ballot)"
           :getStartTime="getStartTime(ballot)"
           :getEndTime="getEndTime(ballot)"
+          :getLoser="getLoser"
         )
       div.flex.flex-center.pagination-wrapper
         q-pagination(
@@ -223,6 +228,7 @@ q-page
       :votingHasBegun="votingHasBegun"
       :getStartTime="getStartTime"
       :getEndTime="getEndTime"
+      :getLoser="getLoser"
     )
       //- q-btn(v-close-popup color="secondary").float-right Close
 </template>

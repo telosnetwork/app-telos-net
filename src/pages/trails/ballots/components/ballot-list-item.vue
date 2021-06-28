@@ -13,7 +13,8 @@ export default {
     isBallotOpened: { type: Boolean, required: true },
     votingHasBegun: { type: Boolean, required: true },
     getStartTime: { type: Number, required: true },
-    getEndTime: { type: Number, required: true }
+    getEndTime: { type: Number, required: true },
+    getLoser: { type: Function, required: true }
   },
   data () {
     return {
@@ -34,10 +35,6 @@ export default {
         }
       })
       return this.ballot.options[winner]
-    },
-    getLoser () {
-      if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
-      return this.ballot.options.find(x => x.key !== this.getWinner.key)
     }
   },
   methods: {
