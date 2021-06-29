@@ -145,10 +145,6 @@ div
 <style lang="sass">
 .column-direction > div,
   margin-top: 32px
-.row-direction
-  gap: 32px 20px
-  margin-top: 32px
-  justify-content: space-around !important
 .poll-item
   box-shadow: none
   border-radius: 12px
@@ -323,7 +319,6 @@ div
 @media (max-width: 1366px)
   .ballots > .q-infinite-scroll
     margin: 0 auto
-  .row-direction
 @media (max-width: 1270px)
   .column-direction .text-section-row .statics-section-wrapper-scroll
     width: 58%
@@ -358,12 +353,7 @@ div
   .row-direction .bgr-icon2
     top: 60px
     right: 33px
-  @media (max-width: 600px)
-    .row-direction
-      margin-top: 0
   @media (max-width: 400px)
-    .row-direction
-      gap: 24px 20px
     .row-direction > div
       width: 100%
     .row-direction .q-card.poll-item,
