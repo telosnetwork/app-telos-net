@@ -243,15 +243,30 @@ q-page
   width: 100%;
 .row-direction
   display: flex
-  justify-content: space-between
   flex-wrap: wrap
+  gap: 32px 20px
+  margin-top: 32px
 .column-direction
   display: flex
   flex-direction: column
 .pagination-wrapper
   margin: 24px 0
+@media (max-width: 1366px)
+  .row-direction
+    justify-content: space-between
+    max-width: 800px
+    margin: 0 auto
+    margin-top: 32px
+@media (max-width: 768px)
+    .row-direction
+      justify-content: center
 @media (max-width: 600px)
-  .pagination-wrapper
-    margin-bottom: 100px
-    font-size: 12px
+    .row-direction
+      margin-top: 0
+    .pagination-wrapper
+      margin-bottom: 100px
+      font-size: 12px
+@media (max-width: 400px)
+    .row-direction
+      gap: 24px 20px
 </style>
