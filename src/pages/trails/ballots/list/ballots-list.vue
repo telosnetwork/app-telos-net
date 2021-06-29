@@ -256,6 +256,7 @@ q-page
     justify-content: space-between
     max-width: 800px
     margin: 0 auto
+    margin-top: 32px
 @media (max-width: 768px)
     .row-direction
       justify-content: center
