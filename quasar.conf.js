@@ -81,6 +81,7 @@ module.exports = function (ctx) {
         'QItemLabel',
         'QItemSection',
         'QLayout',
+        'QLinearProgress',
         'QList',
         'QMenu',
         'QOptionGroup',
