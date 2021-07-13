@@ -25,7 +25,7 @@ export default {
     @click="clickBtn"
     :label="labelText"
     :color="primary ? 'primary' : 'blue'"
-    :text-color="primary ? 'white' : 'accent'"
+    :text-color="primary ? 'white' : 'info'"
     :icon-right="iconRight ? 'ti-plus' : undefined"
     no-caps
     :outline="primary ? false : true"

@@ -181,14 +181,14 @@ div
     justify-self: flex-end
   .dialog-btn-wrapper
     box-shadow: none !important
-    border: 1px solid var(--q-color-negative)
+    border: 1px solid #F2F3F4
     border-radius: 6px !important
   .dialog-btn
     border-radius: 0 !important
-    border-bottom: 1px solid var(--q-color-negative)
+    border-bottom: 1px solid #F2F3F4
     &:first-child
       border-radius: 6px 6px 0 0
-      border-bottom: 1px solid var(--q-color-negative)
+      border-bottom: 1px solid #F2F3F4
     &:last-child
       border-radius: 0 0 6px 6px
   .q-dialog__inner--bottom > div
