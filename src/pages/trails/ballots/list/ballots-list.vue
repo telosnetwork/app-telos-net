@@ -216,7 +216,7 @@ q-page
     q-btn(
       fab
       icon="fas fa-plus"
-      color="accent"
+      color="info"
       @click="show = true"
     )
   q-dialog(full-width v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down").full-width

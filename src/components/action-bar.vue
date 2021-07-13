@@ -743,7 +743,7 @@ export default {
     & .q-btn__wrapper
       padding: 0 12px
     & .q-btn__wrapper::before
-      border: 1px solid var(--q-color-negative)
+      border: 1px solid #F2F3F4
     & .q-icon
       margin-top: 4px
     & .on-right
@@ -810,13 +810,13 @@ export default {
     box-shadow: none !important
     margin: 0 0 20px 0
   .options-320 > div
-    border: 1px solid var(--q-color-negative)
+    border: 1px solid #F2F3F4
     border-radius: 6px !important
     margin: 0
     border-radius: 0 !important
     &:first-child
       border-radius: 6px 6px 0 0 !important
-      border-bottom: 1px solid var(--q-color-negative)
+      border-bottom: 1px solid #F2F3F4
     &:last-child
       border-radius: 0 0 6px 6px !important
   .q-scrollarea
