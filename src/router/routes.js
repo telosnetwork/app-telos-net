@@ -1,8 +1,9 @@
 const routes = [
   { path: '/', component: () => import('pages/index.vue'), meta: { layout: 'empty', guest: true } },
   { path: '/login', component: () => import('pages/login/login.vue'), meta: { layout: 'guest', title: 'pages.login.title', guest: true } },
-  { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
-  { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
+  // { path: '/accounts/add', component: () => import('pages/accounts/add/send-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
+  { path: '/accounts/add', component: () => import('pages/accounts/add/create-account.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
+  // { path: '/accounts/add/verifyOTP', component: () => import('pages/accounts/add/verify-otp.vue'), meta: { layout: 'guest', title: 'pages.accounts.add.title', guest: true } },
   { path: '/accounts/add/congratulations', component: () => import('pages/accounts/add/congratulations.vue'), meta: { layout: 'empty', guest: true } },
 
   // Works
@@ -18,6 +19,9 @@ const routes = [
   // Testnet
   { path: '/testnet/rotation', component: () => import('pages/testnet/rotation.vue'), meta: { layout: 'empty', title: 'pages.testnetRotation.title', guest: true } },
   { path: '/testnet/developers', component: () => import('pages/testnet/developers.vue'), meta: { layout: 'empty', title: 'pages.testnetDevelopers.title', guest: true } },
+
+  // Tokens
+  { path: '/tokens', component: () => import('pages/tokens/tokens.vue'), meta: { title: 'pages.tokens.title', guest: false } },
 
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },

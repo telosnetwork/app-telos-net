@@ -137,7 +137,8 @@ module.exports = function (ctx) {
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER,
         GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
         TELOS_ORIGIN: process.env.TELOS_ORIGIN,
-        IMGUR_CLIENT_ID: process.env.IMGUR_CLIENT_ID
+        IMGUR_CLIENT_ID: process.env.IMGUR_CLIENT_ID,
+        TOKENMANAGER_CONTRACT: process.env.TOKENMANAGER_CONTRACT
       },
       scopeHoisting: true,
       vueRouterMode: 'history',

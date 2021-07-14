@@ -29,7 +29,7 @@ export const login = async function ({ commit, dispatch }, { idx, account, retur
       const accountName = await users[0].getAccountName()
       commit('setAccount', accountName)
       // PPP.setActiveUser(this.$ualUser)
-      const defaultReturnUrl = localStorage.getItem('returning') ? '/trails/ballots' : '/profiles/myProfile'
+      const defaultReturnUrl = localStorage.getItem('returning') ? '/' : '/profiles/myProfile'
       // console.log('LOGIN defaultReturnUrl:', defaultReturnUrl)
       localStorage.setItem('autoLogin', authenticator.constructor.name)
       localStorage.setItem('account', accountName)
@@ -118,6 +118,26 @@ export const verifyOTP = async function ({ commit, state }, { password, publicKe
       smsOtp: password,
       smsNumber: state.signUpForm.internationalPhone,
       telosAccount: state.signUpForm.account,
+      ownerKey: publicKey,
+      activeKey: publicKey
+    })
+    return {
+      success: true
+    }
+  } catch (e) {
+    return {
+      success: false,
+      error: e.message
+    }
+  }
+}
+
+export const createAccount = async function ({ state }, { account, recaptchaResponse, publicKey }) {
+  try {
+    console.log(account)
+    await this.$axios.post('/v1/recaptchaCreate', {
+      recaptchaResponse: recaptchaResponse,
+      accountName: account,
       ownerKey: publicKey,
       activeKey: publicKey
     })

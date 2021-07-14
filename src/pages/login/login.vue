@@ -16,7 +16,7 @@ export default {
     ...mapGetters('accounts', ['loading'])
   },
   methods: {
-    ...mapActions('accounts', ['login', 'autoLogin']),
+    ...mapActions('accounts', ['login']),
     async onLogin (idx) {
       this.idx = idx
       await this.login({ idx: this.idx, returnUrl: this.$route.query.returnUrl })
@@ -27,9 +27,6 @@ export default {
     openUrl (url) {
       window.open(url)
     }
-  },
-  async mounted () {
-    await this.autoLogin(this.$route.query.returnUrl)
   }
 }
 </script>

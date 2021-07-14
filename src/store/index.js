@@ -8,6 +8,7 @@ import works from './works'
 import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
+import tokens from './tokens'
 import testnet from './testnet'
 import poc from './poc'
 import general from './general'
@@ -29,6 +30,7 @@ export default function (/* { ssrContext } */) {
       notifications,
       poc,
       testnet,
+      tokens,
       trails,
       transfers,
       general

@@ -1,9 +1,10 @@
 <script>
 import { mapActions } from 'vuex'
-import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
+// import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 
 import { validation } from '~/mixins/validation'
 import { countriesPhoneCode } from '~/mixins/countries-phone-code'
+import VueRecaptcha from 'vue-recaptcha'
 
 export default {
   name: 'page-send-otp',
@@ -16,6 +17,7 @@ export default {
         countryCode: null,
         internationalPhone: null
       },
+      recaptcha: false,
       phoneOptions: [],
       error: null,
       submitting: false
@@ -23,6 +25,9 @@ export default {
   },
   mounted () {
     this.phoneOptions = this.countriesPhoneCode
+    let recaptchaScript = document.createElement('script')
+    recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit')
+    document.head.appendChild(recaptchaScript)
   },
   methods: {
     ...mapActions('accounts', ['sendOTP']),
@@ -30,19 +35,22 @@ export default {
       this.resetValidation(this.form)
       this.error = null
       if (!(await this.validate(this.form))) return
-      const phoneUtil = PhoneNumberUtil.getInstance()
+      /* const phoneUtil = PhoneNumberUtil.getInstance()
       const number = phoneUtil.parseAndKeepRawInput(`${this.form.countryCode.dialCode}${this.form.smsNumber}`, this.form.countryCode.code)
       this.form.internationalPhone = phoneUtil.format(number, PhoneNumberFormat.INTERNATIONAL)
       this.submitting = true
-      const result = await this.sendOTP(this.form)
-      if (!result.error) {
+      const result = await this.sendOTP(this.form) */
+      if (this.recaptcha) {
         this.$router.push({ path: '/accounts/add/verifyOTP' })
       } else {
-        this.error = result.error
+        this.error = 'Please complete reCaptcha'
       }
       this.submitting = false
     },
-    isPhoneValid (val) {
+    onVerify: function (response) {
+      if (response) this.recaptcha = true
+    }
+    /* isPhoneValid (val) {
       try {
         const phoneUtil = PhoneNumberUtil.getInstance()
         const number = phoneUtil.parseAndKeepRawInput(`${this.form.countryCode.dialCode}${this.form.smsNumber}`, this.form.countryCode.code)
@@ -50,7 +58,10 @@ export default {
       } catch (e) {
         return this.$t('forms.errors.phoneFormat')
       }
-    }
+    } */
+  },
+  components: {
+    'vue-recaptcha': VueRecaptcha
   }
 }
 </script>
@@ -75,32 +86,13 @@ export default {
             :debounce="200"
             @blur="form.account = (form.account || '').toLowerCase()"
           )
-          .row.flex.phone-input
-            q-select(
-              v-model="form.countryCode"
-              :options="phoneOptions"
-              :option-label="(option) => `${option.name} (${option.dialCode})`"
-              :display-value="form.countryCode && form.countryCode.dialCode"
-              :label="$t('pages.accounts.add.forms.phoneCode')"
-              map-options
-              outlined
-              :rules="[rules.required]"
-              lazy-rules
-              :style="{width:'25%'}"
-            )
-            q-input(
-              ref="smsNumber"
-              v-model="form.smsNumber"
-              color="accent"
-              :label="$t('pages.accounts.add.forms.smsNumber')"
-              outlined
-              :rules="[rules.required, isPhoneValid]"
-              lazy-rules
-              :style="{width:'75%'}"
-            )
+          vue-recaptcha(
+            ref='recaptcha'
+            :sitekey="'6Lc6WLUaAAAAACiwPE9qyN-CX5KfLPGm6pY5OeUf'"
+            @verify="onVerify"
+          )
           .text-red(v-if="error") {{ error }}
     .col-3
-      .hint {{ $t('pages.accounts.add.createAccountHint') }}
       q-btn.full-width(
         color="primary"
         :label="$t('pages.accounts.add.buttons.verify')"

@@ -45,6 +45,7 @@ export default {
   menu: {
     trails: 'Voting',
     trailsBallots: 'Decide',
+    tokens: 'Tokens',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
     contacts: 'Contacts',
@@ -58,6 +59,13 @@ export default {
   },
   notifications: {
     title: 'Transactions',
+    tokens: {
+      setmeta: 'Set token info',
+      issue: 'Issue tokens',
+      retire: 'Retire tokens',
+      create: 'Create a token',
+      transfer: 'Transfer tokens'
+    },
     trails: {
       addBallot: 'Create a ballot',
       addTreasury: 'Create a group',
@@ -82,7 +90,8 @@ export default {
         buttons: {
           continue: 'Continue',
           goToProfile: 'Take me to my profile',
-          verify: 'Verify phone number'
+          verify: 'Verify Phone Number',
+          genKeys: 'Generate Keys'
         },
         congratulationsTitle: 'Congratulations',
         congratulationsSubtitle: 'Your account {account} has been created',
@@ -96,10 +105,11 @@ export default {
           verificationCode: 'Verification code'
         },
         keyCopyClipboard: 'Key copied to clipboard',
+        saveKeys: 'Save your keys somewhere safe. They will not be stored for you.',
         title: 'Signup',
         verifyAccountGeneratingKey: 'Generating key pairs',
-        verifyAccountHint: 'Copy both keys to a safe place before sending your verification code',
-        verifyOTPTitle: 'Enter your verification code'
+        verifyAccountHint: 'Copy both keys to a safe place before continuing',
+        verifyOTPTitle: 'Here are your keys:'
       }
     },
     trails: {
@@ -232,6 +242,9 @@ export default {
     },
     testnetDevelopers: {
       title: 'Get a testnet account or testnet TLOS'
+    },
+    tokens: {
+      title: 'Token management'
     },
     claim: {
       claimAccount: 'Claim account',
