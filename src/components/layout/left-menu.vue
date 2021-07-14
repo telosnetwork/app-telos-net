@@ -1,60 +1,72 @@
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'left-menu-authenticated',
-  computed: {
-    ...mapGetters('accounts', ['isAuthenticated'])
+  methods: {
+    closeMenu: function () { this.$emit('close') },
+    goToHomePage: function () { this.$emit('goToHomePage') }
+  },
+  data () {
+    return {
+      menuItems: [
+        { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
+        { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
+        { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        { label: this.$t('menu.tokens'), route: '/tokens' }
+      ]
+    }
   }
 }
 </script>
 
 <template lang="pug">
-  q-scroll-area.fit
-    q-list
-      q-item(
-        v-if="isAuthenticated"
-        to="/profiles/myProfile"
-        clickable
-        v-ripple
+  q-scroll-area(style="height: 100%; border-right: 1px solid #ddd")
+    div.menu-logo-wrapper
+      q-btn.burger(
+          flat
+          dense
+          round
+          @click="closeMenu"
+          icon="close"
+          aria-label="Menu"
+          text-color="black"
+        )
+      div.wrapper
+        img(@click="goToHomePage" class="img" src="statics/telos-logo-new-big.png")
+    q-tabs(
+        no-caps
+        vertical
+        switch-indicator
+        class="text-grey text-teal"
+        active-color="grey-9"
+        indicator-color='primary'
       )
-        q-item-section(avatar)
-          q-icon(name="account_circle")
-        q-item-section {{ $t('menu.myProfile') }}
-      q-item(
-        to="/profiles/contacts"
-        clickable
-        v-ripple
+      q-route-tab.aline-left.q-my-lg(
+        v-for="(item, index) in menuItems"
+        :key="index"
+        :name="item.label"
+        :label="item.label"
+        :to="item.route"
+        ripple
       )
-        q-item-section(avatar)
-          q-icon(name="perm_contact_calendar")
-        q-item-section {{ $t('menu.contacts') }}
-      q-item(
-        to="/trails/treasuries"
-        clickable
-        v-ripple
-      )
-        q-item-section(avatar)
-          q-icon(name="group_work")
-        q-item-section {{ $t('menu.trailsTreasuries') }}
-      q-item(
-        to="/trails/ballots"
-        clickable
-        v-ripple
-      )
-        q-item-section(avatar)
-          q-icon(name="how_to_vote")
-        q-item-section {{ $t('menu.trailsBallots') }}
-      q-item(
-        to="/tokens"
-        clickable
-        v-ripple
-      )
-        q-item-section(avatar)
-          q-icon(name="savings")
-        q-item-section {{ $t('menu.tokens') }}
 </template>
 
-<style lang="stylus">
-
+<style lang="sass" scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
+  .q-tabs
+    font-family: "Poppins", sans-serif
+  .aline-left
+    justify-content: left
+    padding: 0 27px
+    font-size: 22px
+    line-height: 22px
+    font-weight: 600
+  .menu-logo-wrapper
+    height: 162px
+    border-bottom: 1px solid rgba(0, 9, 26, 0.1)
+  .burger
+    margin: 16px 0 0 24px
+  .wrapper
+    margin: 34px 0 0 28px
+  .img
+    cursor: pointer
 </style>

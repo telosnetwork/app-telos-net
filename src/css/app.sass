@@ -1,7 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
 h1, h2, h3, h4, h5, h6, .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6
-  font-family: "neue-haas-grotesk-text", sans-serif
+  font-family: "Poppins", sans-serif
 .open-sans
   font-family: open sans,arial,sans-serif
+
+body
+  font-family: "Poppins", sans-serif
+  letter-spacing: -0.015em
+  box-sizing: border-box
+
+.q-tab__label
+  font-size: inherit
+  line-height: inherit
+  font-weight: inherit
+
+.q-tab__indicator
+  height: 5px
+  border-radius: 5px 5px 0 0
+
+.q-tabs--vertical .q-tab__indicator
+  width: 5px
+  border-radius: 0 5px 5px 0
 
 @media (min-width: 0)
   .q-pb-xs-sm
@@ -15,3 +34,6 @@ h1, h2, h3, h4, h5, h6, .text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-
   .justify-md-between
     justify-content: space-between
 
+@media (max-width: 400px)
+  body
+    background: #E3E4E8

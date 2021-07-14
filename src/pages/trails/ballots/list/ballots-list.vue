@@ -3,10 +3,12 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 import BallotForm from '../components/ballot-form'
 import BallotListItem from '../components/ballot-list-item'
 import BallotView from '../view/ballot-view'
+import WelcomeCard from '../../../../components/welcome-card'
+import ActionBar from '../../../../components/action-bar'
 
 export default {
   name: 'ballots-list',
-  components: { BallotForm, BallotListItem, BallotView },
+  components: { BallotForm, BallotListItem, BallotView, WelcomeCard, ActionBar },
   data () {
     return {
       show: false,
@@ -17,15 +19,11 @@ export default {
       voting: false,
       treasury: null,
       statuses: ['active'],
-      statusOptions: [
-        { value: 'active', label: 'Active' },
-        { value: 'expired', label: 'Expired' },
-        { value: 'not started', label: 'Not started' },
-        { value: 'closed', label: 'Closed' },
-        { value: 'cancelled', label: 'Cancelled' },
-        { value: 'archived', label: 'Archived' },
-        { value: 'setup', label: 'Setup' }
-      ]
+      categories: [],
+      isBallotListRowDirection: true,
+      currentPage: 1,
+      limit: 12,
+      page: 1
     }
   },
   async mounted () {
@@ -61,6 +59,9 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
+    },
+    openBallotForm () {
+      this.show = true
     },
     openBallot (ballot) {
       if (this.showBallot) {
@@ -102,6 +103,18 @@ export default {
     getEndTime (ballot) {
       return new Date(ballot.end_time).getTime()
     },
+    isNewUser () {
+      return localStorage.isNewUser
+    },
+    updateTreasury (newTreasury) {
+      this.treasury = newTreasury
+    },
+    updateStatuses (newStatuses) {
+      this.statuses = newStatuses
+    },
+    updateCategories (newCategories) {
+      this.categories = newCategories
+    },
     filterBallots (ballots) {
       const ballotFiltered = ballots.filter(b => {
         if (this.statuses.length === 0) {
@@ -117,7 +130,17 @@ export default {
         }
         return this.statuses.includes(b.status)
       })
-      return ballotFiltered
+      return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
+    },
+    changeDirection (isBallotListRowDirection) {
+      this.isBallotListRowDirection = isBallotListRowDirection
+    },
+    getPage (ballots) {
+      return ballots.slice((this.page - 1) * this.limit, (this.page - 1) * this.limit + this.limit)
+    },
+    getLoser () {
+      if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
+      return this.ballot.options.find(x => x.key !== this.getWinner.key)
     }
   },
   computed: {
@@ -132,75 +155,22 @@ export default {
       } else {
         this.showBallot = false
       }
-    },
-    treasury: function (val, old) {
-      console.log(`watching treasury`)
-      if (val !== old) {
-        this.resetBallots()
-      }
-    },
-    statuses: function (val, old) {
-      console.log(`watching statuses`)
-      if (val !== old) {
-        this.resetBallots()
-      }
-    },
-    treasuriesOptions: {
-      immediate: true,
-      handler: async function (val) {
-        console.log(`watching treasuriesOptions`)
-        if (!val.length) {
-          // TODO past 100 groups we need to switch to autocomplete search
-          await this.fetchTreasuries()
-        }
-      }
     }
   }
 }
 </script>
 
 <template lang="pug">
-q-page.q-pa-lg
+q-page
+  welcome-card(v-if="!isNewUser() && isAuthenticated")
+  action-bar(
+    @update-treasury="updateTreasury"
+    @update-statuses="updateStatuses"
+    @update-categories="updateCategories"
+    @change-diraction="changeDirection"
+    @open-ballot-form="openBallotForm"
+    :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
-  .row.col-12.banner.justify-center.items-center.q-mb-md.border-white.q-card--bordered.relative-position
-    div.row.justify-center.items-center.q-my-md.text-center
-      img(src="/statics/app-icons/vote.svg" style="width: 40px")
-      img(src="/statics/telos-logo-white.svg" style="width: 85px").on-right
-      span.text-h4.text-white ,
-      span.on-right.text-h4.text-white your vote matters
-    div.banner-grey-bar.absolute-bottom
-
-  .row.flex.justify-end
-    q-select.q-mb-lg.q-mr-sm(
-      v-model="statuses"
-      :options="statusOptions"
-      label="Status"
-      multiple
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
-      template(v-slot:option="scope")
-        q-item(
-          v-bind="scope.itemProps"
-          v-on="scope.itemEvents"
-        )
-          q-item-section(side)
-            q-checkbox(
-              v-model="statuses"
-              :val="scope.opt.value"
-            )
-          q-item-section
-            q-item-label(v-html="scope.opt.label")
-    q-select.q-mb-lg(
-      v-model="treasury"
-      :options="treasuriesOptions"
-      label="Group filter"
-      :style="{width: '200px'}"
-      emit-value
-      map-options
-    )
-
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       ref="infiniteScroll"
@@ -209,10 +179,10 @@ q-page.q-pa-lg
       :offset="250"
       :scroll-target="$refs.ballotsRef"
     )
-      div.row.justify-around.q-gutter-x-md.q-gutter-y-xl
+      div(:class="isBallotListRowDirection ? 'row-direction' : 'column-direction'")
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in filterBallots(ballots)"
+          v-for="(ballot, index) in getPage(filterBallots(ballots))"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"
@@ -220,6 +190,21 @@ q-page.q-pa-lg
           :votingHasBegun="votingHasBegun(ballot)"
           :getStartTime="getStartTime(ballot)"
           :getEndTime="getEndTime(ballot)"
+          :getLoser="getLoser"
+        )
+      div.flex.flex-center.pagination-wrapper
+        q-pagination(
+          v-model="page"
+          :min="currentPage"
+          :max="Math.ceil(filterBallots(ballots).length / limit)"
+          :max-pages="6"
+          direction-links
+          boundary-links
+          icon-first="skip_previous"
+          icon-last="skip_next"
+          icon-prev="fast_rewind"
+          icon-next="fast_forward"
+          size="12px"
         )
       template(v-slot:loading)
         .row.justify-center.q-my-md
@@ -227,17 +212,6 @@ q-page.q-pa-lg
             color="primary"
             size="40px"
           )
-  q-page-sticky(
-    v-if="isAuthenticated"
-    position="bottom-right"
-    :offset="[18, 18]"
-  )
-    q-btn(
-      fab
-      icon="fas fa-plus"
-      color="accent"
-      @click="show = true"
-    )
   q-dialog(full-width v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down").full-width
     //- div(style="width: 80vw").bg-white
       //- p test
@@ -247,6 +221,7 @@ q-page.q-pa-lg
       :votingHasBegun="votingHasBegun"
       :getStartTime="getStartTime"
       :getEndTime="getEndTime"
+      :getLoser="getLoser"
     )
       //- q-btn(v-close-popup color="secondary").float-right Close
 </template>
@@ -259,4 +234,32 @@ q-page.q-pa-lg
   background-color: #0000001a;
   height: 46%;
   width: 100%;
+.row-direction
+  display: flex
+  flex-wrap: wrap
+  gap: 32px 20px
+  margin-top: 32px
+.column-direction
+  display: flex
+  flex-direction: column
+.pagination-wrapper
+  margin: 24px 0
+@media (max-width: 1366px)
+  .row-direction
+    justify-content: space-between
+    max-width: 800px
+    margin: 0 auto
+    margin-top: 32px
+@media (max-width: 768px)
+    .row-direction
+      justify-content: center
+@media (max-width: 600px)
+    .row-direction
+      margin-top: 0
+    .pagination-wrapper
+      margin-bottom: 100px
+      font-size: 12px
+@media (max-width: 400px)
+    .row-direction
+      gap: 24px 20px
 </style>
