@@ -5,6 +5,16 @@ export default {
   name: 'header-menu',
   computed: {
     ...mapGetters('accounts', ['isAuthenticated'])
+  },
+  data () {
+    return {
+      menuItems: [
+        { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
+        { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
+        { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        { label: this.$t('menu.tokens'), route: '/tokens' }
+      ]
+    }
   }
 }
 </script>
@@ -16,23 +26,16 @@ export default {
       indicator-color='primary'
       active-color="grey-9"
     )
-    q-route-tab.q-mx-sm(
-      name="Contacts"
-      label="Contacts"
-      to="/profiles/contacts"
+    template(
+      v-for="(item, index) in menuItems"
     )
-    div.custom-separator
-    q-route-tab.q-mx-sm(
-      name="Groups"
-      label="Groups"
-      to="/trails/treasuries"
-    )
-    div.custom-separator
-    q-route-tab.q-mx-sm(
-      name="Ballots"
-      label="Ballots"
-      to="/trails/ballots"
-    )
+      q-route-tab.q-mx-sm.header-menu-tab(
+        :key="index"
+        :name="item.label"
+        :label="item.label"
+        :to="item.route"
+      )
+      div.custom-separator
 </template>
 
 <style lang="sass" scoped>
@@ -46,11 +49,16 @@ export default {
     height: 4px
     background: rgba(0, 9, 26, 0.1)
     border-radius: 2px
-  @media (max-width: 735px)
-    .q-tabs
+    &:last-child
       display: none
-  @media (max-width: 890px)
+  @media (max-width: 1070px)
     .q-tabs
       margin: 0
       font-size: 14px
+  @media (max-width: 960px)
+    .header-menu-tab
+      padding: 0 8px
+  @media (max-width: 735px)
+    .q-tabs
+      display: none
 </style>

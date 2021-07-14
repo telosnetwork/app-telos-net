@@ -243,7 +243,7 @@ export default {
                       type="checkbox"
                     )
                     div.menu-form-btns-wrapper.row.justify-between
-                      btn.create-btn(
+                      btn(
                         :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitTypesResult', 'typeGroup')"
                         btnWidth='142'
@@ -289,7 +289,7 @@ export default {
                       type="checkbox"
                     )
                     div.menu-form-btns-wrapper.row.justify-between
-                      btn.create-btn(
+                      btn(
                         :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitTypesResult', 'typeGroup')"
                         btnWidth='142'
@@ -344,7 +344,7 @@ export default {
                       type="checkbox"
                     )
                     div.menu-form-btns-wrapper.row.justify-between
-                      btn.create-btn(
+                      btn(
                         :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitStatusesResult', 'statusGroup')"
                         btnWidth='142'
@@ -390,7 +390,7 @@ export default {
                       type="checkbox"
                     )
                     div.menu-form-btns-wrapper.row.justify-between
-                      btn.create-btn(
+                      btn(
                         :labelText="$t('pages.trails.ballots.actionBar.btnDiscard')"
                         @clickBtn="discardFilter('submitStatusesResult', 'statusGroup')"
                         btnWidth='142'
