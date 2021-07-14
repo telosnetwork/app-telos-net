@@ -9,7 +9,8 @@ export default {
     fontSize: String,
     to: String,
     type: String,
-    hoverBlue: Boolean
+    hoverBlue: Boolean,
+    disable: Boolean
   },
   methods: {
     clickBtn: function () { this.$emit('clickBtn') }
@@ -30,6 +31,7 @@ export default {
     no-caps
     :outline="primary ? false : true"
     :type="type"
+    :disable="disable ? true : false"
   )
 </template>
 

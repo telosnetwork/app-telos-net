@@ -1,6 +1,6 @@
 <script>
 import Btn from './btn'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { scroll } from 'quasar'
 
 export default {
@@ -50,6 +50,9 @@ export default {
     addToLocalStorage () {
       localStorage.isNewUser = false
       this.isNewUser = false
+    },
+    openBallotForm () {
+      this.$emit('open-ballot-form')
     },
     toggleMenu (isMenuOpen, group, submitResult) {
       if (this[submitResult]) {
@@ -141,6 +144,9 @@ export default {
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)
+  },
+  computed: {
+    ...mapGetters('accounts', ['isAuthenticated'])
   },
   watch: {
     '$route' (to, from) {
@@ -482,6 +488,8 @@ export default {
           primary
           btnWidth='155'
           fontSize='16'
+          @clickBtn="openBallotForm"
+          :disable="isAuthenticated ? false : true"
         )
     div.bar-wrapper.row.items-center(:class="{'menu-visible': isFilterMenu320Open}")
       div.bar-linear-gradient-left
@@ -685,7 +693,10 @@ export default {
           iconRight
           primary
           btnWidth='155'
-          fontSize='16')
+          fontSize='16'
+          @clickBtn="openBallotForm"
+          :disable="isAuthenticated ? false : true"
+        )
 </template>
 <style lang="sass">
   .bar-filter-wrapper
