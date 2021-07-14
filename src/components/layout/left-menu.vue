@@ -4,6 +4,16 @@ export default {
   methods: {
     closeMenu: function () { this.$emit('close') },
     goToHomePage: function () { this.$emit('goToHomePage') }
+  },
+  data () {
+    return {
+      menuItems: [
+        { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
+        { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
+        { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        { label: this.$t('menu.tokens'), route: '/tokens' }
+      ]
+    }
   }
 }
 </script>
@@ -31,23 +41,11 @@ export default {
         indicator-color='primary'
       )
       q-route-tab.aline-left.q-my-lg(
-        name="Contacts"
-        label="Contacts"
-        to="/profiles/contacts"
-        ripple
-      )
-      div.custom-separator
-      q-route-tab.aline-left.q-my-lg(
-        name="Groups"
-        label="Groups"
-        to="/trails/treasuries"
-        ripple
-      )
-      div.custom-separator
-      q-route-tab.aline-left.q-my-lg(
-        name="Ballots"
-        label="Ballots"
-        to="/trails/ballots"
+        v-for="(item, index) in menuItems"
+        :key="index"
+        :name="item.label"
+        :label="item.label"
+        :to="item.route"
         ripple
       )
 </template>

@@ -95,7 +95,7 @@ div
 
       div.text-section-row
         div.statics-section-item.section-item-btn
-          btn.create-btn(
+          btn(
             :labelText="(isBallotOpened && ballot.status === 'voting') ? 'View proposal & vote' : 'View proposal'"
             btnWidth='220'
             fontSize='16'
@@ -134,7 +134,7 @@ div
           span.opacity06 tokens
 
     q-card-section().row.justify-center.btn-section
-      btn.create-btn(
+      btn(
         :labelText="(isBallotOpened && ballot.status === 'voting') ? 'View proposal & vote' : 'View proposal'"
         btnWidth='332'
         fontSize='16'

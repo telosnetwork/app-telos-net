@@ -173,7 +173,7 @@ export default {
                 )
             q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
               q-item-section
-                btn.create-btn(
+                btn(
                   :labelText="$t('pages.trails.ballots.vote')"
                   btnWidth='220'
                   fontSize='16'
@@ -264,7 +264,7 @@ export default {
                   )
               q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
                 q-item-section
-                  btn.create-btn.btn-vote-320(
+                  btn.btn-vote-320(
                   :labelText="$t('pages.trails.ballots.vote')"
                   btnWidth='220'
                   fontSize='16'
@@ -376,6 +376,7 @@ export default {
   & > span
     line-height: 130%
 .options-btn
+  padding: 0
   margin: 6px 0 0
 .round-btn
   width: 48px
