@@ -60,6 +60,9 @@ export default {
         this.$refs.infiniteScroll.stop()
       }
     },
+    openBallotForm () {
+      this.show = true
+    },
     openBallot (ballot) {
       if (this.showBallot) {
         console.log('closing ballot', ballot)
@@ -159,12 +162,13 @@ export default {
 
 <template lang="pug">
 q-page
-  welcome-card(v-if="!isNewUser()")
+  welcome-card(v-if="!isNewUser() && isAuthenticated")
   action-bar(
     @update-treasury="updateTreasury"
     @update-statuses="updateStatuses"
     @update-categories="updateCategories"
     @change-diraction="changeDirection"
+    @open-ballot-form="openBallotForm"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
@@ -208,17 +212,6 @@ q-page
             color="primary"
             size="40px"
           )
-  q-page-sticky(
-    v-if="isAuthenticated"
-    position="bottom-right"
-    :offset="[18, 18]"
-  )
-    q-btn(
-      fab
-      icon="fas fa-plus"
-      color="info"
-      @click="show = true"
-    )
   q-dialog(full-width v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down").full-width
     //- div(style="width: 80vw").bg-white
       //- p test
