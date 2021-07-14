@@ -489,6 +489,7 @@ export default {
           btnWidth='155'
           fontSize='16'
           @clickBtn="openBallotForm"
+          :disable="isAuthenticated ? false : true"
         )
     div.bar-wrapper.row.items-center(:class="{'menu-visible': isFilterMenu320Open}")
       div.bar-linear-gradient-left
