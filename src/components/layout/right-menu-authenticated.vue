@@ -58,7 +58,7 @@ div
       @hide="toggleProfileMenu"
       fit
     )
-      q-list(dense)
+      q-list.profile-menu-list(dense)
         q-item
           q-btn.item-btn.edit-profile-btn(
             :label="$t('common.buttons.editProfile')"
@@ -137,7 +137,7 @@ div
   .on-left
     width: 32px
     height: 32px
-  .q-item
+  .profile-menu-list > .q-item
     margin: 8px
     padding: 0 !important
   .item-btn,
