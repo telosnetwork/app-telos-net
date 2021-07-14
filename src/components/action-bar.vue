@@ -700,7 +700,7 @@ export default {
 </template>
 <style lang="sass">
   .bar-filter-wrapper
-    margin-bottom: 8px
+    margin: 40px 0 8px 0
   .bar-wrapper
     position: relative
     width: 100%
