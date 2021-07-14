@@ -31,7 +31,7 @@ export default {
     no-caps
     :outline="primary ? false : true"
     :type="type"
-    :disable="disable ? false : true"
+    :disable="disable ? true : false"
   )
 </template>
 

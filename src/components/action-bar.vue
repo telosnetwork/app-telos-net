@@ -694,7 +694,7 @@ export default {
           btnWidth='155'
           fontSize='16'
           @clickBtn="openBallotForm"
-          :disable="isAuthenticated"
+          :disable="isAuthenticated ? false : true"
         )
 </template>
 <style lang="sass">
