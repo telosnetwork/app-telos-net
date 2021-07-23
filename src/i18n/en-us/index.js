@@ -9,7 +9,8 @@ export default {
       mint: 'Mint',
       register: 'Register',
       save: 'Save',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      editProfile: 'Edit profile'
     },
     defaultTitle: 'Title'
   },
@@ -115,7 +116,41 @@ export default {
       ballots: {
         vote: 'Vote',
         ends: 'Ends',
-        starts: 'Starts'
+        starts: 'Starts',
+        welcomeCard: {
+          title: 'Hi, ',
+          textBeginning: 'Welcome to the ',
+          textBold: 'Telos Ballots',
+          textEnd: '. This is the place where you can influence the development of the Telos blockchain. Your voice matters!',
+          btnLabel: 'OK, got it'
+        },
+        actionBar: {
+          filterTitle: 'Filter',
+          typeFilter: 'Type',
+          statusFilter: 'Status',
+          groupFilter: 'Group',
+          typeOptions: {
+            election: 'Election',
+            referendum: 'Referendum',
+            leaderboard: 'Leaderboard',
+            poll: 'Poll',
+            proposal: 'Proposal'
+          },
+          statusOptions: {
+            action: 'Action',
+            notStarted: 'Not started',
+            expired: 'Expired',
+            closed: 'Closed',
+            cancelled: 'Cancelled',
+            archived: 'Archived',
+            setup: 'Setup'
+          },
+          btnApply: 'Apply',
+          btnDiscard: 'Discard',
+          btnDiscardAll: 'Discard all filters',
+          btnConfirm: 'Confirm',
+          btnCreatePoll: 'Create a poll'
+        }
       },
       treasuries: {
         card: {

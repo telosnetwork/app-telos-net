@@ -26,11 +26,11 @@ module.exports = function (ctx) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v4',
+      'ionicons-v4',
+      'mdi-v4',
       'fontawesome-v5',
-      // 'eva-icons',
-      // 'themify',
+      'eva-icons',
+      'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       // 'roboto-font', // optional, you are not bound to it
@@ -56,9 +56,13 @@ module.exports = function (ctx) {
         'QAvatar',
         'QBadge',
         'QBtn',
+        'QBtnToggle',
         'QCard',
         'QCardActions',
         'QCardSection',
+        'QCarousel',
+        'QCarouselControl',
+        'QCarouselSlide',
         'QChatMessage',
         'QCheckbox',
         'QChip',
@@ -80,14 +84,17 @@ module.exports = function (ctx) {
         'QItemLabel',
         'QItemSection',
         'QLayout',
+        'QLinearProgress',
         'QList',
         'QMenu',
         'QOptionGroup',
         'QPage',
         'QPageContainer',
         'QPageSticky',
+        'QPagination',
         'QPopupProxy',
         'QRadio',
+        'QRouteTab',
         'QScrollArea',
         'QSelect',
         'QSeparator',
@@ -95,6 +102,8 @@ module.exports = function (ctx) {
         'QSpinner',
         'QSpinnerComment',
         'QSpinnerDots',
+        'QTabs',
+        'QTab',
         'QTime',
         'QToggle',
         'QToolbar',
@@ -109,7 +118,7 @@ module.exports = function (ctx) {
       ],
 
       // Quasar plugins
-      plugins: ['Notify', 'Loading']
+      plugins: ['Notify', 'Loading', 'BottomSheet']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

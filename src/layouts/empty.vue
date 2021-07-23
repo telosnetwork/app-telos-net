@@ -28,8 +28,8 @@ export default {
         <q-toolbar-title class="flex items-center">
           <img class="toolbar-img" src="../../app-splashscreen.png"/>
         </q-toolbar-title>
-        <right-menu-authenticated v-if="isAuthenticated" landing-page=true></right-menu-authenticated>
-        <right-menu-guest v-if="!isAuthenticated" landing-page=true></right-menu-guest>
+        <right-menu-authenticated v-if="isAuthenticated" :landing-page="true"></right-menu-authenticated>
+        <right-menu-guest v-if="!isAuthenticated" :landing-page="true"></right-menu-guest>
       </q-toolbar>
     </q-header>
 

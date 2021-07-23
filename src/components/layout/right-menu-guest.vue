@@ -1,7 +1,10 @@
 <script>
+import Btn from '../btn'
+
 import { mapActions } from 'vuex'
 export default {
   name: 'right-menu-guest',
+  components: { Btn },
   props: {
     landingPage: Boolean
   },
@@ -22,23 +25,31 @@ export default {
 </script>
 
 <template lang="pug">
-div
-  q-btn.q-mr-sm(
+div.btns-wrapper.row.justify-between
+  btn.create-btn(
     to="/accounts/add"
-    rounded
-    outline
-    :label="$t('pages.index.buttons.createAccount')"
-    :text-color="landingPage ? 'black' : 'white'"
-    :color="landingPage ? 'black' : 'white'"
+    :labelText="$t('pages.index.buttons.createAccount')"
+    fontSize='15'
   )
-  q-btn.q-mr-sm(
-    @click='loginClick'
-    :label="$t('pages.index.buttons.login')"
-    :color="landingPage ? 'primary' : 'secondary'"
-    :text-color="landingPage ? 'white' : 'primary'"
-    rounded
-    unelevated
+  btn.login-btn(
+    @clickBtn='loginClick'
+    :labelText="$t('pages.index.buttons.login')"
+    primary
+    fontSize='15'
   )
 </template>
 
-<style lang="sass" scoped></style>
+<style lang="sass">
+  .btns-wrapper
+    gap: 24px
+  .create-btn,
+  .login-btn
+    padding: 0 12px
+  @media (max-width: 980px)
+    .btns-wrapper
+      gap: 12px
+    .create-btn,
+    .login-btn
+      font-size: 14px !important
+      padding: 0 10px
+</style>
