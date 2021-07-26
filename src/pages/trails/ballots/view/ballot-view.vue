@@ -24,7 +24,8 @@ export default {
       voting: false,
       votes: [],
       defaultSlide: 0,
-      scrollPosition: null
+      scrollPosition: null,
+      notice: false
     }
   },
   async mounted () {
@@ -41,6 +42,7 @@ export default {
     // Commenting out to prevent the bug as it doesn't really cause any problems when the route isn't reset.
   },
   computed: {
+    ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['ballot']),
     daysSinceStarted () {
       const oneDay = 24 * 60 * 60 * 1000
@@ -132,6 +134,9 @@ export default {
       if (option) {
         return !isNaN(this.getPercentofTotal(option)) ? this.getPercentofTotal(option) / 100 : 0
       }
+    },
+    openNotice () {
+      this.notice = true
     }
   }
 }
@@ -194,7 +199,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="onCastVote({ options: votes, ballotName: ballot.ballot_name })"
+                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
@@ -297,7 +302,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="onCastVote({ options: votes, ballotName: ballot.ballot_name })"
+                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
                 )
             q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-320
               div.text-section.column
@@ -316,6 +321,13 @@ export default {
       div.back-btn.row(v-close-popup :class="{scrolled: scrollPosition > 50}")
         q-icon(name="fas fa-chevron-left")
         div Go back
+    q-dialog(v-model="notice")
+      q-card.notice
+        q-card-section.row.no-wrap
+          div You have to be logged in to vote. If you don't have account please register
+            q-btn(flat size="14px" color="primary" label="here" to="/accounts/add" no-caps).register-link
+        q-card-actions(align="right" class="bg-white")
+          q-btn(flat label="OK" v-close-popup)
   q-inner-loading(v-else)
     q-spinner(size="3em")
 </template>
@@ -337,11 +349,11 @@ export default {
     padding: 0
   .popup-wrapper
     max-width: 1180px !important
-    max-height: 640px
+    max-height: 640px !important
     width: 100%
-    box-shadow: 0px 20px 48px rgba(0, 9, 26, 0.08), 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252)
-    border-radius: 12px
-    overflow: hidden
+    box-shadow: 0px 20px 48px rgba(0, 9, 26, 0.08), 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252) !important
+    border-radius: 12px !important
+    overflow: hidden !important
     & .poll-item
       border: none
     & .ballot-card-title-wrapper
@@ -488,6 +500,10 @@ export default {
     line-height: 24px
   .option-clear > .option-item
     padding: 6px 12px 0 12px
+  .notice
+    border-radius: 12px !important
+  .register-link > .q-btn__wrapper
+    padding: 0 6px
   @media (max-width: 1000px)
     .custom-caption
       & > .caption-text
