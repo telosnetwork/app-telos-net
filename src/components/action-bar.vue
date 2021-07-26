@@ -41,7 +41,8 @@ export default {
       submitTypesResult: [],
       submitStatusesResult: [ 'active' ],
       treasuryBar: null,
-      isBallotListRowDirection: true
+      isBallotListRowDirection: true,
+      notice: false
     }
   },
   methods: {
@@ -137,6 +138,9 @@ export default {
     },
     showFilter () {
       this.isFilterOpen = true
+    },
+    openNotice () {
+      this.notice = true
     }
   },
   created () {
@@ -488,8 +492,7 @@ export default {
           primary
           btnWidth='155'
           fontSize='16'
-          @clickBtn="openBallotForm"
-          :disable="isAuthenticated ? false : true"
+          @clickBtn="isAuthenticated ? openBallotForm() : openNotice()"
         )
     div.bar-wrapper.row.items-center(:class="{'menu-visible': isFilterMenu320Open}")
       div.bar-linear-gradient-left
@@ -694,9 +697,15 @@ export default {
           primary
           btnWidth='155'
           fontSize='16'
-          @clickBtn="openBallotForm"
-          :disable="isAuthenticated ? false : true"
+          @clickBtn="isAuthenticated ? openBallotForm() : openNotice()"
         )
+    q-dialog(v-model="notice")
+      q-card.notice
+        q-card-section.row.no-wrap
+          div You have to be logged in to create a poll. If you don't have account please register
+            q-btn(flat size="14px" color="primary" label="here" to="/accounts/add" no-caps).register-link
+        q-card-actions(align="right" class="bg-white")
+          q-btn(flat label="OK" v-close-popup)
 </template>
 <style lang="sass">
   .bar-filter-wrapper
