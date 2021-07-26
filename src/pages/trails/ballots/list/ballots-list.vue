@@ -87,6 +87,7 @@ export default {
       let winner
       ballot.options.forEach(option => {
         if (parseFloat(option.value) > winnerValue) {
+          winnerValue = parseFloat(option.value)
           winner = option.key
         }
       })
@@ -212,7 +213,7 @@ q-page
             color="primary"
             size="40px"
           )
-  q-dialog(full-width v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down").full-width
+  q-dialog(v-model="showBallot" :key="$route.params.id + timeAtMount" transition-show="slide-up" transition-hide="slide-down")
     //- div(style="width: 80vw").bg-white
       //- p test
     ballot-view(

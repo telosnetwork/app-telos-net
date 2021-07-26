@@ -2,7 +2,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import BallotStatus from '../components/ballot-status'
 import BallotChip from '../components/ballot-chip'
-import BallotViewOption from './ballot-view-option'
 import Btn from '../../../../components/btn'
 
 const regex = new RegExp(/Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?/, 'm') // ipfs hash detection, detects CIDv0 46 character strings starting with 'Qm'
@@ -10,7 +9,7 @@ const regexWithUrl = new RegExp(/https?\:\/\/.*Qm[1-9A-HJ-NP-Za-km-z]{44}(\/.*)?
 
 export default {
   name: 'ballot-view',
-  components: { BallotStatus, BallotChip, BallotViewOption, Btn },
+  components: { BallotStatus, BallotChip, Btn },
   props: {
     isBallotOpened: { type: Function, required: true },
     displayWinner: { type: Function, required: true },
@@ -128,6 +127,11 @@ export default {
     },
     updatePopupScroll (e) {
       this.scrollPosition = e.target.scrollTop
+    },
+    getPartOfTotal (option) {
+      if (option) {
+        return !isNaN(this.getPercentofTotal(option)) ? this.getPercentofTotal(option) / 100 : 0
+      }
     }
   }
 }
@@ -162,15 +166,27 @@ export default {
 
           q-list(dense).options-list.list-620
             div.options-wrapper
-              template(v-for="option in ballot.options")
-                ballot-view-option(
-                  :option="option"
-                  :ballot="ballot"
-                  :isBallotOpened="isBallotOpened(ballot)"
-                  :displayWinner="displayWinner"
-                  :votes="votes"
-                  :getPercentofTotal="getPercentofTotal(option)"
-                )
+              q-item.ballot-view-option(
+                v-for="option in ballot.options"
+                :key="option.key"
+                :class="displayWinner(ballot) ? displayWinner(ballot) === option.key ? 'option-winner' : '' : 'option-clear'"
+              ).no-padding.capitalize.column
+                div.row.option-item
+                  q-item-section()
+                    q-checkbox(
+                      size="sm"
+                      v-model="votes"
+                      :disable="ballot.status !== 'cancelled' && !isBallotOpened"
+                      keep-color
+                      :class="displayWinner(ballot) ? displayWinner(ballot) === option.key ? 'visible-checkbox' : '' : ''"
+                      color="$primary"
+                      :val="option.key"
+                    )
+                      div.checkbox-text.row.space-between
+                        div {{ option.key }}
+                        div(v-if="getPartOfTotal(option)") {{ getPartOfTotal(option) * 100 }}%&nbsp
+                div.linear-progress(v-if="displayWinner(ballot)")
+                  q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
             q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
               q-item-section
                 btn(
@@ -253,15 +269,27 @@ export default {
               p(style="color: #a1c1ff").text-caption No PDF found
             q-list(dense).options-list.list-320
               div.options-wrapper
-                template(v-for="option in ballot.options")
-                  ballot-view-option(
-                    :option="option"
-                    :ballot="ballot"
-                    :isBallotOpened="isBallotOpened(ballot)"
-                    :displayWinner="displayWinner"
-                    :votes="votes"
-                    :getPercentofTotal="getPercentofTotal(option)"
-                  )
+                q-item.ballot-view-option(
+                  v-for="option in ballot.options"
+                  :key="option.key"
+                  :class="displayWinner(ballot) ? displayWinner(ballot) === option.key ? 'option-winner' : '' : 'option-clear'"
+                ).no-padding.capitalize.column
+                  div.row.option-item
+                    q-item-section()
+                      q-checkbox(
+                        size="sm"
+                        v-model="votes"
+                        :disable="ballot.status !== 'cancelled' && !isBallotOpened"
+                        keep-color
+                        :class="displayWinner(ballot) ? displayWinner(ballot) === option.key ? 'visible-checkbox' : '' : ''"
+                        color="$primary"
+                        :val="option.key"
+                      )
+                        div.checkbox-text.row.space-between
+                          div {{ option.key }}
+                          div(v-if="getPartOfTotal(option)") {{ getPartOfTotal(option) * 100 }}%&nbsp
+                  div.linear-progress(v-if="displayWinner(ballot)")
+                    q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
               q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
                 q-item-section
                   btn.btn-vote-320(
@@ -291,206 +319,254 @@ export default {
   q-inner-loading(v-else)
     q-spinner(size="3em")
 </template>
-<style lang="sass" scoped>
-.open-sans
-  font-family: open sans,arial,sans-serif;
-.link
-  color: #0481d8;
-.ballot-status
-  right: 0
-  top: 0
-.winner
-  color: green
-  font-size: 15px
-  font-weight: 600
-.dashed-bottom
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.12)
-.card-img-section
-  padding: 0
-.popup-wrapper
-  max-width: 1180px !important
-  max-height: 640px
-  box-shadow: 0px 20px 48px rgba(0, 9, 26, 0.08), 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252)
-  border-radius: 12px
-  overflow: hidden
-  & .poll-item
-    border: none
-  & .ballot-card-title-wrapper
-    height: auto
-  & .bgr-icon1
-    top: -2px
-    right: 70px
-  & .bgr-icon2
-    top: 74px
-    right: 15px
-  & .card-img-wrapper
-    overflow: visible
-  & .absolute-top-left
-    top: -6px
-    left: -12px
-  & .left-tag
-    top: 126px
-    left: -12px
-.popup-right-col-wrapper
-  border-left: 1px solid #F2F3F4
-.popup-left-col
-  width: 268px
-  & .card-img-wrapper
-    margin: 12px
-    height: 176px
-    width: 244px
-.description-section-wrapper
-  height: 500px
-  overflow: auto
-  scrollbar-color: #caccce #EFEFF0
-  scrollbar-width: thin
-  &::-webkit-scrollbar
-    width: 6px
-    background-color: #EFEFF0
-  &::-webkit-scrollbar-thumb
-    background-color: #caccce
-    border-radius: 5px
-.description-section
-  height: max-content
-.popup-right-col
-  max-width: 912px
-.popup-separator
-  background: #F2F3F4
-.options-list
-  padding: 0 24px
-.options-wrapper
-  max-height: 200px !important
-  overflow: auto
-  scrollbar-color: #caccce #EFEFF0
-  scrollbar-width: thin
-  &::-webkit-scrollbar
-    width: 6px
-    background-color: #EFEFF0
-  &::-webkit-scrollbar-thumb
-    background-color: #caccce
-    border-radius: 5px
-.statics-section .text-section
-  width: 220px
-.statics-section-item
-  width: 220px
-  & > span
-    line-height: 130%
-.options-btn
-  padding: 0
-  margin: 6px 0 0
-.round-btn
-  width: 48px
-  height: 48px
-  border-radius: 50%
-  font-size: 10px
-.ballot-content-carousel
-  border-radius: 12px
-  & > div
-    border-radius: 12px
-.custom-caption
-  width: 100%
-  display: flex
-  justify-content: flex-end
-  text-align: right
-  padding: 24px
-  color: white
-  background-color: rgba(0, 0, 0, .3)
-  & > .caption-text
-    max-width: 300px
-    font-size: 24px
-.back-btn
-  position: fixed
-  top: 0
-  left: 0
-  display: none
-  align-items: center
-  height: 70px
-  width: 100%
-  padding-left: 24px
-  cursor: pointer
-  background: #FFF
-  z-index: 10
-  & > div
-    margin-left: 10px
-    font-size: 16px
-.scrolled
-  box-shadow: 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252)
-.list-320,
-.statics-section-320
-  display: none
-@media (max-width: 1000px)
-  .custom-caption
-    & > .caption-text
-      max-width: 230px
-      font-size: 18px
-@media (max-width: 768px)
-  .back-btn
-    display: flex
-  .popup-wrapper
-    position: relative
-    padding-top: 70px
-    position: fixed
-    overflow-y: auto
-    top: 0
+<style lang="sass">
+  .open-sans
+    font-family: open sans,arial,sans-serif;
+  .link
+    color: #0481d8;
+  .ballot-status
     right: 0
-    bottom: 0
-    left: 0
-    height: 100vh
-    max-height: none !important
-    border-radius: 0
-  .close-popup-btn,
-  .popup-separator
-    display: none
-  .description-section-wrapper
-    height: max-content
-  @media (max-width: 620px)
-    .popup-wrapper
-      & > .popup-left-col-wrapper,
-      & > .popup-right-col-wrapper
-        width: 100%
-        display: flex
-        justify-content: center
-      & > .popup-right-col-wrapper
-        flex: auto !important
-    .popup-right-col
-      width: 100%
-    .description-section-wrapper
-      padding: 0
-    .ballot-content-carousel
-      border-radius: 0
-      & > div
-        border-radius: 0
-    .description-section-title
-      padding: 12px
-    .card-img-section,
-    .popup-left-col,
-    .statics-section .text-section,
-    .statics-section-item
-      width: 100%
-    .popup-left-col .card-img-wrapper,
-      width: auto
-    .options-list
-      display: flex
-      flex-direction: column
-      align-items: center
-      padding: 0 12px
-    .list-320,
-    .statics-section-320
-      display: flex
-    .statics-section-320
-      padding-top: 24px
-    .list-620,
-    .statics-section-620,
-    .popup-right-col > .q-card__section > .q-btn-item
-      display: none
-    .btn-vote-320
-      width: 295px !important
-    .custom-caption > .caption-text
-      font-size: 16px
-    .options-wrapper
-      max-height: none !important
+    top: 0
+  .winner
+    color: green
+    font-size: 15px
+    font-weight: 600
+  .dashed-bottom
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.12)
+  .card-img-section
+    padding: 0
+  .popup-wrapper
+    max-width: 1180px !important
+    max-height: 640px
+    width: 100%
+    box-shadow: 0px 20px 48px rgba(0, 9, 26, 0.08), 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252)
+    border-radius: 12px
+    overflow: hidden
+    & .poll-item
+      border: none
+    & .ballot-card-title-wrapper
+      height: auto
+    & .bgr-icon1
+      top: -2px
+      right: 70px
+    & .bgr-icon2
+      top: 74px
+      right: 15px
+    & .card-img-wrapper
       overflow: visible
-  @media (max-width: 400px)
-    .custom-caption > .caption-text
-      max-width: 150px
+    & .absolute-top-left
+      top: -6px
+      left: -12px
+    & .left-tag
+      top: 126px
+      left: -12px
+  .popup-right-col-wrapper
+    border-left: 1px solid #F2F3F4
+  .popup-left-col
+    width: 268px
+    & .card-img-wrapper
+      margin: 12px
+      height: 176px
+      width: 244px
+  .description-section-wrapper
+    height: 500px
+    overflow: auto
+    scrollbar-color: #caccce #EFEFF0
+    scrollbar-width: thin
+    &::-webkit-scrollbar
+      width: 6px
+      background-color: #EFEFF0
+    &::-webkit-scrollbar-thumb
+      background-color: #caccce
+      border-radius: 5px
+  .description-section
+    height: max-content
+  .popup-right-col
+    max-width: 912px
+  .popup-separator
+    background: #F2F3F4
+  .options-list
+    padding: 0 24px
+  .options-wrapper
+    max-height: 200px !important
+    overflow: auto
+    scrollbar-color: #caccce #EFEFF0
+    scrollbar-width: thin
+    &::-webkit-scrollbar
+      width: 6px
+      background-color: #EFEFF0
+    &::-webkit-scrollbar-thumb
+      background-color: #caccce
+      border-radius: 5px
+  .popup-wrapper .statics-section .text-section
+    width: 220px
+    & .statics-section-item
+      width: 220px
+      & > span
+        line-height: 130%
+  .options-btn
+    padding: 0 !important
+    margin: 6px 0 0
+  .round-btn
+    width: 48px
+    height: 48px
+    border-radius: 50%
+    font-size: 10px
+  .ballot-content-carousel
+    border-radius: 12px
+    & > div
+      border-radius: 12px
+  .custom-caption
+    width: 100%
+    display: flex
+    justify-content: flex-end
+    text-align: right
+    padding: 24px
+    color: white
+    background-color: rgba(0, 0, 0, .3)
+    & > .caption-text
+      max-width: 300px
+      font-size: 24px
+  .back-btn
+    position: fixed
+    top: 0
+    left: 0
+    display: none
+    align-items: center
+    height: 70px
+    width: 100%
+    padding-left: 24px
+    cursor: pointer
+    background: #FFF
+    z-index: 10
+    & > div
+      margin-left: 10px
+      font-size: 16px
+  .scrolled
+    box-shadow: 0px 7px 15px rgba(0, 9, 26, 0.05), 0px 3px 6px rgba(0, 9, 26, 0.04), 0px 1px 2.25px rgba(0, 9, 26, 0.0383252)
+  .list-320,
+  .statics-section-320
+    display: none
+  .ballot-view-option
+    max-width: 220px
+    height: 55px
+    overflow: hidden
+    flex-wrap: nowrap
+    border: 2px solid #F2F3F4
+    border-radius: 8px
+    margin: 8px 0
+    &.option-winner
+      border: none
+      background: #F4F7FF
+    & .option-item
+      width: 100%
+      padding: 6px 12px 0 12px
+      & > div
+        width: 100%
+        & > div
+          width: 100%
+          & > .q-checkbox__label
+            width: 100%
+            & > .checkbox-text
+              width: 100%
+              justify-content: space-between
+    & .linear-progress
+      padding: 0 12px 10px 12px
+    &:hover
+      border: none
+      background: #FFFFFF
+      box-shadow: 0px 7px 15px rgba(21, 0, 77, 0.05), 0px 3px 6px rgba(21, 0, 77, 0.04)
+  .invisible-checkbox .q-checkbox__inner
+    display: none
+  .invisible-checkbox .checkbox-text
+      margin: 0 0 4px 4px
+  .checkbox-text
+    flex-wrap: nowrap
+    max-width: 220px
+    font-size: 16px
+    font-weight: 600
+    line-height: 24px
+  .option-clear > .option-item
+    padding: 6px 12px 0 12px
+  @media (max-width: 1000px)
+    .custom-caption
+      & > .caption-text
+        max-width: 230px
+        font-size: 18px
+  @media (max-width: 768px)
+    .back-btn
+      display: flex
+    .popup-wrapper
+      position: relative
+      padding-top: 70px
+      position: fixed
+      overflow-y: auto
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
+      height: 100vh
+      max-height: none !important
+      border-radius: 0
+    .close-popup-btn,
+    .popup-separator
+      display: none
+    .description-section-wrapper
+      height: max-content
+    @media (max-width: 620px)
+      .popup-wrapper
+        & > .popup-left-col-wrapper,
+        & > .popup-right-col-wrapper
+          width: 100%
+          display: flex
+          justify-content: center
+        & > .popup-right-col-wrapper
+          flex: auto !important
+      .popup-right-col
+        width: 100%
+      .description-section-wrapper
+        padding: 0
+      .ballot-content-carousel
+        border-radius: 0
+        & > div
+          border-radius: 0
+      .description-section-title
+        padding: 12px
+      .card-img-section,
+      .popup-left-col,
+      .statics-section .text-section,
+      .statics-section-item
+        width: 100%
+      .popup-left-col .card-img-wrapper,
+        width: auto
+      .options-list
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 0 12px
+      .list-320,
+      .statics-section-320
+        display: flex
+      .statics-section-320
+        padding-top: 24px
+      .list-620,
+      .statics-section-620,
+      .popup-right-col > .q-card__section > .q-btn-item
+        display: none
+      .btn-vote-320
+        width: 295px !important
+      .custom-caption > .caption-text
+        font-size: 16px
+      .options-wrapper
+        max-height: none !important
+        overflow: visible
+      .ballot-view-option,
+      .options-wrapper
+        width: 100%
+      .ballot-view-option,
+      .checkbox-text
+        max-width: none
+    @media (max-width: 400px)
+      .custom-caption > .caption-text
+        max-width: 150px
 </style>
