@@ -87,7 +87,18 @@ div
     q-card-section().q-pb-none.cursor-pointer.title-section
       div.text-section.row.ballot-card-title-wrapper
         span.ballot-card-title {{ ballot.title || "Untitled Ballot" }}
-      div.ballot-card-sub-title-wrapper
+      div.ballot-card-sub-title-wrapper.row
+        template(v-if="ballot.treasury.icon && ballot.treasury.icon !== '' && ballot.treasury.icon !== 'null'")
+          div.sub-title-card-img-wrapper
+            q-img(:src="ballot.treasury.icon")
+          div
+            div
+              span.opacity04 By&nbsp
+              a(@click="openUrl(ballot.publisher)").link.cursor-pointer  {{ ballot.publisher }}
+            div.sub-title-group-wrapper
+              span.opacity04 in&nbsp
+              span.opacity06 {{ ballot.treasury.title || "No treasury" }}
+        template(v-else)
           span.opacity04 By&nbsp
           a(@click="openUrl(ballot.publisher)").link.cursor-pointer  {{ ballot.publisher }}
           span.opacity04 &nbspin&nbsp
@@ -198,6 +209,8 @@ div
   overflow: hidden
   width: 380px;
   height: 472px
+  display: flex
+  flex-direction: column
 .column-direction .q-card.poll-item
   height: 200px
   display: flex
@@ -205,7 +218,6 @@ div
 .q-card > div.poll-item
   box-shadow: unset
   height 100px
-
 .q-card > div:not(:last-child), .q-card > img:not(:last-child)
     border-bottom-left-radius: 0;
 .card-img-wrapper
@@ -225,14 +237,16 @@ div
   height: 176px
   width: 20%
 .title-section
-  padding: 16px 24px 8px 24px
+  padding: 6px 24px 8px 24px
 .column-direction .title-section
   position: relative
   width: 79%
   padding: 16px 16px 8px 32px
 .ballot-card-title-wrapper
-  height: 60px
   margin-bottom: 10px
+.row-direction .ballot-card-title-wrapper
+  max-height: 58px
+  overflow: hidden
 .column-direction .ballot-card-title-wrapper
   height: auto
 .ballot-card-sub-title-wrapper
@@ -266,18 +280,25 @@ div
   font-weight: 600
   font-size: 20px
 .statics-section
-  padding: 16px 24px 8px 24px
+  padding: 10px 24px 8px 24px
 .statics-section-item
   display: flex
   flex-wrap: nowrap
   width: max-content
-  margin-bottom: 16px
+  margin-bottom: 10px
   & span
     font-size: 16px
 .column-direction .statics-section-item
   margin-bottom: 0
 .row-direction .statics-section-item span
   line-height: 16px
+.row-direction .btn-section
+  position: relative
+  flex: 1 1 auto
+  & > .q-btn
+    position: absolute
+    bottom: 24px
+    height: 41px
 .btn-section
   padding: 0
 .bgr-icon1, .bgr-icon2
@@ -328,16 +349,12 @@ div
     height: 434px
   .row-direction .left-tag
     top: 106px
-  .ballot-card-title-wrapper
-    height: 54px
   .ballot-card-title
     font-size: 18px
   .ballot-card-sub-title-wrapper
     font-size: 11px
-  .btn-section
-    padding: 0 24px
   .statics-section-item
-    margin-bottom: 14px
+    margin-bottom: 6px
     & span
       font-size: 14px
   .row-direction .card-img-wrapper
@@ -353,6 +370,8 @@ div
   .row-direction .bgr-icon2
     top: 60px
     right: 33px
+  .btn-section > .q-btn
+      width: 296px !important
   @media (max-width: 400px)
     .row-direction > div
       width: 100%
@@ -363,6 +382,4 @@ div
       border-radius: 0
       &:hover
         box-shadow: none
-    .btn-section > button
-      width: 296px !important
 </style>
