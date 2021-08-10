@@ -147,6 +147,7 @@ export default {
   template(v-if="!loading && ballot")
     .col-xs.col-sm-auto(style="min-width: 240px;").popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
+        :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
         flat
         square
@@ -160,7 +161,7 @@ export default {
             template(v-else)
               img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
               img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
-            ballot-chip(:type="ballot.category").absolute-top-left
+            ballot-chip(:type="ballot.category", :isBallotOpened="isBallotOpened(ballot)").absolute-top-left
             ballot-status(
               :ballot="ballot"
               :isBallotOpened="isBallotOpened(ballot)"
