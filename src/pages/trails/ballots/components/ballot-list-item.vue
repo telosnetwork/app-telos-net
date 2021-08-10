@@ -72,7 +72,7 @@ div
       template(v-else)
         img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
         img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
-    ballot-chip(:type="ballot.category").absolute-top-left
+    ballot-chip(:type="ballot.category", :isBallotOpened="isBallotOpened").absolute-top-left
 
     q-separator.card-separator-vertical(vertical inset)
 
