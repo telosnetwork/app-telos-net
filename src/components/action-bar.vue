@@ -897,6 +897,24 @@ export default {
       bottom: 12px
       z-index: 10
 
+    .dialog-btn-wrapper
+      border: none
+
+    .dialog-btn-wrapper button
+      border: 1px solid #F2F3F4
+      border-radius: 6px !important
+      margin-bottom: 10px
+
+    .dialog-btn-wrapper button.left-btn-320
+      border-right: none
+      border-top-right-radius: 0 !important
+      border-bottom-right-radius: 0 !important
+
+    .dialog-btn-wrapper button.right-btn-320
+      border-left: none
+      border-top-left-radius: 0 !important
+      border-bottom-left-radius: 0 !important
+
     .bar-linear-gradient-left,
     .bar-linear-gradient-right,
     .bar-filters,
