@@ -17,7 +17,7 @@ export default {
       timeAtMount: undefined,
       openedBallot: {},
       voting: false,
-      treasury: null,
+      treasury: 'VOTE',
       statuses: ['active'],
       categories: [],
       isBallotListRowDirection: true,
