@@ -15,9 +15,11 @@ export default {
       isTypeMenuOpen: false,
       isStatusMenuOpen: false,
       isGroupMenuOpen: false,
+      isSortingMenuOpen: false,
       isTypeDialogOpen: false,
       isStatusDialogOpen: false,
       isGroupDialogOpen: false,
+      isSortingDialogOpen: false,
       isConfirmBtn: false,
       isFilterMenu320Open: false,
       typeGroup: [],
@@ -37,6 +39,13 @@ export default {
         { label: 'Cancelled', value: 'cancelled' },
         { label: 'Archived', value: 'archived' },
         { label: 'Setup', value: 'setup' }
+      ],
+      sortMode: '',
+      sortOptions: [
+        { label: 'A-Z', value: 'A-Z' },
+        { label: 'Z-A', value: 'Z-A' },
+        { label: 'Most popular', value: 'Most popular' },
+        { label: 'Least popular', value: 'Least popular' }
       ],
       submitTypesResult: [],
       submitStatusesResult: [ 'active' ],
@@ -110,6 +119,10 @@ export default {
     clearGroupFilter () {
       this.treasuryBar = null
       this.isGroupMenuOpen = false
+    },
+    clearSort () {
+      this.sortMode = ''
+      this.isSortingMenuOpen = false
     },
     isFiltersApplied () {
       return this.treasuryBar !== null || this.submitTypesResult.length || this.submitStatusesResult.length
@@ -198,6 +211,9 @@ export default {
       if (val !== old) {
         this.$emit('change-diraction', this.isBallotListRowDirection)
       }
+    },
+    sortMode: function () {
+      this.$emit('change-sort-option', this.sortMode)
     }
   }
 }
@@ -510,6 +526,49 @@ export default {
       div.bar-custom-separator
       div.bar-filters
         div.row.bar-filter-btns-wrapper
+          //- new button
+          q-btn.bar-filter-btn(
+            v-if="!sortMode"
+            :label="'Sort by'"
+            :class="{'menu-open': isSortingMenuOpen}"
+            :icon-right="isSortingMenuOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+            color="dark"
+            no-caps
+            outline
+          )
+            q-menu(
+              @show="toggleMenu('isSortingMenuOpen')"
+              @hide="toggleMenu('isSortingMenuOpen')"
+              fit
+              :offset="[30, 20]"
+            )
+              q-option-group.bar-filter-menu-options(
+                  v-model="sortMode"
+                  :options="sortOptions"
+                  color="primary"
+                )
+          div(v-else)
+            q-btn.bar-filter-btn.left-btn(
+              :label="sortMode"
+              color="dark"
+              no-caps
+            )
+              q-menu(
+                @show="toggleMenu('isSortingMenuOpen')"
+                @hide="toggleMenu('isSortingMenuOpen')"
+                fit
+                :offset="[30, 20]"
+              )
+                q-option-group.bar-filter-menu-options(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+            q-btn.bar-filter-btn.right-btn(
+              @click="clearSort"
+              icon="close"
+              color="dark"
+            )
           q-btn.bar-filter-btn(
             v-if="submitTypesResult.length === 0"
             :label="$t('pages.trails.ballots.actionBar.typeFilter')"
@@ -852,6 +911,8 @@ export default {
     border-radius: none
   .dialog-form
     padding: 0
+  .q-menu
+    min-width: 170px !important
   @media (max-width: 1130px)
     .bar-btn-toggle,
     .bar-btns-toggle,
