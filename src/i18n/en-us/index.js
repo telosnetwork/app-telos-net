@@ -125,6 +125,7 @@ export default {
           btnLabel: 'OK, got it'
         },
         actionBar: {
+          sorting: 'Sort by',
           filterTitle: 'Filter',
           typeFilter: 'Type',
           statusFilter: 'Status',
