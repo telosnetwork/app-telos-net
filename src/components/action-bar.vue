@@ -40,7 +40,7 @@ export default {
       ],
       submitTypesResult: [],
       submitStatusesResult: [ 'active' ],
-      treasuryBar: null,
+      treasuryBar: 'VOTE',
       isBallotListRowDirection: true,
       notice: false
     }
