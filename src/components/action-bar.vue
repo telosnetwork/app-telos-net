@@ -226,6 +226,73 @@ export default {
           div.menu-320-title {{ $t('pages.trails.ballots.actionBar.filterTitle') }}
           q-icon.filter-icon(name="filter_list")
         div.dialog-btn-wrapper.column
+          div(v-if="!sortMode")
+            q-btn.dialog-btn.filter-type-btn-320(
+              :label="$t('pages.trails.ballots.actionBar.sorting')"
+              icon-right="fas fa-chevron-down"
+              @click="toggleMenu('isSortingDialogOpen')"
+              color="dark"
+              no-caps
+              outline
+              flat
+              align="left"
+            )
+            q-dialog(
+              v-model="isSortingDialogOpen"
+              position="bottom"
+            )
+              div.column.dialog-wrapper
+                div.flex.justify-between.dialog-title
+                  div.flex.items-center
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.sorting') }}
+                  q-btn.close-btn(
+                    flat
+                    dense
+                    round
+                    v-close-popup
+                    icon="close"
+                    text-color="dark"
+                  )
+                q-scroll-area
+                  q-option-group.bar-filter-menu-options.options-320(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+          div.flex.no-wrap(v-else)
+            q-btn.bar-filter-btn.left-btn.left-btn-320(
+              :label="sortMode"
+              @click="toggleMenu('isSortingDialogOpen')"
+              color="dark"
+              no-caps
+            )
+            q-dialog(
+              v-model="isSortingDialogOpen"
+              position="bottom"
+            )
+              div.column.dialog-wrapper
+                div.flex.justify-between.dialog-title
+                  div.flex.items-center
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.sorting') }}
+                  q-btn.close-btn(
+                    flat
+                    dense
+                    round
+                    v-close-popup
+                    icon="close"
+                    text-color="dark"
+                  )
+                q-scroll-area
+                  q-option-group.bar-filter-menu-options.options-320(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+            q-btn.bar-filter-btn.right-btn.right-btn-320(
+              @click="clearSort()"
+              icon="close"
+              color="dark"
+            )
           div(v-if="submitTypesResult.length === 0")
             q-btn.dialog-btn.filter-type-btn-320(
               :label="$t('pages.trails.ballots.actionBar.typeFilter')"
@@ -872,7 +939,7 @@ export default {
     text-align: left
     font-size: 16px
   .filter-type-btn-320 > .q-btn__wrapper > .q-btn__content > .block
-    width: 50px
+    width: 56px
   .btn-320-wrapper
     margin: 24px 0
     width: 100%
@@ -913,14 +980,14 @@ export default {
     padding: 0
   .q-menu
     min-width: 170px !important
-  @media (max-width: 1130px)
+  @media (max-width: 1280px)
     .bar-btn-toggle,
     .bar-btns-toggle,
     .bar-custom-separator
       display: none !important
     .bar-filter-btns-wrapper
       margin-left: 16px
-  @media (max-width: 1000px)
+  @media (max-width: 1130px)
     .bar-linear-gradient-left,
     .bar-linear-gradient-right
       display: block
@@ -929,15 +996,25 @@ export default {
     .bar-separator-vertical
       height: 60px
     .bar-filter-btns-wrapper
-      min-width: 550px
+      min-width: 690px
     .bar-filters
-      max-width: 65%
+      max-width: 73%
       overflow-x: scroll
     .bar-filters::-webkit-scrollbar
       width: 0
       display: none
     .bar-linear-gradient-right
-      left: 61%
+      left: 70%
+  @media (max-width: 1070px)
+    .bar-filters
+      max-width: 68%
+    .bar-linear-gradient-right
+      left: 65%
+  @media (max-width: 940px)
+    .bar-filters
+      max-width: 63%
+    .bar-linear-gradient-right
+      left: 60%
   @media (max-width: 750px)
     .bar-filters
       max-width: 60%
