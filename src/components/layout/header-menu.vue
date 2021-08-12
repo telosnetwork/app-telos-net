@@ -12,6 +12,7 @@ export default {
         { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
         { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
         { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        { label: this.$t('menu.workerProposals'), route: '/trails/worker-proposals' },
         { label: this.$t('menu.tokens'), route: '/tokens' }
       ]
     }

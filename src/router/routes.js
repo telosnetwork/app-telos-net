@@ -11,6 +11,7 @@ const routes = [
 
   // Trails
   { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/worker-proposals/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
   { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
 
   // Trails

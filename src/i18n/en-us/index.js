@@ -45,6 +45,7 @@ export default {
   menu: {
     trails: 'Voting',
     trailsBallots: 'Decide',
+    workerProposals: 'Worker Proposals',
     tokens: 'Tokens',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
