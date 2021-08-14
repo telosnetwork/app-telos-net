@@ -9,6 +9,7 @@ import notifications from './notifications'
 import trails from './trails'
 import transfers from './transfers'
 import tokens from './tokens'
+import validators from './validators'
 import testnet from './testnet'
 import poc from './poc'
 import general from './general'
@@ -33,6 +34,7 @@ export default function (/* { ssrContext } */) {
       tokens,
       trails,
       transfers,
+      validators,
       general
     },
 

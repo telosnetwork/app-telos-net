@@ -247,6 +247,9 @@ export default {
     tokens: {
       title: 'Token management'
     },
+    validators: {
+      title: 'Validators'
+    },
     claim: {
       claimAccount: 'Claim account',
       claimCheck: {

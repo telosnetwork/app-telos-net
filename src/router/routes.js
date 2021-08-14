@@ -23,6 +23,9 @@ const routes = [
   // Tokens
   { path: '/tokens', component: () => import('pages/tokens/tokens.vue'), meta: { title: 'pages.tokens.title', guest: false } },
 
+  // Validators
+  { path: '/validators', component: () => import('pages/validators/validators.vue'), meta: { title: 'pages.validators.title', guest: false } },
+
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },
   // { path: '/claim/claimAccount', component: () => import('pages/accounts/claim/remove-me.vue'), meta: { title: 'pages.claim.removeMe.title' } },
