@@ -125,6 +125,7 @@ export default {
           btnLabel: 'OK, got it'
         },
         actionBar: {
+          sorting: 'Sort by',
           filterTitle: 'Filter',
           typeFilter: 'Type',
           statusFilter: 'Status',
@@ -245,6 +246,9 @@ export default {
     },
     tokens: {
       title: 'Token management'
+    },
+    validators: {
+      title: 'Validators'
     },
     claim: {
       claimAccount: 'Claim account',

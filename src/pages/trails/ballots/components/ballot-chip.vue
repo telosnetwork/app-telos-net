@@ -1,7 +1,7 @@
 <script>
 export default {
   name: 'ballot-chip',
-  props: ['type'],
+  props: ['type', 'isBallotOpened'],
   data () {
     return {}
   },
@@ -17,34 +17,41 @@ export default {
 
 <template lang="pug">
   q-chip(square text-color="white" :class="`${type}-chip`").capitalize.no-margin.text-weight-bold.ballot-type
-    div.poll-icon
+    q-avatar
+      template(v-if="isBallotOpened")
+        img(:src="`statics/app-icons/${type.toLowerCase()}-icon.svg`").poll-icon
+      template(v-else)
+        img(:src="`statics/app-icons/${type.toLowerCase()}-icon-black.svg`").poll-icon
     span.type-text {{ ucFirst(type) }}
 </template>
 
 <style lang="sass">
-  .ballot-type.poll-chip .poll-icon
+  .ballot-type.poll-chip
     background: #FFB010;
-  .ballot-type.referendum-chip .poll-icon
+  .ballot-type.referendum-chip
     background: #F5898A;
-  .ballot-type.proposal-chip .poll-icon
+  .ballot-type.proposal-chip
     background: #FA7238;
-  .ballot-type.election-chip .poll-icon
+  .ballot-type.election-chip
     background: #71DA76;
-  .ballot-type.leaderboard-chip .poll-icon
+  .ballot-type.leaderboard-chip
     background: #8A8EF5;
   .q-card .q-chip.ballot-type
-    border-radius: 0px 0px 12px 0px;
-    background: #fff;
+    border-radius: 6px 6px 12px 6px;
+    margin-left: 6px !important
   .poll-ended .q-chip.ballot-type
     background: #F7F7F7
+  .view-poll-ended .q-chip.ballot-type
+    background: #fff
   .ballot-type .poll-icon
-    width: 6px;
-    height: 6px;
-    margin-right: 6px;
-    border-radius: 10px;
+    width: 18px !important
+    height: 18px !important
   .ballot-type .type-text
-    color: #000919
+    color: white
     font-size: 12px
+  .poll-ended .ballot-type .type-text,
+  .view-poll-ended .ballot-type .type-text
+    color: #000919
   .ballot-type
     top: 6px
 </style>

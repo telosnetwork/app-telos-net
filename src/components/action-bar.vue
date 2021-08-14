@@ -15,9 +15,11 @@ export default {
       isTypeMenuOpen: false,
       isStatusMenuOpen: false,
       isGroupMenuOpen: false,
+      isSortingMenuOpen: false,
       isTypeDialogOpen: false,
       isStatusDialogOpen: false,
       isGroupDialogOpen: false,
+      isSortingDialogOpen: false,
       isConfirmBtn: false,
       isFilterMenu320Open: false,
       typeGroup: [],
@@ -38,9 +40,16 @@ export default {
         { label: 'Archived', value: 'archived' },
         { label: 'Setup', value: 'setup' }
       ],
+      sortMode: '',
+      sortOptions: [
+        { label: 'A-Z', value: 'A-Z' },
+        { label: 'Z-A', value: 'Z-A' },
+        { label: 'Most popular', value: 'Most popular' },
+        { label: 'Least popular', value: 'Least popular' }
+      ],
       submitTypesResult: [],
       submitStatusesResult: [ 'active' ],
-      treasuryBar: null,
+      treasuryBar: 'VOTE',
       isBallotListRowDirection: true,
       notice: false
     }
@@ -110,6 +119,10 @@ export default {
     clearGroupFilter () {
       this.treasuryBar = null
       this.isGroupMenuOpen = false
+    },
+    clearSort () {
+      this.sortMode = ''
+      this.isSortingMenuOpen = false
     },
     isFiltersApplied () {
       return this.treasuryBar !== null || this.submitTypesResult.length || this.submitStatusesResult.length
@@ -198,6 +211,9 @@ export default {
       if (val !== old) {
         this.$emit('change-diraction', this.isBallotListRowDirection)
       }
+    },
+    sortMode: function () {
+      this.$emit('change-sort-option', this.sortMode)
     }
   }
 }
@@ -210,6 +226,73 @@ export default {
           div.menu-320-title {{ $t('pages.trails.ballots.actionBar.filterTitle') }}
           q-icon.filter-icon(name="filter_list")
         div.dialog-btn-wrapper.column
+          div(v-if="!sortMode")
+            q-btn.dialog-btn.filter-type-btn-320(
+              :label="$t('pages.trails.ballots.actionBar.sorting')"
+              icon-right="fas fa-chevron-down"
+              @click="toggleMenu('isSortingDialogOpen')"
+              color="dark"
+              no-caps
+              outline
+              flat
+              align="left"
+            )
+            q-dialog(
+              v-model="isSortingDialogOpen"
+              position="bottom"
+            )
+              div.column.dialog-wrapper
+                div.flex.justify-between.dialog-title
+                  div.flex.items-center
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.sorting') }}
+                  q-btn.close-btn(
+                    flat
+                    dense
+                    round
+                    v-close-popup
+                    icon="close"
+                    text-color="dark"
+                  )
+                q-scroll-area
+                  q-option-group.bar-filter-menu-options.options-320(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+          div.flex.no-wrap(v-else)
+            q-btn.bar-filter-btn.left-btn.left-btn-320(
+              :label="sortMode"
+              @click="toggleMenu('isSortingDialogOpen')"
+              color="dark"
+              no-caps
+            )
+            q-dialog(
+              v-model="isSortingDialogOpen"
+              position="bottom"
+            )
+              div.column.dialog-wrapper
+                div.flex.justify-between.dialog-title
+                  div.flex.items-center
+                    div.user-name {{ $t('pages.trails.ballots.actionBar.sorting') }}
+                  q-btn.close-btn(
+                    flat
+                    dense
+                    round
+                    v-close-popup
+                    icon="close"
+                    text-color="dark"
+                  )
+                q-scroll-area
+                  q-option-group.bar-filter-menu-options.options-320(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+            q-btn.bar-filter-btn.right-btn.right-btn-320(
+              @click="clearSort()"
+              icon="close"
+              color="dark"
+            )
           div(v-if="submitTypesResult.length === 0")
             q-btn.dialog-btn.filter-type-btn-320(
               :label="$t('pages.trails.ballots.actionBar.typeFilter')"
@@ -510,6 +593,49 @@ export default {
       div.bar-custom-separator
       div.bar-filters
         div.row.bar-filter-btns-wrapper
+          //- new button
+          q-btn.bar-filter-btn(
+            v-if="!sortMode"
+            :label="'Sort by'"
+            :class="{'menu-open': isSortingMenuOpen}"
+            :icon-right="isSortingMenuOpen ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+            color="dark"
+            no-caps
+            outline
+          )
+            q-menu(
+              @show="toggleMenu('isSortingMenuOpen')"
+              @hide="toggleMenu('isSortingMenuOpen')"
+              fit
+              :offset="[30, 20]"
+            )
+              q-option-group.bar-filter-menu-options(
+                  v-model="sortMode"
+                  :options="sortOptions"
+                  color="primary"
+                )
+          div(v-else)
+            q-btn.bar-filter-btn.left-btn(
+              :label="sortMode"
+              color="dark"
+              no-caps
+            )
+              q-menu(
+                @show="toggleMenu('isSortingMenuOpen')"
+                @hide="toggleMenu('isSortingMenuOpen')"
+                fit
+                :offset="[30, 20]"
+              )
+                q-option-group.bar-filter-menu-options(
+                    v-model="sortMode"
+                    :options="sortOptions"
+                    color="primary"
+                  )
+            q-btn.bar-filter-btn.right-btn(
+              @click="clearSort"
+              icon="close"
+              color="dark"
+            )
           q-btn.bar-filter-btn(
             v-if="submitTypesResult.length === 0"
             :label="$t('pages.trails.ballots.actionBar.typeFilter')"
@@ -813,7 +939,7 @@ export default {
     text-align: left
     font-size: 16px
   .filter-type-btn-320 > .q-btn__wrapper > .q-btn__content > .block
-    width: 50px
+    width: 56px
   .btn-320-wrapper
     margin: 24px 0
     width: 100%
@@ -852,14 +978,16 @@ export default {
     border-radius: none
   .dialog-form
     padding: 0
-  @media (max-width: 1130px)
+  .q-menu
+    min-width: 170px !important
+  @media (max-width: 1280px)
     .bar-btn-toggle,
     .bar-btns-toggle,
     .bar-custom-separator
       display: none !important
     .bar-filter-btns-wrapper
       margin-left: 16px
-  @media (max-width: 1000px)
+  @media (max-width: 1130px)
     .bar-linear-gradient-left,
     .bar-linear-gradient-right
       display: block
@@ -868,15 +996,25 @@ export default {
     .bar-separator-vertical
       height: 60px
     .bar-filter-btns-wrapper
-      min-width: 550px
+      min-width: 690px
     .bar-filters
-      max-width: 65%
+      max-width: 73%
       overflow-x: scroll
     .bar-filters::-webkit-scrollbar
       width: 0
       display: none
     .bar-linear-gradient-right
-      left: 61%
+      left: 70%
+  @media (max-width: 1070px)
+    .bar-filters
+      max-width: 68%
+    .bar-linear-gradient-right
+      left: 65%
+  @media (max-width: 940px)
+    .bar-filters
+      max-width: 63%
+    .bar-linear-gradient-right
+      left: 60%
   @media (max-width: 750px)
     .bar-filters
       max-width: 60%
@@ -896,6 +1034,24 @@ export default {
       margin-bottom: 0
       bottom: 12px
       z-index: 10
+
+    .dialog-btn-wrapper
+      border: none
+
+    .dialog-btn-wrapper button
+      border: 1px solid #F2F3F4
+      border-radius: 6px !important
+      margin-bottom: 10px
+
+    .dialog-btn-wrapper button.left-btn-320
+      border-right: none
+      border-top-right-radius: 0 !important
+      border-bottom-right-radius: 0 !important
+
+    .dialog-btn-wrapper button.right-btn-320
+      border-left: none
+      border-top-left-radius: 0 !important
+      border-bottom-left-radius: 0 !important
 
     .bar-linear-gradient-left,
     .bar-linear-gradient-right,

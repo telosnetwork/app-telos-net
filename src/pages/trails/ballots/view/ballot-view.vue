@@ -147,6 +147,7 @@ export default {
   template(v-if="!loading && ballot")
     .col-xs.col-sm-auto(style="min-width: 240px;").popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
+        :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
         flat
         square
@@ -160,7 +161,7 @@ export default {
             template(v-else)
               img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
               img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
-            ballot-chip(:type="ballot.category").absolute-top-left
+            ballot-chip(:type="ballot.category", :isBallotOpened="isBallotOpened(ballot)").absolute-top-left
             ballot-status(
               :ballot="ballot"
               :isBallotOpened="isBallotOpened(ballot)"
@@ -224,11 +225,22 @@ export default {
           q-btn(icon="close" flat v-close-popup).absolute-top-right.gt-xs.close-popup-btn
           div.text-section.row.ballot-card-title-wrapper
             span.ballot-card-title {{ ballot.title || "Untitled Ballot" }}
-          div.ballot-card-sub-title-wrapper
-            span.opacity04 By&nbsp
-            a(@click="openUrl(ballot.publisher)").link.cursor-pointer  {{ ballot.publisher }}
-            span.opacity04 &nbspin&nbsp
-            span.opacity06 {{ ballot.treasury.title || "No treasury" }}
+          div.ballot-card-sub-title-wrapper.row
+            template(v-if="ballot.treasury.icon && ballot.treasury.icon !== '' && ballot.treasury.icon !== 'null'")
+              div.sub-title-card-img-wrapper
+                q-img(:src="ballot.treasury.icon")
+              div
+                div
+                  span.opacity04 By&nbsp
+                  a(@click="openUrl(ballot.publisher)").link.cursor-pointer  {{ ballot.publisher }}
+                div.sub-title-group-wrapper
+                  span.opacity04 in&nbsp
+                  span.opacity06 {{ ballot.treasury.title || "No treasury" }}
+            template(v-else)
+              span.opacity04 By&nbsp
+              a(@click="openUrl(ballot.publisher)").link.cursor-pointer  {{ ballot.publisher }}
+              span.opacity04 &nbspin&nbsp
+              span.opacity06 {{ ballot.treasury.title || "No treasury" }}
           q-btn(icon="close" flat v-close-popup).absolute-top-right.lt-sm
         q-separator.popup-separator
         q-card-section.description-section-wrapper
@@ -504,6 +516,14 @@ export default {
     border-radius: 12px !important
   .register-link > .q-btn__wrapper
     padding: 0 6px
+  .sub-title-card-img-wrapper
+    margin-right: 8px
+    width: 50px
+    height: 50px
+    border-radius: 6px
+    overflow: hidden
+  .sub-title-group-wrapper
+    margin-top: 6px
   @media (max-width: 1000px)
     .custom-caption
       & > .caption-text

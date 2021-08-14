@@ -42,7 +42,7 @@ div
     :treasury="treasury"
   )
   q-card
-    q-card-section.bg-primary.text-white
+    q-card-section.bg-primary.text-white(:class="`${!treasury.isPreferred ? undefined : 'prefered'}`")
       .text-h6
         | {{ treasury.title || "Group" }}
         q-icon.q-ml-sm(
@@ -92,3 +92,9 @@ div
         :label="`${$t('pages.trails.treasuries.card.registered')} ${treasury.voters} voters`"
       )
 </template>
+
+<style scoped>
+  .prefered {
+    background: purple !important
+  }
+</style>

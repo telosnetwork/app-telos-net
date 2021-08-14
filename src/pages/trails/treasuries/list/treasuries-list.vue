@@ -11,7 +11,27 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      fakeData: [
+        { access: 'public',
+          committees: 0,
+          delegates: 0,
+          description: 'Test Is prefered flag',
+          icon: '',
+          isRegistered: false,
+          locked: 0,
+          manager: 'dao.gba',
+          max_supply: '1000000000.00 GBAV',
+          open_ballots: 4,
+          settings: [],
+          supply: '31045.06 GBAV',
+          symbol: 'GBAV',
+          title: 'Fake data',
+          unlock_acct: 'dao.gba',
+          unlock_auth: 'active',
+          voters: 8,
+          isPreferred: true }
+      ]
     }
   },
   async mounted () {
@@ -34,6 +54,10 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
+    },
+    filterData (data) {
+      const sortedData = data.sort((a, b) => a.title > b.title ? 1 : -1)
+      return sortedData
     }
   },
   computed: {
@@ -54,7 +78,9 @@ export default {
         :scroll-target="$refs.treasuriesRef"
       )
         .row.q-col-gutter-md
-          .col-xs-12.col-sm-6(v-for="treasury in treasuries")
+          .col-xs-12.col-sm-6(v-for="treasury in filterData([...fakeData])")
+            treasury-card(:treasury="treasury")
+          .col-xs-12.col-sm-6(v-for="treasury in filterData([...treasuries])")
             treasury-card(:treasury="treasury")
     q-page-sticky(
       v-if="isAuthenticated"

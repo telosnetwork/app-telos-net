@@ -12,6 +12,7 @@ module.exports = function (ctx) {
     boot: [
       'layouts',
       'axios',
+      'hyperion',
       'i18n',
       { path: 'ual', server: false },
       { path: 'api', server: false },
@@ -134,6 +135,7 @@ module.exports = function (ctx) {
         NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
         WEBSERVICES_URL: process.env.WEBSERVICES_URL,
         WEBSERVICES_API_KEY: process.env.WEBSERVICES_API_KEY,
+        HYPERION_URL: process.env.HYPERION_URL,
         BLOCKCHAIN_EXPLORER: process.env.BLOCKCHAIN_EXPLORER,
         GOOGLE_ANALYTICS: process.env.GOOGLE_ANALYTICS,
         TELOS_ORIGIN: process.env.TELOS_ORIGIN,

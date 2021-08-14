@@ -17,13 +17,14 @@ export default {
       timeAtMount: undefined,
       openedBallot: {},
       voting: false,
-      treasury: null,
+      treasury: 'VOTE',
       statuses: ['active'],
       categories: [],
       isBallotListRowDirection: true,
       currentPage: 1,
       limit: 12,
-      page: 1
+      page: 1,
+      sortMode: ''
     }
   },
   async mounted () {
@@ -142,6 +143,22 @@ export default {
     getLoser () {
       if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
       return this.ballot.options.find(x => x.key !== this.getWinner.key)
+    },
+    sortBallots (ballots, method) {
+      if (method === 'A-Z') {
+        return ballots.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1)
+      } else if (method === 'Z-A') {
+        return ballots.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1)
+      } else if (method === 'Most popular') {
+        return ballots.sort((a, b) => a.total_voters < b.total_voters ? 1 : -1)
+      } else if (method === 'Least popular') {
+        return ballots.sort((a, b) => a.total_voters > b.total_voters ? 1 : -1)
+      } else if (method === '') {
+        return ballots
+      }
+    },
+    changeSortOption (option) {
+      this.sortMode = option
     }
   },
   computed: {
@@ -170,6 +187,7 @@ q-page
     @update-categories="updateCategories"
     @change-diraction="changeDirection"
     @open-ballot-form="openBallotForm"
+    @change-sort-option="changeSortOption"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
@@ -183,7 +201,7 @@ q-page
       div(:class="isBallotListRowDirection ? 'row-direction' : 'column-direction'")
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in getPage(filterBallots(ballots))"
+          v-for="(ballot, index) in getPage(sortBallots(filterBallots(ballots),sortMode))"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"
