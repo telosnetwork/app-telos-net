@@ -17,8 +17,8 @@ export default {
       timeAtMount: undefined,
       openedBallot: {},
       voting: false,
-      treasury: 'VOTE',
-      statuses: ['active'],
+      treasury: '',
+      statuses: [],
       categories: [],
       isBallotListRowDirection: true,
       currentPage: 1,
@@ -159,6 +159,11 @@ export default {
     },
     changeSortOption (option) {
       this.sortMode = option
+    },
+    updateCards (params) {
+      this.treasury = params.treasury
+      this.statuses = params.tatus
+      this.categories = params.type
     }
   },
   computed: {
@@ -188,6 +193,7 @@ q-page
     @change-diraction="changeDirection"
     @open-ballot-form="openBallotForm"
     @change-sort-option="changeSortOption"
+    @update-cards="updateCards"
     :treasuriesOptions="treasuriesOptions")
   ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
