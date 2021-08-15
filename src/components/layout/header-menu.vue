@@ -68,6 +68,7 @@ export default {
   .header-submenu-tab
     font-weight: bold
     text-transform: capitalize
+    margin: 0 8px
   .header-submenu-item
     margin: 0
   @media (max-width: 1070px)
