@@ -159,6 +159,13 @@ export default {
     },
     changeSortOption (option) {
       this.sortMode = option
+    },
+    ballotContentImg (ballot) {
+      try {
+        return JSON.parse(ballot.content).imageUrl
+      } catch (error) {
+        return null
+      }
     }
   },
   computed: {
@@ -210,6 +217,7 @@ q-page
           :getStartTime="getStartTime(ballot)"
           :getEndTime="getEndTime(ballot)"
           :getLoser="getLoser"
+          :ballotContentImg="ballotContentImg"
         )
       div.flex.flex-center.pagination-wrapper
         q-pagination(
@@ -241,6 +249,7 @@ q-page
       :getStartTime="getStartTime"
       :getEndTime="getEndTime"
       :getLoser="getLoser"
+      :ballotContentImg="ballotContentImg"
     )
       //- q-btn(v-close-popup color="secondary").float-right Close
 </template>
