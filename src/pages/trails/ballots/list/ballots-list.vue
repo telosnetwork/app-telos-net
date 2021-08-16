@@ -27,6 +27,11 @@ export default {
       sortMode: ''
     }
   },
+  props: {
+    activeFilter: {
+      type: String
+    }
+  },
   async mounted () {
     console.log(`mounted`)
     this.timeAtMount = Date.now()
@@ -201,7 +206,8 @@ q-page
     @open-ballot-form="openBallotForm"
     @change-sort-option="changeSortOption"
     @update-cards="updateCards"
-    :treasuriesOptions="treasuriesOptions")
+    :treasuriesOptions="treasuriesOptions"
+    :activeFilter="activeFilter")
   ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
     q-infinite-scroll(

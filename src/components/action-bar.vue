@@ -7,7 +7,10 @@ export default {
   name: 'action-bar',
   components: { Btn },
   props: {
-    treasuriesOptions: {}
+    treasuriesOptions: {},
+    activeFilter: {
+      type: String
+    }
   },
   data () {
     return {
@@ -156,25 +159,25 @@ export default {
       this.notice = true
     },
     setFilterParams (path) {
-      if (path === '/trails/amend-ballots') {
+      if (path === 'amend-ballots') {
         this.typeGroup = []
         this.submitTypesResult = []
         this.statusGroup = [ 'active' ]
         this.submitStatusesResult = [ 'active' ]
         this.treasuryBar = 'VOTE'
-      } else if (path === '/trails/worker-proposals') {
+      } else if (path === 'worker-proposals') {
         this.typeGroup = ['proposal']
         this.submitTypesResult = ['proposal']
         this.statusGroup = [ 'active' ]
         this.submitStatusesResult = [ 'active' ]
         this.treasuryBar = 'VOTE'
-      } else if (path === '/trails/t-f-election') {
+      } else if (path === 't-f-election') {
         this.typeGroup = ['election']
         this.submitTypesResult = ['election']
         this.statusGroup = [ 'active' ]
         this.submitStatusesResult = [ 'active' ]
         this.treasuryBar = 'VOTE'
-      } else if (path === '/trails/polls') {
+      } else if (path === 'polls') {
         this.typeGroup = ['poll']
         this.submitTypesResult = ['poll']
         this.statusGroup = [ 'active' ]
@@ -185,7 +188,7 @@ export default {
     }
   },
   mounted () {
-    this.setFilterParams(this.$route.path)
+    this.setFilterParams(this.activeFilter)
   },
   created () {
     window.addEventListener('scroll', this.handleScroll)
@@ -205,6 +208,9 @@ export default {
       } else {
         this.showBallot = false
       }
+    },
+    activeFilter: function () {
+      this.setFilterParams(this.activeFilter)
     },
     treasuryBar: function (val, old) {
       console.log(`watching treasury`)
