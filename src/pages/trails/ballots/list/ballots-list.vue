@@ -124,18 +124,20 @@ export default {
     },
     filterBallots (ballots) {
       const ballotFiltered = ballots.filter(b => {
-        if (this.statuses.length === 0) {
-          return true
-        } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
-          return this.statuses.includes(b.status) || b.status === 'voting'
-        } else if (this.statuses.includes('active')) {
-          return this.statuses.includes(b.status) || (this.isBallotOpened(b) && b.status === 'voting')
-        } else if (this.statuses.includes('expired')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
-        } else if (this.statuses.includes('not started')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
+        if (this.statuses) {
+          if (this.statuses.length === 0) {
+            return true
+          } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
+            return this.statuses.includes(b.status) || b.status === 'voting'
+          } else if (this.statuses.includes('active')) {
+            return this.statuses.includes(b.status) || (this.isBallotOpened(b) && b.status === 'voting')
+          } else if (this.statuses.includes('expired')) {
+            return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
+          } else if (this.statuses.includes('not started')) {
+            return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
+          }
+          return this.statuses.includes(b.status)
         }
-        return this.statuses.includes(b.status)
       })
       return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
     },
