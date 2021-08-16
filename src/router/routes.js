@@ -10,10 +10,7 @@ const routes = [
   { path: '/works/proposals', component: () => import('pages/works/proposals.vue'), meta: { guest: false } },
 
   // Trails
-  { path: '/trails/amend-ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
-  { path: '/trails/t-f-election/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
-  { path: '/trails/polls/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
-  { path: '/trails/worker-proposals/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
   { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
 
   // Trails

@@ -12,10 +12,10 @@ export default {
         { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
         { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
         [
-          { label: this.$t('menu.amendBallots'), route: '/trails/amend-ballots' },
-          { label: this.$t('menu.TFElection'), route: '/trails/t-f-election' },
-          { label: this.$t('menu.polls'), route: '/trails/polls' },
-          { label: this.$t('menu.workerProposals'), route: '/trails/worker-proposals' }
+          { label: this.$t('menu.amendBallots'), filter: 'amend-ballots' },
+          { label: this.$t('menu.TFElection'), filter: 't-f-election' },
+          { label: this.$t('menu.polls'), filter: 'polls' },
+          { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
       ]
@@ -43,11 +43,11 @@ export default {
       )
       q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
         q-list(v-for="(el,i) of item")
-          q-route-tab.q-mx-sm.header-submenu-item(
+          q-tab.q-mx-sm.header-submenu-item(
             :key="i"
             :name="el.label"
             :label="el.label"
-            :to="el.route"
+            @click="$emit('set-active-filter', el.filter)"
             )
       div.custom-separator
 </template>
