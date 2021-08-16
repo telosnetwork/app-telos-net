@@ -79,7 +79,7 @@ export default {
   @media (max-width: 960px)
     .header-menu-tab
       padding: 0 8px
-  @media (max-width: 735px)
+  @media (max-width: 760px)
     .q-tabs
       display: none
 </style>

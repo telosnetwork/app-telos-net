@@ -86,6 +86,7 @@ export default {
 <style lang="sass">
 .burger
   margin: 0 6px
+  display: none
 .q-header
   display: flex
   height: 80px
@@ -137,15 +138,14 @@ export default {
     width: 80px
   .scrolled
     height: 48px
-@media (min-width: 736px)
-  .burger
-    display: none
-@media (max-width: 735px)
+@media (max-width: 760px)
   .q-toolbar__title,
   .title-separator
     display: none
   .q-header
     height: 52px
+  .burger
+    display: block
 @media (max-width: 400px)
   .q-toolbar
     padding: 0 12px

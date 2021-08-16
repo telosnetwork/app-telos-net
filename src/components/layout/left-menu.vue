@@ -3,7 +3,10 @@ export default {
   name: 'left-menu-authenticated',
   methods: {
     closeMenu: function () { this.$emit('close') },
-    goToHomePage: function () { this.$emit('goToHomePage') }
+    goToHomePage: function () { this.$emit('goToHomePage') },
+    updateWidth () {
+      this.clientWidth = window.innerWidth
+    }
   },
   data () {
     return {
@@ -17,8 +20,22 @@ export default {
           { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
-      ]
+      ],
+      clientWidth: 0
     }
+  },
+  watch: {
+    clientWidth: function () {
+      if (this.clientWidth > 760) {
+        this.closeMenu()
+      }
+    }
+  },
+  created () {
+    window.addEventListener('resize', this.updateWidth)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updateWidth)
   }
 }
 </script>
@@ -78,7 +95,7 @@ export default {
   .menu-logo-wrapper
     height: 162px
     border-bottom: 1px solid rgba(0, 9, 26, 0.1)
-  @media (max-width: 662px)
+  @media (max-width: 760px)
     .burger-close
       margin: 16px 0 0 24px
     .wrapper
