@@ -14,7 +14,8 @@ export default {
     votingHasBegun: { type: Boolean, required: true },
     getStartTime: { type: Number, required: true },
     getEndTime: { type: Number, required: true },
-    getLoser: { type: Function, required: true }
+    getLoser: { type: Function, required: true },
+    ballotContentImg: { type: Function, required: true }
   },
   data () {
     return {
@@ -66,12 +67,17 @@ export default {
 div
   q-card(:class="ballot.status === 'voting' && isBallotOpened ? '' : 'poll-ended'").poll-item
     q-card-section().card-img-wrapper
-      template(v-if="isBallotOpened && ballot.status === 'voting'")
-        img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon1.png`").bgr-icon1
-        img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon2.png`").bgr-icon2
+      template(v-if="ballotContentImg(ballot)")
+        q-img(:src="ballotContentImg(ballot)").poll-item-image-wrapper
+          template(v-slot:error)
+            q-icon(size="lg" name="far fa-image")
       template(v-else)
-        img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
-        img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
+        template(v-if="isBallotOpened && ballot.status === 'voting'")
+          img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon1.png`").bgr-icon1
+          img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon2.png`").bgr-icon2
+        template(v-else)
+          img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
+          img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
     ballot-chip(:type="ballot.category", :isBallotOpened="isBallotOpened").absolute-top-left
 
     q-separator.card-separator-vertical(vertical inset)
@@ -337,6 +343,16 @@ div
   opacity: .4 !important
 .opacity06
   opacity: .6 !important
+.poll-item-image-wrapper
+  width: auto
+  height: 100%
+  display: flex
+  & > .q-img__content
+    display: flex
+    justify-content: center
+    align-items: center
+  & > .q-img__image
+    background-size: contain !important
 @media (max-width: 1366px)
   .ballots > .q-infinite-scroll
     margin: 0 auto

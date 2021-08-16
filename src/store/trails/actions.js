@@ -159,7 +159,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
           ballot_name: ballotName,
           title: ballot.title,
           description: ballot.description,
-          content: ''
+          content: ballot.content
         }
       },
       {

@@ -14,6 +14,7 @@ export default {
         title: null,
         category: 'poll',
         description: null,
+        imageUrl: null,
         IPFS: null,
         treasurySymbol: null,
         votingMethod: '1token1vote',
@@ -57,8 +58,7 @@ export default {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
       this.submitting = true
-      if (this.form.IPFS && this.form.IPFS !== null && this.form.IPFS.trim() !== '') this.form.description = `${this.form.description} ${this.form.IPFS}`
-      const success = await this.addBallot(this.form)
+      const success = await this.addBallot(this.createBallotObject())
       this.submitting = false
       if (success) {
         this.$emit('update:show', false)
@@ -70,6 +70,7 @@ export default {
         title: null,
         category: null,
         description: null,
+        imageUrl: null,
         treasurySymbol: null,
         votingMethod: '1token1vote',
         initialOptions: [],
@@ -78,6 +79,20 @@ export default {
     },
     addBallotOption (val, done) {
       done(val.toLowerCase(), 'add-unique')
+    },
+    createBallotObject () {
+      return {
+        title: this.form.title,
+        category: this.form.category,
+        description: (this.form.IPFS && this.form.IPFS !== null && this.form.IPFS.trim() !== '') ? `${this.form.description} ${this.form.IPFS}` : this.form.description,
+        content: this.form.imageUrl ? `{\"imageUrl\":\"${this.form.imageUrl}\"}` : '',
+        treasurySymbol: this.form.treasurySymbol,
+        votingMethod: this.form.votingMethod,
+        maxOptions: this.form.maxOptions,
+        minOptions: this.form.minOptions,
+        initialOptions: this.form.initialOptions,
+        endDate: this.form.endDate
+      }
     }
   }
 }
@@ -125,6 +140,15 @@ q-dialog(
         v-model="form.description"
         label="Description"
         type="textarea"
+        :rules="[rules.required]"
+      )
+      q-input(
+        class="q-mb-md"
+        ref="img"
+        v-model="form.imageUrl"
+        label="Image URL"
+        placeholder="https://..."
+        hint="Upload an image and paste the url here to include it in your ballot."
         :rules="[rules.required]"
       )
       q-input(

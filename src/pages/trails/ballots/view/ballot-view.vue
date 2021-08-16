@@ -16,7 +16,8 @@ export default {
     votingHasBegun: { type: Function, required: true },
     getStartTime: { type: Function, required: true },
     getEndTime: { type: Function, required: true },
-    getLoser: { type: Function, required: true }
+    getLoser: { type: Function, required: true },
+    ballotContentImg: { type: Function, required: true }
   },
   data () {
     return {
@@ -155,12 +156,17 @@ export default {
       )
         q-card-section.card-img-section
           div.card-img-wrapper
-            template(v-if="isBallotOpened(ballot) && ballot.status === 'voting'")
-              img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon1.png`").bgr-icon1
-              img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon2.png`").bgr-icon2
+            template(v-if="ballotContentImg(ballot)")
+              q-img(:src="ballotContentImg(ballot)").poll-item-image-wrapper
+                template(v-slot:error)
+                  q-icon(size="lg" name="far fa-image")
             template(v-else)
-              img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
-              img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
+              template(v-if="isBallotOpened(ballot) && ballot.status === 'voting'")
+                img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon1.png`").bgr-icon1
+                img(:src="`statics/app-icons/${ballot.category.toLowerCase()}-bgr-icon2.png`").bgr-icon2
+              template(v-else)
+                img(:src="`statics/app-icons/inactive-bgr-icon1.png`").bgr-icon1
+                img(:src="`statics/app-icons/inactive-bgr-icon2.png`").bgr-icon2
             ballot-chip(:type="ballot.category", :isBallotOpened="isBallotOpened(ballot)").absolute-top-left
             ballot-status(
               :ballot="ballot"
@@ -390,6 +396,7 @@ export default {
     width: 268px
     & .card-img-wrapper
       margin: 12px
+      padding: 16px
       height: 176px
       width: 244px
   .description-section-wrapper
