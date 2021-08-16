@@ -11,7 +11,12 @@ export default {
       menuItems: [
         { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
         { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
-        { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        [
+          { label: this.$t('menu.amendBallots'), filter: 'amend-ballots' },
+          { label: this.$t('menu.TFElection'), filter: 't-f-election' },
+          { label: this.$t('menu.polls'), filter: 'polls' },
+          { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
+        ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
       ]
     }
@@ -34,7 +39,17 @@ export default {
         :name="item.label"
         :label="item.label"
         :to="item.route"
+        v-if="!item.length"
       )
+      q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
+        q-list(v-for="(el,i) of item")
+          q-route-tab.q-mx-sm.header-submenu-item(
+            :key="i"
+            :name="el.label"
+            :label="el.label"
+            :to="'/trails/ballots'"
+            @click="$emit('set-active-filter', el.filter)"
+            )
       div.custom-separator
 </template>
 
@@ -51,6 +66,12 @@ export default {
     border-radius: 2px
     &:last-child
       display: none
+  .header-submenu-tab
+    font-weight: bold
+    text-transform: capitalize
+    margin: 0 8px
+  .header-submenu-item
+    margin: 0
   @media (max-width: 1070px)
     .q-tabs
       margin: 0

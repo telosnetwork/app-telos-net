@@ -45,6 +45,10 @@ export default {
   menu: {
     trails: 'Voting',
     trailsBallots: 'Decide',
+    amendBallots: 'Amend Ballots',
+    TFElection: 'TF Election',
+    polls: 'Polls',
+    workerProposals: 'Worker proposals',
     tokens: 'Tokens',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',

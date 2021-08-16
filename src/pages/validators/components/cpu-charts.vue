@@ -1,5 +1,9 @@
 <template>
+<div>
     <highcharts :options="chartOptions" :updateArgs="[true, false]"  ref="highcharts"></highcharts>
+    <q-btn class="q-pa-sm" @click=toggleVisible(true)>Select all</q-btn>
+    <q-btn class="q-pa-sm" @click=toggleVisible(false)>Deselect all</q-btn>
+</div>
 </template>
 
 <script>
@@ -53,7 +57,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions('validators', ['loadBenchmarks'])
+    ...mapActions('validators', ['loadBenchmarks']),
+    toggleVisible (show) {
+      this.$refs.highcharts.chart.series.forEach((series) => {
+        if (show) {
+          series.show()
+        } else {
+          series.hide()
+        }
+      })
+    }
   }
 }
 </script>

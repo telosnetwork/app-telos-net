@@ -17,14 +17,19 @@ export default {
       timeAtMount: undefined,
       openedBallot: {},
       voting: false,
-      treasury: 'VOTE',
-      statuses: ['active'],
+      treasury: '',
+      statuses: [],
       categories: [],
       isBallotListRowDirection: true,
       currentPage: 1,
       limit: 12,
       page: 1,
       sortMode: ''
+    }
+  },
+  props: {
+    activeFilter: {
+      type: String
     }
   },
   async mounted () {
@@ -119,18 +124,20 @@ export default {
     },
     filterBallots (ballots) {
       const ballotFiltered = ballots.filter(b => {
-        if (this.statuses.length === 0) {
-          return true
-        } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
-          return this.statuses.includes(b.status) || b.status === 'voting'
-        } else if (this.statuses.includes('active')) {
-          return this.statuses.includes(b.status) || (this.isBallotOpened(b) && b.status === 'voting')
-        } else if (this.statuses.includes('expired')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
-        } else if (this.statuses.includes('not started')) {
-          return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
+        if (this.statuses) {
+          if (this.statuses.length === 0) {
+            return true
+          } else if (this.statuses.includes('active') && this.statuses.includes('expired')) {
+            return this.statuses.includes(b.status) || b.status === 'voting'
+          } else if (this.statuses.includes('active')) {
+            return this.statuses.includes(b.status) || (this.isBallotOpened(b) && b.status === 'voting')
+          } else if (this.statuses.includes('expired')) {
+            return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
+          } else if (this.statuses.includes('not started')) {
+            return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
+          }
+          return this.statuses.includes(b.status)
         }
-        return this.statuses.includes(b.status)
       })
       return ballotFiltered.filter(b => this.categories.length === 0 || this.categories.includes(b.category))
     },
@@ -159,6 +166,18 @@ export default {
     },
     changeSortOption (option) {
       this.sortMode = option
+    },
+    ballotContentImg (ballot) {
+      try {
+        return JSON.parse(ballot.content).imageUrl
+      } catch (error) {
+        return null
+      }
+    },
+    updateCards (params) {
+      this.treasury = params.treasury
+      this.statuses = params.tatus
+      this.categories = params.type
     }
   },
   computed: {
@@ -188,7 +207,9 @@ q-page
     @change-diraction="changeDirection"
     @open-ballot-form="openBallotForm"
     @change-sort-option="changeSortOption"
-    :treasuriesOptions="treasuriesOptions")
+    @update-cards="updateCards"
+    :treasuriesOptions="treasuriesOptions"
+    :activeFilter="activeFilter")
   ballot-form(:show.sync="show")
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
@@ -210,6 +231,7 @@ q-page
           :getStartTime="getStartTime(ballot)"
           :getEndTime="getEndTime(ballot)"
           :getLoser="getLoser"
+          :ballotContentImg="ballotContentImg"
         )
       div.flex.flex-center.pagination-wrapper
         q-pagination(
@@ -241,6 +263,7 @@ q-page
       :getStartTime="getStartTime"
       :getEndTime="getEndTime"
       :getLoser="getLoser"
+      :ballotContentImg="ballotContentImg"
     )
       //- q-btn(v-close-popup color="secondary").float-right Close
 </template>

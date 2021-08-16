@@ -7,7 +7,10 @@ export default {
   name: 'action-bar',
   components: { Btn },
   props: {
-    treasuriesOptions: {}
+    treasuriesOptions: {},
+    activeFilter: {
+      type: String
+    }
   },
   data () {
     return {
@@ -30,7 +33,7 @@ export default {
         { label: 'Poll', value: 'poll' },
         { label: 'Proposal', value: 'proposal' }
       ],
-      statusGroup: [ 'active' ],
+      statusGroup: [],
       statusOptions: [
         { label: 'Active', value: 'active' },
         { value: 'not_started', label: 'Not started' },
@@ -48,8 +51,8 @@ export default {
         { label: 'Least popular', value: 'Least popular' }
       ],
       submitTypesResult: [],
-      submitStatusesResult: [ 'active' ],
-      treasuryBar: 'VOTE',
+      submitStatusesResult: [],
+      treasuryBar: '',
       isBallotListRowDirection: true,
       notice: false
     }
@@ -154,7 +157,38 @@ export default {
     },
     openNotice () {
       this.notice = true
+    },
+    setFilterParams (path) {
+      if (path === 'amend-ballots') {
+        this.typeGroup = []
+        this.submitTypesResult = []
+        this.statusGroup = [ 'active' ]
+        this.submitStatusesResult = [ 'active' ]
+        this.treasuryBar = 'VOTE'
+      } else if (path === 'worker-proposals') {
+        this.typeGroup = ['proposal']
+        this.submitTypesResult = ['proposal']
+        this.statusGroup = [ 'active' ]
+        this.submitStatusesResult = [ 'active' ]
+        this.treasuryBar = 'VOTE'
+      } else if (path === 't-f-election') {
+        this.typeGroup = ['election']
+        this.submitTypesResult = ['election']
+        this.statusGroup = [ 'active' ]
+        this.submitStatusesResult = [ 'active' ]
+        this.treasuryBar = 'VOTE'
+      } else if (path === 'polls') {
+        this.typeGroup = ['poll']
+        this.submitTypesResult = ['poll']
+        this.statusGroup = [ 'active' ]
+        this.submitStatusesResult = [ 'active' ]
+        this.treasuryBar = 'VOTE'
+      }
+      this.$emit('update-cards', { type: this.typeGroup, status: this.statusGroup, treasury: this.treasuryBar })
     }
+  },
+  mounted () {
+    this.setFilterParams(this.activeFilter)
   },
   created () {
     window.addEventListener('scroll', this.handleScroll)
@@ -168,11 +202,15 @@ export default {
   watch: {
     '$route' (to, from) {
       console.log(`watching $route`)
+      this.setFilterParams(to.path)
       if (to.params.id !== undefined) {
         this.showBallot = true
       } else {
         this.showBallot = false
       }
+    },
+    activeFilter: function () {
+      this.setFilterParams(this.activeFilter)
     },
     treasuryBar: function (val, old) {
       console.log(`watching treasury`)

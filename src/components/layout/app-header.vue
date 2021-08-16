@@ -13,7 +13,8 @@ export default {
   },
   data () {
     return {
-      scrollPosition: null
+      scrollPosition: null,
+      isMenuOpened: false
     }
   },
   computed: {
@@ -26,7 +27,10 @@ export default {
     openMenu () { this.$emit('open') },
     goToHomePage () { this.$emit('goToHomePage') },
     toggleNote () { this.$emit('toggleNote') },
-    updateScroll () { this.scrollPosition = window.scrollY }
+    updateScroll () { this.scrollPosition = window.scrollY },
+    setActiveFilter (filter) {
+      this.$emit('set-active-filter', filter)
+    }
   },
   mounted () {
     window.addEventListener('scroll', this.updateScroll)
@@ -49,7 +53,7 @@ export default {
         q-toolbar-title.flex.items-center.logo-wrapper(shrink)
           img.logo(@click="goToHomePage" src="statics/telos-logo-new.png")
         q-separator.title-separator(vertical inset)
-        header-menu()
+        header-menu(@set-active-filter="setActiveFilter")
         div.right-menu.col-grow.row.justify-end
           q-btn.notification-btn(
             v-if="isAuthenticated"

@@ -10,7 +10,12 @@ export default {
       menuItems: [
         { label: this.$t('menu.contacts'), route: '/profiles/contacts' },
         { label: this.$t('menu.trailsTreasuries'), route: '/trails/treasuries' },
-        { label: this.$t('menu.trailsBallots'), route: '/trails/ballots' },
+        [
+          { label: this.$t('menu.amendBallots'), filter: 'amend-ballots' },
+          { label: this.$t('menu.TFElection'), filter: 't-f-election' },
+          { label: this.$t('menu.polls'), filter: 'polls' },
+          { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
+        ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
       ]
     }
@@ -21,7 +26,7 @@ export default {
 <template lang="pug">
   q-scroll-area(style="height: 100%; border-right: 1px solid #ddd")
     div.menu-logo-wrapper
-      q-btn.burger(
+      q-btn.burger-close(
           flat
           dense
           round
@@ -40,17 +45,27 @@ export default {
         active-color="grey-9"
         indicator-color='primary'
       )
-      q-route-tab.aline-left.q-my-lg(
+      q-route-tab.aline-left.q-my-lg.left-menu-tab(
         v-for="(item, index) in menuItems"
         :key="index"
         :name="item.label"
         :label="item.label"
         :to="item.route"
+        v-if="!item.length"
         ripple
       )
+      q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
+        q-list(v-for="(el,i) of item")
+          q-route-tab.q-mx-sm.header-submenu-item(
+            :key="i"
+            :name="el.label"
+            :label="el.label"
+            :to="'/trails/ballots'"
+            @click="$emit('set-active-filter', el.filter)"
+            )
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
   .q-tabs
     font-family: "Poppins", sans-serif
@@ -63,10 +78,27 @@ export default {
   .menu-logo-wrapper
     height: 162px
     border-bottom: 1px solid rgba(0, 9, 26, 0.1)
-  .burger
-    margin: 16px 0 0 24px
-  .wrapper
-    margin: 34px 0 0 28px
-  .img
-    cursor: pointer
+  @media (max-width: 662px)
+    .burger-close
+      margin: 16px 0 0 24px
+    .wrapper
+      margin: 34px 0 0 28px
+    .img
+      cursor: pointer
+    .left-menu-tab
+      padding-left: 27px !important
+    .header-submenu-tab
+      font-size: 22px
+      font-weight: bold
+      text-transform: capitalize
+      padding-left: 27px !important
+      width: 100%
+      & .q-btn__wrapper
+        padding: 0
+        & .q-btn__content
+          justify-content: flex-start
+    .header-submenu-item
+      margin: 0
+    .q-menu
+      width: 320px;
 </style>
