@@ -43,10 +43,11 @@ export default {
       )
       q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
         q-list(v-for="(el,i) of item")
-          q-tab.q-mx-sm.header-submenu-item(
+          q-route-tab.q-mx-sm.header-submenu-item(
             :key="i"
             :name="el.label"
             :label="el.label"
+            :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
             )
       div.custom-separator
