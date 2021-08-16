@@ -13,7 +13,8 @@ export default {
   },
   data () {
     return {
-      scrollPosition: null
+      scrollPosition: null,
+      isMenuOpened: false
     }
   },
   computed: {

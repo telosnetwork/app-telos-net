@@ -10,7 +10,10 @@ const routes = [
   { path: '/works/proposals', component: () => import('pages/works/proposals.vue'), meta: { guest: false } },
 
   // Trails
-  { path: '/trails/ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/amend-ballots/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/t-f-election/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/polls/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
+  { path: '/trails/worker-proposals/:id?/:hash?', component: () => import('pages/trails/ballots/list/ballots-list.vue'), meta: { guest: false } },
   { path: '/trails/treasuries', component: () => import('pages/trails/treasuries/list/treasuries-list.vue'), meta: { guest: false } },
 
   // Trails
@@ -22,6 +25,9 @@ const routes = [
 
   // Tokens
   { path: '/tokens', component: () => import('pages/tokens/tokens.vue'), meta: { title: 'pages.tokens.title', guest: false } },
+
+  // Validators
+  { path: '/validators', component: () => import('pages/validators/validators.vue'), meta: { title: 'pages.validators.title', guest: false } },
 
   // Claim - no longer should be used now that claiming is done
   // { path: '/claim/checkAccount', component: () => import('pages/accounts/claim/claim-check.vue'), meta: { layout: 'guest', title: 'pages.claim.claimCheck.title', guest: true } },

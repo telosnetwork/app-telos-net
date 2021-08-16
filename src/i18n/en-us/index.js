@@ -45,6 +45,10 @@ export default {
   menu: {
     trails: 'Voting',
     trailsBallots: 'Decide',
+    amendBallots: 'Amend Ballots',
+    TFElection: 'TF Election',
+    polls: 'Polls',
+    workerProposals: 'Worker proposals',
     tokens: 'Tokens',
     trailsTreasuries: 'Groups',
     profiles: 'Profiles',
@@ -246,6 +250,9 @@ export default {
     },
     tokens: {
       title: 'Token management'
+    },
+    validators: {
+      title: 'Validators'
     },
     claim: {
       claimAccount: 'Claim account',
