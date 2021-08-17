@@ -20,7 +20,18 @@ export default {
           { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
-      ]
+      ],
+      localFilter: this.activeFilter
+    }
+  },
+  watch: {
+    activeFilter: function () {
+      this.localFilter = this.activeFilter
+    },
+    '$route' (to, from) {
+      if (!to.path.includes('/trails/ballots')) {
+        this.localFilter = ''
+      }
     }
   }
 }
@@ -66,7 +77,7 @@ export default {
             :label="el.label"
             :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
-            :class="[el.filter === activeFilter ? 'active-tab': '']"
+            :class="[el.filter === localFilter ? 'active-tab': '']"
             )
 </template>
 
