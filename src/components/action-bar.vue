@@ -202,7 +202,6 @@ export default {
   watch: {
     '$route' (to, from) {
       console.log(`watching $route`)
-      this.setFilterParams(to.path)
       if (to.params.id !== undefined) {
         this.showBallot = true
       } else {
