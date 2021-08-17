@@ -15,7 +15,8 @@ export default {
     return {
       menu: false,
       right: false,
-      miniState: true
+      miniState: true,
+      activeFilter: 'amend-ballots'
     }
   },
   computed: {
@@ -37,6 +38,9 @@ export default {
     toggleMenu () {
       this.menu = !this.menu
     },
+    setActiveFilter (filter) {
+      this.activeFilter = filter
+    },
     closeMenu () {
       this.menu = false
     }
@@ -49,7 +53,7 @@ export default {
 
 <template lang="pug">
   q-layout(view="lHh lpR lFr")
-    app-header(@open="toggleMenu" @goToHomePage="toLanding" @toggleNote="toggleNotifications")
+    app-header(@open="toggleMenu" @goToHomePage="toLanding" @toggleNote="toggleNotifications" @set-active-filter="setActiveFilter")
     q-drawer(
       v-model="right"
       side="right"
@@ -63,9 +67,9 @@ export default {
       :breakpoint="500"
       overlay
     )
-      left-menu(@close="closeMenu" @goToHomePage="toLanding")
+      left-menu(@close="closeMenu" @goToHomePage="toLanding" @set-active-filter="setActiveFilter")
     q-page-container
-      router-view
+      router-view(:activeFilter="activeFilter")
 </template>
 
 <style lang="sass" scoped>
