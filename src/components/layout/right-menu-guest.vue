@@ -45,11 +45,11 @@ div.btns-wrapper.row.justify-between
   .create-btn,
   .login-btn
     padding: 0 12px
-  @media (max-width: 980px)
+  @media (max-width: 990px)
     .btns-wrapper
       gap: 12px
     .create-btn,
     .login-btn
-      font-size: 14px !important
-      padding: 0 10px
+      font-size: 13px !important
+      padding: 0 9px
 </style>
