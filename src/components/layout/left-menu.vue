@@ -3,7 +3,10 @@ export default {
   name: 'left-menu-authenticated',
   methods: {
     closeMenu: function () { this.$emit('close') },
-    goToHomePage: function () { this.$emit('goToHomePage') }
+    goToHomePage: function () { this.$emit('goToHomePage') },
+    updateWidth () {
+      this.clientWidth = window.innerWidth
+    }
   },
   props: {
     activeFilter: {}
@@ -20,8 +23,22 @@ export default {
           { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
-      ]
+      ],
+      clientWidth: 0
     }
+  },
+  watch: {
+    clientWidth: function () {
+      if (this.clientWidth > 760) {
+        this.closeMenu()
+      }
+    }
+  },
+  created () {
+    window.addEventListener('resize', this.updateWidth)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updateWidth)
   }
 }
 </script>

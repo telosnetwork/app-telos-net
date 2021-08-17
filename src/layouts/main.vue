@@ -40,6 +40,9 @@ export default {
     },
     setActiveFilter (filter) {
       this.activeFilter = filter
+    },
+    closeMenu () {
+      this.menu = false
     }
   },
   async mounted () {
