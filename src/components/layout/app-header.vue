@@ -17,6 +17,9 @@ export default {
       isMenuOpened: false
     }
   },
+  props: {
+    activeFilter: {}
+  },
   computed: {
     ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('notifications', ['successCount', 'errorCount'])
@@ -53,7 +56,7 @@ export default {
         q-toolbar-title.flex.items-center.logo-wrapper(shrink)
           img.logo(@click="goToHomePage" src="statics/telos-logo-new.png")
         q-separator.title-separator(vertical inset)
-        header-menu(@set-active-filter="setActiveFilter")
+        header-menu(@set-active-filter="setActiveFilter" :activeFilter="activeFilter")
         div.right-menu.col-grow.row.justify-end
           q-btn.notification-btn(
             v-if="isAuthenticated"

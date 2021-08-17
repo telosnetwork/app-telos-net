@@ -6,6 +6,9 @@ export default {
   computed: {
     ...mapGetters('accounts', ['isAuthenticated'])
   },
+  props: {
+    activeFilter: {}
+  },
   data () {
     return {
       menuItems: [
@@ -42,18 +45,20 @@ export default {
         v-if="!item.length"
       )
       q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
-        q-list(v-for="(el,i) of item")
+        q-list
           q-route-tab.q-mx-sm.header-submenu-item(
+            v-for="(el,i) of item"
             :key="i"
             :name="el.label"
             :label="el.label"
             :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
+            :class="[el.filter === activeFilter ? 'active-tab': '']"
             )
       div.custom-separator
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
   .q-tabs
     height: 100%
     margin: 0 16px
@@ -70,9 +75,19 @@ export default {
     font-weight: bold
     text-transform: capitalize
     margin: 0 8px
+    padding: 0 20px
+  .active-tab
+    border-bottom: 5px solid #0E62FF !important
+  .q-menu
+    & .q-tab__indicator
+      display: none
   .header-submenu-item
     margin: 0
-  @media (max-width: 1070px)
+    border-bottom: 5px solid transparent
+  @media (max-width: 1440px)
+    .header-submenu-tab
+        padding: 0
+  @media (max-width: 1090px)
     .q-tabs
       margin: 0
       font-size: 14px
