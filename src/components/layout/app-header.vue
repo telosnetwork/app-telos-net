@@ -17,6 +17,9 @@ export default {
       isMenuOpened: false
     }
   },
+  props: {
+    activeFilter: {}
+  },
   computed: {
     ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('notifications', ['successCount', 'errorCount'])
@@ -53,7 +56,7 @@ export default {
         q-toolbar-title.flex.items-center.logo-wrapper(shrink)
           img.logo(@click="goToHomePage" src="statics/telos-logo-new.png")
         q-separator.title-separator(vertical inset)
-        header-menu(@set-active-filter="setActiveFilter")
+        header-menu(@set-active-filter="setActiveFilter" :activeFilter="activeFilter")
         div.right-menu.col-grow.row.justify-end
           q-btn.notification-btn(
             v-if="isAuthenticated"
@@ -86,6 +89,7 @@ export default {
 <style lang="sass">
 .burger
   margin: 0 6px
+  display: none
 .q-header
   display: flex
   height: 80px
@@ -137,15 +141,14 @@ export default {
     width: 80px
   .scrolled
     height: 48px
-@media (min-width: 736px)
-  .burger
-    display: none
-@media (max-width: 735px)
+@media (max-width: 760px)
   .q-toolbar__title,
   .title-separator
     display: none
   .q-header
     height: 52px
+  .burger
+    display: block
 @media (max-width: 400px)
   .q-toolbar
     padding: 0 12px
