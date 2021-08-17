@@ -196,7 +196,7 @@ div
   @media (max-width: 970px)
     .menu
       font-size: 14px !important
-  @media (max-width: 735px)
+  @media (max-width: 760px)
     .collapsed-menu
       display: block
     .menu

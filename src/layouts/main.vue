@@ -40,6 +40,9 @@ export default {
     },
     setActiveFilter (filter) {
       this.activeFilter = filter
+    },
+    closeMenu () {
+      this.menu = false
     }
   },
   async mounted () {
@@ -50,7 +53,7 @@ export default {
 
 <template lang="pug">
   q-layout(view="lHh lpR lFr")
-    app-header(@open="toggleMenu" @goToHomePage="toLanding" @toggleNote="toggleNotifications" @set-active-filter="setActiveFilter")
+    app-header(@open="toggleMenu" @goToHomePage="toLanding" @toggleNote="toggleNotifications" @set-active-filter="setActiveFilter" :activeFilter="activeFilter")
     q-drawer(
       v-model="right"
       side="right"
@@ -64,7 +67,7 @@ export default {
       :breakpoint="500"
       overlay
     )
-      left-menu(@close="toggleMenu" @goToHomePage="toLanding" @set-active-filter="setActiveFilter")
+      left-menu(@close="closeMenu" @goToHomePage="toLanding" @set-active-filter="setActiveFilter" :activeFilter="activeFilter")
     q-page-container
       router-view(:activeFilter="activeFilter")
 </template>

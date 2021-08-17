@@ -3,7 +3,13 @@ export default {
   name: 'left-menu-authenticated',
   methods: {
     closeMenu: function () { this.$emit('close') },
-    goToHomePage: function () { this.$emit('goToHomePage') }
+    goToHomePage: function () { this.$emit('goToHomePage') },
+    updateWidth () {
+      this.clientWidth = window.innerWidth
+    }
+  },
+  props: {
+    activeFilter: {}
   },
   data () {
     return {
@@ -17,8 +23,31 @@ export default {
           { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
-      ]
+      ],
+      localFilter: this.activeFilter,
+      clientWidth: 0
     }
+  },
+  watch: {
+    activeFilter: function () {
+      this.localFilter = this.activeFilter
+    },
+    '$route' (to, from) {
+      if (!to.path.includes('/trails/ballots')) {
+        this.localFilter = ''
+      }
+    },
+    clientWidth: function () {
+      if (this.clientWidth > 760) {
+        this.closeMenu()
+      }
+    }
+  },
+  created () {
+    window.addEventListener('resize', this.updateWidth)
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updateWidth)
   }
 }
 </script>
@@ -55,13 +84,15 @@ export default {
         ripple
       )
       q-btn-dropdown.header-submenu-tab(auto-close stretch flat label="Decide" v-else)
-        q-list(v-for="(el,i) of item")
+        q-list
           q-route-tab.q-mx-sm.header-submenu-item(
+            v-for="(el,i) of item"
             :key="i"
             :name="el.label"
             :label="el.label"
             :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
+            :class="[el.filter === localFilter ? 'active-tab': '']"
             )
 </template>
 
@@ -78,7 +109,7 @@ export default {
   .menu-logo-wrapper
     height: 162px
     border-bottom: 1px solid rgba(0, 9, 26, 0.1)
-  @media (max-width: 662px)
+  @media (max-width: 760px)
     .burger-close
       margin: 16px 0 0 24px
     .wrapper
@@ -93,12 +124,18 @@ export default {
       text-transform: capitalize
       padding-left: 27px !important
       width: 100%
+      margin: 0
       & .q-btn__wrapper
         padding: 0
         & .q-btn__content
           justify-content: flex-start
     .header-submenu-item
       margin: 0
+      border-bottom: none !important
+      border-left: 5px solid transparent !important
+    .active-tab
+      border-bottom: none !important
+      border-left: 5px solid #0E62FF !important
     .q-menu
       width: 320px;
 </style>
