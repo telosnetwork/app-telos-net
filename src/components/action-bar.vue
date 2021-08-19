@@ -976,7 +976,7 @@ export default {
     text-align: left
     font-size: 16px
   .filter-type-btn-320 > .q-btn__wrapper > .q-btn__content > .block
-    width: 56px
+    width: 58px
   .btn-320-wrapper
     margin: 24px 0
     width: 100%

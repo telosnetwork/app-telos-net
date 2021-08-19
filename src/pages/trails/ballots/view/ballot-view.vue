@@ -353,7 +353,7 @@ export default {
   .open-sans
     font-family: open sans,arial,sans-serif;
   .link
-    color: #0481d8;
+    color: $primary
   .ballot-status
     right: 0
     top: 0
