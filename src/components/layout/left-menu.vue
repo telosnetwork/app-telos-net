@@ -65,7 +65,7 @@ export default {
           text-color="black"
         )
       div.wrapper
-        img(@click="goToHomePage" class="img" src="statics/telos-logo-new-big.png")
+        img(@click="goToHomePage" class="img" src="statics/telos-logo-new.svg")
     q-tabs(
         no-caps
         vertical
@@ -116,6 +116,7 @@ export default {
       margin: 34px 0 0 28px
     .img
       cursor: pointer
+      width: 144px
     .left-menu-tab
       padding-left: 27px !important
     .header-submenu-tab

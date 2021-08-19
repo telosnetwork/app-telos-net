@@ -54,7 +54,7 @@ export default {
           text-color="black"
         )
         q-toolbar-title.flex.items-center.logo-wrapper(shrink)
-          img.logo(@click="goToHomePage" src="statics/telos-logo-new.png")
+          img.logo(@click="goToHomePage" src="statics/telos-logo-new.svg")
         q-separator.title-separator(vertical inset)
         header-menu(@set-active-filter="setActiveFilter" :activeFilter="activeFilter")
         div.right-menu.col-grow.row.justify-end
