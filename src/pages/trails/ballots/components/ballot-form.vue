@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
+const IPFS = require('ipfs-core')
 
 export default {
   name: 'ballot-form',
@@ -37,7 +38,9 @@ export default {
         { value: 'proposal', label: 'Proposal' },
         { value: 'referendum', label: 'Referendum' }
       ],
-      submitting: false
+      submitting: false,
+      file: null,
+      cid: null
     }
   },
   computed: {
@@ -93,6 +96,19 @@ export default {
         initialOptions: this.form.initialOptions,
         endDate: this.form.endDate
       }
+    },
+    async convertToIFPS (file) {
+      const ipfs = await IPFS.create()
+      this.cid = await ipfs.add(file)
+    }
+  },
+  watch: {
+    file: function () {
+      this.convertToIFPS(this.file)
+    },
+    cid: function () {
+      this.form.IPFS = this.cid.path
+      console.log(this.form)
     }
   }
 }
@@ -151,6 +167,7 @@ q-dialog(
         hint="Upload an image and paste the url here to include it in your ballot."
         :rules="[rules.required]"
       )
+      <q-file v-model="file" label="Upload file"></q-file>
       q-input(
         class="q-mb-md"
         ref="ipfs"
