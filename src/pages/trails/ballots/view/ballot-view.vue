@@ -286,7 +286,7 @@ export default {
                       icon="fas fa-chevron-right"
                       @click="nextSlide()"
                     )
-            embed(v-if="getIPFShash" :src="`https://api.ipfsbrowser.com/ipfs/get.php?hash=${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
+            embed(v-if="getIPFShash" :src="`https://ipfs.io/ipfs/${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
             div(v-else).text-center
               img(src="/statics/app-icons/no-pdf.svg" style="width: 60px;")
               p(style="color: #a1c1ff").text-caption No PDF found
