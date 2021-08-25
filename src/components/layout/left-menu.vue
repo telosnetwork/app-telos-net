@@ -24,10 +24,19 @@ export default {
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
       ],
+      localFilter: this.activeFilter,
       clientWidth: 0
     }
   },
   watch: {
+    activeFilter: function () {
+      this.localFilter = this.activeFilter
+    },
+    '$route' (to, from) {
+      if (!to.path.includes('/trails/ballots')) {
+        this.localFilter = ''
+      }
+    },
     clientWidth: function () {
       if (this.clientWidth > 760) {
         this.closeMenu()
@@ -56,7 +65,7 @@ export default {
           text-color="black"
         )
       div.wrapper
-        img(@click="goToHomePage" class="img" src="statics/telos-logo-new-big.png")
+        img(@click="goToHomePage" class="img" src="statics/telos-logo-new.svg")
     q-tabs(
         no-caps
         vertical
@@ -83,14 +92,11 @@ export default {
             :label="el.label"
             :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
-            :class="[el.filter === activeFilter ? 'active-tab': '']"
+            :class="[el.filter === localFilter ? 'active-tab': '']"
             )
 </template>
 
 <style lang="sass">
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap')
-  .q-tabs
-    font-family: "Poppins", sans-serif
   .aline-left
     justify-content: left
     padding: 0 27px
@@ -107,6 +113,7 @@ export default {
       margin: 34px 0 0 28px
     .img
       cursor: pointer
+      width: 144px
     .left-menu-tab
       padding-left: 27px !important
     .header-submenu-tab
@@ -126,7 +133,7 @@ export default {
       border-left: 5px solid transparent !important
     .active-tab
       border-bottom: none !important
-      border-left: 5px solid #0E62FF !important
+      border-left: 5px solid $primary !important
     .q-menu
       width: 320px;
 </style>

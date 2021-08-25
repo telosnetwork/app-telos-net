@@ -21,7 +21,18 @@ export default {
           { label: this.$t('menu.workerProposals'), filter: 'worker-proposals' }
         ],
         { label: this.$t('menu.tokens'), route: '/tokens' }
-      ]
+      ],
+      localFileter: this.activeFilter
+    }
+  },
+  watch: {
+    activeFilter: function () {
+      this.localFileter = this.activeFilter
+    },
+    '$route' (to, from) {
+      if (!to.path.includes('/trails/ballots')) {
+        this.localFileter = ''
+      }
     }
   }
 }
@@ -53,7 +64,7 @@ export default {
             :label="el.label"
             :to="'/trails/ballots'"
             @click="$emit('set-active-filter', el.filter)"
-            :class="[el.filter === activeFilter ? 'active-tab': '']"
+            :class="[el.filter === localFileter ? 'active-tab': '']"
             )
       div.custom-separator
 </template>
@@ -77,7 +88,7 @@ export default {
     margin: 0 8px
     padding: 0 20px
   .active-tab
-    border-bottom: 5px solid #0E62FF !important
+    border-bottom: 5px solid $primary !important
   .q-menu
     & .q-tab__indicator
       display: none
