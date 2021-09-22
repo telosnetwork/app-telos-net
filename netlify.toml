@@ -27,7 +27,7 @@
 
 
 [context.master.environment]
-    NODE_ENV = "production"
+    NODE_ENV = "prod"
     NODE_VERSION = "15"
     APP_NAME = '"Telos Net"'
     NETWORK_BLOCKCHAIN = '"eos"'
