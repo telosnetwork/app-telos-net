@@ -1,6 +1,7 @@
 [build]
     publish = "dist/spa"
-    command = "npm install @quasar/app && quasar build"
+    #command = "npm install @quasar/app && quasar build"
+    #command = "quasar build"
 
 [[redirects]]
   from = "/*"
