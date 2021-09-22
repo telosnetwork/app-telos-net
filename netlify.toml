@@ -2,34 +2,34 @@
     publish = "dist/"
 
 [context.dev.environment]
-    NODE_ENV = '"dev"'
-    NODE_VERSION = '"15"'
-    APP_NAME = '"Telos Test Net"'
-    NETWORK_BLOCKCHAIN = '"eos"'
-    NETWORK_CHAIN_ID = '"1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"'
-    NETWORK_HOST = '"testnet.telos.caleos.io"'
+    NODE_ENV = "dev"
+    NODE_VERSION = "15"
+    APP_NAME = "Telos Test Net"
+    NETWORK_BLOCKCHAIN = "eos"
+    NETWORK_CHAIN_ID = "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f"
+    NETWORK_HOST = "testnet.telos.caleos.io"
     NETWORK_PORT = '443'
-    NETWORK_PROTOCOL = '"https"'
-    BLOCKCHAIN_EXPLORER = '"https =//telos-test.bloks.io"'
-    WEBSERVICES_URL = '"https =//api-dev.telos.net"'
-    HYPERION_URL = '"https =//testnet.telos.net"'
-    GOOGLE_ANALYTICS = '"UA-154600181-3"'
-    IMGUR_CLIENT_ID = '"b6f46df9d1da9d9"'
-    TOKENMANAGER_CONTRACT = '"tokenmanager"'
+    NETWORK_PROTOCOL = "https"
+    BLOCKCHAIN_EXPLORER = "https://telos-test.bloks.io"
+    WEBSERVICES_URL = "https://api-dev.telos.net"
+    HYPERION_URL = "https://testnet.telos.net"
+    GOOGLE_ANALYTICS = "UA-154600181-3"
+    IMGUR_CLIENT_ID = "b6f46df9d1da9d9"
+    TOKENMANAGER_CONTRACT = "tokenmanager"
 
 
 [context.master.environment]
-    NODE_ENV = '"production"'
-    NODE_VERSION = '"15"'
-    APP_NAME = '"Telos Net"'
-    NETWORK_BLOCKCHAIN = '"eos"'
-    NETWORK_CHAIN_ID = '"4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"'
-    NETWORK_HOST = '"telos.caleos.io"'
+    NODE_ENV = "production"
+    NODE_VERSION = "15"
+    APP_NAME = "Telos Net"
+    NETWORK_BLOCKCHAIN = "eos"
+    NETWORK_CHAIN_ID = "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"
+    NETWORK_HOST = "telos.caleos.io"
     NETWORK_PORT = '443'
-    NETWORK_PROTOCOL = '"https"'
-    BLOCKCHAIN_EXPLORER = '"https =//telos.bloks.io"'
-    WEBSERVICES_URL = '"https =//api.telos.net"'
-    HYPERION_URL = '"https =//mainnet.telos.net"'
-    GOOGLE_ANALYTICS = '"UA-154600181-2"'
-    IMGUR_CLIENT_ID = '"b6f46df9d1da9d9"'
-    TOKENMANAGER_CONTRACT = '"tokenmanager"'
+    NETWORK_PROTOCOL = "https"
+    BLOCKCHAIN_EXPLORER = "https://telos.bloks.io"
+    WEBSERVICES_URL = "https://api.telos.net"
+    HYPERION_URL = "https://mainnet.telos.net"
+    GOOGLE_ANALYTICS = "UA-154600181-2"
+    IMGUR_CLIENT_ID = "b6f46df9d1da9d9"
+    TOKENMANAGER_CONTRACT = "tokenmanager"
