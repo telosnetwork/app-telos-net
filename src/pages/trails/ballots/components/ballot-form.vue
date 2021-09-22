@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
+const IPFS = require('ipfs-core')
 
 export default {
   name: 'ballot-form',
@@ -15,7 +16,7 @@ export default {
         category: 'poll',
         description: null,
         imageUrl: null,
-        IPFS: null,
+        IPFSString: null,
         treasurySymbol: null,
         votingMethod: '1token1vote',
         maxOptions: 1,
@@ -37,7 +38,9 @@ export default {
         { value: 'proposal', label: 'Proposal' },
         { value: 'referendum', label: 'Referendum' }
       ],
-      submitting: false
+      submitting: false,
+      file: null,
+      cid: null
     }
   },
   computed: {
@@ -74,8 +77,15 @@ export default {
         treasurySymbol: null,
         votingMethod: '1token1vote',
         initialOptions: [],
-        endDate: null
+        endDate: null,
+        IPFSString: null
       }
+      this.file = null
+      this.cid = null
+    },
+    onCansel () {
+      this.$emit('update:show', false)
+      this.resetBallot()
     },
     addBallotOption (val, done) {
       done(val.toLowerCase(), 'add-unique')
@@ -84,7 +94,7 @@ export default {
       return {
         title: this.form.title,
         category: this.form.category,
-        description: (this.form.IPFS && this.form.IPFS !== null && this.form.IPFS.trim() !== '') ? `${this.form.description} ${this.form.IPFS}` : this.form.description,
+        description: (this.form.IPFSString && this.form.IPFSString.trim() !== '') ? `${this.form.description} ${this.form.IPFSString}` : this.form.description,
         content: this.form.imageUrl ? `{\"imageUrl\":\"${this.form.imageUrl}\"}` : '',
         treasurySymbol: this.form.treasurySymbol,
         votingMethod: this.form.votingMethod,
@@ -93,6 +103,18 @@ export default {
         initialOptions: this.form.initialOptions,
         endDate: this.form.endDate
       }
+    },
+    async convertToIFPS (file) {
+      const ipfs = await IPFS.create()
+      this.cid = await ipfs.add(file)
+    }
+  },
+  watch: {
+    file: function () {
+      this.convertToIFPS(this.file)
+    },
+    cid: function () {
+      this.form.IPFSString = this.cid.path
     }
   }
 }
@@ -151,15 +173,9 @@ q-dialog(
         hint="Upload an image and paste the url here to include it in your ballot."
         :rules="[rules.required]"
       )
-      q-input(
-        class="q-mb-md"
-        ref="ipfs"
-        v-model="form.IPFS"
-        label="Include a PDF File (IPFS)"
-        placeholder="QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme"
-        hint="Upload a pdf to https://permanentupload.com/ and paste the hash here to include it in your ballot. Only PDF files will work!"
-        :rules="[rules.isValidIPFShash]"
-      )
+      q-file(v-model="file" label="Upload PDF")
+        template(v-slot:prepend)
+          q-icon(name="attach_file")
       q-select(
         ref="treasurySymbol"
         v-model="form.treasurySymbol"
@@ -219,7 +235,7 @@ q-dialog(
       q-btn(
         flat
         :label="$t('common.buttons.cancel')"
-        @click="$emit('update:show', false)"
+        @click="onCansel()"
       )
       q-btn(
         color="primary"

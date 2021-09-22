@@ -88,7 +88,7 @@ export default {
     margin: 0 8px
     padding: 0 20px
   .active-tab
-    border-bottom: 5px solid #0E62FF !important
+    border-bottom: 5px solid $primary !important
   .q-menu
     & .q-tab__indicator
       display: none

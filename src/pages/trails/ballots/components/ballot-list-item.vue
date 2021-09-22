@@ -198,8 +198,6 @@ div
   line-height: 20px;
   display: block;
   font-weight: 400;
-.link
-  color: #0481d8;
 .cursor-default
   cursor: default;
 .capitalize
