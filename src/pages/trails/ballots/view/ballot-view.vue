@@ -252,7 +252,9 @@ export default {
         q-card-section.description-section-wrapper
           div.description-section
             div.description-section-title(:class="getIPFShash ? `q-pb-md` : `q-pb-xl q-mb-lg`") {{ ballotDescription }}
-            div(v-if="ballotContentOptionData").q-pb-md.ballot-content-carousel
+            div(
+              v-if="ballotContentOptionData && ballotContentOptionData[0] && ballotContentOptionData[0].hasOwnProperty('imageUrl')"
+            ).q-pb-md.ballot-content-carousel
               q-carousel(
                 swipeable
                 animated
