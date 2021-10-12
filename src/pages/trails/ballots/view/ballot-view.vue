@@ -31,9 +31,6 @@ export default {
   },
   async mounted () {
     await this.fetchBallot(this.$route.params.id)
-    if (this.displayWinner(this.ballot)) {
-      this.votes.push(this.displayWinner(this.ballot))
-    }
     window.addEventListener('scroll', this.updateScroll)
     this.loading = false
   },
@@ -138,6 +135,12 @@ export default {
     },
     openNotice () {
       this.notice = true
+    },
+
+    toggleOption (key) {
+      if (this.ballot.max_options === 1) {
+        this.votes = this.votes.includes(key) ? [key] : []
+      }
     }
   }
 }
@@ -193,6 +196,7 @@ export default {
                       :class="displayWinner(ballot) ? displayWinner(ballot) === option.key ? 'visible-checkbox' : '' : ''"
                       color="$primary"
                       :val="option.key"
+                      @click.native="toggleOption(option.key)"
                     )
                       div.checkbox-text.row.space-between
                         div {{ option.key }}
