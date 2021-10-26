@@ -4,46 +4,38 @@
 
 <script>
 import axios from 'axios'
-// import { S3Client, ListObjectsCommand } from '@aws-sdk/client-s3'
 import CpuCharts from './components/cpu-charts.vue'
 // import { getProducer } from '@telosnetwork/validator-checks/dist/client'
-// const creds = {
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-// }
-// const s3Client = new S3Client({ region: 'us-east-1' })
-// const bucket = 'telos-producer-validation'
-// const headers = {
-//   'Content-Type': 'application/json'
-// }
+
+const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
 
 export default {
   name: 'validators',
   components: {
     CpuCharts
   },
+  data () {
+    return {
+      producerData: []
+    }
+  },
   async mounted () {
-    // eslint-disable-next-line semi
-    debugger;
-    await this.getObjects()
+    await this.getData()
   },
   methods: {
-    async getObjects () {
+    async getData () {
       try {
-        const objectList = await axios.get(`https://telos-producer-validation.s3.amazonaws.com/test-data-1635219133373`)
-        // const objectList = await axios.get('https://api.github.com/users/mapbox')
-
-        // const objectList = await s3Client.send(new ListObjectsCommand(bucketParam))
-        // // await s3Client.send(new ListObjectsCommand(bucketParam))
-
-        // // eslint-disable-next-line semi
-        // debugger;
-        console.dir(objectList.data)
+        const objectList = await axios.get(BUCKET_URL)
+        const lastKey = this.getLastKey(objectList)
+        this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
       } catch (err) {
-        // eslint-disable-next-line semi
-        debugger;
         console.log('Error', err)
       }
+    },
+    getLastKey (objectList) {
+      const parser = new DOMParser()
+      const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
+      return keyArray[keyArray.length - 1].textContent
     }
   }
 }
