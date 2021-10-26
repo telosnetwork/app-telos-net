@@ -23,7 +23,6 @@
     "*.{js,vue}": "yarn lint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.38.0",
     "@quasar/extras": "^1.10.4",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.22",
     "@smontero/ual-keycat": "^1.0.21",
