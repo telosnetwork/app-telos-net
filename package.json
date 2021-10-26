@@ -23,6 +23,7 @@
     "*.{js,vue}": "yarn lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.38.0",
     "@quasar/extras": "^1.10.4",
     "@smontero/ual-eosio-reference-authenticator": "^0.1.22",
     "@smontero/ual-keycat": "^1.0.21",
@@ -32,7 +33,6 @@
     "@telosnetwork/ual-telos-keycat": "1.10.3",
     "@telosnetwork/validator-checks": "^1.0.1",
     "@vue/cli": "^4.5.13",
-    "aws-sdk": "^2.1014.0",
     "axios": "^0.18.1",
     "date-diff": "^0.2.1",
     "dotenv": "^8.1.0",
