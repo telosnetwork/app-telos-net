@@ -1,19 +1,15 @@
-<template>
-    <cpu-charts></cpu-charts>
+<template lang='pug'>
+
 </template>
 
 <script>
 import axios from 'axios'
-import CpuCharts from './components/cpu-charts.vue'
 // import { getProducer } from '@telosnetwork/validator-checks/dist/client'
 
 const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
 
 export default {
-  name: 'validators',
-  components: {
-    CpuCharts
-  },
+  name: 'ValidatorDataTable',
   data () {
     return {
       producerData: []
@@ -24,6 +20,8 @@ export default {
   },
   methods: {
     async getData () {
+      // eslint-disable-next-line semi
+      debugger;
       try {
         const objectList = await axios.get(BUCKET_URL)
         const lastKey = this.getLastKey(objectList)

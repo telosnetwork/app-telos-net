@@ -11,7 +11,7 @@ import { Chart } from 'highcharts-vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: 'CpuCharts',
+  name: 'ValidatorDataChart',
   data () {
     return {
       chartOptions: {
