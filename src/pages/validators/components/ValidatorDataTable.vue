@@ -1,5 +1,12 @@
 <template lang='pug'>
-
+  .q-pa-md
+    q-table(
+      title="Block Producer Validation"
+      :pagination.sync="pagination"
+      :data="producerData"
+      :columns="producerColumns"
+      @row-click="rowClicked"
+    )
 </template>
 
 <script>
@@ -12,7 +19,37 @@ export default {
   name: 'ValidatorDataTable',
   data () {
     return {
-      producerData: []
+      pagination: {
+        rowsPerPage: 50
+      },
+      producerData: [],
+      producerColumns: [
+        {
+          name: 'owner',
+          label: 'Block Producer',
+          field: 'owner'
+        },
+        {
+          name: 'sslVerified',
+          label: 'SSL',
+          field: row => row.sslVerified === true
+        },
+        {
+          name: 'apiVerified',
+          label: 'API',
+          field: row => row.apiVerified === true
+        },
+        {
+          name: 'sslVerifiedTestNet',
+          label: 'SSL(test net)',
+          field: row => row.sslVerifiedTestNet === true
+        },
+        {
+          name: 'apiVerifiedTestNet',
+          label: 'API(test net)',
+          field: row => row.apiVerifiedTestNet === true
+        }
+      ]
     }
   },
   async mounted () {
@@ -34,6 +71,9 @@ export default {
       const parser = new DOMParser()
       const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
       return keyArray[keyArray.length - 1].textContent
+    },
+    rowClicked (e) {
+      console.log(e)
     }
   }
 }
