@@ -5,6 +5,7 @@
       :pagination.sync="pagination"
       :data="producerData"
       :columns="producerColumns"
+      row-key="__index"
       @row-click="rowClicked"
     )
 </template>
@@ -24,6 +25,11 @@ export default {
       },
       producerData: [],
       producerColumns: [
+        {
+          name: 'number',
+          label: '#',
+          field: row => this.producerData.indexOf(row) + 1
+        },
         {
           name: 'owner',
           label: 'Block Producer',
