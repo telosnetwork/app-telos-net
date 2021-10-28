@@ -11,7 +11,7 @@
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number") {{props.cols[0].value}}
         q-td( key="owner" ) {{props.cols[1].value }}
-        q-td(v-if='props.cols[2].value' key="social").no-decoration
+        q-td(v-if='props.cols[2].value' key="social" align="center").no-decoration
           a(v-if="props.cols[2].value.website" :href="props.cols[2].value.website")
             q-icon(
               name="fas fa-globe"
@@ -125,7 +125,7 @@ export default {
           name: 'social',
           label: 'Links',
           field: row => row.org,
-          align: 'left'
+          align: 'center'
         },
         {
           name: 'votes',
