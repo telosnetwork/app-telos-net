@@ -9,9 +9,9 @@
       @row-click="rowClicked"
     )
       q-tr( slot="body" slot-scope="props" :props="props")
-        q-td( key="number") {{props.cols[0].value}}
+        q-td( key="number" ) {{props.cols[0].value}}
         q-td( key="owner" ) {{props.cols[1].value }}
-        q-td( key="country" ) {{props.cols[2].value }}
+        q-td( key="country" )
           span(:class='getFlag(props.cols[2].value)').flag-icon
         q-td(v-if='props.cols[3].value' key="social" align="center").no-decoration
           a(v-if="props.cols[3].value.website" :href="props.cols[3].value.website")
@@ -98,7 +98,7 @@
 
 <script>
 import axios from 'axios'
-const iso = require('iso-3166-1')
+import * as iso from 'iso-3166-1'
 // import { getProducer } from '@telosnetwork/validator-checks/dist/client'
 
 const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
@@ -130,7 +130,7 @@ export default {
           name: 'country',
           label: 'Country',
           field: row => this.getCountry(row.location),
-          align: 'left',
+          align: 'center',
           sortable: true
         },
         {
@@ -196,8 +196,6 @@ export default {
   },
   methods: {
     async getData () {
-      // eslint-disable-next-line semi
-      debugger;
       try {
         const objectList = await axios.get(BUCKET_URL)
         const lastKey = this.getLastKey(objectList)
@@ -219,18 +217,17 @@ export default {
     },
     getCountry (numeric) {
       const countryObj = iso.whereNumeric(numeric) ?? { alpha2: '' }
-      return countryObj.alpha2
+      return (countryObj.alpha2).toLowerCase()
     },
     getFlag (alpha2) {
-      return alpha2 ? `flag-icon-${alpha2}` : ''
+      if (alpha2) {
+        return `flag-icon-${alpha2}`
+      }
+      return ''
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.no-decoration{
-  a:-webkit-any-link {
-    text-decoration: none;
-  }
-}
+@import url('../../../../node_modules/flag-icon-css/sass/flag-icons.scss')
 </style>
