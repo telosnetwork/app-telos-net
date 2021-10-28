@@ -142,7 +142,7 @@ export default {
         {
           name: 'votes',
           label: 'Total Votes',
-          field: row => (row.total_votes / 1000000000).toFixed(1) + 'B',
+          field: row => (row.total_votes / 10000).toFixed(0),
           align: 'center',
           sortable: true
         },
