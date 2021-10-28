@@ -11,21 +11,34 @@
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number") {{props.cols[0].value}}
         q-td( key="owner" ) {{props.cols[1].value }}
-        q-td( key="votes" align="center") {{props.cols[2].value }}
+        q-td(v-if='props.cols[2].value' key="social").no-decoration
+          a(v-if="props.cols[2].value.website" :href="props.cols[2].value.website")
+            q-icon(
+              name="fas fa-globe"
+              size="xs"
+              color='primary'
+            )
+          a(v-if="props.cols[2].value.social.twitter" :href="getLink('twitter.com',props.cols[2].value.social.twitter)")
+            q-icon(
+              name="fab fa-twitter"
+              size="xs"
+              color='primary'
+            )
+          a(v-if="props.cols[2].value.social.github" :href="getLink('github.com',props.cols[2].value.social.github)")
+            q-icon(
+              name="fab fa-github"
+              size="xs"
+              color='primary'
+            )
+          a(v-if="props.cols[2].value.social.telegram" :href="getLink('t.me',props.cols[2].value.social.telegram)")
+            q-icon(
+              name="fab fa-telegram"
+              size="xs"
+              color='primary'
+            )
+        q-td(v-else key="social")
+        q-td( key="votes" align="center") {{props.cols[3].value }}
         q-td( key="sslVerified" align='left')
-          q-icon(
-            v-if="props.cols[3].value === true"
-            name="fas fa-check"
-            size="xs"
-            color='green'
-          )
-          q-icon(
-            v-else
-            name="fas fa-times"
-            size="xs"
-            color='red'
-          )
-        q-td( key="apiVerified" align='left')
           q-icon(
             v-if="props.cols[4].value === true"
             name="fas fa-check"
@@ -38,7 +51,7 @@
             size="xs"
             color='red'
           )
-        q-td( key="sslVerifiedTestNet" align='left')
+        q-td( key="apiVerified" align='left')
           q-icon(
             v-if="props.cols[5].value === true"
             name="fas fa-check"
@@ -51,9 +64,22 @@
             size="xs"
             color='red'
           )
-        q-td( key="apiVerifiedTestNet" align='left')
+        q-td( key="sslVerifiedTestNet" align='left')
           q-icon(
             v-if="props.cols[6].value === true"
+            name="fas fa-check"
+            size="xs"
+            color='green'
+          )
+          q-icon(
+            v-else
+            name="fas fa-times"
+            size="xs"
+            color='red'
+          )
+        q-td( key="apiVerifiedTestNet" align='left')
+          q-icon(
+            v-if="props.cols[7].value === true"
             name="fas fa-check"
             size="xs"
             color='green'
@@ -94,6 +120,12 @@ export default {
           field: 'owner',
           align: 'left',
           sortable: true
+        },
+        {
+          name: 'social',
+          label: 'Links',
+          field: row => row.org,
+          align: 'left'
         },
         {
           name: 'votes',
@@ -155,7 +187,20 @@ export default {
     },
     rowClicked (e) {
       console.log(e)
+    },
+    getLink (domain, username) {
+      return `https://${domain}.com/${username}`
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.no-decoration{
+  a:-webkit-any-link {
+    text-decoration: none;
+  }
+}
+.hidden{
+  display: none;
+}
+</style>
