@@ -11,47 +11,36 @@
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number") {{props.cols[0].value}}
         q-td( key="owner" ) {{props.cols[1].value }}
-        q-td(v-if='props.cols[2].value' key="social" align="center").no-decoration
-          a(v-if="props.cols[2].value.website" :href="props.cols[2].value.website")
+        q-td( key="country" ) {{props.cols[2].value }}
+          span(:class='getFlag(props.cols[2].value)').flag-icon
+        q-td(v-if='props.cols[3].value' key="social" align="center").no-decoration
+          a(v-if="props.cols[3].value.website" :href="props.cols[3].value.website")
             q-icon(
               name="fas fa-globe"
               size="xs"
               color='primary'
             )
-          a(v-if="props.cols[2].value.social.twitter" :href="getLink('twitter.com',props.cols[2].value.social.twitter)")
+          a(v-if="props.cols[3].value.social.twitter" :href="getLink('twitter.com',props.cols[3].value.social.twitter)")
             q-icon(
               name="fab fa-twitter"
               size="xs"
               color='primary'
             )
-          a(v-if="props.cols[2].value.social.github" :href="getLink('github.com',props.cols[2].value.social.github)")
+          a(v-if="props.cols[3].value.social.github" :href="getLink('github.com',props.cols[3].value.social.github)")
             q-icon(
               name="fab fa-github"
               size="xs"
               color='primary'
             )
-          a(v-if="props.cols[2].value.social.telegram" :href="getLink('t.me',props.cols[2].value.social.telegram)")
+          a(v-if="props.cols[3].value.social.telegram" :href="getLink('t.me',props.cols[3].value.social.telegram)")
             q-icon(
               name="fab fa-telegram"
               size="xs"
               color='primary'
             )
         q-td(v-else key="social")
-        q-td( key="votes" align="center") {{props.cols[3].value }}
+        q-td( key="votes" align="center") {{props.cols[4].value }}
         q-td( key="sslVerified" align='left')
-          q-icon(
-            v-if="props.cols[4].value === true"
-            name="fas fa-check"
-            size="xs"
-            color='green'
-          )
-          q-icon(
-            v-else
-            name="fas fa-times"
-            size="xs"
-            color='red'
-          )
-        q-td( key="apiVerified" align='left')
           q-icon(
             v-if="props.cols[5].value === true"
             name="fas fa-check"
@@ -64,7 +53,7 @@
             size="xs"
             color='red'
           )
-        q-td( key="sslVerifiedTestNet" align='left')
+        q-td( key="apiVerified" align='left')
           q-icon(
             v-if="props.cols[6].value === true"
             name="fas fa-check"
@@ -77,7 +66,7 @@
             size="xs"
             color='red'
           )
-        q-td( key="apiVerifiedTestNet" align='left')
+        q-td( key="sslVerifiedTestNet" align='left')
           q-icon(
             v-if="props.cols[7].value === true"
             name="fas fa-check"
@@ -90,12 +79,26 @@
             size="xs"
             color='red'
           )
-        q-td( key="lifetimeProducedBlocks" ) {{props.cols[8].value }}
-        q-td( key="lifetimeMissedBlocks" ) {{props.cols[9].value }}
+        q-td( key="apiVerifiedTestNet" align='left')
+          q-icon(
+            v-if="props.cols[8].value === true"
+            name="fas fa-check"
+            size="xs"
+            color='green'
+          )
+          q-icon(
+            v-else
+            name="fas fa-times"
+            size="xs"
+            color='red'
+          )
+        q-td( key="lifetimeProducedBlocks" ) {{props.cols[9].value }}
+        q-td( key="lifetimeMissedBlocks" ) {{props.cols[10].value }}
 </template>
 
 <script>
 import axios from 'axios'
+const iso = require('iso-3166-1')
 // import { getProducer } from '@telosnetwork/validator-checks/dist/client'
 
 const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
@@ -120,6 +123,13 @@ export default {
           name: 'owner',
           label: 'Block Producer',
           field: 'owner',
+          align: 'left',
+          sortable: true
+        },
+        {
+          name: 'country',
+          label: 'Country',
+          field: row => this.getCountry(row.location),
           align: 'left',
           sortable: true
         },
@@ -206,6 +216,13 @@ export default {
     },
     getLink (domain, username) {
       return `https://${domain}.com/${username}`
+    },
+    getCountry (numeric) {
+      const countryObj = iso.whereNumeric(numeric) ?? { alpha2: '' }
+      return countryObj.alpha2
+    },
+    getFlag (alpha2) {
+      return alpha2 ? `flag-icon-${alpha2}` : ''
     }
   }
 }
@@ -215,8 +232,5 @@ export default {
   a:-webkit-any-link {
     text-decoration: none;
   }
-}
-.hidden{
-  display: none;
 }
 </style>
