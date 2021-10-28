@@ -90,6 +90,8 @@
             size="xs"
             color='red'
           )
+        q-td( key="lifetimeProducedBlocks" ) {{props.cols[8].value }}
+        q-td( key="lifetimeMissedBlocks" ) {{props.cols[9].value }}
 </template>
 
 <script>
@@ -159,6 +161,20 @@ export default {
           name: 'apiVerifiedTestNet',
           label: 'API*',
           field: row => row.apiVerifiedTestNet === true,
+          align: 'left',
+          sortable: true
+        },
+        {
+          name: 'lifetimeProducedBlocks',
+          label: 'Total Produced Blocks',
+          field: 'lifetime_produced_blocks',
+          align: 'left',
+          sortable: true
+        },
+        {
+          name: 'lifetimeMissedBlocks',
+          label: 'Total Missed Blocks',
+          field: 'lifetime_missed_blocks',
           align: 'left',
           sortable: true
         }
