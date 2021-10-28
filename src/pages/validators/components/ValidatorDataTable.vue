@@ -28,32 +28,45 @@ export default {
         {
           name: 'number',
           label: '#',
-          field: row => this.producerData.indexOf(row) + 1
+          field: row => this.producerData.indexOf(row) + 1,
+          sortable: true
         },
         {
           name: 'owner',
           label: 'Block Producer',
-          field: 'owner'
+          field: 'owner',
+          sortable: true
+        },
+        {
+          name: 'votes',
+          label: 'Total Votes',
+          field: row => (row.total_votes / 1000000000).toFixed(1) + 'B',
+          sortable: true
         },
         {
           name: 'sslVerified',
           label: 'SSL',
-          field: row => row.sslVerified === true
+          field: row => row.sslVerified === true,
+          sortable: true
         },
         {
           name: 'apiVerified',
           label: 'API',
-          field: row => row.apiVerified === true
+          field: row => row.apiVerified === true,
+          sortable: true
+
         },
         {
           name: 'sslVerifiedTestNet',
           label: 'SSL(test net)',
-          field: row => row.sslVerifiedTestNet === true
+          field: row => row.sslVerifiedTestNet === true,
+          sortable: true
         },
         {
           name: 'apiVerifiedTestNet',
           label: 'API(test net)',
-          field: row => row.apiVerifiedTestNet === true
+          field: row => row.apiVerifiedTestNet === true,
+          sortable: true
         }
       ]
     }
