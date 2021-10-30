@@ -109,7 +109,7 @@ export default {
   data () {
     return {
       pagination: {
-        rowsPerPage: 50
+        rowsPerPage: 21
       },
       producerData: [],
       producerColumns: [
