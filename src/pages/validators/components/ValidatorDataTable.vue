@@ -8,6 +8,7 @@
       row-key="__index"
       @row-click="rowClicked"
     )
+      template( v-slot:top-right class='testnet-indicator') *test net
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number" ) {{props.cols[0].value}}
         q-td( key="owner" ) {{props.cols[1].value }}
@@ -228,6 +229,8 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang='sass' scoped>
 @import url('../../../../node_modules/flag-icon-css/sass/flag-icons.scss')
+.testnet-indicator
+  margin-right: .5rem;
 </style>
