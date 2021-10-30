@@ -2875,10 +2875,10 @@
     text-encoding "^0.7.0"
     universal-authenticator-library "0.1.0"
 
-"@telosnetwork/validator-checks@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@telosnetwork/validator-checks/-/validator-checks-1.0.3.tgz#201e45a70785ce458109580bf5e3b46ec4284344"
-  integrity sha512-GxQenyFluCsxrreceW0ZKRLnrhTytorXFYvScHdmWyHd0rqMK5xoSpU5EfsDJaeY+Wsz1ASeMH1EbbDPNbfRqQ==
+"@telosnetwork/validator-checks@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@telosnetwork/validator-checks/-/validator-checks-1.0.4.tgz#26760b863375b3f85be2b177a347bcb9aa74d8bb"
+  integrity sha512-yy9JYoUOKaU5jYPOZt9QoUSIxRNLIrmW0DNOMWv2VzcrDwtgx8/qgMJqkTNKl68+s7RZZAOhWRjxqn8FvjLAKQ==
   dependencies:
     "@types/node-fetch" "2.5.4"
     axios "^0.21.4"
@@ -8373,10 +8373,9 @@ fkill@^6.1.0:
     process-exists "^3.1.0"
     taskkill "^3.0.0"
 
-flag-icon-css@^4.1.3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/flag-icon-css/-/flag-icon-css-4.1.3.tgz#a329b9d877c39ed691cc1f96fb1d761d3f2cd5c2"
-  integrity sha512-Oa0cdX9pcpmJZbSDV3irVjnVlFctFtPFZorz6zGfc59uJ8gA7V2xSMWBD4TTum0fsh56l1kLgJ4+1ncuKRWSZQ==
+"flag-icon-css@https://github.com/CALEOS/flag-icons.git":
+  version "4.1.5"
+  resolved "https://github.com/CALEOS/flag-icons.git#9cef1d941897d37d0d0775f3bb9972f74b14142e"
 
 flat-cache@^2.0.1:
   version "2.0.1"
