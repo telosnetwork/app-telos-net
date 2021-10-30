@@ -109,7 +109,7 @@ export default {
   data () {
     return {
       pagination: {
-        rowsPerPage: 50
+        rowsPerPage: 21
       },
       producerData: [],
       producerColumns: [
@@ -145,7 +145,8 @@ export default {
           label: 'Total Votes',
           field: row => (row.total_votes / 10000).toFixed(0),
           align: 'center',
-          sortable: true
+          sortable: true,
+          sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
         {
           name: 'sslVerified',
@@ -180,14 +181,16 @@ export default {
           label: 'Total Produced Blocks',
           field: 'lifetime_produced_blocks',
           align: 'left',
-          sortable: true
+          sortable: true,
+          sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
         {
           name: 'lifetimeMissedBlocks',
           label: 'Total Missed Blocks',
           field: 'lifetime_missed_blocks',
           align: 'left',
-          sortable: true
+          sortable: true,
+          sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         }
       ]
     }
