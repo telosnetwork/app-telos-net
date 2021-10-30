@@ -2875,10 +2875,10 @@
     text-encoding "^0.7.0"
     universal-authenticator-library "0.1.0"
 
-"@telosnetwork/validator-checks@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@telosnetwork/validator-checks/-/validator-checks-1.0.1.tgz#acd536d036d2644c9c289e2631bf67783831e05b"
-  integrity sha512-V3J3n5C9DkpW42MFwDkEoytCPGfuE/XTHfneD2GfA6lh4BHCXwfubcYCEZjPQlaE5dY9HW8FKmKgLqx/R2TIuQ==
+"@telosnetwork/validator-checks@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@telosnetwork/validator-checks/-/validator-checks-1.0.3.tgz#201e45a70785ce458109580bf5e3b46ec4284344"
+  integrity sha512-GxQenyFluCsxrreceW0ZKRLnrhTytorXFYvScHdmWyHd0rqMK5xoSpU5EfsDJaeY+Wsz1ASeMH1EbbDPNbfRqQ==
   dependencies:
     "@types/node-fetch" "2.5.4"
     axios "^0.21.4"
