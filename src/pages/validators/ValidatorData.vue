@@ -1,4 +1,6 @@
 <template lang='pug'>
+  div
+    q-btn.toggle(@click='toggleView' :label='toggleLabel' color='primary')
     ValidatorDataChart(v-if='showCpu')
     ValidatorDataTable(v-else)
 </template>
@@ -17,6 +19,21 @@ export default {
     return {
       showCpu: false
     }
+  },
+  computed: {
+    toggleLabel () {
+      return this.showCpu ? 'View Table' : 'View Graph'
+    }
+  },
+  methods: {
+    toggleView () {
+      this.showCpu = !this.showCpu
+    }
   }
 }
 </script>
+<style lang='sass'>
+.toggle
+  margin-top: 0.75rem
+  margin-left: 1rem
+</style>

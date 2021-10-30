@@ -33,6 +33,9 @@ export default {
           layout: 'horizontal',
           align: 'center',
           verticalAlign: 'bottom'
+        },
+        chart: {
+          height: '85%'
         }
       },
       benchmarkDays: 1
