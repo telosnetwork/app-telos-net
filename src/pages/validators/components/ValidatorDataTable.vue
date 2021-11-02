@@ -1,7 +1,7 @@
 <template lang='pug'>
 .q-pa-md
   .validator-count(v-if='account') Selected Validators:
-    span( :class="{'full-selection' : currentVote.length === 30}") {{ currentVote.length }} of 30
+    span( :class="{'full-selection' : maxSelected }") {{ currentVote.length }} of 30
   .q-pa-md.row.items-start.q-gutter-md(v-if='account')
     q-card( v-for='(prod,i) in currentVote').producer-card
       .q-card-section {{ prod }}
@@ -20,52 +20,40 @@
   )
     template( v-slot:top-right class='testnet-indicator') *test net
     q-tr( slot="body" slot-scope="props" :props="props")
-      q-td( key="number" class='vote-indicator') {{props.cols[0].value}}
-        q-checkbox( v-if='account' v-model='currentVote' :val='props.cols[1].value' )
-      q-td( key="owner" ) {{props.cols[1].value }}
+      q-td( key="selected")
+        q-checkbox( v-if='account' v-model='currentVote' :val='props.cols[2].value' )
+      q-td( key="number" class='vote-indicator') {{props.cols[1].value}}
+      q-td( key="owner" ) {{props.cols[2].value }}
       q-td( key="country" )
-        span(:class='getFlag(props.cols[2].value)').flag-icon
-      q-td(v-if='props.cols[3].value' key="social" align="center").no-decoration
-        a(v-if="props.cols[3].value.website" :href="props.cols[3].value.website")
+        span(:class='getFlag(props.cols[3].value)').flag-icon
+      q-td(v-if='props.cols[4].value' key="social" align="center").no-decoration
+        a(v-if="props.cols[4].value.website" :href="props.cols[4].value.website")
           q-icon(
             name="fas fa-globe"
             size="xs"
             color='primary'
           )
-        a(v-if="props.cols[3].value.social.twitter" :href="getLink('twitter.com',props.cols[3].value.social.twitter)")
+        a(v-if="props.cols[4].value.social.twitter" :href="getLink('twitter.com',props.cols[4].value.social.twitter)")
           q-icon(
             name="fab fa-twitter"
             size="xs"
             color='primary'
           )
-        a(v-if="props.cols[3].value.social.github" :href="getLink('github.com',props.cols[3].value.social.github)")
+        a(v-if="props.cols[4].value.social.github" :href="getLink('github.com',props.cols[4].value.social.github)")
           q-icon(
             name="fab fa-github"
             size="xs"
             color='primary'
           )
-        a(v-if="props.cols[3].value.social.telegram" :href="getLink('t.me',props.cols[3].value.social.telegram)")
+        a(v-if="props.cols[4].value.social.telegram" :href="getLink('t.me',props.cols[4].value.social.telegram)")
           q-icon(
             name="fab fa-telegram"
             size="xs"
             color='primary'
           )
       q-td(v-else key="social-none")
-      q-td( key="votes" align="center") {{props.cols[4].value }}
+      q-td( key="votes" align="right") {{props.cols[5].value }}
       q-td( key="sslVerified" align='left')
-        q-icon(
-          v-if="props.cols[5].value === true"
-          name="fas fa-check"
-          size="xs"
-          color='green'
-        )
-        q-icon(
-          v-else
-          name="fas fa-times"
-          size="xs"
-          color='red'
-        )
-      q-td( key="apiVerified" align='left')
         q-icon(
           v-if="props.cols[6].value === true"
           name="fas fa-check"
@@ -78,7 +66,7 @@
           size="xs"
           color='red'
         )
-      q-td( key="sslVerifiedTestNet" align='left')
+      q-td( key="apiVerified" align='left')
         q-icon(
           v-if="props.cols[7].value === true"
           name="fas fa-check"
@@ -91,7 +79,7 @@
           size="xs"
           color='red'
         )
-      q-td( key="apiVerifiedTestNet" align='left')
+      q-td( key="sslVerifiedTestNet" align='left')
         q-icon(
           v-if="props.cols[8].value === true"
           name="fas fa-check"
@@ -104,9 +92,22 @@
           size="xs"
           color='red'
         )
-      q-td( key="lifetimeProducedBlocks" ) {{props.cols[9].value }}
-      q-td( key="lifetimeMissedBlocks" ) {{props.cols[10].value }}
-      q-td( key='missedBlocksPer' ) {{props.cols[11].value }} %
+      q-td( key="apiVerifiedTestNet" align='left')
+        q-icon(
+          v-if="props.cols[9].value === true"
+          name="fas fa-check"
+          size="xs"
+          color='green'
+        )
+        q-icon(
+          v-else
+          name="fas fa-times"
+          size="xs"
+          color='red'
+        )
+      q-td( key="lifetimeProducedBlocks" align='right' ) {{props.cols[10].value }}
+      q-td( key="lifetimeMissedBlocks" align='right') {{props.cols[11].value }}
+      q-td( key='missedBlocksPer' align='left') {{props.cols[12].value }} %
 </template>
 
 <script>
@@ -126,6 +127,13 @@ export default {
         rowsPerPage: 21
       },
       producerColumns: [
+        {
+          name: 'selected',
+          label: ' ',
+          align: 'left',
+          sortable: false,
+          style: 'width: 1rem'
+        },
         {
           name: 'number',
           label: '#',
@@ -157,7 +165,7 @@ export default {
           name: 'votes',
           label: 'Total Votes',
           field: row => (row.total_votes / 10000).toFixed(0),
-          align: 'center',
+          align: 'right',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
@@ -193,7 +201,7 @@ export default {
           name: 'lifetimeProducedBlocks',
           label: 'LPB',
           field: 'lifetime_produced_blocks',
-          align: 'left',
+          align: 'center',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
@@ -201,7 +209,7 @@ export default {
           name: 'lifetimeMissedBlocks',
           label: 'LMB',
           field: 'lifetime_missed_blocks',
-          align: 'left',
+          align: 'center',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
@@ -240,7 +248,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('accounts', ['account'])
+    ...mapGetters('accounts', ['account']),
+    maxSelected () {
+      return this.currentVote.length === 30
+    }
   },
   methods: {
     removeVote (index) {
@@ -301,13 +312,17 @@ export default {
   margin-right: .5rem;
 .producer-card
   padding: .2rem .2rem .2rem .5rem;
+  height: 2rem;
+  line-height: 1.6rem;
   i
     cursor: pointer;
-    padding-bottom: .2rem;
+    padding-bottom: .4rem;
     padding-left: .2rem;
 .validator-count
   margin-left: 1rem;
-.full-selection
-  margin-left: .25rem;
-  font-weight: 600;
+  span
+    margin-left: .25rem;
+    &.full-selection
+      margin-left: .25rem;
+      font-weight: 600;
 </style>
