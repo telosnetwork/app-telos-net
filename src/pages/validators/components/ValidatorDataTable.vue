@@ -20,8 +20,8 @@
   )
     template( v-slot:top-right class='testnet-indicator') *test net
     q-tr( slot="body" slot-scope="props" :props="props")
-      q-td( key="selected")
-        q-checkbox( v-if='account' v-model='currentVote' :val='props.cols[2].value' )
+      q-td( key="selected" v-if='account')
+        q-checkbox(  v-model='currentVote' :val='props.cols[2].value' )
       q-td( key="number" class='vote-indicator') {{props.cols[1].value}}
       q-td( key="owner" ) {{props.cols[2].value }}
       q-td( key="country" )
@@ -129,10 +129,10 @@ export default {
       producerColumns: [
         {
           name: 'selected',
-          label: ' ',
+          label: '',
           align: 'left',
           sortable: false,
-          style: 'width: 1rem'
+          headerClasses: 'selected-column'
         },
         {
           name: 'number',
@@ -225,6 +225,9 @@ export default {
     }
   },
   mounted () {
+    if (!this.account) {
+      document.getElementsByClassName('selected-column')[0].remove()
+    }
     this.resetVotes()
   },
   watch: {
