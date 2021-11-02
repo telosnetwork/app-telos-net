@@ -16,7 +16,7 @@
       span( :class="{'full-selection' : maxSelected }")  {{ projectedVoteWeight }}
     .count-field Last Vote Weight:
       span  {{ lastWeight }}
-    .count-field Weight Change:
+    .count-field Vote Weight Change:
       span  {{ weightChange }}
   q-table(
     title="Validators"
