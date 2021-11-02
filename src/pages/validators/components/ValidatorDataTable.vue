@@ -24,7 +24,7 @@
         q-checkbox(  v-model='currentVote' :val='props.cols[2].value' )
       q-td( key="number" class='vote-indicator') {{props.cols[1].value}}
       q-td( key="owner" ) {{props.cols[2].value }}
-      q-td( key="country" )
+      q-td( key="country" ).flag-column
         span(:class='getFlag(props.cols[3].value)').flag-icon
       q-td(v-if='props.cols[4].value' key="social" align="center").no-decoration
         a(v-if="props.cols[4].value.website" :href="props.cols[4].value.website")
@@ -313,6 +313,10 @@ export default {
 @import url('../../../../node_modules/flag-icon-css/sass/flag-icons.scss')
 .testnet-indicator
   margin-right: .5rem;
+
+.flag-column
+  text-align: center;
+
 .producer-card
   padding: .2rem .2rem .2rem .5rem;
   height: 2rem;
@@ -321,6 +325,7 @@ export default {
     cursor: pointer;
     padding-bottom: .4rem;
     padding-left: .2rem;
+
 .validator-count
   margin-left: 1rem;
   span

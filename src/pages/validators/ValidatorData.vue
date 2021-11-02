@@ -56,7 +56,6 @@ export default {
       return keyArray[keyArray.length - 1].textContent
     },
     async getVotes () {
-      debugger
       if (this.account) {
         this.producerVotes = (await this.$store.$api.getAccount(this.account)).voter_info.producers
       }
