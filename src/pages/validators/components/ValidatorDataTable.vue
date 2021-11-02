@@ -339,6 +339,7 @@ export default {
 <style lang='sass' scoped>
 @import url('../../../../node_modules/flag-icon-css/sass/flag-icons.scss')
 .testnet-indicator
+  font-size: 12px;
   margin-right: .5rem;
 
 .flag-column
