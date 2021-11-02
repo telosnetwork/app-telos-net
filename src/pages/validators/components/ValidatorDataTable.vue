@@ -25,7 +25,7 @@
     :columns="producerColumns"
     row-key="__index"
   )
-    template( v-slot:top-right class='testnet-indicator') LPD = lifetime produced blocks, LMB = lifetime missed blocks, *testnet
+    template( v-slot:top-right class='testnet-indicator') * = testnet, LPD = lifetime produced blocks, LMB = lifetime missed blocks
     q-tr( slot="body" slot-scope="props" :props="props")
       q-td( key="selected" v-if='account')
         q-checkbox(  v-model='currentVote' :val='props.cols[2].value' )
