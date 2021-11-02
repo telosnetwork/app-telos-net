@@ -106,6 +106,7 @@
         )
       q-td( key="lifetimeProducedBlocks" ) {{props.cols[9].value }}
       q-td( key="lifetimeMissedBlocks" ) {{props.cols[10].value }}
+      q-td( key='missedBlocksPer' ) {{props.cols[11].value }} %
 </template>
 
 <script>
@@ -190,7 +191,7 @@ export default {
         },
         {
           name: 'lifetimeProducedBlocks',
-          label: 'Total Produced Blocks',
+          label: 'LPB',
           field: 'lifetime_produced_blocks',
           align: 'left',
           sortable: true,
@@ -198,18 +199,19 @@ export default {
         },
         {
           name: 'lifetimeMissedBlocks',
-          label: 'Total Missed Blocks',
+          label: 'LMB',
           field: 'lifetime_missed_blocks',
           align: 'left',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
         },
         {
-          name: 'voted',
-          label: '',
-          field: row => this.isVoted(row.owner),
+          name: 'missedBlocksPer',
+          label: 'LMB(%)',
+          field: row => (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(5),
           align: 'left',
-          sortable: true
+          sortable: true,
+          sort: (a, b, rowA, rowB) => parseFloat(a, 10) - parseFloat(b, 10)
         }
       ]
     }
@@ -256,9 +258,6 @@ export default {
         return `flag-icon-${alpha2}`
       }
       return ''
-    },
-    isVoted (producer) {
-      this.currentVote.includes(producer)
     },
     areEqualArrays (firstArray, secondArray) {
       if (!Array.isArray(firstArray) || !Array.isArray(secondArray) || firstArray.length !== secondArray.length) {
