@@ -4,7 +4,16 @@ div
   q-btn.toggle( v-if='account' @click='castVote' :disable='!voteChanged' label='Vote' color='primary')
   q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' label='Reset' color='primary')
   ValidatorDataChart(v-if='showCpu')
-  ValidatorDataTable(v-else :producerData='producerData' ref="ValidatorDataTable" :producerVotes='producerVotes'  @vote-changed='toggleVoteButtons' @get-votes='getVotes' )
+  ValidatorDataTable( v-else
+    ref="ValidatorDataTable"
+    :producerData='producerData'
+    :producerVotes='producerVotes'
+    :lastWeight='lastWeight'
+    :lastStaked='lastStaked'
+    :stakedAmount='stakedAmount'
+    @vote-changed='toggleVoteButtons'
+    @get-votes='getVotes'
+  )
 </template>
 
 <script>
@@ -23,11 +32,16 @@ export default {
   },
   data () {
     return {
+      voterInfo: {},
       producerData: [],
       producerVotes: [],
       showCpu: false,
       voteChanged: false,
-      resetFlag: false
+      resetFlag: false,
+      lastWeight: '0',
+      lastStaked: 0,
+      stakedAmount: 0
+
     }
   },
   async mounted () {
@@ -57,7 +71,11 @@ export default {
     },
     async getVotes () {
       if (this.account) {
-        this.producerVotes = (await this.$store.$api.getAccount(this.account)).voter_info.producers
+        this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
+        this.producerVotes = this.voterInfo.producers
+        this.lastWeight = parseFloat(this.voterInfo.last_vote_weight).toFixed(2)
+        this.lastStaked = this.voterInfo.last_stake
+        this.stakedAmount = this.voterInfo.staked
       }
     },
     toggleView () {

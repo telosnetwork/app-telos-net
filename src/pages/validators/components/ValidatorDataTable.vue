@@ -1,7 +1,5 @@
 <template lang='pug'>
 .q-pa-md
-  .validator-count(v-if='account') Selected Validators:
-    span( :class="{'full-selection' : maxSelected }") {{ currentVote.length }} of 30
   .q-pa-md.row.items-start.q-gutter-md(v-if='account')
     q-card( v-for='(prod,i) in currentVote').producer-card
       .q-card-section {{ prod }}
@@ -11,6 +9,15 @@
             color='primary'
             @click='removeVote(prod)'
           )
+  .voting-stats(v-if='account')
+    .count-field Selected Validators:
+      span( :class="{'full-selection' : maxSelected }") {{ currentVote.length }} of 30
+    .count-field Projected Vote Weight:
+      span( :class="{'full-selection' : maxSelected }")  {{ projectedVoteWeight }}
+    .count-field Last Vote Weight:
+      span  {{ lastWeight }}
+    .count-field Change:
+      span  {{ weightChange }}
   q-table(
     title="Validators"
     :pagination.sync="pagination"
@@ -114,11 +121,16 @@
 import { mapGetters } from 'vuex'
 import * as iso from 'iso-3166-1'
 
+const MAX_VOTE_PRODUCERS = 30
+
 export default {
   name: 'ValidatorDataTable',
   props: {
     producerVotes: { type: Array, required: true },
-    producerData: { type: Array, required: true }
+    producerData: { type: Array, required: true },
+    lastWeight: { type: String, required: true },
+    lastStaked: { type: Number, required: true },
+    stakedAmount: { type: Number, required: true }
   },
   data () {
     return {
@@ -238,7 +250,7 @@ export default {
       }
     },
     currentVote (val) {
-      if (val.length > 30) {
+      if (val.length > MAX_VOTE_PRODUCERS) {
         this.currentVote.pop()
         alert('You can only vote for 30 validators.')
         return
@@ -253,7 +265,22 @@ export default {
   computed: {
     ...mapGetters('accounts', ['account']),
     maxSelected () {
-      return this.currentVote.length === 30
+      return this.currentVote.length === MAX_VOTE_PRODUCERS
+    },
+    projectedVoteWeight () {
+      if (this.currentVote.length === 0) {
+        return 0
+      }
+      const percentVoted = this.currentVote.length / MAX_VOTE_PRODUCERS
+      const voteWeight = (Math.sin(Math.PI * percentVoted - (Math.PI / 2.0)) + 1) / 2.0
+      return parseFloat(voteWeight * this.stakedAmount).toFixed(2)
+    },
+    weightChange () {
+      const difference = (this.projectedVoteWeight - this.lastWeight).toFixed(2)
+      const symbol = difference > 0 ? '+' : ''
+      const percentage = ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2)
+
+      return `${symbol}${difference} (${percentage}%)`
     }
   },
   methods: {
@@ -326,11 +353,16 @@ export default {
     padding-bottom: .4rem;
     padding-left: .2rem;
 
-.validator-count
+.voting-stats
   margin-left: 1rem;
+  margin-bottom: 1rem;
   span
     margin-left: .25rem;
     &.full-selection
       margin-left: .25rem;
       font-weight: 600;
+
+.count-field
+  display: inline-block;
+  margin-right: 2rem;
 </style>
