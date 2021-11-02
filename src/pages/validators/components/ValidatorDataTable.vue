@@ -1,13 +1,13 @@
 <template lang='pug'>
   .q-pa-md
     .q-pa-md.row.items-start.q-gutter-md(v-if='account')
-      q-card( v-for='(prod,i) in voterInfo.producers').producer-card
+      q-card( v-for='(prod,i) in currentVote').producer-card
         .q-card-section {{ prod }}
             q-icon(
               name="fas fa-times"
               size="xs"
               color='primary'
-              @click='removeProducer(i)'
+              @click='removeVote(prod)'
             )
     q-table(
       title="Block Producer Validation"
@@ -15,12 +15,11 @@
       :data="producerData"
       :columns="producerColumns"
       row-key="__index"
-      @row-click="rowClicked"
     )
       template( v-slot:top-right class='testnet-indicator') *test net
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number" class='vote-indicator') {{props.cols[0].value}}
-          q-checkbox( v-if='account' v-model='voterInfo.producers' :val='props.cols[1].value')
+          q-checkbox( v-if='account' v-model='currentVote' :val='props.cols[1].value' )
         q-td( key="owner" ) {{props.cols[1].value }}
         q-td( key="country" )
           span(:class='getFlag(props.cols[2].value)').flag-icon
@@ -114,7 +113,7 @@ import * as iso from 'iso-3166-1'
 export default {
   name: 'ValidatorDataTable',
   props: {
-    voterInfo: { type: Object, required: true },
+    producerVotes: { type: Array, required: true },
     producerData: { type: Array, required: true }
   },
   data () {
@@ -213,15 +212,29 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.resetVotes()
+  },
+  watch: {
+    producerVotes (val) {
+      if (this.currentVote.length === 0) {
+        this.currentVote = [...val]
+      }
+    },
+    currentVote (val) {
+      if (this.areEqualArrays(val, this.producerVotes)) {
+        this.$emit('vote-changed', false)
+      } else {
+        this.$emit('vote-changed', true)
+      }
+    }
+  },
   computed: {
     ...mapGetters('accounts', ['account'])
   },
   methods: {
-    removeProducer (index) {
-      this.voterInfo.producers.splice(index, 1)
-    },
-    rowClicked (e) {
-      console.log(e)
+    removeVote (index) {
+      this.currentVote.splice(index, 1)
     },
     getLink (domain, username) {
       return `https://${domain}/${username}`
@@ -235,6 +248,28 @@ export default {
         return `flag-icon-${alpha2}`
       }
       return ''
+    },
+    isVoted (producer) {
+      this.currentVote.includes(producer)
+    },
+    areEqualArrays (firstArray, secondArray) {
+      if (!Array.isArray(firstArray) || !Array.isArray(secondArray) || firstArray.length !== secondArray.length) {
+        return false
+      }
+      var tempFirstArray = firstArray.concat().sort()
+      var tempSecondArray = secondArray.concat().sort()
+      for (var i = 0; i < tempFirstArray.length; i++) {
+        if (tempFirstArray[i] !== tempSecondArray[i]) {
+          return false
+        }
+      }
+      return true
+    },
+    resetVotes () {
+      this.currentVote = [...this.producerVotes]
+    },
+    sendVoteTransaction () {
+      console.log('cast vote tx')
     }
   }
 }

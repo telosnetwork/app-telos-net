@@ -1,10 +1,10 @@
 <template lang='pug'>
   div
-    q-btn.toggle(@click='toggleView' :disabled='voteChanged' :label='toggleLabel' color='primary')
+    q-btn.toggle(@click='toggleView' :label='toggleLabel' color='primary')
     q-btn.toggle( v-if='account' @click='castVote' :disable='!voteChanged' label='Vote' color='primary')
-    q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' :resetVote='resetFlag' label='Reset' color='primary')
+    q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' label='Reset' color='primary')
     ValidatorDataChart(v-if='showCpu')
-    ValidatorDataTable(v-else :producerData='producerData' :voterInfo='voterInfo')
+    ValidatorDataTable(v-else :producerData='producerData' ref="ValidatorDataTable" :producerVotes='producerVotes'  @vote-changed='toggleVoteButtons' )
 </template>
 
 <script>
@@ -24,12 +24,9 @@ export default {
   data () {
     return {
       producerData: [],
-      voterInfo: {
-        producers: []
-      },
+      producerVotes: [],
       showCpu: false,
       voteChanged: false,
-      voteFlag: false,
       resetFlag: false
     }
   },
@@ -49,8 +46,8 @@ export default {
         const lastKey = this.getLastKey(objectList)
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
         if (this.account) {
-          this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
-          this.currentVote = this.voterInfo.producers
+          this.producerVotes = (await this.$store.$api.getAccount(this.account)).voter_info.producers
+          this.currentVote = [...this.producerVotes]
         }
       } catch (err) {
         console.log('Error', err)
@@ -65,10 +62,13 @@ export default {
       this.showCpu = !this.showCpu
     },
     castVote (e) {
-      console.log(e)
+      this.$refs.ValidatorDataTable.sendVoteTransaction()
     },
     resetVote (e) {
-      console.log(e)
+      this.$refs.ValidatorDataTable.resetVotes()
+    },
+    toggleVoteButtons (val) {
+      this.voteChanged = val
     }
   }
 }
