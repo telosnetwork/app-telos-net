@@ -228,7 +228,7 @@ export default {
         {
           name: 'missedBlocksPer',
           label: 'LMB(%)',
-          field: row => (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(5),
+          field: row => (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(3),
           align: 'left',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseFloat(a, 10) - parseFloat(b, 10)
