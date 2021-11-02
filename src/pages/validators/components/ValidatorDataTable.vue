@@ -25,7 +25,7 @@
     :columns="producerColumns"
     row-key="__index"
   )
-    template( v-slot:top-right class='testnet-indicator') *testnet, LPD = Lifetime Produced Blocks, LMB = Lifetime Missed Blocks
+    template( v-slot:top-right class='testnet-indicator') LPD = lifetime produced blocks, LMB = lifetime missed blocks, *testnet
     q-tr( slot="body" slot-scope="props" :props="props")
       q-td( key="selected" v-if='account')
         q-checkbox(  v-model='currentVote' :val='props.cols[2].value' )
@@ -114,7 +114,7 @@
         )
       q-td( key="lifetimeProducedBlocks" align='right' ) {{props.cols[10].value }}
       q-td( key="lifetimeMissedBlocks" align='right') {{props.cols[11].value }}
-      q-td( key='missedBlocksPer' align='left') {{props.cols[12].value }} %
+      q-td( key='missedBlocksPer' align='left') {{props.cols[12].value }}
 </template>
 
 <script>
@@ -228,7 +228,7 @@ export default {
         {
           name: 'missedBlocksPer',
           label: 'LMB(%)',
-          field: row => (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(3),
+          field: row => row.lifetime_produced_blocks === 0 ? row.lifetime_missed_blocks === 0 ? 'N/A' : 100 : (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(3),
           align: 'left',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseFloat(a, 10) - parseFloat(b, 10)
@@ -278,7 +278,7 @@ export default {
     weightChange () {
       const difference = (this.projectedVoteWeight - this.lastWeight).toFixed(2)
       const symbol = difference > 0 ? '+' : ''
-      const percentage = ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2)
+      const percentage = this.lastWeight === 0 ? (this.projectedVoteWeight * 100).toFixed(2) : ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2)
 
       return `${symbol}${difference} (${percentage}%)`
     }
