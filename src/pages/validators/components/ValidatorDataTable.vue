@@ -16,7 +16,7 @@
       span( :class="{'full-selection' : maxSelected }")  {{ projectedVoteWeight }}
     .count-field Last Vote Weight:
       span  {{ lastWeight }}
-    .count-field Change:
+    .count-field Weight Change:
       span  {{ weightChange }}
   q-table(
     title="Validators"
@@ -25,7 +25,7 @@
     :columns="producerColumns"
     row-key="__index"
   )
-    template( v-slot:top-right class='testnet-indicator') *test net
+    template( v-slot:top-right class='testnet-indicator') *testnet, LPD = Lifetime Produced Blocks, LMB = Lifetime Missed Blocks
     q-tr( slot="body" slot-scope="props" :props="props")
       q-td( key="selected" v-if='account')
         q-checkbox(  v-model='currentVote' :val='props.cols[2].value' )
