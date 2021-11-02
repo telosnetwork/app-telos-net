@@ -1,6 +1,6 @@
 <template lang='pug'>
   .q-pa-md
-    .q-pa-md.row.items-start.q-gutter-md
+    .q-pa-md.row.items-start.q-gutter-md(v-if='account')
       q-card( v-for='(prod,i) in voterInfo.producers').producer-card
         .q-card-section {{ prod }}
             q-icon(
@@ -20,7 +20,7 @@
       template( v-slot:top-right class='testnet-indicator') *test net
       q-tr( slot="body" slot-scope="props" :props="props")
         q-td( key="number" class='vote-indicator') {{props.cols[0].value}}
-          q-checkbox( v-model='voterInfo.producers' :val='props.cols[1].value')
+          q-checkbox( v-if='account' v-model='voterInfo.producers' :val='props.cols[1].value')
         q-td( key="owner" ) {{props.cols[1].value }}
         q-td( key="country" )
           span(:class='getFlag(props.cols[2].value)').flag-icon
@@ -109,23 +109,20 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import axios from 'axios'
 import * as iso from 'iso-3166-1'
-// import { getProducer } from '@telosnetwork/validator-checks/dist/client'
-
-const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
 
 export default {
   name: 'ValidatorDataTable',
+  props: {
+    voterInfo: { type: Object, required: true },
+    producerData: { type: Array, required: true }
+  },
   data () {
     return {
-      voterInfo: {
-        producers: []
-      },
+      currentVote: [],
       pagination: {
         rowsPerPage: 21
       },
-      producerData: [],
       producerColumns: [
         {
           name: 'number',
@@ -216,31 +213,10 @@ export default {
       ]
     }
   },
-  async mounted () {
-    await this.getData()
-  },
   computed: {
     ...mapGetters('accounts', ['account'])
   },
   methods: {
-    async getData () {
-      try {
-        const objectList = await axios.get(BUCKET_URL)
-        const lastKey = this.getLastKey(objectList)
-        this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
-
-        if (this.account) {
-          this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
-        }
-      } catch (err) {
-        console.log('Error', err)
-      }
-    },
-    getLastKey (objectList) {
-      const parser = new DOMParser()
-      const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
-      return keyArray[keyArray.length - 1].textContent
-    },
     removeProducer (index) {
       this.voterInfo.producers.splice(index, 1)
     },

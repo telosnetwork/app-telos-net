@@ -1,13 +1,19 @@
 <template lang='pug'>
   div
-    q-btn.toggle(@click='toggleView' :label='toggleLabel' color='primary')
+    q-btn.toggle(@click='toggleView' :disabled='voteChanged' :label='toggleLabel' color='primary')
+    q-btn.toggle( v-if='account' @click='castVote' :disable='!voteChanged' label='Vote' color='primary')
+    q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' :resetVote='resetFlag' label='Reset' color='primary')
     ValidatorDataChart(v-if='showCpu')
-    ValidatorDataTable(v-else)
+    ValidatorDataTable(v-else :producerData='producerData' :voterInfo='voterInfo')
 </template>
 
 <script>
+import axios from 'axios'
+import { mapGetters } from 'vuex'
 import ValidatorDataChart from './components/ValidatorDataChart.vue'
 import ValidatorDataTable from './components/ValidatorDataTable.vue'
+
+const BUCKET_URL = 'https://telos-producer-validation.s3.amazonaws.com'
 
 export default {
   name: 'Validator',
@@ -17,17 +23,52 @@ export default {
   },
   data () {
     return {
-      showCpu: false
+      producerData: [],
+      voterInfo: {
+        producers: []
+      },
+      showCpu: false,
+      voteChanged: false,
+      voteFlag: false,
+      resetFlag: false
     }
   },
+  async mounted () {
+    await this.getData()
+  },
   computed: {
+    ...mapGetters('accounts', ['account']),
     toggleLabel () {
       return this.showCpu ? 'View Table' : 'View Graph'
     }
   },
   methods: {
+    async getData () {
+      try {
+        const objectList = await axios.get(BUCKET_URL)
+        const lastKey = this.getLastKey(objectList)
+        this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
+        if (this.account) {
+          this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
+          this.currentVote = this.voterInfo.producers
+        }
+      } catch (err) {
+        console.log('Error', err)
+      }
+    },
+    getLastKey (objectList) {
+      const parser = new DOMParser()
+      const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
+      return keyArray[keyArray.length - 1].textContent
+    },
     toggleView () {
       this.showCpu = !this.showCpu
+    },
+    castVote (e) {
+      console.log(e)
+    },
+    resetVote (e) {
+      console.log(e)
     }
   }
 }
