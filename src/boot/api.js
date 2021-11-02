@@ -41,12 +41,25 @@ const getTableRows = async function (options) {
   }
 }
 
+const getAccount = async function (account) {
+  try {
+    if (this.$type === 'ual') {
+      return this.$ualUser.rpc.get_account(account)
+    } else {
+      return this.$defaultApi.rpc.get_account(account)
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export default ({ store }) => {
   const rpc = new JsonRpc(`${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}:${process.env.NETWORK_PORT}`)
   store['$defaultApi'] = new Api({ rpc, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() })
 
   store['$api'] = {
     signTransaction: signTransaction.bind(store),
-    getTableRows: getTableRows.bind(store)
+    getTableRows: getTableRows.bind(store),
+    getAccount: getAccount.bind(store)
   }
 }

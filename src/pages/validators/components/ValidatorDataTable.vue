@@ -1,5 +1,14 @@
 <template lang='pug'>
   .q-pa-md
+    .q-pa-md.row.items-start.q-gutter-md
+      q-card( v-for='(prod,i) in voterInfo.producers').producer-card
+        .q-card-section {{ prod }}
+            q-icon(
+              name="fas fa-times"
+              size="xs"
+              color='primary'
+              @click='removeProducer(i)'
+            )
     q-table(
       title="Block Producer Validation"
       :pagination.sync="pagination"
@@ -10,7 +19,8 @@
     )
       template( v-slot:top-right class='testnet-indicator') *test net
       q-tr( slot="body" slot-scope="props" :props="props")
-        q-td( key="number" ) {{props.cols[0].value}}
+        q-td( key="number" class='vote-indicator') {{props.cols[0].value}}
+          q-checkbox( v-model='voterInfo.producers' :val='props.cols[1].value')
         q-td( key="owner" ) {{props.cols[1].value }}
         q-td( key="country" )
           span(:class='getFlag(props.cols[2].value)').flag-icon
@@ -98,6 +108,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 import * as iso from 'iso-3166-1'
 // import { getProducer } from '@telosnetwork/validator-checks/dist/client'
@@ -108,6 +119,9 @@ export default {
   name: 'ValidatorDataTable',
   data () {
     return {
+      voterInfo: {
+        producers: []
+      },
       pagination: {
         rowsPerPage: 21
       },
@@ -191,6 +205,13 @@ export default {
           align: 'left',
           sortable: true,
           sort: (a, b, rowA, rowB) => parseInt(a, 10) - parseInt(b, 10)
+        },
+        {
+          name: 'voted',
+          label: '',
+          field: row => this.isVoted(row.owner),
+          align: 'left',
+          sortable: true
         }
       ]
     }
@@ -198,12 +219,19 @@ export default {
   async mounted () {
     await this.getData()
   },
+  computed: {
+    ...mapGetters('accounts', ['account'])
+  },
   methods: {
     async getData () {
       try {
         const objectList = await axios.get(BUCKET_URL)
         const lastKey = this.getLastKey(objectList)
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
+
+        if (this.account) {
+          this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
+        }
       } catch (err) {
         console.log('Error', err)
       }
@@ -212,6 +240,9 @@ export default {
       const parser = new DOMParser()
       const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
       return keyArray[keyArray.length - 1].textContent
+    },
+    removeProducer (index) {
+      this.voterInfo.producers.splice(index, 1)
     },
     rowClicked (e) {
       console.log(e)
@@ -236,4 +267,11 @@ export default {
 @import url('../../../../node_modules/flag-icon-css/sass/flag-icons.scss')
 .testnet-indicator
   margin-right: .5rem;
+.producer-card
+  padding: .2rem .2rem .2rem .5rem;
+  i
+    cursor: pointer;
+    padding-bottom: .2rem;
+    padding-left: .2rem;
+
 </style>
