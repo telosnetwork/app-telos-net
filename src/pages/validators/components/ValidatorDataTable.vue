@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .q-pa-md
+  .q-pa-md {{ currentVote.length }} of 30 validators selected
     .q-pa-md.row.items-start.q-gutter-md(v-if='account')
       q-card( v-for='(prod,i) in currentVote').producer-card
         .q-card-section {{ prod }}
@@ -10,7 +10,7 @@
               @click='removeVote(prod)'
             )
     q-table(
-      title="Block Producer Validation"
+      title="Validators"
       :pagination.sync="pagination"
       :data="producerData"
       :columns="producerColumns"
@@ -268,8 +268,22 @@ export default {
     resetVotes () {
       this.currentVote = [...this.producerVotes]
     },
-    sendVoteTransaction () {
-      console.log('cast vote tx')
+    async sendVoteTransaction () {
+      const voteActions = [{
+        account: 'eosio',
+        name: 'voteproducer',
+        data: {
+          voter: this.account,
+          proxy: '',
+          producers: [...this.currentVote]
+        }
+      }]
+      try {
+        await this.$store.$api.signTransaction(voteActions)
+        this.$emit('get-votes')
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }
