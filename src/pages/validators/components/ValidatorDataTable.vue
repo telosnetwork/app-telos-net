@@ -248,7 +248,7 @@ export default {
       console.log(e)
     },
     getLink (domain, username) {
-      return `https://${domain}.com/${username}`
+      return `https://${domain}/${username}`
     },
     getCountry (numeric) {
       const countryObj = iso.whereNumeric(numeric) ?? { alpha2: '' }
