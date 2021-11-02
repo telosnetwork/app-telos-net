@@ -278,7 +278,7 @@ export default {
     weightChange () {
       const difference = (this.projectedVoteWeight - this.lastWeight).toFixed(2)
       const symbol = difference > 0 ? '+' : ''
-      const percentage = this.lastWeight === 0 ? (this.projectedVoteWeight * 100).toFixed(2) : ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2)
+      const percentage = this.lastWeight > 0.001 ? ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2) : (this.projectedVoteWeight * 100).toFixed(2)
 
       return `${symbol}${difference} (${percentage}%)`
     }
