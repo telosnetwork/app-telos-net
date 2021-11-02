@@ -1,10 +1,10 @@
 <template lang='pug'>
-  div
-    q-btn.toggle(@click='toggleView' :label='toggleLabel' color='primary')
-    q-btn.toggle( v-if='account' @click='castVote' :disable='!voteChanged' label='Vote' color='primary')
-    q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' label='Reset' color='primary')
-    ValidatorDataChart(v-if='showCpu')
-    ValidatorDataTable(v-else :producerData='producerData' ref="ValidatorDataTable" :producerVotes='producerVotes'  @vote-changed='toggleVoteButtons' @get-votes='getVotes' )
+div
+  q-btn.toggle(@click='toggleView' :label='toggleLabel' color='primary')
+  q-btn.toggle( v-if='account' @click='castVote' :disable='!voteChanged' label='Vote' color='primary')
+  q-btn.toggle( v-if='account' @click='resetVote' :disable='!voteChanged' label='Reset' color='primary')
+  ValidatorDataChart(v-if='showCpu')
+  ValidatorDataTable(v-else :producerData='producerData' ref="ValidatorDataTable" :producerVotes='producerVotes'  @vote-changed='toggleVoteButtons' @get-votes='getVotes' )
 </template>
 
 <script>
@@ -45,10 +45,7 @@ export default {
         const objectList = await axios.get(BUCKET_URL)
         const lastKey = this.getLastKey(objectList)
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
-        if (this.account) {
-          this.producerVotes = (await this.$store.$api.getAccount(this.account)).voter_info.producers
-          this.currentVote = [...this.producerVotes]
-        }
+        await this.getVotes()
       } catch (err) {
         console.log('Error', err)
       }
@@ -59,9 +56,9 @@ export default {
       return keyArray[keyArray.length - 1].textContent
     },
     async getVotes () {
+      debugger
       if (this.account) {
         this.producerVotes = (await this.$store.$api.getAccount(this.account)).voter_info.producers
-        this.currentVote = [...this.producerVotes]
       }
     },
     toggleView () {
