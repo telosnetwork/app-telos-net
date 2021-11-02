@@ -237,9 +237,7 @@ export default {
     }
   },
   mounted () {
-    if (!this.account) {
-      document.getElementsByClassName('selected-column')[0].remove()
-    }
+    this.checkHeader()
     this.resetVotes()
   },
   watch: {
@@ -260,6 +258,9 @@ export default {
       } else {
         this.$emit('vote-changed', true)
       }
+    },
+    account () {
+      this.checkHeader()
     }
   },
   computed: {
@@ -299,6 +300,15 @@ export default {
         return `flag-icon-${alpha2}`
       }
       return ''
+    },
+    checkHeader () {
+      const checkHeader = document.getElementsByClassName('selected-column')[0]
+      checkHeader.style.height = '48px'
+      if (!this.account) {
+        checkHeader.style.display = 'none'
+      } else {
+        checkHeader.style.display = 'block'
+      }
     },
     areEqualArrays (firstArray, secondArray) {
       if (!Array.isArray(firstArray) || !Array.isArray(secondArray) || firstArray.length !== secondArray.length) {
@@ -366,4 +376,5 @@ export default {
 .count-field
   display: inline-block;
   margin-right: 2rem;
+
 </style>
