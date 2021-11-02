@@ -1,6 +1,7 @@
 <template lang='pug'>
 .q-pa-md
-  .validator-count(v-if='account') {{ currentVote.length }} of 30 validators selected
+  .validator-count(v-if='account') Selected Validators:
+    span( :class="{'full-selection' : currentVote.length === 30}") {{ currentVote.length }} of 30
   .q-pa-md.row.items-start.q-gutter-md(v-if='account')
     q-card( v-for='(prod,i) in currentVote').producer-card
       .q-card-section {{ prod }}
@@ -305,5 +306,9 @@ export default {
     cursor: pointer;
     padding-bottom: .2rem;
     padding-left: .2rem;
-
+.validator-count
+  margin-left: 1rem;
+.full-selection
+  margin-left: .25rem;
+  font-weight: 600;
 </style>
