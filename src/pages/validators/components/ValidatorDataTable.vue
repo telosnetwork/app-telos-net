@@ -1,5 +1,6 @@
 <template lang='pug'>
-.q-pa-md {{ currentVote.length }} of 30 validators selected
+.q-pa-md
+  .validator-count(v-if='account') {{ currentVote.length }} of 30 validators selected
   .q-pa-md.row.items-start.q-gutter-md(v-if='account')
     q-card( v-for='(prod,i) in currentVote').producer-card
       .q-card-section {{ prod }}
@@ -223,7 +224,11 @@ export default {
       }
     },
     currentVote (val) {
-      debugger
+      if (val.length > 30) {
+        this.currentVote.pop()
+        alert('You can only vote for 30 validators.')
+        return
+      }
       if (this.areEqualArrays(val, this.producerVotes)) {
         this.$emit('vote-changed', false)
       } else {
