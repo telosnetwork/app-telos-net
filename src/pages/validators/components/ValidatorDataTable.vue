@@ -372,7 +372,9 @@ export default {
     padding-left: .2rem;
 
 .voting-stats
-  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  min-height: 2rem;
   margin-bottom: 1rem;
   line-height: 2rem;
   padding-left: 1rem;
