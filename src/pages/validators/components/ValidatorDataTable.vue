@@ -9,7 +9,7 @@
             color='primary'
             @click='removeVote(prod)'
           )
-  .voting-stats(v-if='account')
+  q-card.voting-stats(v-if='account')
     .count-field Selected Validators:
       span( :class="{'full-selection' : maxSelected }") {{ currentVote.length }} of 30
     .count-field Projected Vote Weight:
@@ -372,8 +372,10 @@ export default {
     padding-left: .2rem;
 
 .voting-stats
-  margin-left: 1rem;
+  height: 2rem;
   margin-bottom: 1rem;
+  line-height: 2rem;
+  padding-left: 1rem;
   span
     margin-left: .25rem;
     &.full-selection
