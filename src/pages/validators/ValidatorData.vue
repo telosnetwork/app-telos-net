@@ -11,6 +11,7 @@ div
     :lastWeight='lastWeight'
     :lastStaked='lastStaked'
     :stakedAmount='stakedAmount'
+    :lastUpdated='lastUpdated'
     @vote-changed='toggleVoteButtons'
     @get-votes='getVotes'
   )
@@ -33,7 +34,6 @@ export default {
   data () {
     return {
       lastUpdated: '',
-      voterInfo: {},
       producerData: [],
       producerVotes: [],
       showCpu: false,
@@ -58,7 +58,6 @@ export default {
     async getData () {
       try {
         const objectList = await axios.get(BUCKET_URL)
-        console.dir(objectList)
         const lastKey = this.getLastKey(objectList)
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
         await this.getVotes()
@@ -75,11 +74,11 @@ export default {
     },
     async getVotes () {
       if (this.account) {
-        this.voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
-        this.producerVotes = this.voterInfo.producers
-        this.lastWeight = parseFloat(this.voterInfo.last_vote_weight).toFixed(2)
-        this.lastStaked = this.voterInfo.last_stake
-        this.stakedAmount = this.voterInfo.staked
+        const voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
+        this.producerVotes = voterInfo.producers
+        this.lastWeight = parseFloat(voterInfo.last_vote_weight).toFixed(2)
+        this.lastStaked = voterInfo.last_stake
+        this.stakedAmount = voterInfo.staked
       }
     },
     toggleView () {

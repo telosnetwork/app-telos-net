@@ -19,7 +19,7 @@
     .count-field Vote Weight Change:
       span  {{ weightChange }}
   q-table(
-    title="Validators"
+    :title= 'tableHeader'
     :pagination.sync="pagination"
     :data="producerData"
     :columns="producerColumns"
@@ -119,6 +119,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 import * as iso from 'iso-3166-1'
 
 const MAX_VOTE_PRODUCERS = 30
@@ -130,7 +131,8 @@ export default {
     producerData: { type: Array, required: true },
     lastWeight: { type: String, required: true },
     lastStaked: { type: Number, required: true },
-    stakedAmount: { type: Number, required: true }
+    stakedAmount: { type: Number, required: true },
+    lastUpdated: { type: String, required: true }
   },
   data () {
     return {
@@ -265,6 +267,10 @@ export default {
   },
   computed: {
     ...mapGetters('accounts', ['account']),
+    tableHeader () {
+      const localTime = moment.utc(this.lastUpdated).local().format('YYYY-MM-DD HH:mm')
+      return `Validators (${localTime})`
+    },
     maxSelected () {
       return this.currentVote.length === MAX_VOTE_PRODUCERS
     },
