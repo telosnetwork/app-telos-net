@@ -32,6 +32,7 @@ export default {
   },
   data () {
     return {
+      lastUpdated: '',
       voterInfo: {},
       producerData: [],
       producerVotes: [],
@@ -57,6 +58,7 @@ export default {
     async getData () {
       try {
         const objectList = await axios.get(BUCKET_URL)
+        console.dir(objectList)
         const lastKey = this.getLastKey(objectList)
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
         await this.getVotes()
@@ -66,8 +68,10 @@ export default {
     },
     getLastKey (objectList) {
       const parser = new DOMParser()
-      const keyArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Key')
-      return keyArray[keyArray.length - 1].textContent
+      const contentsArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Contents')
+      const lastEntry = contentsArray[contentsArray.length - 1]
+      this.lastUpdated = lastEntry.childNodes[1].textContent
+      return lastEntry.childNodes[0].textContent
     },
     async getVotes () {
       if (this.account) {
