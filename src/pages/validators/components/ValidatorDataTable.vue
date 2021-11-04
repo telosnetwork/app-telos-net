@@ -333,6 +333,7 @@ export default {
       this.currentVote = [...this.producerVotes]
     },
     async sendVoteTransaction () {
+      this.currentVote.sort()
       const voteActions = [{
         account: 'eosio',
         name: 'voteproducer',
