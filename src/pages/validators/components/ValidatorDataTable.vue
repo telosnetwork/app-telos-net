@@ -1,6 +1,6 @@
 <template lang='pug'>
 .q-pa-md
-  .q-pa-md.row.items-start.q-gutter-md(v-if='account')
+  .row.items-start.q-gutter-md(v-if='account')
     q-card( v-for='(prod,i) in currentVote').producer-card
       .q-card-section {{ prod }}
           q-icon(
@@ -375,6 +375,7 @@ export default {
   display: flex;
   justify-content: space-between;
   min-height: 2rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   line-height: 2rem;
   padding-left: 1rem;
