@@ -80,12 +80,20 @@ export default {
       this.$router.push(`/trails/ballots/${ballot.ballot_name}/${this.timeAtMount}`)
       // the timestamp prevents scroll glitches on the infinite list
     },
+    getLocalTime (isoDate) {
+      const msOffset = new Date().getTimezoneOffset() * 60 * 1000
+      return new Date(isoDate).getTime() - msOffset
+    },
     isBallotOpened (ballot) {
-      let endTime = new Date(ballot.end_time).getTime()
+      let endTime = this.getLocalTime(ballot.end_time)
       let notExpired = endTime > Date.now()
-      let startTime = new Date(ballot.begin_time).getTime()
+      let startTime = this.getLocalTime(ballot.begin_time)
       let isStarted = startTime < Date.now()
       return notExpired && isStarted
+    },
+    isBallotNotStarted (ballot) {
+      const startTime = this.getLocalTime(ballot.begin_time)
+      return startTime > Date.now()
     },
     displayWinner (ballot) {
       if (!ballot.total_voters) return false
@@ -105,10 +113,10 @@ export default {
       return isStarted
     },
     getStartTime (ballot) {
-      return new Date(ballot.begin_time).getTime()
+      return this.getLocalTime(ballot.begin_time)
     },
     getEndTime (ballot) {
-      return new Date(ballot.end_time).getTime()
+      return this.getLocalTime(ballot.end_time)
     },
     isNewUser () {
       return localStorage.isNewUser
@@ -134,7 +142,7 @@ export default {
           } else if (this.statuses.includes('expired')) {
             return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && this.votingHasBegun(b) && b.status === 'voting')
           } else if (this.statuses.includes('not started')) {
-            return this.statuses.includes(b.status) || (!this.isBallotOpened(b) && !this.votingHasBegun(b) && b.status === 'voting')
+            return this.statuses.includes(b.status) || (this.isBallotNotStarted(b) && b.status === 'voting')
           }
           return this.statuses.includes(b.status)
         }

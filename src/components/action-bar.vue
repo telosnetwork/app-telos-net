@@ -755,7 +755,7 @@ export default {
             )
               q-form.bar-filter-menu-form(@submit="onSubmitStatuses")
                 q-option-group(
-                  name="satatus"
+                  name="status"
                   v-model="statusGroup"
                   :options="statusOptions"
                   color="primary"
@@ -783,7 +783,7 @@ export default {
               )
                 q-form.bar-filter-menu-form(@submit="onSubmitStatuses")
                   q-option-group(
-                    name="satatus"
+                    name="status"
                     v-model="statusGroup"
                     :options="statusOptions"
                     color="primary"
