@@ -210,8 +210,7 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
       }
     }]
     const transaction = await this.$api.signTransaction(actions)
-
-    notification.status = 'success'
+    transaction === null ? notification.status = 'error' : notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'

@@ -40,6 +40,7 @@ export default {
     // Commenting out to prevent the bug as it doesn't really cause any problems when the route isn't reset.
   },
   computed: {
+    ...mapGetters('notifications', ['notifications']),
     ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['ballot']),
     daysSinceStarted () {
@@ -114,6 +115,14 @@ export default {
       })
       this.voting = false
       this.votes = []
+    },
+    async showNotify () {
+      await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
+      this.$q.notify({
+        icon: this.notifications[0].icon,
+        message: this.notifications[0].status,
+        color: this.notifications[0].status === 'success' ? 'positive' : 'negative'
+      })
     },
     nextSlide () {
       if (this.ballotContentOptionData.length - 1 > this.defaultSlide) {
@@ -210,7 +219,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
+                  @clickBtn="isAuthenticated ? showNotify() : openNotice()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
@@ -326,7 +335,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
+                  @clickBtn="isAuthenticated ? showNotify() : openNotice()"
                 )
             q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-320
               div.text-section.column
