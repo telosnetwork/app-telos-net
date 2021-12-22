@@ -1,7 +1,7 @@
 export const addNotification = (state, notification) => {
   state.notifications = [...state.notifications].concat({
     ...notification,
-    transaction: { transactionId: notification.transaction.transactionId },
+    transaction: { transactionId: notification.transaction ? notification.transaction.transactionId ?? null : null },
     read: false,
     id: Math.round(Math.random() * 10e7)
   })

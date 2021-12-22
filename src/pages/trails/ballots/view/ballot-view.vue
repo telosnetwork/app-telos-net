@@ -40,6 +40,7 @@ export default {
     // Commenting out to prevent the bug as it doesn't really cause any problems when the route isn't reset.
   },
   computed: {
+    ...mapGetters('notifications', ['notifications']),
     ...mapGetters('accounts', ['isAuthenticated']),
     ...mapGetters('trails', ['ballot']),
     daysSinceStarted () {
@@ -67,7 +68,9 @@ export default {
         return this.ballot.description.replace(regexWithUrl, '').replace(regex, '')
       }
 
-      return this.ballot.description
+      const descriptionWithLinks = this.findLinks(this.ballot.description)
+
+      return descriptionWithLinks
     },
     ballotContent () {
       if (this.ballot.content.match(regex)) {
@@ -115,6 +118,19 @@ export default {
       this.voting = false
       this.votes = []
     },
+    showNotification () {
+      this.$q.notify({
+        icon: this.notifications[0].icon,
+        message: this.notifications[0].status === 'success'
+          ? this.$t('notifications.trails.successSigning')
+          : this.$t('notifications.trails.errorSigning'),
+        color: this.notifications[0].status === 'success' ? 'positive' : 'negative'
+      })
+    },
+    async vote () {
+      await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
+      this.showNotification()
+    },
     nextSlide () {
       if (this.ballotContentOptionData.length - 1 > this.defaultSlide) {
         this.defaultSlide++
@@ -141,6 +157,10 @@ export default {
       if (this.ballot.max_options === 1) {
         this.votes = this.votes.includes(key) ? [key] : []
       }
+    },
+    findLinks (text) {
+      const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+      return text.replace(urlRegex, (url) => `<a href="${url}">${url}</a>`)
     }
   }
 }
@@ -210,7 +230,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
+                  @clickBtn="isAuthenticated ? vote() : openNotice()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
@@ -255,7 +275,8 @@ export default {
         q-separator.popup-separator
         q-card-section.description-section-wrapper
           div.description-section
-            div.description-section-title(:class="getIPFShash ? `q-pb-md` : `q-pb-xl q-mb-lg`") {{ ballotDescription }}
+            div.description-section-title(:class="getIPFShash ? `q-pb-md` : `q-pb-xl q-mb-lg`")
+              p(v-html="ballotDescription")
             div(
               v-if="ballotContentOptionData && ballotContentOptionData[0] && ballotContentOptionData[0].hasOwnProperty('imageUrl')"
             ).q-pb-md.ballot-content-carousel
@@ -326,7 +347,7 @@ export default {
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="isAuthenticated ? onCastVote({ options: votes, ballotName: ballot.ballot_name }) : openNotice()"
+                  @clickBtn="isAuthenticated ? vote() : openNotice()"
                 )
             q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-320
               div.text-section.column

@@ -76,7 +76,9 @@ export default {
       castVote: 'Cast a vote',
       editTreasury: 'Edit a group',
       mintTokens: 'Mint tokens',
-      registerVoter: 'Register as a voter'
+      registerVoter: 'Register as a voter',
+      errorSigning: 'Error signing transaction',
+      successSigning: 'Success signing transaction'
     },
     poc: {
       lockSafe: 'Lock safe',
