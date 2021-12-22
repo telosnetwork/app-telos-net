@@ -19,7 +19,6 @@ export default {
   methods: {
     ...mapActions('testnet', ['faucet', 'evmFaucet', 'account']),
     async onFaucet () {
-      debugger
       this.submitting = true
       const result = await this.faucet(this.form.send_to)
       if (result) {
