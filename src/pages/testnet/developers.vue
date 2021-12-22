@@ -1,5 +1,6 @@
 <script>
 import { mapActions } from 'vuex'
+import { Notify } from 'quasar'
 
 export default {
   name: 'page-developers',
@@ -21,6 +22,7 @@ export default {
       this.submitting = true
       const result = await this.faucet(this.form.send_to)
       if (result) {
+        Notify.create({ message: result, position: 'top', color: 'primary', textColor: 'white', actions: [{ label: 'Dismiss', color: 'white' }] })
         this.transactionId = result.transactionId
         console.log(result)
       }
@@ -30,6 +32,7 @@ export default {
       this.submitting = true
       const result = await this.evmFaucet(this.form.send_to_evm)
       if (result) {
+        Notify.create({ message: result, position: 'top', color: 'primary', textColor: 'white', actions: [{ label: 'Dismiss', color: 'white' }] })
         this.transactionId = result.transactionId
         console.log(result)
       }
@@ -39,6 +42,7 @@ export default {
       this.submitting = true
       const result = await this.account(this.form)
       if (result) {
+        Notify.create({ message: result, position: 'top', color: 'primary', textColor: 'white', actions: [{ label: 'Dismiss', color: 'white' }] })
         this.transactionId = result.transactionId
         console.log(result)
       }
