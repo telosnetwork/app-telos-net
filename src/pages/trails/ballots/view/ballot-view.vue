@@ -558,6 +558,11 @@ export default {
     overflow: hidden
   .sub-title-group-wrapper
     margin-top: 6px
+  @media screen and (max-width: 1200px), screen and (max-height: 640px)
+    .q-dialog__inner
+      overflow-y: auto
+    .no-pointer-events
+      pointer-events: auto !important
   @media (max-width: 1000px)
     .custom-caption
       & > .caption-text
@@ -570,7 +575,7 @@ export default {
       position: relative
       padding-top: 70px
       position: fixed
-      overflow-y: auto
+      overflow-y: auto !important
       top: 0
       right: 0
       bottom: 0
