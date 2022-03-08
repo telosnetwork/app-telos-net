@@ -1,14 +1,15 @@
 # Telos Net (telos-net)
 
-TODO desc
-
 ## Install the dependencies
 ```bash
 yarn
 ```
 
 ## Create a .env file in the root directory
-Use the format found in the .env.example file and replace the values with real data.
+copy the .env.example file and replace any placeholder values with real data
+```bash
+cp .env.example .env
+```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
