@@ -313,7 +313,11 @@ export default {
                       icon="fas fa-chevron-right"
                       @click="nextSlide()"
                     )
-            embed(v-if="getIPFShash" :src="`https://ipfs.io/ipfs/${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
+            embed(
+              v-if="getIPFShash"
+              :src="`https://ipfs.io/ipfs/${getIPFShash}`"
+              type="application/pdf"
+            ).kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
             div(v-else).text-center
               img(src="/statics/app-icons/no-pdf.svg" style="width: 60px;")
               p(style="color: #a1c1ff").text-caption No PDF found
@@ -377,6 +381,10 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  embed
+    width: 90%
+    height: 100%
+    min-height: 480px
   .open-sans
     font-family: open sans,arial,sans-serif;
   .link
@@ -438,6 +446,7 @@ export default {
       background-color: #caccce
       border-radius: 5px
   .description-section
+    width: 100%
     height: max-content
   .popup-right-col
     max-width: 912px
