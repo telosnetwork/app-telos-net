@@ -78,7 +78,8 @@ export default {
       mintTokens: 'Mint tokens',
       registerVoter: 'Register as a voter',
       errorSigning: 'Error signing transaction',
-      successSigning: 'Success signing transaction'
+      successSigning: 'Success signing transaction',
+      deleteBallot: 'Delete ballot'
     },
     poc: {
       lockSafe: 'Lock safe',
@@ -123,6 +124,7 @@ export default {
         vote: 'Vote',
         ends: 'Ends',
         starts: 'Starts',
+        delete: 'Delete',
         welcomeCard: {
           title: 'Hi, ',
           textBeginning: 'Welcome to the ',

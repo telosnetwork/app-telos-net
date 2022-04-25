@@ -1,6 +1,7 @@
 import { supplyToSymbol } from '../../utils/assets'
 
 const VOTE_SYMBOL = 'VOTE'
+const HALF_YEAR_IN_MS = 15552000000
 
 export const setFees = (state, config) => {
   state.fees = config.fees
@@ -13,11 +14,17 @@ export const resetBallots = (state) => {
   console.log(`ballots reset`)
 }
 
+const removeOldBallot = (ballots, timeLimit) =>
+  ballots.filter(
+    (ballot) => new Date().getTime() - new Date(ballot.end_time).getTime() < timeLimit
+  )
+
 export const addBallots = (state, { rows, more }) => {
   if (rows) {
     // Remove the first item as it's the lower_bound
     const arr = state.ballots.list.data.length ? rows.slice(1) : rows
-    state.ballots.list.data = state.ballots.list.data.concat(arr)
+    const filteredArr = removeOldBallot(arr, HALF_YEAR_IN_MS)
+    state.ballots.list.data = state.ballots.list.data.concat(filteredArr)
   }
   state.ballots.list.loaded = !more
 }
