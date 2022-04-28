@@ -79,7 +79,9 @@ export default {
       registerVoter: 'Register as a voter',
       errorSigning: 'Error signing transaction',
       successSigning: 'Success signing transaction',
-      deleteBallot: 'Delete ballot'
+      deleteBallot: 'Delete ballot',
+      endBallot: 'End ballot',
+      cancelBallot: 'Cancel ballot'
     },
     poc: {
       lockSafe: 'Lock safe',
@@ -123,6 +125,7 @@ export default {
       ballots: {
         vote: 'Vote',
         ends: 'Ends',
+        end: 'End',
         starts: 'Starts',
         delete: 'Delete',
         welcomeCard: {

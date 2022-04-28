@@ -228,6 +228,35 @@ export const deleteBallot = async function ({ commit }, ballot) {
   return notification.status === 'success'
 }
 
+export const cancelBallot = async function ({ commit }, ballot) {
+  const notification = {
+    icon: 'fas fa-person-booth',
+    title: 'notifications.trails.cancelBallot',
+    content: `Ballot: ${ballot.title}`
+  }
+  try {
+    const actions = [
+      {
+        account: 'telos.decide',
+        name: 'cancelballot',
+        data: {
+          ballot_name: ballot.ballot_name,
+          memo: 'Cancel ballot'
+        }
+      }
+    ]
+    const transaction = await this.$api.signTransaction(actions)
+    commit('resetBallots')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
 export const castVote = async function ({ commit, rootState }, { ballotName, options }) {
   const notification = {
     icon: 'fas fa-person-booth',

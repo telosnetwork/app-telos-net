@@ -10,6 +10,7 @@ export default {
     to: String,
     type: String,
     hoverBlue: Boolean,
+    hoverRed: Boolean,
     disable: Boolean
   },
   methods: {
@@ -20,7 +21,7 @@ export default {
 
 <template lang="pug">
   q-btn.custom-btn(
-    :class="`${primary ? undefined : 'border-btn'} ${hoverBlue ? 'hover-blue' : undefined}`"
+    :class="`${primary ? undefined : 'border-btn'} ${hoverBlue ? 'hover-blue' : undefined} ${hoverRed ? 'hover-red' : undefined}`"
     :to="to ? to : undefined"
     :style="{'width': `${btnWidth}px`, 'font-size': `${fontSize}px`}"
     @click="clickBtn"
@@ -47,4 +48,9 @@ export default {
       background: var(--q-color-primary)
     & > .q-btn__wrapper:hover > .q-btn__content
       color: #fff
+  .hover-red
+    & > .q-btn__wrapper:hover
+      background: var(--q-color-negative)
+    & > .q-btn__wrapper:hover > .q-btn__content
+      color: #fff !important
 </style>
