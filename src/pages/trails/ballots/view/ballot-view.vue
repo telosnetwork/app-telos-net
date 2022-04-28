@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     ...mapGetters('notifications', ['notifications']),
-    ...mapGetters('accounts', ['isAuthenticated']),
+    ...mapGetters('accounts', ['isAuthenticated', 'account']),
     ...mapGetters('trails', ['ballot']),
     daysSinceStarted () {
       const oneDay = 24 * 60 * 60 * 1000
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('trails', ['fetchBallot', 'castVote']),
+    ...mapActions('trails', ['fetchBallot', 'castVote', 'cancelBallot']),
     openUrl (url) {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
@@ -129,6 +129,10 @@ export default {
     },
     async vote () {
       await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
+      this.showNotification()
+    },
+    async cancel () {
+      await this.cancelBallot(this.ballot)
       this.showNotification()
     },
     nextSlide () {
@@ -224,13 +228,21 @@ export default {
                 div.linear-progress(v-if="displayWinner(ballot)")
                   q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
             q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
-              q-item-section
+              q-item-section.btn-wrapper
                 btn(
                   :labelText="$t('pages.trails.ballots.vote')"
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
                   @clickBtn="isAuthenticated ? vote() : openNotice()"
+                )
+                btn(
+                  v-if="isAuthenticated && ballot.publisher === account"
+                  :labelText="$t('common.buttons.cancel')"
+                  btnWidth='220'
+                  fontSize='16'
+                  hoverRed=true
+                  @clickBtn="cancel()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
@@ -345,14 +357,22 @@ export default {
                   div.linear-progress(v-if="displayWinner(ballot)")
                     q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
               q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
-                q-item-section
+                q-item-section.btn-wrapper
                   btn.btn-vote-320(
-                  :labelText="$t('pages.trails.ballots.vote')"
-                  btnWidth='220'
-                  fontSize='16'
-                  hoverBlue=true
-                  @clickBtn="isAuthenticated ? vote() : openNotice()"
-                )
+                    :labelText="$t('pages.trails.ballots.vote')"
+                    btnWidth='220'
+                    fontSize='16'
+                    hoverBlue=true
+                    @clickBtn="isAuthenticated ? vote() : openNotice()"
+                  )
+                  btn.btn-vote-320(
+                    v-if="isAuthenticated && ballot.publisher === account"
+                    :labelText="$t('common.buttons.cancel')"
+                    btnWidth='220'
+                    fontSize='16'
+                    hoverRed=true
+                    @clickBtn="cancel()"
+                  )
             q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-320
               div.text-section.column
                 div.statics-section-item(v-if="ballot.total_voters > 0")
@@ -381,6 +401,16 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .btn-wrapper
+    width: 100%
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    gap: 12px
+    & > button:nth-child(2)
+      width: 45% !important
+      &:hover
+        background-color: #f44336 !important
   embed
     width: 90%
     height: 100%
@@ -472,6 +502,7 @@ export default {
       & > span
         line-height: 130%
   .options-btn
+    width: 100%
     padding: 0 !important
     margin: 6px 0 0
   .round-btn
@@ -598,6 +629,9 @@ export default {
     .description-section-wrapper
       height: max-content
     @media (max-width: 620px)
+      .btn-wrapper
+        & > button:nth-child(2)
+          width: 35% !important
       .popup-wrapper
         & > .popup-left-col-wrapper,
         & > .popup-right-col-wrapper
@@ -638,7 +672,7 @@ export default {
       .popup-right-col > .q-card__section > .q-btn-item
         display: none
       .btn-vote-320
-        width: 295px !important
+        width: 100% !important
       .custom-caption > .caption-text
         font-size: 16px
       .options-wrapper
