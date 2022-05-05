@@ -128,6 +128,7 @@ export default {
         end: 'End',
         starts: 'Starts',
         delete: 'Delete',
+        requestAmount: 'request amount',
         welcomeCard: {
           title: 'Hi, ',
           textBeginning: 'Welcome to the ',

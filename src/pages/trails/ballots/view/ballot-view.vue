@@ -165,6 +165,13 @@ export default {
     findLinks (text) {
       const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
       return text.replace(urlRegex, (url) => `<a href="${url}">${url}</a>`)
+    },
+    getRequestAmountRounded (requestAmount) {
+      const amountArr = requestAmount.split(' ')
+      const amount = parseInt(amountArr[0])
+      const tokenSymbol = amountArr[1]
+
+      return `${amount} ${tokenSymbol}`
     }
   }
 }
@@ -258,6 +265,9 @@ export default {
               span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
               span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
               span.opacity06 tokens
+            div.statics-section-item(v-if="ballot.proposal_info")
+              span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
+              span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
     .col-xs-12.col-sm.popup-right-col-wrapper
       q-card(
         flat
@@ -387,6 +397,9 @@ export default {
                   span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
                   span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
                   span.opacity06 tokens
+                div.statics-section-item(v-if="ballot.proposal_info")
+                  span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
+                  span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
       div.back-btn.row(v-close-popup :class="{scrolled: scrollPosition > 50}")
         q-icon(name="fas fa-chevron-left")
         div Go back
