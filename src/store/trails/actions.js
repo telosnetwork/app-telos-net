@@ -114,6 +114,19 @@ export const fetchBallot = async function ({ commit }, ballot) {
     upper_bound: supplyToSymbol(result.rows[0].treasury_symbol)
   })
 
+  if (result.rows[0].category === 'proposal') {
+    const proposalInfo = await this.$api.getTableRows({
+      code: 'works.decide',
+      scope: 'works.decide',
+      table: 'proposals',
+      limit: 1,
+      lower_bound: ballot,
+      upper_bound: ballot
+    })
+
+    result.rows[0].proposal_info = proposalInfo.rows[0]
+  }
+
   result.rows[0].treasury = treasury.rows[0]
 
   commit('setBallot', result.rows[0])
