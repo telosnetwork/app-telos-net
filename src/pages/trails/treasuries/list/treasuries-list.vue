@@ -54,10 +54,6 @@ export default {
       } else {
         this.$refs.infiniteScroll.stop()
       }
-    },
-    filterData (data) {
-      const sortedData = data.sort((a, b) => a.title > b.title ? 1 : -1)
-      return sortedData
     }
   },
   computed: {
@@ -78,9 +74,9 @@ export default {
         :scroll-target="$refs.treasuriesRef"
       )
         .row.q-col-gutter-md
-          .col-xs-12.col-sm-6(v-for="treasury in filterData([...fakeData])")
+          .col-xs-12.col-sm-6(v-for="treasury in fakeData")
             treasury-card(:treasury="treasury")
-          .col-xs-12.col-sm-6(v-for="treasury in filterData([...treasuries])")
+          .col-xs-12.col-sm-6(v-for="treasury in treasuries")
             treasury-card(:treasury="treasury")
     q-page-sticky(
       v-if="isAuthenticated"

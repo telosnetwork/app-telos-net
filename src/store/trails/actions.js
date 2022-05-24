@@ -114,6 +114,19 @@ export const fetchBallot = async function ({ commit }, ballot) {
     upper_bound: supplyToSymbol(result.rows[0].treasury_symbol)
   })
 
+  if (result.rows[0].category === 'proposal') {
+    const proposalInfo = await this.$api.getTableRows({
+      code: 'works.decide',
+      scope: 'works.decide',
+      table: 'proposals',
+      limit: 1,
+      lower_bound: ballot,
+      upper_bound: ballot
+    })
+
+    result.rows[0].proposal_info = proposalInfo.rows[0]
+  }
+
   result.rows[0].treasury = treasury.rows[0]
 
   commit('setBallot', result.rows[0])
@@ -177,6 +190,71 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         data: {
           ballot_name: ballotName,
           end_time: new Date(ballot.endDate).toISOString().slice(0, -5)
+        }
+      }
+    ]
+    const transaction = await this.$api.signTransaction(actions)
+    commit('resetBallots')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export const deleteBallot = async function ({ commit }, ballot) {
+  const notification = {
+    icon: 'fas fa-person-booth',
+    title: 'notifications.trails.deleteBallot',
+    content: `Ballot: ${ballot.title}`
+  }
+  try {
+    const actions = [
+      {
+        account: 'telos.decide',
+        name: 'closevoting',
+        data: {
+          ballot_name: ballot.ballot_name,
+          broadcast: true
+        }
+      },
+      {
+        account: 'telos.decide',
+        name: 'deleteballot',
+        data: {
+          ballot_name: ballot.ballot_name
+        }
+      }
+    ]
+    const transaction = await this.$api.signTransaction(actions)
+    commit('resetBallots')
+    notification.status = 'success'
+    notification.transaction = transaction
+  } catch (e) {
+    notification.status = 'error'
+    notification.error = e.message
+  }
+  commit('notifications/addNotification', notification, { root: true })
+  return notification.status === 'success'
+}
+
+export const cancelBallot = async function ({ commit }, ballot) {
+  const notification = {
+    icon: 'fas fa-person-booth',
+    title: 'notifications.trails.cancelBallot',
+    content: `Ballot: ${ballot.title}`
+  }
+  try {
+    const actions = [
+      {
+        account: 'telos.decide',
+        name: 'cancelballot',
+        data: {
+          ballot_name: ballot.ballot_name,
+          memo: 'Cancel ballot'
         }
       }
     ]

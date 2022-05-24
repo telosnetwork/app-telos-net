@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     ...mapGetters('notifications', ['notifications']),
-    ...mapGetters('accounts', ['isAuthenticated']),
+    ...mapGetters('accounts', ['isAuthenticated', 'account']),
     ...mapGetters('trails', ['ballot']),
     daysSinceStarted () {
       const oneDay = 24 * 60 * 60 * 1000
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('trails', ['fetchBallot', 'castVote']),
+    ...mapActions('trails', ['fetchBallot', 'castVote', 'cancelBallot']),
     openUrl (url) {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
@@ -129,6 +129,10 @@ export default {
     },
     async vote () {
       await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
+      this.showNotification()
+    },
+    async cancel () {
+      await this.cancelBallot(this.ballot)
       this.showNotification()
     },
     nextSlide () {
@@ -161,6 +165,13 @@ export default {
     findLinks (text) {
       const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
       return text.replace(urlRegex, (url) => `<a href="${url}">${url}</a>`)
+    },
+    getRequestAmountRounded (requestAmount) {
+      const amountArr = requestAmount.split(' ')
+      const amount = parseInt(amountArr[0])
+      const tokenSymbol = amountArr[1]
+
+      return `${amount} ${tokenSymbol}`
     }
   }
 }
@@ -224,13 +235,21 @@ export default {
                 div.linear-progress(v-if="displayWinner(ballot)")
                   q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
             q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
-              q-item-section
+              q-item-section.btn-wrapper
                 btn(
                   :labelText="$t('pages.trails.ballots.vote')"
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
                   @clickBtn="isAuthenticated ? vote() : openNotice()"
+                )
+                btn(
+                  v-if="isAuthenticated && ballot.publisher === account"
+                  :labelText="$t('common.buttons.cancel')"
+                  btnWidth='220'
+                  fontSize='16'
+                  hoverRed=true
+                  @clickBtn="cancel()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
@@ -246,6 +265,9 @@ export default {
               span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
               span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
               span.opacity06 tokens
+            div.statics-section-item(v-if="ballot.proposal_info")
+              span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
+              span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
     .col-xs-12.col-sm.popup-right-col-wrapper
       q-card(
         flat
@@ -313,7 +335,11 @@ export default {
                       icon="fas fa-chevron-right"
                       @click="nextSlide()"
                     )
-            embed(v-if="getIPFShash" :src="`https://ipfs.io/ipfs/${getIPFShash}`" type="application/pdf" style="width: 100%; height: 100%; min-height: 480px;").kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
+            embed(
+              v-if="getIPFShash"
+              :src="`https://ipfs.io/ipfs/${getIPFShash}`"
+              type="application/pdf"
+            ).kv-preview-data.file-preview-pdf.file-zoom-detail.shadow-1
             div(v-else).text-center
               img(src="/statics/app-icons/no-pdf.svg" style="width: 60px;")
               p(style="color: #a1c1ff").text-caption No PDF found
@@ -341,14 +367,22 @@ export default {
                   div.linear-progress(v-if="displayWinner(ballot)")
                     q-linear-progress(rounded size="6px" :value="getPartOfTotal(option)" color="$primary")
               q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
-                q-item-section
+                q-item-section.btn-wrapper
                   btn.btn-vote-320(
-                  :labelText="$t('pages.trails.ballots.vote')"
-                  btnWidth='220'
-                  fontSize='16'
-                  hoverBlue=true
-                  @clickBtn="isAuthenticated ? vote() : openNotice()"
-                )
+                    :labelText="$t('pages.trails.ballots.vote')"
+                    btnWidth='220'
+                    fontSize='16'
+                    hoverBlue=true
+                    @clickBtn="isAuthenticated ? vote() : openNotice()"
+                  )
+                  btn.btn-vote-320(
+                    v-if="isAuthenticated && ballot.publisher === account"
+                    :labelText="$t('common.buttons.cancel')"
+                    btnWidth='220'
+                    fontSize='16'
+                    hoverRed=true
+                    @clickBtn="cancel()"
+                  )
             q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-320
               div.text-section.column
                 div.statics-section-item(v-if="ballot.total_voters > 0")
@@ -363,6 +397,9 @@ export default {
                   span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
                   span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
                   span.opacity06 tokens
+                div.statics-section-item(v-if="ballot.proposal_info")
+                  span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
+                  span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
       div.back-btn.row(v-close-popup :class="{scrolled: scrollPosition > 50}")
         q-icon(name="fas fa-chevron-left")
         div Go back
@@ -377,6 +414,20 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .btn-wrapper
+    width: 100%
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    gap: 12px
+    & > button:nth-child(2)
+      width: 45% !important
+      &:hover
+        background-color: #f44336 !important
+  embed
+    width: 90%
+    height: 100%
+    min-height: 480px
   .open-sans
     font-family: open sans,arial,sans-serif;
   .link
@@ -438,6 +489,7 @@ export default {
       background-color: #caccce
       border-radius: 5px
   .description-section
+    width: 100%
     height: max-content
   .popup-right-col
     max-width: 912px
@@ -463,6 +515,7 @@ export default {
       & > span
         line-height: 130%
   .options-btn
+    width: 100%
     padding: 0 !important
     margin: 6px 0 0
   .round-btn
@@ -589,6 +642,9 @@ export default {
     .description-section-wrapper
       height: max-content
     @media (max-width: 620px)
+      .btn-wrapper
+        & > button:nth-child(2)
+          width: 35% !important
       .popup-wrapper
         & > .popup-left-col-wrapper,
         & > .popup-right-col-wrapper
@@ -629,7 +685,7 @@ export default {
       .popup-right-col > .q-card__section > .q-btn-item
         display: none
       .btn-vote-320
-        width: 295px !important
+        width: 100% !important
       .custom-caption > .caption-text
         font-size: 16px
       .options-wrapper
