@@ -20,7 +20,8 @@ const signTransaction = async function (actions) {
       })
     }
   } catch (e) {
-    console.log(actions, e.cause.message)
+    console.log(actions, e.cause.error.details[0].message, 'msg twst ')
+    debugger
     // this.$sentry.captureException(e)
     throw new Error(e.cause.message)
   }
