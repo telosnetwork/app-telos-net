@@ -74,8 +74,6 @@ export default {
         :scroll-target="$refs.treasuriesRef"
       )
         .row.q-col-gutter-md
-          .col-xs-12.col-sm-6(v-for="treasury in fakeData")
-            treasury-card(:treasury="treasury")
           .col-xs-12.col-sm-6(v-for="treasury in treasuries")
             treasury-card(:treasury="treasury")
     q-page-sticky(

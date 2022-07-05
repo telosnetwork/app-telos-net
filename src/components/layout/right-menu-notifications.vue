@@ -48,6 +48,7 @@ export default {
           dense
           flat
           size="8px"
+          v-if="notification.transaction.transactionId!==null"
         )
           q-tooltip {{ $t('components.notifications.linkTip') }}
   q-btn(
