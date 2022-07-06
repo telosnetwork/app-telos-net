@@ -77,7 +77,7 @@ export async function doCreateToken ({ commit }, { symbol, name, logoSm, logoLg,
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
@@ -106,7 +106,7 @@ export async function setMeta ({ commit }, { symbol, name, logoSm, logoLg }) {
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
@@ -135,7 +135,7 @@ export async function issueTokens ({ commit }, { symbol, decimals, contractAccou
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
@@ -163,7 +163,7 @@ export async function retireTokens ({ commit }, { symbol, decimals, contractAcco
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
@@ -193,7 +193,7 @@ export async function transferTokens ({ commit }, { symbol, decimals, contractAc
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'

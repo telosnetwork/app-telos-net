@@ -19,7 +19,7 @@ export const sendTokens = async function ({ commit, rootState }, { to, quantity,
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.transaction

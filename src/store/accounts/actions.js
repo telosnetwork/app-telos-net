@@ -210,7 +210,7 @@ export const claimAccount = async function ({ commit }, accountName) {
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    notification.error = e.message
+    notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
   return notification.status === 'success'
