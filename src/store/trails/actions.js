@@ -199,7 +199,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
     notification.transaction = transaction
   } catch (e) {
     notification.status = 'error'
-    console.log(e)
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -235,7 +234,7 @@ export const deleteBallot = async function ({ commit }, ballot) {
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -264,7 +263,7 @@ export const cancelBallot = async function ({ commit }, ballot) {
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -292,7 +291,7 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
     transaction === null ? notification.status = 'error' : notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
 
@@ -322,7 +321,7 @@ export const registerVoter = async function ({ commit, state, rootState }, suppl
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -410,7 +409,7 @@ export const addTreasury = async function ({ commit, state, rootState }, { manag
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -441,7 +440,7 @@ export const editTreasury = async function ({ commit }, { title, description, tr
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
@@ -468,7 +467,7 @@ export const mint = async function ({ commit }, { to, quantity, memo, supply }) 
     notification.status = 'success'
     notification.transaction = transaction
   } catch (e) {
-    console.log(e)
+    notification.status = 'error'
     notification.error = e
   }
   commit('notifications/addNotification', notification, { root: true })
