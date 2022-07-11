@@ -1,6 +1,6 @@
 <template lang="pug">
  main
-  q-input.send-input(@keypress.enter="onSearch", standout='bg-teal text-white', bottom-slots, v-model='search', :label="$t('pages.general.search')", counter)
+  q-input.send-input(@keypress.enter="onSearch", bottom-slots, v-model='search', :label="$t('pages.general.search')")
     template(v-slot:append)
       q-btn(round, dense, flat, icon='search', @click='onSearch')
   .q-pa-md.infiniteScroll(ref='scrollTargetRef')
