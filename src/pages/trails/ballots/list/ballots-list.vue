@@ -247,6 +247,7 @@ q-page
           :min="currentPage"
           :max="Math.ceil(filterBallots(ballots).length / limit)"
           :max-pages="6"
+          v-if="filterBallots(ballots).length !== 0"
           direction-links
           boundary-links
           icon-first="skip_previous"
@@ -255,6 +256,7 @@ q-page
           icon-next="fast_forward"
           size="12px"
         )
+        span(v-else).ballot-card-title {{ "There are no results for the current request" }}
       template(v-slot:loading)
         .row.justify-center.q-my-md
           q-spinner-dots(
