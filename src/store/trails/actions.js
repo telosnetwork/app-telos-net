@@ -167,6 +167,14 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
       },
       {
         account: 'telos.decide',
+        name: 'togglebal',
+        data: {
+          ballot_name: ballotName,
+          setting_name: 'voteliquid'
+        }
+      },
+      {
+        account: 'telos.decide',
         name: 'editdetails',
         data: {
           ballot_name: ballotName,
@@ -276,7 +284,7 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
     title: 'notifications.trails.castVote',
     content: `${ballotName} ${options}`
   }
-
+  console.log(options, 'options')
   try {
     const actions = [{
       account: 'telos.decide',
