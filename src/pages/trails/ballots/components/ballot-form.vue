@@ -47,6 +47,8 @@ export default {
     ...mapGetters('trails', ['treasuries']),
     ...mapGetters('accounts', ['account']),
     getTreasurySymbols () {
+      console.log(this.treasuries, this.account)
+      console.log(324567432345)
       return this.treasuries
         .filter(t => t.access === 'public' || t.manager === this.account)
         .map(treasury => ({
@@ -130,6 +132,7 @@ q-dialog(
     bordered
     style="width: 400px; max-width: 80vw;"
   )
+
     q-card-section.bg-primary.text-white
       .text-h6 Create a ballot
     q-card-section
