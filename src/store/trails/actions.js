@@ -135,6 +135,10 @@ export const fetchBallot = async function ({ commit }, ballot) {
 export const addBallot = async function ({ commit, state, rootState }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
+  const stakeable = ballot.settings.find(i => i.key === 'stakeable')
+
+  let togglebal
+  let actions
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -142,7 +146,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
     content: `Ballot: ${ballot.title}, deposit: ${deposit}`
   }
   try {
-    const actions = [
+    actions = [
       {
         account: 'eosio.token',
         name: 'transfer',
@@ -163,14 +167,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
           treasury_symbol: supplyToAsset(ballot.treasurySymbol.value),
           voting_method: ballot.votingMethod,
           initial_options: ballot.initialOptions
-        }
-      },
-      {
-        account: 'telos.decide',
-        name: 'togglebal',
-        data: {
-          ballot_name: ballotName,
-          setting_name: 'voteliquid'
         }
       },
       {
@@ -201,6 +197,52 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       }
     ]
+    if (ballot.treasurySymbol.symbol === 'VOTE') {
+      togglebal = {
+        account: 'telos.decide',
+        name: 'togglebal',
+        data: {
+          ballot_name: ballotName,
+          setting_name: 'votestake'
+        }
+      }
+      actions.splice(2, 0, togglebal)
+    } else if (!stakeable.value) {
+      togglebal = {
+        account: 'telos.decide',
+        name: 'togglebal',
+        data: {
+          ballot_name: ballotName,
+          setting_name: 'voteliquid'
+        }
+      }
+      actions.splice(2, 0, togglebal)
+    } else if (stakeable.value && ballot.config) {
+      if (ballot.config === 'both') {
+        for (let i of ['voteliquid', 'votestake']) {
+          togglebal = {
+            account: 'telos.decide',
+            name: 'togglebal',
+            data: {
+              ballot_name: ballotName,
+              setting_name: i
+            }
+          }
+          actions.splice(2, 0, togglebal)
+        }
+      } else {
+        togglebal = {
+          account: 'telos.decide',
+          name: 'togglebal',
+          data: {
+            ballot_name: ballotName,
+            setting_name: ballot.config
+          }
+        }
+        actions.splice(2, 0, togglebal)
+      }
+    }
+    console.log(actions)
     const transaction = await this.$api.signTransaction(actions)
     commit('resetBallots')
     notification.status = 'success'
@@ -287,6 +329,12 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
   console.log(options, 'options')
   try {
     const actions = [{
+      account: 'telos.decide',
+      name: 'refresh',
+      data: {
+        voter: rootState.accounts.account
+      }
+    }, {
       account: 'telos.decide',
       name: 'castvote',
       data: {
