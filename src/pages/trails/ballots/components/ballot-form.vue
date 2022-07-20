@@ -57,16 +57,15 @@ export default {
           symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
         }))
     },
-    getSettingsForCurrentTreasurie () {
-      return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol.symbol).settings
+    isStakeble () {
+      if (this.form.treasurySymbol && this.form.treasurySymbol.symbol) {
+        return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol.symbol).settings.find(i => i.key === 'stakeable').value
+      } else {
+        return false
+      }
     },
     configEnable () {
-      if (this.form) {
-        console.log(this.form)
-        return true
-      }
-      // return this.getSettingsForCurrentTreasurie.settings.find(i => i.key === 'stakeable').value
-      return false
+      return !(this.form.treasurySymbol && (this.form.treasurySymbol.symbol === 'VOTE' || !this.isStakeble))
     }
   },
   methods: {
@@ -117,7 +116,7 @@ export default {
         initialOptions: this.form.initialOptions,
         endDate: this.form.endDate,
         config: this.form.config,
-        settings: this.getSettingsForCurrentTreasurie
+        settings: this.isStakeble
       }
     },
     async convertToIFPS (file) {
