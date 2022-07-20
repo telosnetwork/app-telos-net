@@ -323,7 +323,6 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
     title: 'notifications.trails.castVote',
     content: `${ballotName} ${options}`
   }
-  console.log(options, 'options')
   try {
     const actions = [{
       account: 'telos.decide',
