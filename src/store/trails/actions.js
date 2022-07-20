@@ -135,10 +135,8 @@ export const fetchBallot = async function ({ commit }, ballot) {
 export const addBallot = async function ({ commit, state, rootState }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
-  const stakeable = ballot.settings.find(i => i.key === 'stakeable')
 
   let togglebal
-  let actions
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -146,7 +144,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
     content: `Ballot: ${ballot.title}, deposit: ${deposit}`
   }
   try {
-    actions = [
+    const actions = [
       {
         account: 'eosio.token',
         name: 'transfer',
@@ -207,7 +205,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       }
       actions.splice(2, 0, togglebal)
-    } else if (!stakeable.value) {
+    } else if (!ballot.settings) {
       togglebal = {
         account: 'telos.decide',
         name: 'togglebal',
@@ -217,7 +215,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       }
       actions.splice(2, 0, togglebal)
-    } else if (stakeable.value && ballot.config) {
+    } else if (ballot.settings && ballot.config) {
       if (ballot.config === 'both') {
         for (let i of ['voteliquid', 'votestake']) {
           togglebal = {
@@ -242,7 +240,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         actions.splice(2, 0, togglebal)
       }
     }
-    console.log(actions)
     const transaction = await this.$api.signTransaction(actions)
     commit('resetBallots')
     notification.status = 'success'
