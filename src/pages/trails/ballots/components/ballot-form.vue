@@ -44,19 +44,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('trails', ['treasuries']),
+    ...mapGetters('trails', ['treasuries', 'userTreasury']),
     ...mapGetters('accounts', ['account']),
     getTreasurySymbols () {
-      return this.treasuries
-        .filter(t => t.access === 'public' || t.manager === this.account)
+      console.log(this.userTreasury)
+      return this.userTreasury
         .map(treasury => ({
-          label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
-          value: treasury.supply
+          label: treasury.delegated,
+          value: treasury.delegated
         }))
     }
   },
   methods: {
-    ...mapActions('trails', ['addBallot']),
+    ...mapActions('trails', ['addBallot', 'fetchTreasuriesForUser']),
     async onAddBallot () {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
@@ -116,6 +116,10 @@ export default {
     cid: function () {
       this.form.IPFSString = this.cid.path
     }
+  },
+  mounted () {
+    this.fetchTreasuriesForUser()
+    console.log(this.userTreasury)
   }
 }
 </script>

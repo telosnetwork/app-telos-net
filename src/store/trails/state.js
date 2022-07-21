@@ -11,6 +11,7 @@ export default () => ({
       ballot: null
     }
   },
+  userTreasuries: null,
   treasuries: {
     list: {
       data: [],

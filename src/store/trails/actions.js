@@ -48,51 +48,15 @@ export const fetchBallots = async function ({ commit, state }, query) {
   commit('addBallots', result)
 }
 
-export const fetchBallotsByStatus = async function ({ commit, state }, query) {
-  const { statuses } = query
+export const fetchTreasuriesForUser = async function ({ commit, state }) {
+  const res = await this.$api.getTableRows({
+    code: 'telos.decide',
+    scope: 'artemtest123',
+    table: 'voters',
+    key_type: 'i64'
+  })
 
-  let rows = []
-
-  for (const status of statuses) {
-    const res = await this.$api.getTableRows({
-      code: 'telos.decide',
-      scope: 'telos.decide',
-      table: 'ballots',
-      limit: state.ballots.list.pagination.limit,
-      index_position: query.index || 0,
-      key_type: 'i64',
-      lower_bound: status,
-      upper_bound: status
-    })
-
-    rows = rows.concat(res.rows)
-  }
-
-  let treasuries = {}
-
-  for await (const ballot of rows) {
-    let supply = supplyToSymbol(ballot.treasury_symbol)
-
-    if (!treasuries.hasOwnProperty(supply)) {
-      const treasury = await this.$api.getTableRows({
-        code: 'telos.decide',
-        scope: 'telos.decide',
-        table: 'treasuries',
-        limit: 1,
-        lower_bound: supply,
-        upper_bound: supply
-      })
-      treasuries[supply] = treasury.rows[0]
-    }
-
-    ballot.treasury = treasuries[supply]
-  }
-  const result = {
-    rows,
-    more: false
-  }
-
-  commit('setBallots', result)
+  commit('setUserTreasuries', res)
 }
 
 export const fetchBallot = async function ({ commit }, ballot) {
