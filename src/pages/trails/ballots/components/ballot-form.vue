@@ -57,7 +57,7 @@ export default {
           symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
         }))
     },
-    isStakeble () {
+    isStakeable () {
       if (this.form.treasurySymbol?.symbol) {
         return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol.symbol).settings.find(i => i.key === 'stakeable').value
       } else {
