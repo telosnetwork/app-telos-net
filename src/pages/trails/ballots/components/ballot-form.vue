@@ -58,7 +58,7 @@ export default {
         }))
     },
     isStakeble () {
-      if (this.form.treasurySymbol && this.form.treasurySymbol.symbol) {
+      if (this.form.treasurySymbol?.symbol) {
         return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol.symbol).settings.find(i => i.key === 'stakeable').value
       } else {
         return false
