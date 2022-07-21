@@ -116,7 +116,7 @@ export default {
         initialOptions: this.form.initialOptions,
         endDate: this.form.endDate,
         config: this.form.config,
-        settings: this.isStakeble
+        settings: this.isStakeable
       }
     },
     async convertToIFPS (file) {
