@@ -204,7 +204,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
           setting_name: 'votestake'
         }
       }
-      actions.splice(2, 0, togglebal)
     } else if (!ballot.settings) {
       togglebal = {
         account: 'telos.decide',
@@ -214,7 +213,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
           setting_name: 'voteliquid'
         }
       }
-      actions.splice(2, 0, togglebal)
     } else if (ballot.settings && ballot.config) {
       if (ballot.config === 'both') {
         for (let i of ['voteliquid', 'votestake']) {
@@ -226,7 +224,6 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
               setting_name: i
             }
           }
-          actions.splice(2, 0, togglebal)
         }
       } else {
         togglebal = {
@@ -237,9 +234,10 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
             setting_name: ballot.config
           }
         }
-        actions.splice(2, 0, togglebal)
       }
     }
+    actions.splice(2, 0, togglebal)
+
     const transaction = await this.$api.signTransaction(actions)
     commit('resetBallots')
     notification.status = 'success'
