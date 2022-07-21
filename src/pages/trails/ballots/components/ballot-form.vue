@@ -58,11 +58,7 @@ export default {
         }))
     },
     isStakeable () {
-      if (this.form.treasurySymbol?.symbol) {
-        return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol.symbol).settings.find(i => i.key === 'stakeable').value
-      } else {
-        return false
-      }
+      return this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol?.symbol)?.settings.find(i => i.key === 'stakeable').value
     },
     configEnable () {
       return this.form.treasurySymbol?.symbol !== 'VOTE' && this.isStakeable
