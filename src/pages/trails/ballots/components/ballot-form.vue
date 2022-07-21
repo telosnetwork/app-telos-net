@@ -65,7 +65,7 @@ export default {
       }
     },
     configEnable () {
-      return !(this.form.treasurySymbol && (this.form.treasurySymbol.symbol === 'VOTE' || !this.isStakeble))
+      return this.form.treasurySymbol?.symbol !== 'VOTE' && this.isStakeable
     }
   },
   methods: {
