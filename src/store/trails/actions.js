@@ -136,7 +136,14 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
 
-  let togglebal
+  let togglebal = {
+    account: 'telos.decide',
+    name: 'togglebal',
+    data: {
+      ballot_name: ballotName,
+      setting_name: null
+    }
+  }
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -196,23 +203,9 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
       }
     ]
     if (ballot.treasurySymbol.symbol === 'VOTE') {
-      togglebal = {
-        account: 'telos.decide',
-        name: 'togglebal',
-        data: {
-          ballot_name: ballotName,
-          setting_name: 'votestake'
-        }
-      }
+      togglebal.data.setting_name = 'votestake'
     } else if (!ballot.settings) {
-      togglebal = {
-        account: 'telos.decide',
-        name: 'togglebal',
-        data: {
-          ballot_name: ballotName,
-          setting_name: 'voteliquid'
-        }
-      }
+      togglebal.data.setting_name = 'voteliquid'
     } else if (ballot.settings && ballot.config) {
       if (ballot.config === 'both') {
         for (let i of ['voteliquid', 'votestake']) {
@@ -226,14 +219,7 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
           }
         }
       } else {
-        togglebal = {
-          account: 'telos.decide',
-          name: 'togglebal',
-          data: {
-            ballot_name: ballotName,
-            setting_name: ballot.config
-          }
-        }
+        togglebal.data.setting_name = ballot.config
       }
     }
     actions.splice(2, 0, togglebal)
