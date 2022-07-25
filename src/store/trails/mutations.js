@@ -45,7 +45,6 @@ export const setBallot = (state, ballot) => {
 }
 
 export const setUserTreasuries = (state, treasuries) => {
-  console.log(treasuries)
   state.userTreasuries = treasuries
 }
 
