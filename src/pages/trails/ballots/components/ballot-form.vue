@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
+
 const IPFS = require('ipfs-core')
 
 export default {
@@ -22,7 +23,8 @@ export default {
         maxOptions: 1,
         minOptions: 1,
         initialOptions: [],
-        endDate: null
+        endDate: null,
+        config: 'votestake'
       },
       votingMethodOptions: [
         { value: '1acct1vote', label: 'One vote per account' },
@@ -50,9 +52,17 @@ export default {
       console.log(this.userTreasury)
       return this.userTreasury
         .map(treasury => ({
-          label: treasury.delegated,
-          value: treasury.delegated
+          label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
+          value: treasury.supply,
+          symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
         }))
+    },
+    isStakeable () {
+      let selectedTreasurySettings = this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol?.symbol)?.settings
+      return selectedTreasurySettings ? selectedTreasurySettings.find(i => i.key === 'stakeable').value : null
+    },
+    configEnable () {
+      return this.form.treasurySymbol?.symbol !== 'VOTE' && this.isStakeable
     }
   },
   methods: {
@@ -101,7 +111,9 @@ export default {
         maxOptions: this.form.maxOptions,
         minOptions: this.form.minOptions,
         initialOptions: this.form.initialOptions,
-        endDate: this.form.endDate
+        endDate: this.form.endDate,
+        config: this.form.config,
+        settings: this.isStakeable
       }
     },
     async convertToIFPS (file) {
@@ -134,6 +146,7 @@ q-dialog(
     bordered
     style="width: 400px; max-width: 80vw;"
   )
+
     q-card-section.bg-primary.text-white
       .text-h6 Create a ballot
     q-card-section
@@ -213,6 +226,24 @@ q-dialog(
           v-model="form.maxOptions"
           label="Max options"
           :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
+        )
+      .row(
+        v-if="configEnable"
+      )
+        q-radio(
+          v-model="form.config"
+          label="Stakeble"
+          val="votestake"
+        )
+        q-radio(
+          v-model="form.config"
+          label="Liquid"
+          val="voteliquid"
+        )
+        q-radio(
+         v-model="form.config"
+         label="Both"
+         val="both"
         )
       q-input(
         ref="endDate"
