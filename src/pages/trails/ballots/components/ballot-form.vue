@@ -133,9 +133,7 @@ export default {
     }
   },
   mounted () {
-    debugger
-    // this.fetchTreasuriesForUser()
-    this.fetchTreasuriesForUser(this.account)
+    this.fetchTreasuriesForUser()
   }
 }
 </script>
