@@ -48,7 +48,7 @@ export const fetchBallots = async function ({ commit, state }, query) {
   commit('addBallots', result)
 }
 
-export const fetchTreasuriesForUser = async function ({ commit, rootState }) {
+export const fetchTreasuriesForUser = async function ({ commit }) {
   const res = await this.$api.getTableRows({
     code: 'telos.decide',
     scope: localStorage.getItem('account'),
