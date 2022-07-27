@@ -49,16 +49,20 @@ export default {
     ...mapGetters('trails', ['treasuries', 'userTreasury']),
     ...mapGetters('accounts', ['account']),
     getTreasurySymbols () {
-      const symbols = this.userTreasury.map(treasury => ({
-        symbol: treasury.delegated.replace(/[^a-zA-Z]/gi, '')
-      }))
-      return this.treasuries.filter((v) => {
-        return symbols.some(v2 => { return v.symbol === v2.symbol })
-      }).map(treasury => ({
-        label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
-        value: treasury.supply,
-        symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
-      }))
+      if (this.userTreasury) {
+        const symbols = this.userTreasury.map(treasury => ({
+          symbol: treasury.delegated.replace(/[^a-zA-Z]/gi, '')
+        }))
+        return this.treasuries.filter((v) => {
+          return symbols.some(v2 => { return v.symbol === v2.symbol })
+        }).map(treasury => ({
+          label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
+          value: treasury.supply,
+          symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
+        }))
+      } else {
+        return null
+      }
     },
     isStakeable () {
       let selectedTreasurySettings = this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol?.symbol)?.settings
@@ -129,9 +133,7 @@ export default {
       this.convertToIFPS(this.file)
     },
     account: function (account) {
-      if (account !== this.account) {
-        this.fetchTreasuriesForUser(account)
-      }
+      this.fetchTreasuriesForUser(account)
     },
     cid: function () {
       this.form.IPFSString = this.cid.path
