@@ -44,6 +44,10 @@ export const setBallot = (state, ballot) => {
   state.ballots.view.ballot = ballot
 }
 
+export const setUserTreasuries = (state, treasuries) => {
+  state.userTreasuries = treasuries
+}
+
 export const resetTreasuries = (state) => {
   state.treasuries.list.data = []
   state.treasuries.list.loaded = false
