@@ -139,9 +139,6 @@ export default {
       this.form.IPFSString = this.cid.path
     }
   }
-  // mounted () {
-  //   this.fetchTreasuriesForUser()
-  // }
 }
 </script>
 
