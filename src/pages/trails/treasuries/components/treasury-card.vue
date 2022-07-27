@@ -67,7 +67,7 @@ div
       strong {{ $t('pages.trails.treasuries.card.supply') }}: {{ treasury.supply }}
       br
       strong {{ $t('pages.trails.treasuries.card.maxSupply') }}: {{ treasury.max_supply }}
-    q-card-section.flex.justify-between
+    q-card-section.btn-group
       q-btn(
         icon="fas fa-person-booth"
         color="primary"
@@ -93,8 +93,19 @@ div
       )
 </template>
 
-<style scoped>
+<style scoped lang="scss">
   .prefered {
     background: purple !important
+  }
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: 1199px) {
+      flex-direction: column;
+
+      .q-btn {
+        margin-bottom: 15px;
+      }
+    }
   }
 </style>

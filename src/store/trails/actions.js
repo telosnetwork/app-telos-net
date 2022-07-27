@@ -44,55 +44,18 @@ export const fetchBallots = async function ({ commit, state }, query) {
 
     ballot.treasury = treasuries[supply]
   }
-  result.more = false // temp fix to stop an infinite loop of requests if one treasury goes over the 100 limit
   commit('addBallots', result)
 }
 
-export const fetchBallotsByStatus = async function ({ commit, state }, query) {
-  const { statuses } = query
+export const fetchTreasuriesForUser = async function ({ commit }, account) {
+  const res = await this.$api.getTableRows({
+    code: 'telos.decide',
+    scope: account,
+    table: 'voters',
+    key_type: 'i64'
+  })
 
-  let rows = []
-
-  for (const status of statuses) {
-    const res = await this.$api.getTableRows({
-      code: 'telos.decide',
-      scope: 'telos.decide',
-      table: 'ballots',
-      limit: state.ballots.list.pagination.limit,
-      index_position: query.index || 0,
-      key_type: 'i64',
-      lower_bound: status,
-      upper_bound: status
-    })
-
-    rows = rows.concat(res.rows)
-  }
-
-  let treasuries = {}
-
-  for await (const ballot of rows) {
-    let supply = supplyToSymbol(ballot.treasury_symbol)
-
-    if (!treasuries.hasOwnProperty(supply)) {
-      const treasury = await this.$api.getTableRows({
-        code: 'telos.decide',
-        scope: 'telos.decide',
-        table: 'treasuries',
-        limit: 1,
-        lower_bound: supply,
-        upper_bound: supply
-      })
-      treasuries[supply] = treasury.rows[0]
-    }
-
-    ballot.treasury = treasuries[supply]
-  }
-  const result = {
-    rows,
-    more: false
-  }
-
-  commit('setBallots', result)
+  commit('setUserTreasuries', res)
 }
 
 export const fetchBallot = async function ({ commit }, ballot) {
@@ -135,6 +98,15 @@ export const fetchBallot = async function ({ commit }, ballot) {
 export const addBallot = async function ({ commit, state, rootState }, ballot) {
   const ballotName = slugify(ballot.title, { replacement: '-', remove: /[*+~.()'"!:@?]/g, lower: true })
   const deposit = state.fees.find(fee => fee.key === 'ballot').value
+
+  let togglebal = {
+    account: 'telos.decide',
+    name: 'togglebal',
+    data: {
+      ballot_name: ballotName,
+      setting_name: null
+    }
+  }
 
   const notification = {
     icon: 'fas fa-person-booth',
@@ -193,6 +165,24 @@ export const addBallot = async function ({ commit, state, rootState }, ballot) {
         }
       }
     ]
+    let isBoth = false
+    if (ballot.treasurySymbol.symbol === 'VOTE') {
+      togglebal.data.setting_name = 'votestake'
+    } else if (!ballot.settings) {
+      togglebal.data.setting_name = 'voteliquid'
+    } else if (ballot.settings && ballot.config) {
+      if (ballot.config === 'both') {
+        for (let i of ['voteliquid', 'votestake']) {
+          togglebal.data.setting_name = i
+          isBoth = true
+          actions.splice(2, 0, togglebal)
+        }
+      } else {
+        togglebal.data.setting_name = ballot.config
+      }
+    }
+    !isBoth && actions.splice(2, 0, togglebal)
+
     const transaction = await this.$api.signTransaction(actions)
     commit('resetBallots')
     notification.status = 'success'
@@ -276,9 +266,14 @@ export const castVote = async function ({ commit, rootState }, { ballotName, opt
     title: 'notifications.trails.castVote',
     content: `${ballotName} ${options}`
   }
-
   try {
     const actions = [{
+      account: 'telos.decide',
+      name: 'refresh',
+      data: {
+        voter: rootState.accounts.account
+      }
+    }, {
       account: 'telos.decide',
       name: 'castvote',
       data: {

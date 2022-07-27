@@ -1,6 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { validation } from '~/mixins/validation'
+
 const IPFS = require('ipfs-core')
 
 export default {
@@ -22,7 +23,8 @@ export default {
         maxOptions: 1,
         minOptions: 1,
         initialOptions: [],
-        endDate: null
+        endDate: null,
+        config: 'votestake'
       },
       votingMethodOptions: [
         { value: '1acct1vote', label: 'One vote per account' },
@@ -44,19 +46,34 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('trails', ['treasuries']),
+    ...mapGetters('trails', ['treasuries', 'userTreasury']),
     ...mapGetters('accounts', ['account']),
     getTreasurySymbols () {
-      return this.treasuries
-        .filter(t => t.access === 'public' || t.manager === this.account)
-        .map(treasury => ({
-          label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
-          value: treasury.supply
+      if (this.userTreasury) {
+        const symbols = this.userTreasury.map(treasury => ({
+          symbol: treasury.delegated.replace(/[^a-zA-Z]/gi, '')
         }))
+        return this.treasuries.filter((v) => {
+          return symbols.some(v2 => { return v.symbol === v2.symbol })
+        }).map(treasury => ({
+          label: treasury.title ? `${treasury.title} (${treasury.supply})` : treasury.supply,
+          value: treasury.supply,
+          symbol: treasury.supply.replace(/[^a-zA-Z]/gi, '')
+        }))
+      } else {
+        return null
+      }
+    },
+    isStakeable () {
+      let selectedTreasurySettings = this.treasuries.find(t => (t.access === 'public' || t.manager === this.account) && t.symbol === this.form.treasurySymbol?.symbol)?.settings
+      return selectedTreasurySettings ? selectedTreasurySettings.find(i => i.key === 'stakeable').value : null
+    },
+    configEnable () {
+      return this.form.treasurySymbol?.symbol !== 'VOTE' && this.isStakeable
     }
   },
   methods: {
-    ...mapActions('trails', ['addBallot']),
+    ...mapActions('trails', ['addBallot', 'fetchTreasuriesForUser']),
     async onAddBallot () {
       this.resetValidation(this.form)
       if (!(await this.validate(this.form))) return
@@ -101,7 +118,9 @@ export default {
         maxOptions: this.form.maxOptions,
         minOptions: this.form.minOptions,
         initialOptions: this.form.initialOptions,
-        endDate: this.form.endDate
+        endDate: this.form.endDate,
+        config: this.form.config,
+        settings: this.isStakeable
       }
     },
     async convertToIFPS (file) {
@@ -112,6 +131,9 @@ export default {
   watch: {
     file: function () {
       this.convertToIFPS(this.file)
+    },
+    account: function (account) {
+      this.fetchTreasuriesForUser(account)
     },
     cid: function () {
       this.form.IPFSString = this.cid.path
@@ -130,6 +152,7 @@ q-dialog(
     bordered
     style="width: 400px; max-width: 80vw;"
   )
+
     q-card-section.bg-primary.text-white
       .text-h6 Create a ballot
     q-card-section
@@ -209,6 +232,24 @@ q-dialog(
           v-model="form.maxOptions"
           label="Max options"
           :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
+        )
+      .row(
+        v-if="configEnable"
+      )
+        q-radio(
+          v-model="form.config"
+          label="Stakeble"
+          val="votestake"
+        )
+        q-radio(
+          v-model="form.config"
+          label="Liquid"
+          val="voteliquid"
+        )
+        q-radio(
+         v-model="form.config"
+         label="Both"
+         val="both"
         )
       q-input(
         ref="endDate"
