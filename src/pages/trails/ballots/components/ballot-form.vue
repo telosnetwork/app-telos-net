@@ -128,13 +128,18 @@ export default {
     file: function () {
       this.convertToIFPS(this.file)
     },
+    account: function (account) {
+      if (account !== this.account) {
+        this.fetchTreasuriesForUser(account)
+      }
+    },
     cid: function () {
       this.form.IPFSString = this.cid.path
     }
-  },
-  mounted () {
-    this.fetchTreasuriesForUser()
   }
+  // mounted () {
+  //   this.fetchTreasuriesForUser()
+  // }
 }
 </script>
 
