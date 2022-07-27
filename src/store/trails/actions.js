@@ -44,7 +44,6 @@ export const fetchBallots = async function ({ commit, state }, query) {
 
     ballot.treasury = treasuries[supply]
   }
-  // result.more = false // temp fix to stop an infinite loop of requests if one treasury goes over the 100 limit
   commit('addBallots', result)
 }
 
