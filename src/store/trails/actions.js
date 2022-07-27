@@ -44,14 +44,14 @@ export const fetchBallots = async function ({ commit, state }, query) {
 
     ballot.treasury = treasuries[supply]
   }
-  result.more = false // temp fix to stop an infinite loop of requests if one treasury goes over the 100 limit
+  // result.more = false // temp fix to stop an infinite loop of requests if one treasury goes over the 100 limit
   commit('addBallots', result)
 }
 
-export const fetchTreasuriesForUser = async function ({ commit }) {
+export const fetchTreasuriesForUser = async function ({ commit }, account) {
   const res = await this.$api.getTableRows({
     code: 'telos.decide',
-    scope: localStorage.getItem('account'),
+    scope: account,
     table: 'voters',
     key_type: 'i64'
   })
