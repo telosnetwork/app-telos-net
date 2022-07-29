@@ -26,6 +26,8 @@ export default {
         endDate: null,
         config: 'votestake'
       },
+      prompt: false,
+      available: true,
       votingMethodOptions: [
         { value: '1acct1vote', label: 'One vote per account' },
         { value: '1tokennvote', label: 'All tokens to each vote' },
@@ -132,7 +134,9 @@ export default {
     file: function () {
       this.convertToIFPS(this.file)
     },
-    account: function (account) {
+    account: async function (account) {
+      const acc = await this.$store.$api.getAccount(account)
+      console.log(acc)
       this.fetchTreasuriesForUser(account)
     },
     cid: function () {
@@ -282,8 +286,37 @@ q-dialog(
         color="primary"
         :label="$t('common.buttons.create')"
         :loading="submitting"
-        @click="onAddBallot()"
+        @click="prompt = true"
       )
+    q-dialog(
+      v-model="prompt"
+      persistent
+    )
+      q-card(
+        style="min-width: 350px"
+      )
+        q-card-section.row.items-center
+          span.q-ml-sm(
+            v-if="available"
+          ) {{ "There will be a fee for creating a ballot." }}
+          span.q-ml-sm(
+            v-else
+          ) {{ "Insufficient balance to create a ballot." }}
+        q-card-actions.text-primary(
+          align="right"
+        )
+          q-btn(
+            flat
+            label="Cancel"
+            v-close-popup
+          )
+          q-btn(
+            v-if="available"
+            flat
+            label="Accept"
+            v-close-popup
+            @click="onAddBallot()"
+          )
 </template>
 <style scoped>
 

@@ -43,8 +43,10 @@ const getTableRows = async function (options) {
 const getAccount = async function (account) {
   try {
     if (this.$type === 'ual') {
+      console.log(this.$ualUser.rpc.get_account(account))
       return this.$ualUser.rpc.get_account(account)
     } else {
+      console.log(this.$defaultApi.rpc.get_account(account))
       return this.$defaultApi.rpc.get_account(account)
     }
   } catch (e) {
