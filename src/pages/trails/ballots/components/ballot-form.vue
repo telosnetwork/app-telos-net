@@ -27,7 +27,7 @@ export default {
         config: 'votestake'
       },
       prompt: false,
-      available: true,
+      userBalance: null,
       votingMethodOptions: [
         { value: '1acct1vote', label: 'One vote per account' },
         { value: '1tokennvote', label: 'All tokens to each vote' },
@@ -48,7 +48,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('trails', ['treasuries', 'userTreasury']),
+    ...mapGetters('trails', ['treasuries', 'userTreasury', 'ballotFees']),
     ...mapGetters('accounts', ['account']),
     getTreasurySymbols () {
       if (this.userTreasury) {
@@ -72,13 +72,19 @@ export default {
     },
     configEnable () {
       return this.form.treasurySymbol?.symbol !== 'VOTE' && this.isStakeable
+    },
+    available () {
+      if (this.userBalance) {
+        const ballotFee = this.ballotFees.value.replace(/[^0-9]/gi, '')
+        return this.userBalance >= ballotFee
+      } else {
+        return null
+      }
     }
   },
   methods: {
-    ...mapActions('trails', ['addBallot', 'fetchTreasuriesForUser']),
+    ...mapActions('trails', ['addBallot', 'fetchTreasuriesForUser', 'fetchFees']),
     async onAddBallot () {
-      this.resetValidation(this.form)
-      if (!(await this.validate(this.form))) return
       this.submitting = true
       const success = await this.addBallot(this.createBallotObject())
       this.submitting = false
@@ -86,6 +92,11 @@ export default {
         this.$emit('update:show', false)
         this.resetBallot()
       }
+    },
+    async openConfirmation () {
+      this.resetValidation(this.form)
+      if (!(await this.validate(this.form))) return
+      this.prompt = true
     },
     resetBallot () {
       this.form = {
@@ -135,13 +146,16 @@ export default {
       this.convertToIFPS(this.file)
     },
     account: async function (account) {
-      const acc = await this.$store.$api.getAccount(account)
-      console.log(acc)
       this.fetchTreasuriesForUser(account)
+      const getAccount = await this.$store.$api.getAccount(this.account)
+      this.userBalance = getAccount.core_liquid_balance.replace(/[^0-9]/gi, '')
     },
     cid: function () {
       this.form.IPFSString = this.cid.path
     }
+  },
+  mounted () {
+    this.fetchFees()
   }
 }
 </script>
@@ -286,7 +300,7 @@ q-dialog(
         color="primary"
         :label="$t('common.buttons.create')"
         :loading="submitting"
-        @click="prompt = true"
+        @click="openConfirmation()"
       )
     q-dialog(
       v-model="prompt"
