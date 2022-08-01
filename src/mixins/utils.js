@@ -41,6 +41,9 @@ export const utils = {
     },
     showIsLoading (state) {
       this.setIsLoading(state)
+    },
+    onlyNumbers (string) {
+      return string.replace(/[^0-9]/gi, '') // 100 TLOS -> 100
     }
   }
 }

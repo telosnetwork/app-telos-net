@@ -44,7 +44,8 @@ export default {
       ],
       submitting: false,
       file: null,
-      cid: null
+      cid: null,
+      fee: null
     }
   },
   computed: {
@@ -75,7 +76,7 @@ export default {
     },
     available () {
       if (this.userBalance) {
-        const ballotFee = this.ballotFees.value.replace(/[^0-9]/gi, '')
+        const ballotFee = this.onlyNumbers(this.ballotFees.value)
         return this.userBalance >= ballotFee
       } else {
         return null
@@ -148,7 +149,8 @@ export default {
     account: async function (account) {
       this.fetchTreasuriesForUser(account)
       const getAccount = await this.$store.$api.getAccount(this.account)
-      this.userBalance = getAccount.core_liquid_balance.replace(/[^0-9]/gi, '')
+      this.userBalance = this.onlyNumbers(getAccount.core_liquid_balance)
+      this.fee = this.onlyNumbers(this.ballotFees.value)
     },
     cid: function () {
       this.form.IPFSString = this.cid.path
@@ -312,7 +314,7 @@ q-dialog(
         q-card-section.row.items-center
           span.q-ml-sm(
             v-if="available"
-          ) {{ "There will be a fee for creating a ballot." }}
+          ) There will be a {{fee}} fee for creating a ballot.
           span.q-ml-sm(
             v-else
           ) {{ "Insufficient balance to create a ballot." }}
