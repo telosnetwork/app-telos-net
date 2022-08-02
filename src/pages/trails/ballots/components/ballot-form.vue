@@ -236,7 +236,7 @@ q-dialog(
         hide-dropdown-icon
         input-debounce="0"
         @new-value="addBallotOption"
-        :rules="[rules.required, rules.minimumOptions]"
+        :rules="[rules.required, rules.minimumOptions(2)]"
       )
       .row
         q-input.col-6(
