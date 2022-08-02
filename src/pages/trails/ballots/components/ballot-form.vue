@@ -216,7 +216,7 @@ q-dialog(
         hide-dropdown-icon
         input-debounce="0"
         @new-value="addBallotOption"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.minimumOptions]"
       )
       .row
         q-input.col-6(
@@ -231,7 +231,7 @@ q-dialog(
           ref="maxOptions"
           v-model="form.maxOptions"
           label="Max options"
-          :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions)]"
+          :rules="[rules.required, rules.integer, rules.positiveInteger, rules.greaterOrEqualThan(form.minOptions), rules.greaterOrEqualThan(2)]"
         )
       .row(
         v-if="configEnable"

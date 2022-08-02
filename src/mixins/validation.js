@@ -11,6 +11,7 @@ export const validation = {
         accountLength: val => val.length <= 12 || this.$t('forms.errors.accountLength'),
         dateFuture: date => val => new Date(val).getTime() >= new Date(date).getTime() || this.$t('forms.errors.dateFuture'),
         greaterOrEqualThan: value => val => val >= value || this.$t('forms.errors.greaterOrEqualThan', { value }),
+        minimumOptions: val => val.length >= 2 || this.$t('forms.errors.greaterOrEqualThan', { val }),
         isAccountAvailable: async account => (await this.isAccountFree(account.toLowerCase())) || this.$t('forms.errors.accountNotAvailable', { account }),
         isInteger: val => Number.isInteger(parseInt(val)) || this.$t('forms.errors.integer'),
         isToken: val => (val.length >= 2 && val.length <= 6) || this.$t('forms.errors.token'),
