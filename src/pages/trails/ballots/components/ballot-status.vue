@@ -28,6 +28,9 @@ div.left-tag.cursor-default
     div.status-frame-title Status
     span(v-if="ballot.status === 'setup'") Setup
     span(v-else) Proposal ended
+
+  div {{getEndTime | moment("MMMM Do YYYY")}}
+
 </template>
 
 <style lang="sass">
