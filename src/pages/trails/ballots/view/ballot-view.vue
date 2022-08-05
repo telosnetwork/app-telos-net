@@ -466,7 +466,7 @@ export default {
       top: -6px
       left: -12px
     & .left-tag
-      top: 126px
+      top: 90px
       left: -12px
   .popup-right-col-wrapper
     border-left: 1px solid #F2F3F4

@@ -175,7 +175,7 @@ div
   padding: 5px 16px 0 24px;
   position: absolute;
   left: 0;
-  top: 70px;
+  top: 80px;
   background: #fff;
   border-radius: 0px 16px 0px 0px !important
   min-height: 46px;
