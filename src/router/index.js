@@ -9,6 +9,7 @@ import HighchartsVue from 'highcharts-vue'
 Vue.use(Croppa)
 Vue.use(VueRouter)
 Vue.use(HighchartsVue)
+Vue.use(require('vue-moment'))
 
 /*
  * If not building with SSR mode, you can
