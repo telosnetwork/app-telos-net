@@ -48,6 +48,10 @@ export const setUserTreasuries = (state, treasuries) => {
   state.userTreasuries = treasuries
 }
 
+export const setBallotVotes = (state, voters) => {
+  state.ballotVoters = voters
+}
+
 export const resetTreasuries = (state) => {
   state.treasuries.list.data = []
   state.treasuries.list.loaded = false

@@ -26,12 +26,14 @@ export default {
       votes: [],
       defaultSlide: 0,
       scrollPosition: null,
-      notice: false
+      notice: false,
+      alert: false
     }
   },
   async mounted () {
     await this.fetchBallot(this.$route.params.id)
     window.addEventListener('scroll', this.updateScroll)
+
     this.loading = false
   },
   beforeDestroy () {
@@ -42,7 +44,7 @@ export default {
   computed: {
     ...mapGetters('notifications', ['notifications']),
     ...mapGetters('accounts', ['isAuthenticated', 'account']),
-    ...mapGetters('trails', ['ballot']),
+    ...mapGetters('trails', ['ballot', 'voters']),
     daysSinceStarted () {
       const oneDay = 24 * 60 * 60 * 1000
       const today = Date.now()
@@ -101,7 +103,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('trails', ['fetchBallot', 'castVote', 'cancelBallot']),
+    ...mapActions('trails', ['fetchBallot', 'castVote', 'cancelBallot', 'fetchVotesForBallot']),
     openUrl (url) {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
@@ -126,6 +128,10 @@ export default {
           : this.$t('notifications.trails.errorSigning'),
         color: this.notifications[0].status === 'success' ? 'positive' : 'negative'
       })
+    },
+    async showVoters () {
+      await this.fetchVotesForBallot(this.ballot.ballot_name)
+      this.voters.length > 0 ? this.alert = true : this.alert = false
     },
     async vote () {
       await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
@@ -252,7 +258,7 @@ export default {
                   @clickBtn="cancel()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
-          div.text-section.column
+          div.text-section.column(@click="showVoters()")
             div.statics-section-item(v-if="ballot.total_voters > 0")
               span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
               span.opacity06  {{ getWinner.key.toUpperCase() }} {{ getLoser.key ? ` lead over ${getLoser.key.toUpperCase()}` : ` lead over others` }}
@@ -268,7 +274,20 @@ export default {
             div.statics-section-item(v-if="ballot.proposal_info")
               span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
               span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
+
     .col-xs-12.col-sm.popup-right-col-wrapper
+      q-dialog(v-model="alert")
+        q-card
+          q-card-section
+            div.text-h6 Voters
+          q-card-section.q-pt-none
+            div(v-for="(i, idx) in voters" :key="idx")
+              q-list(bordered)
+                q-item.list-voters(v-ripple)
+                  q-item-section {{ i.voter }}
+                  q-item-section(avatar) {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
+            q-card-actions(align="right")
+              q-btn(flat label="OK" color="primary" v-close-popup)
       q-card(
         flat
         square
@@ -414,6 +433,11 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .list-voters
+    width: 350px
+    display: flex
+    justify-content: space-between
+
   .btn-wrapper
     width: 100%
     display: flex
@@ -700,4 +724,5 @@ export default {
     @media (max-width: 400px)
       .custom-caption > .caption-text
         max-width: 150px
+
 </style>
