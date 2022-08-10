@@ -58,6 +58,17 @@ export const fetchTreasuriesForUser = async function ({ commit }, account) {
   commit('setUserTreasuries', res)
 }
 
+export const fetchVotesForBallot = async function ({ commit }, ballot) {
+  const res = await this.$api.getTableRows({
+    code: 'telos.decide',
+    scope: ballot,
+    table: 'votes',
+    limit: 20
+  })
+  console.log(res)
+  commit('setBallotVotes', res.rows)
+}
+
 export const fetchBallot = async function ({ commit }, ballot) {
   const result = await this.$api.getTableRows({
     code: 'telos.decide',
