@@ -27,7 +27,7 @@ export default {
       defaultSlide: 0,
       scrollPosition: null,
       notice: false,
-      alert: false
+      votersModal: false
     }
   },
   async mounted () {
@@ -131,7 +131,7 @@ export default {
     },
     async showVoters () {
       await this.fetchVotesForBallot(this.ballot.ballot_name)
-      this.voters.length > 0 ? this.alert = true : this.alert = false
+      this.voters.length > 0 ? this.votersModal = true : this.votersModal = false
     },
     async vote () {
       await this.onCastVote({ options: this.votes, ballotName: this.ballot.ballot_name })
@@ -276,7 +276,7 @@ export default {
               span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
 
     .col-xs-12.col-sm.popup-right-col-wrapper
-      q-dialog(v-model="alert")
+      q-dialog(v-model="votersModal")
         q-card
           q-card-section
             div.text-h6 Voters
