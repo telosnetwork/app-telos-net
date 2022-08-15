@@ -187,7 +187,7 @@ export default {
 <template lang="pug">
 .row.bg-white.justify-between.popup-wrapper(@scroll="updatePopupScroll")
   template(v-if="!loading && ballot")
-    .col-xs.col-sm-auto(style="min-width: 240px;" v-if="showDetails")
+    .col-xs.col-sm-auto.popup-left-col-wrapper(style="min-width: 240px;" v-if="showDetails")
       q-card(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
