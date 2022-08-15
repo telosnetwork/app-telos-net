@@ -33,7 +33,7 @@ export default {
   async mounted () {
     await this.fetchBallot(this.$route.params.id)
     window.addEventListener('scroll', this.updateScroll)
-
+    console.log(this.ballot)
     this.loading = false
   },
   beforeDestroy () {
@@ -187,7 +187,7 @@ export default {
 <template lang="pug">
 .row.bg-white.justify-between.popup-wrapper(@scroll="updatePopupScroll")
   template(v-if="!loading && ballot")
-    .col-xs.col-sm-auto.popup-left-col-wrapper(style="min-width: 240px;" v-if="showDetails")
+    .col-xs.col-sm-auto.popup-left-col-wrapper(style="min-width: 268px;" v-if="showDetails")
       q-card(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
@@ -275,23 +275,28 @@ export default {
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
-            div.statics-section-item(v-if="ballot.total_voters > 0")
-              span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
-              span.opacity06  {{ getWinner.key.toUpperCase() }} {{ getLoser.key ? ` lead over ${getLoser.key.toUpperCase()}` : ` lead over others` }}
+            div(v-if="ballot.total_voters > 0")
+              span.statisctic-title Most voted
+              div.statisctic-body
+               span.text-weight-bold  {{ getWinner.key.toUpperCase() }}
+               span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
+            div(v-if="ballot.total_voters > 0")
+              span.statisctic-title Number of accounts
+              div.statisctic-body(@click="showVoters()")
+               span.text-weight-bold  {{ ballot.total_voters }}
+               div.poll-icon.details
             div.statics-section-item(v-else)
               span  {{ getWinner }}
-            div.statics-section-item(@click="showVoters()")
-              span.text-weight-bold {{ `${ballot.total_voters} Accounts` }}
-              span.opacity06 &nbspvoted
-              img.poll-icon.details(src="statics/app-icons/back.svg")
-            div.statics-section-item
-              span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
-              span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
-              span.opacity06 tokens
-            div.statics-section-item(v-if="ballot.proposal_info")
-              span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
-              span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
-
+            div
+              span.statisctic-title Number of tokens
+              div.statisctic-body
+                span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
+                span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
+            div(v-if="ballot.proposal_info")
+              span.statisctic-title Request amount
+              div.statisctic-body
+                span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
+                span.text-weight-bold  {{ $t('pages.trails.ballots.requestAmount') }}
     .col-xs-12.col-sm.popup-right-col-wrapper
       q-card(
         flat
@@ -438,9 +443,30 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .statisctic-title
+    font-weight: 300
+    font-size: 12px
+    line-height: 14px
+    color: rgba(0, 0, 0, 0.5)
+  .statisctic-body
+    display: flex
+    font-size: 16px
+    line-height: 19px
+    justify-content: space-between
+    margin-bottom: 8px
   .details
+    background: url("../../../../statics/app-icons/back.svg")
+    background-repeat: no-repeat
+    height: 15px
+    width: 9px
     rotate: 180deg
-    margin-left: 50px
+    &:hover
+      background: url("../../../../statics/app-icons/back-active.svg")
+      background-repeat: no-repeat
+      height: 15px
+      width: 9px
+      rotate: 0deg
+
   .header-nav
     cursor: pointer
     padding: 23px 19px
