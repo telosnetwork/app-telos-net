@@ -243,11 +243,12 @@ export default {
             q-item(v-if="ballot.status !== 'cancelled' && isBallotOpened(ballot)").capitalize.options-btn
               q-item-section.btn-wrapper
                 btn(
+                  v-if="isAuthenticated"
                   :labelText="$t('pages.trails.ballots.vote')"
                   btnWidth='220'
                   fontSize='16'
                   hoverBlue=true
-                  @clickBtn="isAuthenticated ? vote() : openNotice()"
+                  @clickBtn="vote()"
                 )
                 btn(
                   v-if="isAuthenticated && ballot.publisher === account"

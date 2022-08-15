@@ -152,7 +152,7 @@ div
 
     q-card-section().row.justify-center.btn-section
       btn(
-        :labelText="(isBallotOpened && ballot.status === 'voting') ? 'View proposal & vote' : 'View proposal'"
+        :labelText="(isBallotOpened && ballot.status === 'voting' && isAuthenticated) ? 'View proposal & vote' : 'View proposal'"
         btnWidth='332'
         fontSize='16'
         hoverBlue=true
