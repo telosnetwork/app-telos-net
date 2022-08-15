@@ -27,7 +27,7 @@ export default {
       defaultSlide: 0,
       scrollPosition: null,
       notice: false,
-      votersModal: false
+      showDetails: false
     }
   },
   async mounted () {
@@ -131,6 +131,7 @@ export default {
     },
     async showVoters () {
       await this.fetchVotesForBallot(this.ballot.ballot_name)
+      this.showDetails = true
       this.voters.length > 0 ? this.votersModal = true : this.votersModal = false
     },
     async vote () {
@@ -186,7 +187,22 @@ export default {
 <template lang="pug">
 .row.bg-white.justify-between.popup-wrapper(@scroll="updatePopupScroll")
   template(v-if="!loading && ballot")
-    .col-xs.col-sm-auto(style="min-width: 240px;").popup-left-col-wrapper
+    .col-xs.col-sm-auto(style="min-width: 240px;" v-if="showDetails")
+      q-card(
+        :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
+        id="ballot-card"
+        flat
+        square
+      )
+        q-card-section.header-nav
+          div(@click="showDetails = false")
+            img.poll-icon(src="statics/app-icons/back.svg")
+            span Go Back
+        q-card-section.body-info
+          div.list-voters(v-for="(i, idx) in voters" :key="idx")
+            span {{ i.voter }}
+            span {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
+    .col-xs.col-sm-auto(style="min-width: 240px;" v-else).popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
@@ -258,15 +274,16 @@ export default {
                   @clickBtn="cancel()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
-          div.text-section.column(@click="showVoters()")
+          div.text-section.column
             div.statics-section-item(v-if="ballot.total_voters > 0")
               span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
               span.opacity06  {{ getWinner.key.toUpperCase() }} {{ getLoser.key ? ` lead over ${getLoser.key.toUpperCase()}` : ` lead over others` }}
             div.statics-section-item(v-else)
               span  {{ getWinner }}
-            div.statics-section-item
+            div.statics-section-item(@click="showVoters()")
               span.text-weight-bold {{ `${ballot.total_voters} Accounts` }}
               span.opacity06 &nbspvoted
+              img.poll-icon.details(src="statics/app-icons/back.svg")
             div.statics-section-item
               span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
               span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
@@ -276,18 +293,6 @@ export default {
               span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
 
     .col-xs-12.col-sm.popup-right-col-wrapper
-      q-dialog(v-model="votersModal")
-        q-card
-          q-card-section
-            div.text-h6 Voters
-          q-card-section.q-pt-none
-            div(v-for="(i, idx) in voters" :key="idx")
-              q-list(bordered)
-                q-item.list-voters(v-ripple)
-                  q-item-section {{ i.voter }}
-                  q-item-section(avatar) {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
-            q-card-actions(align="right")
-              q-btn(flat label="OK" color="primary" v-close-popup)
       q-card(
         flat
         square
@@ -433,8 +438,21 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .details
+    rotate: 180deg
+    margin-left: 50px
+  .header-nav
+    cursor: pointer
+    padding: 23px 19px
+    span
+      margin-left: 7px
+      font-size: 12px
+      position: relative
+      bottom: 3px
+  .body-info
+    margin-top: 5%
   .list-voters
-    width: 350px
+    width: 100%
     display: flex
     justify-content: space-between
 
