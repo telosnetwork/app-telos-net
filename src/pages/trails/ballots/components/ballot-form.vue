@@ -150,7 +150,7 @@ export default {
       this.fetchTreasuriesForUser(account)
       const getAccount = await this.$store.$api.getAccount(this.account)
       this.userBalance = this.onlyNumbers(getAccount.core_liquid_balance)
-      this.fee = this.onlyNumbers(this.ballotFees.value)
+      this.fee = this.ballotFees.value
     },
     cid: function () {
       this.form.IPFSString = this.cid.path
