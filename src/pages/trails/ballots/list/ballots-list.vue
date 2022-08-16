@@ -222,10 +222,8 @@ q-page
   .ballots(ref="ballotsRef")
     q-infinite-scroll(
       ref="infiniteScroll"
-      :disable="ballotsLoaded"
       @load="onLoad"
       :offset="250"
-      :scroll-target="$refs.ballotsRef"
     )
       div(:class="isBallotListRowDirection ? 'row-direction' : 'column-direction'")
         ballot-list-item(
