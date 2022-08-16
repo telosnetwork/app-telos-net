@@ -22,7 +22,7 @@ export default {
       categories: [],
       isBallotListRowDirection: true,
       currentPage: 1,
-      limit: 12,
+      limit: 1000,
       page: 1,
       sortMode: ''
     }
@@ -152,9 +152,6 @@ export default {
     changeDirection (isBallotListRowDirection) {
       this.isBallotListRowDirection = isBallotListRowDirection
     },
-    getPage (ballots) {
-      return ballots.slice((this.page - 1) * this.limit, (this.page - 1) * this.limit + this.limit)
-    },
     getLoser () {
       if (!this.ballot.total_voters || this.ballot.options.length !== 2) return false
       return this.ballot.options.find(x => x.key !== this.getWinner.key)
@@ -228,7 +225,7 @@ q-page
       div(:class="isBallotListRowDirection ? 'row-direction' : 'column-direction'")
         ballot-list-item(
           @click.native="openBallot(ballot)"
-          v-for="(ballot, index) in getPage(sortBallots(filterBallots(ballots),sortMode))"
+          v-for="(ballot, index) in sortBallots(filterBallots(ballots),sortMode)"
           :key="index"
           :ballot="ballot"
           :displayWinner="displayWinner"
@@ -239,22 +236,6 @@ q-page
           :getLoser="getLoser"
           :ballotContentImg="ballotContentImg"
         )
-      div.flex.flex-center.pagination-wrapper
-        q-pagination(
-          v-model="page"
-          :min="currentPage"
-          :max="Math.ceil(filterBallots(ballots).length / limit)"
-          :max-pages="6"
-          v-if="filterBallots(ballots).length !== 0"
-          direction-links
-          boundary-links
-          icon-first="skip_previous"
-          icon-last="skip_next"
-          icon-prev="fast_rewind"
-          icon-next="fast_forward"
-          size="12px"
-        )
-        span(v-else).ballot-card-title {{ "There are no results for the current request" }}
       template(v-slot:loading)
         .row.justify-center.q-my-md
           q-spinner-dots(
