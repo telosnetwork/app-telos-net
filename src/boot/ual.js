@@ -1,5 +1,4 @@
 import { UAL } from 'universal-authenticator-library'
-import { KeycatAuthenticator } from '@telosnetwork/ual-telos-keycat'
 import { Anchor } from 'ual-anchor'
 
 export default async ({ Vue, store }) => {
@@ -14,7 +13,6 @@ export default async ({ Vue, store }) => {
   }
 
   const authenticators = [
-    new KeycatAuthenticator([mainChain]),
     new Anchor([mainChain], { appName: process.env.APP_NAME })
   ]
 
