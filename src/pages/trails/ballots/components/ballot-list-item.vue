@@ -362,7 +362,7 @@ div
     width: 340px
     height: 434px
   .row-direction .left-tag
-    top: 106px
+    top: 68px
   .ballot-card-title
     font-size: 18px
   .ballot-card-sub-title-wrapper
