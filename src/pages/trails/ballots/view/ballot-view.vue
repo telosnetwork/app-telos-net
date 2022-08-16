@@ -297,18 +297,6 @@ export default {
                 span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
                 span.text-weight-bold  {{ $t('pages.trails.ballots.requestAmount') }}
     .col-xs-12.col-sm.popup-right-col-wrapper
-      q-dialog(v-model="votersModal")
-        q-card
-          q-card-section
-            div.text-h6 Voters
-          q-card-section.q-pt-none
-            div(v-for="(i, idx) in voters" :key="idx")
-              q-list(bordered)
-                q-item.list-voters(v-ripple)
-                  q-item-section {{ i.voter }}
-                  q-item-section(avatar) {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
-            q-card-actions(align="right")
-              q-btn(flat label="OK" color="primary" v-close-popup)
       q-card(
         flat
         square
