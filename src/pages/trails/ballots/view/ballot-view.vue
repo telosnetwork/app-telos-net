@@ -480,6 +480,7 @@ export default {
     width: 100%
     display: flex
     justify-content: space-between
+    margin-bottom: 5px
 
   .btn-wrapper
     width: 100%
