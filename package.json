@@ -49,8 +49,6 @@
     "quasar": "^1.2.1",
     "slugify": "^1.3.6",
     "ual-anchor": "^1.0.0",
-    "ual-ledger": "^0.1.3",
-    "ual-scatter": "^0.1.6",
     "ual-wombat": "^0.3.3",
     "universal-authenticator-library": "^0.3.0",
     "vue-analytics": "^5.20.1",
