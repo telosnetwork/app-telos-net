@@ -129,6 +129,7 @@ export default {
       })
     },
     async showVoters () {
+      console.log(this.voters)
       await this.fetchVotesForBallot(this.ballot.ballot_name)
       this.showDetails = true
       this.voters.length > 0 ? this.votersModal = true : this.votersModal = false
@@ -201,6 +202,7 @@ export default {
           div.list-voters(v-for="(i, idx) in voters" :key="idx")
             span {{ i.voter }}
             span {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
+            span {{ i.weighted_votes[0].key }}
     .col-xs.col-sm-auto(style="min-width: 240px;" v-else).popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
@@ -295,7 +297,6 @@ export default {
               span.statisctic-title Request amount
               div.statisctic-body
                 span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
-                span.text-weight-bold  {{ $t('pages.trails.ballots.requestAmount') }}
     .col-xs-12.col-sm.popup-right-col-wrapper
       q-card(
         flat
