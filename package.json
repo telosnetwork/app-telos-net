@@ -24,12 +24,6 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.10.4",
-    "@smontero/ual-eosio-reference-authenticator": "^0.1.22",
-    "@smontero/ual-keycat": "^1.0.21",
-    "@smontero/ual-lynx": "^0.2.3",
-    "@smontero/ual-sqrl": "^0.1.8",
-    "@smontero/ual-token-pocket": "^0.1.3",
-    "@telosnetwork/ual-telos-keycat": "1.10.3",
     "@telosnetwork/validator-checks": "^1.0.4",
     "@vue/cli": "^4.5.13",
     "axios": "^0.21.2",
