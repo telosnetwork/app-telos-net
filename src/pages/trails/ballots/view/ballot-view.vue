@@ -99,12 +99,24 @@ export default {
         return false
       }
       // https://api.ipfsbrowser.com/ipfs/get.php?hash=QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme
+    },
+    getVariants () {
+      let newArr = []
+      for (let i of this.ballot.options) {
+        if (this.onlyNumbers(i.value) > 0) {
+          newArr.push(i)
+        }
+      }
+      return newArr
     }
   },
   methods: {
     ...mapActions('trails', ['fetchBallot', 'castVote', 'cancelBallot', 'fetchVotesForBallot']),
     openUrl (url) {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
+    },
+    getVoters (variant) {
+      return this.voters.filter((item) => item.weighted_votes[0].key === variant)
     },
     getPercentofTotal (option) {
       const total = ((Number(option.value.split(' ')[0]) / Number(this.ballot.total_raw_weight.split(' ')[0])) * 100)
@@ -198,11 +210,12 @@ export default {
           div(@click="showDetails = false")
             img.poll-icon(src="statics/app-icons/back.svg")
             span Go Back
-        q-card-section.body-info
-          div.list-voters(v-for="(i, idx) in voters" :key="idx")
-            span {{ i.voter }}
-            span {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
-            span {{ i.weighted_votes[0].key }}
+        q-card-section
+          div(v-for="option in getVariants")
+            div.text-weight-bold.variant-name {{ option.key }}
+            div.list-voters(v-for="(i, idx) in getVoters(option.key)" :key="idx")
+              span {{ i.voter }}
+              span.text-weight-bold {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
     .col-xs.col-sm-auto(style="min-width: 240px;" v-else).popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
@@ -277,25 +290,25 @@ export default {
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
           div.text-section.column
             div(v-if="ballot.total_voters > 0")
-              span.statisctic-title Most voted
-              div.statisctic-body
+              span.statistics-title Most voted
+              div.statistics-body
                span.text-weight-bold  {{ getWinner.key.toUpperCase() }}
                span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
             div(v-if="ballot.total_voters > 0")
-              span.statisctic-title Number of accounts
-              div.statisctic-body(@click="showVoters()")
+              span.statistics-title Number of accounts
+              div.statistics-body(@click="showVoters()")
                span.text-weight-bold  {{ ballot.total_voters }}
                div.poll-icon.details
             div.statics-section-item(v-else)
               span  {{ getWinner }}
             div
-              span.statisctic-title Number of tokens
-              div.statisctic-body
-                span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
+              span.statistics-title Number of tokens
+              div.statistics-body
+                span.text-weight-bold {{ onlyNumbers(ballot.total_raw_weight) }}&nbsp
                 span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
             div(v-if="ballot.proposal_info")
-              span.statisctic-title Request amount
-              div.statisctic-body
+              span.statistics-title Request amount
+              div.statistics-body
                 span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
     .col-xs-12.col-sm.popup-right-col-wrapper
       q-card(
@@ -443,12 +456,15 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
-  .statisctic-title
+  .variant-name
+    margin-top: 24px
+    margin-bottom: 8px
+  .statistics-title
     font-weight: 300
     font-size: 12px
     line-height: 14px
     color: rgba(0, 0, 0, 0.5)
-  .statisctic-body
+  .statistics-body
     display: flex
     font-size: 16px
     line-height: 19px
@@ -469,14 +485,12 @@ export default {
 
   .header-nav
     cursor: pointer
-    padding: 23px 19px
+    padding: 23px 19px 0
     span
       margin-left: 7px
       font-size: 12px
       position: relative
       bottom: 3px
-  .body-info
-    margin-top: 5%
   .list-voters
     width: 100%
     display: flex
