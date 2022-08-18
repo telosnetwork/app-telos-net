@@ -116,7 +116,17 @@ export default {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
     getVoters (variant) {
-      return this.voters.filter((item) => item.weighted_votes[0].key === variant)
+      console.log(this.voters)
+      let newArr = []
+      for (let i of this.voters) {
+        for (let j of i.weighted_votes) {
+          if (j.key === variant) {
+            newArr.push(i)
+          }
+        }
+      }
+      console.log(newArr)
+      return newArr
     },
     getPercentofTotal (option) {
       const total = ((Number(option.value.split(' ')[0]) / Number(this.ballot.total_raw_weight.split(' ')[0])) * 100)
