@@ -141,7 +141,6 @@ export default {
       })
     },
     async showVoters () {
-      console.log(this.voters)
       await this.fetchVotesForBallot(this.ballot.ballot_name)
       this.showDetails = true
       this.voters.length > 0 ? this.votersModal = true : this.votersModal = false
