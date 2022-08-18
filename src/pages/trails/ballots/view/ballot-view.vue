@@ -116,18 +116,18 @@ export default {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
     getVoters (variant) {
-      console.log(this.voters)
       let newArr = []
       for (let i of this.voters) {
         for (let j of i.weighted_votes) {
           if (j.key === variant) {
+            i.value = j.value
             newArr.push(i)
           }
         }
       }
-      console.log(newArr)
       return newArr
     },
+
     getPercentofTotal (option) {
       const total = ((Number(option.value.split(' ')[0]) / Number(this.ballot.total_raw_weight.split(' ')[0])) * 100)
       return Number.isInteger(total) ? total : +total.toFixed(2)
@@ -224,7 +224,7 @@ export default {
             div.text-weight-bold.variant-name {{ option.key }}
             div.list-voters(v-for="(i, idx) in getVoters(option.key)" :key="idx")
               span {{ i.voter }}
-              span.text-weight-bold {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
+              span.text-weight-bold {{ getPercentOfNumber(i.value, option.value) }}
     .col-xs.col-sm-auto(style="min-width: 240px;" v-else).popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
