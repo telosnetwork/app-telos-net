@@ -24,8 +24,7 @@ export default {
       currentPage: 1,
       limit: 30,
       page: 1,
-      sortMode: '',
-      resultLength: 1
+      sortMode: ''
     }
   },
   props: {
@@ -57,7 +56,6 @@ export default {
     async onLoad (index, done) {
       if (!this.ballotsLoaded) {
         this.limit += 50
-        this.resultLength = this.sortBallots(this.filterBallots(this.ballots), this.sortMode).length
         const filter = {
           index: 4,
           lower: this.treasury || (this.$route.query && this.$route.query.treasury),
