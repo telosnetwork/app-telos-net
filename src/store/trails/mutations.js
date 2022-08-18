@@ -24,7 +24,13 @@ export const addBallots = (state, { rows, more }) => {
     // Remove the first item as it's the lower_bound
     const arr = state.ballots.list.data.length ? rows.slice(1) : rows
     const filteredArr = removeOldBallot(arr, HALF_YEAR_IN_MS)
-    state.ballots.list.data = state.ballots.list.data.concat(filteredArr)
+    const res = state.ballots.list.data.concat(filteredArr).reduce((o, i) => {
+      if (!o.find(v => v.title === i.title)) {
+        o.push(i)
+      }
+      return o
+    }, [])
+    state.ballots.list.data = res
   }
   state.ballots.list.loaded = !more
 }

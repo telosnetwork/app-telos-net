@@ -22,9 +22,10 @@ export default {
       categories: [],
       isBallotListRowDirection: true,
       currentPage: 1,
-      limit: 1000,
+      limit: 30,
       page: 1,
-      sortMode: ''
+      sortMode: '',
+      resultLength: 1
     }
   },
   props: {
@@ -52,15 +53,18 @@ export default {
   methods: {
     ...mapActions('trails', ['fetchFees', 'fetchBallots', 'castVote', 'fetchTreasuries', 'fetchBallotsByStatus']),
     ...mapMutations('trails', ['resetBallots', 'stopAddBallots']),
+
     async onLoad (index, done) {
       if (!this.ballotsLoaded) {
+        this.limit += 50
+        this.resultLength = this.sortBallots(this.filterBallots(this.ballots), this.sortMode).length
         const filter = {
           index: 4,
           lower: this.treasury || (this.$route.query && this.$route.query.treasury),
-          upper: this.treasury || (this.$route.query && this.$route.query.treasury)
+          upper: this.treasury || (this.$route.query && this.$route.query.treasury),
+          limit: this.limit
         }
         await this.fetchBallots(filter)
-
         done()
       } else {
         this.$refs.infiniteScroll.stop()
@@ -95,6 +99,7 @@ export default {
       const startTime = this.getLocalTime(ballot.begin_time)
       return startTime > Date.now()
     },
+
     displayWinner (ballot) {
       if (!ballot.total_voters) return false
       let winnerValue = -1
@@ -169,6 +174,7 @@ export default {
         return ballots
       }
     },
+
     changeSortOption (option) {
       this.sortMode = option
     },

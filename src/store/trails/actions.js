@@ -18,18 +18,16 @@ export const fetchBallots = async function ({ commit, state }, query) {
     code: 'telos.decide',
     scope: 'telos.decide',
     table: 'ballots',
-    limit: state.ballots.list.pagination.limit,
+    limit: query.limit,
     index_position: query.index || 0,
     key_type: 'i64',
     lower_bound: query.lower,
     upper_bound: query.upper
   })
-
   let treasuries = {}
 
   for await (const ballot of result.rows) {
     let supply = supplyToSymbol(ballot.treasury_symbol)
-
     if (!treasuries.hasOwnProperty(supply)) {
       const treasury = await this.$api.getTableRows({
         code: 'telos.decide',
