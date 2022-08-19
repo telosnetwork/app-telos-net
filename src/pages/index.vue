@@ -10,22 +10,6 @@ export default {
     return {
       cards: [
         {
-          title: '<b>Manage</b> Profile',
-          img: '../statics/app-icons/user-circle.svg',
-          icon: 'account_circle',
-          color: 'primary',
-          description: 'Manage your identity.  Buy, stake, send tokens and discover apps.',
-          route: '/profiles/myProfile'
-        },
-        {
-          title: 'Find <b>Contacts</b>',
-          img: '../statics/app-icons/search.svg',
-          icon: 'perm_contact_calendar',
-          color: 'positive',
-          description: 'Find and view Telos account profiles.  Add to favorites and send TLOS (Coming soon).',
-          route: '/profiles/contacts'
-        },
-        {
           title: 'Join <b>Groups</b>',
           img: '../statics/app-icons/users.svg',
           icon: 'group_work',
@@ -40,14 +24,6 @@ export default {
           color: 'negative',
           description: 'Vote on Works, Amend and other eco-system ballots.',
           route: '/trails/ballots'
-        },
-        {
-          title: 'Manage <b>Tokens</b>',
-          img: '../statics/app-icons/bar-chart.svg',
-          icon: 'savings',
-          color: 'primary',
-          description: 'Create, issue and discover tokens',
-          route: '/tokens'
         }
       ]
     }
