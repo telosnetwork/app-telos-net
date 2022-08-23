@@ -19,8 +19,6 @@ export default {
       const error = await this.login(idx)
       if (!error) {
         this.show = false
-      } else {
-        this.error = error
       }
     },
     openUrl (url) {
