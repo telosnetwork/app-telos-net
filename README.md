@@ -1,3 +1,7 @@
+```diff
+- NOTE: source code has been migrated to [app-telos-native](https://github.com/telosnetwork/app-telos-native) for major dependency and framework updates, after transition this repository will be archived
+```
+
 # Telos Net (telos-net)
 
 ## Install the dependencies
