@@ -27,13 +27,12 @@ export default {
       defaultSlide: 0,
       scrollPosition: null,
       notice: false,
-      votersModal: false
+      showDetails: false
     }
   },
   async mounted () {
     await this.fetchBallot(this.$route.params.id)
     window.addEventListener('scroll', this.updateScroll)
-
     this.loading = false
   },
   beforeDestroy () {
@@ -100,6 +99,15 @@ export default {
         return false
       }
       // https://api.ipfsbrowser.com/ipfs/get.php?hash=QmS6QwbGDde7cdyvWfUSX5PPWrFkiumqTHouBV3jYhPXme
+    },
+    getVariants () {
+      let newArr = []
+      for (let i of this.ballot.options) {
+        if (this.onlyNumbers(i.value) > 0) {
+          newArr.push(i)
+        }
+      }
+      return newArr
     }
   },
   methods: {
@@ -107,6 +115,19 @@ export default {
     openUrl (url) {
       window.open(`${process.env.BLOCKCHAIN_EXPLORER}/account/${url}`)
     },
+    getVoters (variant) {
+      let newArr = []
+      for (let i of this.voters) {
+        for (let j of i.weighted_votes) {
+          if (j.key === variant) {
+            i.value = j.value
+            newArr.push(i)
+          }
+        }
+      }
+      return newArr
+    },
+
     getPercentofTotal (option) {
       const total = ((Number(option.value.split(' ')[0]) / Number(this.ballot.total_raw_weight.split(' ')[0])) * 100)
       return Number.isInteger(total) ? total : +total.toFixed(2)
@@ -131,6 +152,7 @@ export default {
     },
     async showVoters () {
       await this.fetchVotesForBallot(this.ballot.ballot_name)
+      this.showDetails = true
       this.voters.length > 0 ? this.votersModal = true : this.votersModal = false
     },
     async vote () {
@@ -186,7 +208,24 @@ export default {
 <template lang="pug">
 .row.bg-white.justify-between.popup-wrapper(@scroll="updatePopupScroll")
   template(v-if="!loading && ballot")
-    .col-xs.col-sm-auto(style="min-width: 240px;").popup-left-col-wrapper
+    .col-xs.col-sm-auto.popup-left-col-wrapper(style="min-width: 268px;" v-if="showDetails")
+      q-card(
+        :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
+        id="ballot-card"
+        flat
+        square
+      )
+        q-card-section.header-nav
+          div(@click="showDetails = false")
+            img.poll-icon(src="statics/app-icons/back.svg")
+            span Go Back
+        q-card-section
+          div(v-for="option in getVariants")
+            div.text-weight-bold.variant-name {{ option.key }}
+            div.list-voters(v-for="(i, idx) in getVoters(option.key)" :key="idx")
+              span {{ i.voter }}
+              span.text-weight-bold {{ getPercentOfNumber(i.value, option.value) }}
+    .col-xs.col-sm-auto(style="min-width: 240px;" v-else).popup-left-col-wrapper
       q-card.popup-left-col.poll-item(
         :class="ballot.status === 'voting' && isBallotOpened(ballot) ? '' : 'view-poll-ended'"
         id="ballot-card"
@@ -259,36 +298,29 @@ export default {
                   @clickBtn="cancel()"
                 )
         q-card-section().q-pb-none.cursor-pointer.statics-section.statics-section-620
-          div.text-section.column(@click="showVoters()")
-            div.statics-section-item(v-if="ballot.total_voters > 0")
-              span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
-              span.opacity06  {{ getWinner.key.toUpperCase() }} {{ getLoser.key ? ` lead over ${getLoser.key.toUpperCase()}` : ` lead over others` }}
+          div.text-section.column
+            div(v-if="ballot.total_voters > 0")
+              span.statistics-title Most voted
+              div.statistics-body
+               span.text-weight-bold  {{ getWinner.key.toUpperCase() }}
+               span.text-weight-bold {{ getPercentofTotal(getWinner) }}%&nbsp
+            div(v-if="ballot.total_voters > 0")
+              span.statistics-title Number of accounts
+              div.statistics-body(@click="showVoters()")
+               span.text-weight-bold  {{ ballot.total_voters }}
+               div.poll-icon.details
             div.statics-section-item(v-else)
               span  {{ getWinner }}
-            div.statics-section-item
-              span.text-weight-bold {{ `${ballot.total_voters} Accounts` }}
-              span.opacity06 &nbspvoted
-            div.statics-section-item
-              span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[0].split('.')[0] }}&nbsp
-              span.opacity06 {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
-              span.opacity06 tokens
-            div.statics-section-item(v-if="ballot.proposal_info")
-              span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
-              span.opacity06 {{ $t('pages.trails.ballots.requestAmount') }}
-
+            div
+              span.statistics-title Number of tokens
+              div.statistics-body
+                span.text-weight-bold {{ onlyNumbers(ballot.total_raw_weight) }}&nbsp
+                span.text-weight-bold {{ ballot.total_raw_weight.split(' ')[1]  }}&nbsp
+            div(v-if="ballot.proposal_info")
+              span.statistics-title Request amount
+              div.statistics-body
+                span.text-weight-bold {{ getRequestAmountRounded(ballot.proposal_info.total_requested) }}&nbsp
     .col-xs-12.col-sm.popup-right-col-wrapper
-      q-dialog(v-model="votersModal")
-        q-card
-          q-card-section
-            div.text-h6 Voters
-          q-card-section.q-pt-none
-            div(v-for="(i, idx) in voters" :key="idx")
-              q-list(bordered)
-                q-item.list-voters(v-ripple)
-                  q-item-section {{ i.voter }}
-                  q-item-section(avatar) {{ getPercentOfNumber(i.raw_votes, ballot.total_raw_weight) }}
-            q-card-actions(align="right")
-              q-btn(flat label="OK" color="primary" v-close-popup)
       q-card(
         flat
         square
@@ -434,10 +466,46 @@ export default {
     q-spinner(size="3em")
 </template>
 <style lang="sass">
+  .variant-name
+    margin-top: 24px
+    margin-bottom: 8px
+  .statistics-title
+    font-weight: 300
+    font-size: 12px
+    line-height: 14px
+    color: rgba(0, 0, 0, 0.5)
+  .statistics-body
+    display: flex
+    font-size: 16px
+    line-height: 19px
+    justify-content: space-between
+    margin-bottom: 8px
+  .details
+    background: url("../../../../statics/app-icons/back.svg")
+    background-repeat: no-repeat
+    height: 15px
+    width: 9px
+    rotate: 180deg
+    &:hover
+      background: url("../../../../statics/app-icons/back-active.svg")
+      background-repeat: no-repeat
+      height: 15px
+      width: 9px
+      rotate: 0deg
+
+  .header-nav
+    cursor: pointer
+    padding: 23px 19px 0
+    span
+      margin-left: 7px
+      font-size: 12px
+      position: relative
+      bottom: 3px
   .list-voters
-    width: 350px
+    width: 100%
     display: flex
     justify-content: space-between
+    margin-bottom: 5px
 
   .btn-wrapper
     width: 100%

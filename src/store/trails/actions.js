@@ -65,7 +65,6 @@ export const fetchVotesForBallot = async function ({ commit }, ballot) {
     table: 'votes',
     limit: 20
   })
-  console.log(res)
   commit('setBallotVotes', res.rows)
 }
 

@@ -43,7 +43,7 @@ export const utils = {
       this.setIsLoading(state)
     },
     onlyNumbers (string) {
-      return string.replace(/[^0-9]/gi, '') // 100 TLOS -> 100
+      return string.split(' ')[0] // 100 TLOS -> 100
     },
     getPercentOfNumber (number, total) {
       return (this.onlyNumbers(number) * 100 / this.onlyNumbers(total)).toFixed(2) + '%' // 35 * 100 / 70 = 50%
