@@ -1,5 +1,5 @@
 
-# NOTE: source code has been migrated to [app-telos-native](https://github.com/telosnetwork/app-telos-native) for major dependency and framework updates. After transition this repository will no longer be maintained (archived).
+# This repository has been migrated to [app-telos-native](https://github.com/telosnetwork/app-telos-native) for major dependency and framework updates.
 
 # Telos Net (telos-net)
 
