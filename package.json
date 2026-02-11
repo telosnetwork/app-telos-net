@@ -25,7 +25,7 @@
   "dependencies": {
     "@quasar/extras": "^1.15.1",
     "@vue/cli": "^4.5.13",
-    "axios": "^0.21.2",
+    "axios": "^1.13.5",
     "date-diff": "^0.2.1",
     "dotenv": "^8.1.0",
     "eosjs": "^20.0.0",
