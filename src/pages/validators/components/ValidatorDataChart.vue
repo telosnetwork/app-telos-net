@@ -52,10 +52,13 @@ export default {
   },
   watch: {
     benchmarks () {
-      this.$refs.highcharts.chart.series = []
+      const chart = this.$refs.highcharts.chart
+      while (chart.series.length > 0) {
+        chart.series[0].remove(false)
+      }
       for (let i = 0; i < this.benchmarks.length; i++) {
         let benchmark = this.benchmarks[i]
-        this.$refs.highcharts.chart.addSeries(benchmark, i === (this.benchmarks.length - 1))
+        chart.addSeries(benchmark, i === (this.benchmarks.length - 1))
       }
     }
   },

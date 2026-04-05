@@ -18,13 +18,14 @@ export async function loadBenchmarks ({ commit }, { days }) {
     sort: 'asc'
   }
   let bpMap = {}
-  while (haveMore) {
-    // params.before = moment.utc().format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+  const MAX_BATCHES = 10
+  let lastBiggest = 0
+  while (haveMore && batch < MAX_BATCHES) {
     console.log(`Doing query with ${JSON.stringify(params)}`)
     const benchmarks = await this.$hyperion.get('v2/history/get_actions', {
       params
     })
-    let acts = benchmarks.data.actions
+    let acts = (benchmarks.data && benchmarks.data.actions) || []
     let batchCount = acts.length
     haveMore = (params.limit === batchCount)
     console.log(`Batch ${++batch} had ${batchCount} actions and is at global_sequence ${params.global_sequence}`)
@@ -35,16 +36,19 @@ export async function loadBenchmarks ({ commit }, { days }) {
       const producer = action.producer
       const cpuUs = action.cpu_usage_us
       const timestamp = action.timestamp
-      // const block = action.block_num
-      // const trxId = action.trx_id
       const momentTimestamp = moment(timestamp)
       const point = [momentTimestamp.valueOf(), cpuUs]
-      if (!bpMap.hasOwnProperty(producer)) {
+      if (!Object.prototype.hasOwnProperty.call(bpMap, producer)) {
         bpMap[producer] = [point]
       } else {
         bpMap[producer].push(point)
       }
     }
+    if (biggest <= lastBiggest) {
+      console.warn('global_sequence not advancing, stopping pagination')
+      break
+    }
+    lastBiggest = biggest
     params.global_sequence = `${biggest}-${Number.MAX_SAFE_INTEGER}`
     if (params.after) { delete params.after }
   }

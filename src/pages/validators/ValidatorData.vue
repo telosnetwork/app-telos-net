@@ -59,36 +59,58 @@ export default {
       try {
         const objectList = await axios.get(BUCKET_URL)
         const lastKey = this.getLastKey(objectList)
+        if (!lastKey) {
+          console.warn('No validator data found in S3 bucket')
+          return
+        }
         this.producerData = (await axios.get(`${BUCKET_URL}/${lastKey}`)).data
         await this.getVotes()
       } catch (err) {
-        console.log('Error', err)
+        console.error('Failed to load validator data:', err)
       }
     },
     getLastKey (objectList) {
       const parser = new DOMParser()
       const contentsArray = parser.parseFromString(objectList.data, 'text/xml').getElementsByTagName('Contents')
+      if (!contentsArray || contentsArray.length === 0) {
+        return null
+      }
       const lastEntry = contentsArray[contentsArray.length - 1]
+      if (!lastEntry || !lastEntry.childNodes || lastEntry.childNodes.length < 2) {
+        return null
+      }
       this.lastUpdated = lastEntry.childNodes[1].textContent
       return lastEntry.childNodes[0].textContent
     },
     async getVotes () {
       if (this.account) {
-        const voterInfo = (await this.$store.$api.getAccount(this.account)).voter_info
-        this.producerVotes = voterInfo.producers
-        this.lastWeight = parseFloat(voterInfo.last_vote_weight).toFixed(2)
-        this.lastStaked = voterInfo.last_stake
-        this.stakedAmount = voterInfo.staked
+        const accountData = await this.$store.$api.getAccount(this.account)
+        const voterInfo = accountData && accountData.voter_info
+        if (!voterInfo) {
+          this.producerVotes = []
+          this.lastWeight = '0'
+          this.lastStaked = 0
+          this.stakedAmount = 0
+          return
+        }
+        this.producerVotes = voterInfo.producers || []
+        this.lastWeight = parseFloat(voterInfo.last_vote_weight || 0).toFixed(2)
+        this.lastStaked = voterInfo.last_stake || 0
+        this.stakedAmount = voterInfo.staked || 0
       }
     },
     toggleView () {
       this.showCpu = !this.showCpu
     },
     castVote (e) {
-      this.$refs.ValidatorDataTable.sendVoteTransaction()
+      if (this.$refs.ValidatorDataTable) {
+        this.$refs.ValidatorDataTable.sendVoteTransaction()
+      }
     },
     resetVote (e) {
-      this.$refs.ValidatorDataTable.resetVotes()
+      if (this.$refs.ValidatorDataTable) {
+        this.$refs.ValidatorDataTable.resetVotes()
+      }
     },
     toggleVoteButtons (val) {
       this.voteChanged = val

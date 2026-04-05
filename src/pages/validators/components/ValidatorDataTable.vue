@@ -34,7 +34,7 @@
       q-td( key="country" ).flag-column
         span(:class='getFlag(props.cols[3].value)').flag-icon
       q-td(v-if='props.cols[4].value' key="social" align="center").no-decoration
-        a(v-if="props.cols[4].value.website" :href="props.cols[4].value.website")
+        a(v-if="safeUrl(props.cols[4].value.website)" :href="safeUrl(props.cols[4].value.website)")
           q-icon(
             name="fas fa-globe"
             size="xs"
@@ -233,7 +233,7 @@ export default {
           field: row => row.lifetime_produced_blocks === 0 ? row.lifetime_missed_blocks === 0 ? 'N/A' : 100 : (parseFloat(row.lifetime_missed_blocks / row.lifetime_produced_blocks) * 100).toFixed(3),
           align: 'left',
           sortable: true,
-          sort: (a, b, rowA, rowB) => parseFloat(a, 10) - parseFloat(b, 10)
+          sort: (a, b, rowA, rowB) => parseFloat(a) - parseFloat(b)
         }
       ]
     }
@@ -283,19 +283,33 @@ export default {
       return parseFloat(voteWeight * this.stakedAmount).toFixed(2)
     },
     weightChange () {
-      const difference = (this.projectedVoteWeight - this.lastWeight).toFixed(2)
-      const symbol = difference > 0 ? '+' : ''
-      const percentage = this.lastWeight > 0.001 ? ((this.projectedVoteWeight / this.lastWeight) * 100).toFixed(2) : (this.projectedVoteWeight * 100).toFixed(2)
+      const projected = parseFloat(this.projectedVoteWeight) || 0
+      const last = parseFloat(this.lastWeight) || 0
+      const difference = (projected - last).toFixed(2)
+      const symbol = parseFloat(difference) > 0 ? '+' : ''
+      const percentage = last > 0.001 ? ((projected / last) * 100).toFixed(2) : (projected * 100).toFixed(2)
 
       return `${symbol}${difference} (${percentage}%)`
     }
   },
   methods: {
-    removeVote (index) {
-      this.currentVote.splice(index, 1)
+    removeVote (producer) {
+      const idx = this.currentVote.indexOf(producer)
+      if (idx !== -1) {
+        this.currentVote.splice(idx, 1)
+      }
     },
     getLink (domain, username) {
       return `https://${domain}/${username}`
+    },
+    safeUrl (url) {
+      if (!url) return null
+      try {
+        const parsed = new URL(url)
+        return (parsed.protocol === 'https:' || parsed.protocol === 'http:') ? url : null
+      } catch (e) {
+        return null
+      }
     },
     getCountry (numeric) {
       const countryObj = iso.whereNumeric(numeric) ?? { alpha2: '' }
@@ -308,13 +322,12 @@ export default {
       return ''
     },
     checkHeader () {
-      const checkHeader = document.getElementsByClassName('selected-column')[0]
-      checkHeader.style.height = '48px'
-      if (!this.account) {
-        checkHeader.style.display = 'none'
-      } else {
-        checkHeader.style.display = 'block'
-      }
+      this.$nextTick(() => {
+        const checkHeader = document.getElementsByClassName('selected-column')[0]
+        if (!checkHeader) return
+        checkHeader.style.height = '48px'
+        checkHeader.style.display = this.account ? 'block' : 'none'
+      })
     },
     areEqualArrays (firstArray, secondArray) {
       if (!Array.isArray(firstArray) || !Array.isArray(secondArray) || firstArray.length !== secondArray.length) {
@@ -347,7 +360,11 @@ export default {
         await this.$store.$api.signTransaction(voteActions)
         this.$emit('get-votes')
       } catch (e) {
-        console.error(e)
+        let message = 'Transaction failed'
+        try {
+          message = typeof e === 'string' ? e : (e.message || message)
+        } catch (_) {}
+        console.error('Vote transaction error:', message)
       }
     }
   }
